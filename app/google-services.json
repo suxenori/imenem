@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1035647102620",
+    "firebase_url": "https://menemi-dfd1f.firebaseio.com",
+    "project_id": "menemi-dfd1f",
+    "storage_bucket": "menemi-dfd1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035647102620:android:45749ce1be04295e",
+        "android_client_info": {
+          "package_name": "com.menemi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035647102620-qrqlmgkhi5vf0ndl089jbhamitm3iv48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.menemi",
+            "certificate_hash": "C3BDEA86AA82014C0430F5BD553E6EA1946F7F90"
+          }
+        },
+        {
+          "client_id": "1035647102620-uu1k38tijfqu5g664ker8mfu32mmavfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6TYMX3_c33BUyqwyeqpBRZtbu86-ASI0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035647102620-uu1k38tijfqu5g664ker8mfu32mmavfj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
