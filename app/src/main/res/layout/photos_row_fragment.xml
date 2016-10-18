@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/profile_container"
+    android:id="@+id/totalContainer">
+
+
+    <LinearLayout
+        android:id="@+id/dataContainerPhoto2"
+        style="@style/profile_data_container2"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+android:id="@+id/picturesRow"
+        android:orientation="horizontal">
+
+<RelativeLayout
+style="@style/photoContainerDivergent"
+    android:id="@+id/container0"
+    android:layout_width="@dimen/_80sdp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginStart="0dp">
+        <ImageView
+            style="@style/add_photo_icon_divergent"
+            android:id="@+id/photo0"
+
+            />
+        <ImageView
+            android:id="@+id/lock0"
+            style="@style/lock_style" />
+    <TextView
+        android:id="@+id/uploadPhotoText0"
+        style="@style/add_textStyle" />
+</RelativeLayout>
+<RelativeLayout
+style="@style/photoContainer"
+    android:id="@+id/container1">
+        <ImageView
+            style="@style/add_photo_icon"
+            android:layout_width="@dimen/_80sdp"
+            android:id="@+id/photo1"
+            />
+        <ImageView
+            android:id="@+id/lock1"
+            style="@style/lock_style" />
+    <TextView
+        android:id="@+id/uploadPhotoText1"
+        style="@style/add_textStyle" />
+</RelativeLayout>
+    <RelativeLayout
+        style="@style/photoContainer"
+        android:id="@+id/container2">
+        <ImageView
+            style="@style/add_photo_icon"
+            android:id="@+id/photo2"
+            />
+        <ImageView
+            android:id="@+id/lock2"
+            style="@style/lock_style" />
+         <TextView
+            android:id="@+id/uploadPhotoText2"
+            style="@style/add_textStyle" />
+</RelativeLayout>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

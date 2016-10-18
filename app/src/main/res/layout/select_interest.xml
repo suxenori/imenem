@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Девушки и мужчины"
+        android:id="@+id/manWomanInterestButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Мужчины"
+        android:id="@+id/manInterestButton"
+        android:layout_above="@+id/manWomanInterestButton"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Девушки"
+        android:id="@+id/womanInterestButton"
+        android:layout_above="@+id/manInterestButton"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Вас интересуют..."
+        android:id="@+id/textView6"
+        android:layout_above="@+id/womanInterestButton"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

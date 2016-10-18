@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:id="@+id/getVerifiedButton"
+                  style="@style/settings_theme"
+                  android:clickable="true"  >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/getVerifiedTextView"
+            android:text="@string/get_verified"
+            style="@style/main_text_for_button"/>
+    </LinearLayout>
+    <ImageView style="@style/settings_divider" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:id="@+id/limitMessagesButton"
+                  style="@style/settings_theme">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/onlineStatusTextView"
+            android:text="@string/limit_messages"
+            style="@style/main_text_for_button"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/limitMessagesOnOff"
+            android:text="On"/>
+
+    </LinearLayout>
+    <ImageView style="@style/settings_divider" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:id="@+id/hideVerificationButton"
+                  style="@style/settings_theme">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/showSearchTextView"
+            android:text="@string/hide_verification_details_title"
+            style="@style/main_text_for_button"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hideVerificationOnOff"
+            android:text="On"/>
+    </LinearLayout>
+    <ImageView style="@style/settings_divider" />
+</LinearLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/selectSex"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/login_bg2">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical">
+        <ImageButton
+            android:layout_width="@dimen/arrow_width"
+            android:layout_height="@dimen/arrow_height"
+
+            android:background="@color/no_color"
+            android:src="@drawable/arrow_back"
+            android:scaleType="fitXY"
+            android:id="@+id/arrowBackButton"
+            android:layout_marginLeft="@dimen/arrow_margin_left"
+            android:layout_marginStart="@dimen/arrow_margin_left"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:layout_width="@dimen/logo_width_ss"
+            android:layout_height="@dimen/logo_height_ss"
+            android:src="@drawable/logo_in"
+            android:scaleType="fitXY"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_above="@+id/buttonsReg"
+        android:id="@+id/youText"
+        android:paddingBottom="@dimen/text_ss_padding_bottom"
+        android:layout_marginRight="@dimen/text_ss_margin_right">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/you_are"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/buttonsReg"
+        android:layout_marginBottom="@dimen/buttons_in_ss_margin_bottom"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:text="@string/you_man"
+            style="@style/SignInUpButton"
+            android:id="@+id/maleButton"
+            android:layout_marginBottom="@dimen/male_buttons_in_ss_margin_bottom"/>
+        <Button
+            style="@style/SignInUpButton"
+            android:text="@string/you_woman"
+            android:id="@+id/femaleButton"/>
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
