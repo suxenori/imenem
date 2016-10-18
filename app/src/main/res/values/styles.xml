@@ -1,0 +1,378 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" >
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.CustomTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:state_window_focused">true</item>
+        </style>
+    <style name="full_screen_dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <!--<item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@null</item>-->
+    </style>
+    <style name="settings_theme">
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:background">@drawable/click_button</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/_40sdp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="CustomDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:textAppearance">@style/TextAppearance.DialogWindowTitle</item>
+    </style>
+
+    <style name="DialogWindowTitle" parent="@style/AlertDialog.AppCompat.Light">
+        <item name="android:textAppearance">@style/TextAppearance.DialogWindowTitle</item>
+    </style>
+
+    <style name="TextAppearance.DialogWindowTitle" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+
+    <style name="main_text_for_button">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_main</item>
+    </style>
+    <style name="secondary_text_for_button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_second</item>
+    </style>
+
+    <style name="EditTextStyle" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textColorHint">@color/orange</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/orange</item>
+        <item name="colorControlHighlight">@color/orange</item>
+    </style>
+
+
+    <style name="SubmitButtonInFilterDialog">
+        <item name="android:textColor">@color/actionbar_text</item>
+        <item name="android:background">@drawable/login_btn</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">@dimen/submit_buttonf_height</item>
+        <item name="android:layout_width">@dimen/submit_buttonf_width</item>
+        <item name="android:textSize">@dimen/greeting_font_size</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="FacebookLoginButton">
+        <item name="android:background">@drawable/add_fb</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+    <style name="CancelButtonInFilterDialog" parent="SubmitButtonInFilterDialog">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:background">@drawable/cancel_btn</item>
+    </style>
+    <style name="SignInUpButton">
+        <item name="android:textColor">@color/actionbar_text</item>
+        <item name="android:background">@drawable/orange_cornered_button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">@dimen/sign_in_button_height</item>
+        <item name="android:layout_width">@dimen/sign_in_button_width</item>
+        <item name="android:textSize">@dimen/greeting_font_size</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="InviteFriends">
+        <item name="android:textColor">@color/actionbar_text</item>
+        <item name="android:background">@drawable/red_cornered_button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">@dimen/sign_in_button_height</item>
+        <item name="android:layout_width">@dimen/sign_in_button_width</item>
+        <item name="android:textSize">@dimen/greeting_font_size</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="Interest" parent="SignInUpButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/interest_height</item>
+        <item name="android:button">@color/no_color</item>
+        <item name="android:background">@drawable/interest_selector</item>
+        <item name="android:textColor">@drawable/interest_text_color_selector</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/app_font_size</item>
+    </style>
+    <style name="photos">
+        <item name="android:layout_width">@dimen/_75sdp</item>
+        <item name="android:layout_height">@dimen/_45sdp</item>
+
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+    <style name="photoContainer" parent="photos">
+
+        <item name="android:layout_marginLeft">@dimen/_5sdp</item>
+        <item name="android:layout_marginStart">@dimen/_5sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_5sdp</item>
+    </style>
+    <style name="photoContainerDivergent" parent="photoContainer">
+        <item name="android:layout_width">@dimen/_80sdp</item>
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+    </style>
+
+
+
+    <style name="about_text_style_main">
+        <item name="android:layout_width">@dimen/_100sdp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_second</item>
+    </style>
+    <style name="about_text_style_data" parent="about_text_style_main">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/text_main</item>
+    </style>
+    <style name="profile_languages">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/text_main</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+
+    </style>
+    <style name="profile_container">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+    </style>
+    <style name="margined" >
+        <item name="android:layout_marginLeft">@dimen/profile_elements_side_margin</item>
+        <item name="android:layout_marginStart">@dimen/profile_elements_side_margin</item>
+        <item name="android:layout_marginRight">@dimen/profile_elements_side_margin</item>
+        <item name="android:layout_marginEnd">@dimen/profile_elements_side_margin</item>
+    </style>
+    <style name="dialog_margined" >
+        <item name="android:layout_marginLeft">@dimen/dialogs_side_margin</item>
+        <item name="android:layout_marginStart">@dimen/dialogs_side_margin</item>
+        <item name="android:layout_marginRight">@dimen/dialogs_side_margin</item>
+        <item name="android:layout_marginEnd">@dimen/dialogs_side_margin</item>
+    </style>
+    <style name="photo_margined" >
+        <item name="android:layout_marginLeft">@dimen/chat_elements_side_margin</item>
+        <item name="android:layout_marginStart">@dimen/chat_elements_side_margin</item>
+        <item name="android:layout_marginRight">@dimen/chat_elements_side_margin</item>
+        <item name="android:layout_marginEnd">@dimen/chat_elements_side_margin</item>
+    </style>
+    <style name="paddinged" >
+        <item name="android:paddingLeft">@dimen/profile_elements_side_margin</item>
+        <item name="android:paddingStart">@dimen/profile_elements_side_margin</item>
+        <item name="android:paddingRight">@dimen/profile_elements_side_margin</item>
+        <item name="android:paddingEnd">@dimen/profile_elements_side_margin</item>
+    </style>
+    <style name="chat_paddinged" >
+        <item name="android:paddingLeft">@dimen/chat_box_side_padding</item>
+        <item name="android:paddingStart">@dimen/chat_box_side_padding</item>
+        <item name="android:paddingRight">@dimen/chat_box_side_padding</item>
+        <item name="android:paddingEnd">@dimen/chat_box_side_padding</item>
+    </style>
+    <style name="shadow_margined" >
+        <item name="android:layout_marginLeft">@dimen/shadow_side_margin</item>
+        <item name="android:layout_marginStart">@dimen/shadow_side_margin</item>
+        <item name="android:layout_marginRight">@dimen/shadow_side_margin</item>
+        <item name="android:layout_marginEnd">@dimen/shadow_side_margin</item>
+        <item name="android:layout_marginTop">@dimen/shadow_side_margin</item>
+        <item name="android:layout_marginBottom">@dimen/shadow_side_margin</item>
+    </style>
+    <style name="profile_header_layout" parent="margined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/profile_elements_top_margin</item>
+        <item name="android:layout_marginTop">@dimen/profile_elements_top_margin</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_alignParentTop">true</item>
+
+    </style>
+
+    <style name="profile_divider" parent="margined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/profile_elements_divider_height</item>
+        <item name="android:layout_below">@+id/dataContainer</item>
+        <item name="android:layout_marginTop">@dimen/profile_elements_top_margin</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/border</item>
+    </style>
+
+    <style name="settings_divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/profile_elements_divider_height</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/border</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
+    </style>
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/profile_elements_divider_height</item>
+        <item name="android:layout_marginTop">@dimen/_30sdp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/border</item>
+    </style>
+    <style name="profile_element_logo">
+        <item name="android:layout_width">@dimen/profile_elements_logo_size</item>
+        <item name="android:layout_height">@dimen/profile_elements_logo_size</item>
+    </style>
+
+    <style name="profile_element_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/profile_elements_logontext_margin</item>
+        <item name="android:textSize">@dimen/app_font_size</item>
+        <item name="android:textColor">@color/text_main</item>
+    </style>
+
+    <style name="profile_data_container" parent="margined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_below">@+id/fragmentTitle</item>
+    </style>
+    <style name="profile_data_container2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_below">@+id/fragmentTitle</item>
+    </style>
+    <style name="profile_data_container_no_margin">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_below">@+id/fragmentTitle</item>
+    </style>
+
+    <style name="lock_style">
+
+        <item name="android:layout_width">@dimen/_16sdp</item>
+        <item name="android:layout_height">@dimen/_16sdp</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/_5sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_5sdp</item>
+        <item name="android:layout_marginTop">@dimen/_5sdp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="verification_type_icon">
+        <item name="android:layout_width">@dimen/_30sdp</item>
+        <item name="android:layout_height">@dimen/_30sdp</item>
+    </style>
+
+    <style name="verification_type_label">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/text_main</item>
+        <item name="android:layout_marginStart">@dimen/_10sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_10sdp</item>
+        <item name="android:textSize">@dimen/app_font_size</item>
+    </style>
+
+    <style name="verification_type_state">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/app_font_size</item>
+        <item name="android:layout_marginStart">@dimen/_3sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_3sdp</item>
+        <item name="android:textColor">@color/orange_text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="verification_type_container">
+        <item name="android:layout_marginTop">@dimen/_13sdp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="awards_element">
+        <item name="android:layout_width">@dimen/profile_prise_element_size</item>
+        <item name="android:layout_height">@dimen/profile_prise_element_size</item>
+        <item name="android:layout_marginLeft">@dimen/_10sdp</item>
+        <item name="android:layout_marginStart">@dimen/_10sdp</item>
+    </style>
+
+    <style name="add_textStyle">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/actionbar_text</item>
+        <item name="android:paddingTop">@dimen/_20sdp</item>
+        <item name="android:textSize">@dimen/min_font_size</item>
+    </style>
+
+    <style name="add_photo_icon" parent="photos">
+
+        <item name="android:scaleType">center</item>
+        <item name="android:paddingBottom">@dimen/_10sdp</item>
+
+    </style>
+    <style name="add_photo_icon_divergent" parent="add_photo_icon">
+        <item name="android:layout_width">@dimen/_80sdp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginStart">0dp</item>
+        </style>
+
+
+    <style name="photo_statistic_label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_size</item>
+        <item name="android:textColor">@color/text_main</item>
+    </style>
+
+    <style name="photo_statistic_data" parent="photo_statistic_label">
+        <item name="android:layout_marginStart">@dimen/_5sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_5sdp</item>
+    </style>
+
+    <style name="settings_body_part">
+        <item name="android:layout_width">@dimen/_60sdp</item>
+        <item name="android:layout_height">@dimen/_60sdp</item>
+    </style>
+    <style name="dialogs_list_photo_size">
+        <item name="android:layout_width">@dimen/_40sdp</item>
+        <item name="android:layout_height">@dimen/_40sdp</item>
+        <item name="android:button">@null</item>
+    </style>
+    <style name="dialog_photo">
+        <item name="android:layout_width">@dimen/_75sdp</item>
+        <item name="android:layout_height">@dimen/_75sdp</item>
+        <item name="android:button">@null</item>
+    </style>
+
+    <style name="vip_photo_size">
+        <item name="android:layout_width">@dimen/_50sdp</item>
+        <item name="android:layout_height">@dimen/_50sdp</item>
+    </style>
+
+    <style name="verify_photo_style">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

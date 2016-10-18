@@ -1,0 +1,186 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <dimen name="screen_bottom_margin">@dimen/_16sdp</dimen>
+
+
+    <dimen name="font_size">@dimen/_12sdp</dimen>
+    <dimen name="greeting_font_size">@dimen/_14sdp</dimen>
+
+    <dimen name="button_height">@dimen/_32sdp</dimen>
+
+    <dimen name="sign_in_button_height">@dimen/_42sdp</dimen>
+    <dimen name="sign_in_button_width">@dimen/_195sdp</dimen>
+
+    <dimen name="submit_buttonf_width">@dimen/_102sdp</dimen>
+    <dimen name="submit_buttonf_height">@dimen/_26sdp</dimen>
+
+    <dimen name="cancel_buttonf_width">@dimen/_102sdp</dimen>
+    <dimen name="cancel_buttonf_height">@dimen/_26sdp</dimen>
+
+    <dimen name="margin_between_texts">0dp</dimen>
+    <dimen name="margin_between_buttons">@dimen/_10sdp</dimen>
+    <dimen name="margin_between_elements">@dimen/_15sdp</dimen>
+    <dimen name="margin_between_butntext">@dimen/_18sdp</dimen>
+    <dimen name="text_in_filter_frag">@dimen/_11sdp</dimen>
+    <dimen name="filter_fragment_height">@dimen/_140sdp</dimen>
+    <dimen name="blur_photo_height">@dimen/_130sdp</dimen>
+
+    <dimen name="toolbar_shadow_size">@dimen/_6sdp</dimen>
+    <dimen name="drawer_list_item_width">@dimen/_250sdp</dimen>
+    <dimen name="icon_left_margin">@dimen/_25sdp</dimen>
+    <dimen name="icon_start_margin">@dimen/_25sdp</dimen>
+    <dimen name="avatar_owner_width_height">@dimen/_65sdp</dimen>
+    <dimen name="balance_width_height">@dimen/_30sdp</dimen>
+    <dimen name="avatar_owner_margin_top">@dimen/_75sdp</dimen>
+    <dimen name="header_height">@dimen/_200sdp</dimen>
+    <dimen name="owner_name_margin_top">@dimen/_160sdp</dimen>
+    <dimen name="age_padding_in_filter_frag">@dimen/_22sdp</dimen>
+    <dimen name="margin_between_logontext">@dimen/_10sdp</dimen>
+    <dimen name="logo_width">@dimen/_182sdp</dimen>
+    <dimen name="logo_height">@dimen/_37sdp</dimen>
+
+    <dimen name="login_pass_edit_width">@dimen/_240sdp</dimen>
+    <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
+         https://developer.android.com/design/patterns/navigation-drawer.html -->
+    <dimen name="like_button_height">@dimen/_60sdp</dimen>
+    <dimen name="margin_like_button">@dimen/_20sdp</dimen>
+    <dimen name="margin_like_bottom">@dimen/_42sdp</dimen>
+    <dimen name="navigation_drawer_width">240dp</dimen>
+
+
+    <dimen name="profile_data_top_margin">@dimen/_12sdp</dimen>
+    <dimen name="profile_elements_top_margin">@dimen/_9sdp</dimen>
+    <dimen name="profile_elements_side_margin">@dimen/_30sdp</dimen>
+    <dimen name="profile_elements_side_antimargin">@dimen/_minus30sdp</dimen>
+    <dimen name="profile_elements_divider_height">@dimen/_2sdp</dimen>
+    <dimen name="profile_elements_logontext_margin">@dimen/_5sdp</dimen>
+    <dimen name="profile_elements_logo_size">@dimen/_16sdp</dimen>
+    <dimen name="profile_friends_top_margin">@dimen/_16sdp</dimen>
+    <dimen name="profile_friends_photo_size">@dimen/_45sdp</dimen>
+    <dimen name="profile_prise_element_size">@dimen/_90sdp</dimen>
+    <dimen name="profile_friends_photo_margin">@dimen/_10sdp</dimen>
+
+    <dimen name="show_text_margin_top">@dimen/_8sdp</dimen>
+    <dimen name="margin_left">@dimen/_20sdp</dimen>
+    <dimen name="female_margin_left">@dimen/_12sdp</dimen>
+    <dimen name="female_margin_top">@dimen/_28sdp</dimen>
+    <dimen name="female_margin_start">@dimen/_12sdp</dimen>
+    <dimen name="all_margin_left">@dimen/_11sdp</dimen>
+    <dimen name="app_font_size">@dimen/_14sdp</dimen>
+    <dimen name="interest_height">@dimen/_30sdp</dimen>
+    <dimen name="cancel_button_filter_margin_top">@dimen/_15sdp</dimen>
+    <dimen name="cancel_button_filter_margin_left">@dimen/_163sdp</dimen>
+    <dimen name="button_filter_margin_left">@dimen/_48sdp</dimen>
+    <dimen name="your_defined_minumum_height">33dp</dimen>
+    <dimen name="min_font_size">@dimen/_10sdp</dimen>
+    <dimen name="filter_radio_margin">@dimen/_10sdp</dimen>
+    <dimen name="filter_radio_drawable_padding">@dimen/_10sdp</dimen>
+    <dimen name="buttons_filter">@dimen/_5sdp</dimen>
+    <dimen name="filter_container_size">@dimen/_130sdp</dimen>
+    <dimen name="width_checkbox_selector">@dimen/_20sdp</dimen>
+
+            <!--Items sizes in select_sex_layout -->
+    <dimen name="arrow_height">@dimen/_13sdp</dimen>
+    <dimen name="arrow_width">@dimen/_21sdp</dimen>
+    <dimen name="arrow_margin_top">@dimen/_24sdp</dimen>
+    <dimen name="arrow_margin_left">@dimen/_19sdp</dimen>
+    <dimen name="logo_width_ss">@dimen/_105sdp</dimen>
+    <dimen name="logo_height_ss">@dimen/_25sdp</dimen>
+    <dimen name="logo_margin_bottom_ss">@dimen/_4sdp</dimen>
+    <dimen name="logo_margin_left_ss">@dimen/_76sdp</dimen>
+    <dimen name="text_ss_padding_bottom">@dimen/_7sdp</dimen>
+    <dimen name="text_ss_margin_right">@dimen/_4sdp</dimen>
+    <dimen name="buttons_in_ss_margin_bottom">@dimen/_153sdp</dimen>
+    <dimen name="male_buttons_in_ss_margin_bottom">@dimen/_6sdp</dimen>
+
+            <!--Items sizes in goals_page-->
+    <dimen name="goals_page_text">@dimen/_7sdp</dimen>
+    <dimen name="goals_page_make_new_friend_button">@dimen/_8sdp</dimen>
+    <dimen name="goals_page_communication_button">@dimen/_10sdp</dimen>
+    <dimen name="goals_page_buttons">@dimen/_100sdp</dimen>
+
+            <!--Items sizes in register layout-->
+    <dimen name="item_container">@dimen/_235sdp</dimen>
+    <dimen name="text_in_center">@dimen/_31sdp</dimen>
+    <dimen name="text_in_center_margin_bottom">@dimen/_15sdp</dimen>
+    <dimen name="register_button_margin_bottom">@dimen/_48sdp</dimen>
+    <dimen name="text_in_bay_coins_margin_top">@dimen/_20sdp</dimen>
+    <dimen name="bay_coins_container_height">@dimen/_75sdp</dimen>
+    <dimen name="bay_coins_container_width">@dimen/_294sdp</dimen>
+    <dimen name="bay_coins_container_margin_top">@dimen/_8sdp</dimen>
+    <dimen name="text_in_bay_coins_container_margin_left">@dimen/_104sdp</dimen>
+    <dimen name="text_in_bay_coins_container_margin_top">@dimen/_10sdp</dimen>
+    <dimen name="popular_bay_coins_container_height">@dimen/_30sdp</dimen>
+    <dimen name="popular_bay_coins_container_width">@dimen/_30sdp</dimen>
+    <dimen name="popular_bay_coins_container_margin_top">@dimen/_2sdp</dimen>
+    <dimen name="popular_bay_coins_container_margin_left">@dimen/_260sdp</dimen>
+    <dimen name="popular_button_bay_coins_container_height">@dimen/_40sdp</dimen>
+    <dimen name="popular_button_bay_coins_container_width">@dimen/_210sdp</dimen>
+    <dimen name="popular_button_bay_coins_container_margin_top">@dimen/_15sdp</dimen>
+    <dimen name="popular_button_bay_coins_container_margin_left">@dimen/_18sdp</dimen>
+    <dimen name="text_size_in_button">@dimen/_9sdp</dimen>
+    <dimen name="popular_price_cont_margin_top">@dimen/_60sdp</dimen>
+    <dimen name="popular_price_cont_margin_left">@dimen/_113sdp</dimen>
+    <dimen name="text_size_in_price">@dimen/_10sdp</dimen>
+    <dimen name="price_cont_margin_left">@dimen/_4sdp</dimen>
+    <dimen name="invite_friends_container_height">@dimen/_130sdp</dimen>
+    <dimen name="invite_friends_container_width">@dimen/_294sdp</dimen>
+    <dimen name="invite_friends_container_margin_top">@dimen/_205sdp</dimen>
+    <dimen name="text_size_in_invite_friend_container">@dimen/_14sdp</dimen>
+    <dimen name="text_view_in_invite_friend_container_margin_start">@dimen/_50sdp</dimen>
+    <dimen name="text_view_in_invite_friend_container_margin_top">@dimen/_4sdp</dimen>
+    <dimen name="text_view_in_invite_friend_with_balance_margin_left">@dimen/_68sdp</dimen>
+    <dimen name="price_view_margins">@dimen/_3sdp</dimen>
+    <dimen name="photo_price_margin_left">@dimen/_35sdp</dimen>
+    <dimen name="dialog_container_height">@dimen/_180sdp</dimen>
+    <dimen name="text_size_in_bay_photo_fragment">@dimen/_12sdp</dimen>
+    <dimen name="shadow_side_margin">@dimen/_10sdp</dimen>
+
+                <!--Verify photo layout dimens-->
+    <dimen name="white_background_photo_height">@dimen/_118sdp</dimen>
+    <dimen name="white_background_photo_width">@dimen/_107sdp</dimen>
+    <dimen name="white_background_photo_margin_left">@dimen/_30sdp</dimen>
+    <dimen name="white_background_photo_margin_top">@dimen/_58sdp</dimen>
+    <dimen name="image_view_container_margin_top">@dimen/_59sdp</dimen>
+    <dimen name="image_view_width">@dimen/_120sdp</dimen>
+    <dimen name="image_view_height">@dimen/_107sdp</dimen>
+    <dimen name="image_view_margin_top">@dimen/_10sdp</dimen>
+    <dimen name="image_view_margin_left">@dimen/_18sdp</dimen>
+    <dimen name="create_photo_container_margin_top">@dimen/_69sdp</dimen>
+    <dimen name="create_photo_container_margin_left">@dimen/_22sdp</dimen>
+    <dimen name="image_view_in_create_photo_container_size">@dimen/_45sdp</dimen>
+    <dimen name="text_after_image_views_in_verify_container_margin_left_right">@dimen/_18sdp</dimen>
+    <dimen name="text_after_image_views_in_verify_container_margin_top">@dimen/_6sdp</dimen>
+    <dimen name="text_size_after_image_views_in_verify_container">@dimen/_10sdp</dimen>
+    <dimen name="first_instruction_margin_top">@dimen/_19sdp</dimen>
+    <dimen name="first_instruction_margin_left">@dimen/_21sdp</dimen>
+    <dimen name="text_instruction_margin_left">@dimen/_12sdp</dimen>
+    <dimen name="second_instruction_margin_top">@dimen/_5sdp</dimen>
+    <dimen name="third_instruction_margin_top">@dimen/_10sdp</dimen>
+    <dimen name="button_group_margin_top">@dimen/_10sdp</dimen>
+    <dimen name="cancel_button_margin_top">@dimen/_10sdp</dimen>
+    <dimen name="buttons_parameter_width">@dimen/_240sdp</dimen>
+
+                <!--Balance layout dimens-->
+    <dimen name="balance_container_margin_top">@dimen/_65sdp</dimen>
+    <dimen name="coins_image_sizes">@dimen/_30sdp</dimen>
+                <!--Balance layout dimens-->
+    <dimen name="image_container_margin_left">@dimen/_22sdp</dimen>
+    <dimen name="message_container_margin_left">@dimen/_22sdp</dimen>
+    <dimen name="image_container_margin_top">@dimen/_25sdp</dimen>
+    <dimen name="message_container_margin_top">@dimen/_32sdp</dimen>
+    <dimen name="image_view_params">@dimen/_45sdp</dimen>
+    <dimen name="name_container_margin_left">@dimen/_4sdp</dimen>
+    <dimen name="status_container_margin_left">@dimen/_8sdp</dimen>
+    <dimen name="time_container_margin_left">@dimen/_180sdp</dimen>
+
+    <dimen name="chat_box_side_padding">@dimen/_20sdp</dimen>
+    <dimen name="chat_elements_side_margin">@dimen/_10sdp</dimen>
+
+    <dimen name="height_row_container_in_edit_info">@dimen/_30sdp</dimen>
+    <dimen name="dialogs_side_margin">@dimen/_20sdp</dimen>
+</resources>

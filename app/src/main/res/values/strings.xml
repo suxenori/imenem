@@ -1,0 +1,439 @@
+<?xml version="1.0"?>
+
+<resources>
+
+    <string name="app_name">minemi</string>
+
+    <string name="fb_button">F</string>
+
+    <string name="vk_button">Vk</string>
+
+    <string name="Ok_button">Ok</string>
+
+    <string name="title_activity_login_activity">Sign in</string>
+
+    <!-- Strings related to login -->
+
+    <string name="prompt_email">Email</string>
+
+    <string name="prompt_password">Password (optional)</string>
+
+    <string name="action_sign_in">Sign in or register</string>
+
+    <string name="action_sign_in_short">Sign in</string>
+
+    <string name="error_invalid_email">This email address is invalid</string>
+
+    <string name="error_invalid_password">This password is too short</string>
+
+    <string name="error_incorrect_password">This password is incorrect</string>
+
+    <string name="error_field_required">This field is required</string>
+
+    <string name="permission_rationale">"Contacts permissions are needed for providing emailcompletions."</string>
+
+    <string name="title_activity_person_page">PersonPage</string>
+
+    <string name="title_section1">Section 1</string>
+
+    <string name="title_section2">Section 2</string>
+
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="drawer_opened">Open</string>
+
+    <string name="drawer_closed">Closed</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+
+    <string name="basic_info">Basic info</string>
+
+    <string name="account">Account</string>
+
+    <string name="account_preferences">Account Preferences</string>
+
+    <string name="help_center">Help Center</string>
+
+    <string name="about">О себе</string>
+
+    <string name="pay_system">Choice your payment system:</string>
+
+    <string name="iamheretoLabel">Я хочу:</string>
+
+    <string name="relationshipsLabel">Отношения:</string>
+
+    <string name="orientationLabel">Ориентация:</string>
+
+    <string name="appearanceLabel">Внешность:</string>
+
+    <string name="smokingLabel">Курение:</string>
+
+    <string name="alcoLabel">Алкоголь</string>
+
+    <string name="gifts">Подарки</string>
+
+
+    <string name="cry"><u>Пожаловаться</u></string>
+
+    <string name="blocked_users">Blocked users</string>
+
+    <string name="flike_header">Join the MINEMI party on Facebook</string>
+
+    <string name="fav_text">У Вас пока нет Избранных. Посмотрите, может вам понравится кто-то в разделе Люди рядом?</string>
+
+    <string name="fav_button">Найти Избранных</string>
+
+    <string name="you_like_text">Вы еще никому не пронравились. Играйте в знакомства или продвинь свой профиль, чтобы вас поскорее заметили!</string>
+
+    <string name="you_like_button1">Играть в знакомства</string>
+
+    <string name="you_like_button2">Добавить показы</string>
+
+    <string name="added_you_in_favorites">Добавили Вас в Избранные</string>
+
+    <string name="increase_your_level">Повысить популярность</string>
+
+    <string name="you_added_in_favorites">Ваши избранные</string>
+
+    <string name="more_in_favorites">Ещё!</string>
+
+    <string name="your_friend">Ваши друзья</string>
+
+    <string name="find_your_old_cheeps">Найдите своих знакомых на Badoo или пригласите их сюда.</string>
+
+    <string name="find_favorite_button">Найти!</string>
+
+    <string name="name">Name</string>
+
+    <string name="temp_name">MotherHaker</string>
+
+    <string name="privacy">Privacy</string>
+    <string name="privatePhoto">Приватные</string>
+    <string name="publicPhoto">Публичные</string>
+    <string name="notifications">Notifications</string>
+
+    <string name="network">Network</string>
+
+    <string name="verifications">Verifications</string>
+
+    <string name="payment_settings">Payment settings</string>
+
+    <string name="invisible_mode">Invisible mode</string>
+
+    <string name="birtrhday">Birthday</string>
+
+    <string name="temp_birthday">30.04.1987</string>
+
+    <string name="gender">Gender</string>
+
+    <string name="temp_account">MotherHacker</string>
+
+    <string name="Cancel_button">Cancel</string>
+
+    <string name="APP_ID">1125347950854684</string>
+
+    <string name="position">Местоположение</string>
+
+    <string name="distance">Show distance</string>
+
+    <string name="photos">Фотографии</string>
+    <string name="no_gps_title">GPS недоступен</string>
+    <string name="no_gps_message">Включите геолокацию, чтобы пользоваться картой</string>
+
+    <string name="delete_photo_title">Удаление</string>
+    <string name="delete_photo_message">Фотография будет удалена</string>
+    <string name="online_status">Show online status</string>
+
+
+    <string name="public_search">Enable public search</string>
+
+    <string name="bumped_into">Enable Bumped into</string>
+
+    <string name="profile_sharing">Allow profile sharing</string>
+
+    <string name="distance_switcher_text_title">Show distance</string>
+    <string name="distance_switcher_text">Mast be on if you want to see how near other users are. No one will know your actual location without your permission</string>
+    <string name="show_online_status_title">Show online status</string>
+    <string name="show_online_status">Must be on if you want to see if other users are currently online</string>
+    <string name="enable_public_search_title">Enable public search</string>
+    <string name="enable_public_search">With public search enabled, people can find my profile using internet search engines</string>
+    <string name="enable_bumped_into_title">Enable Bumped into</string>
+    <string name="enable_bumped_into">Reveal my profile to users i bump into</string>
+    <string name="allow_profile_sharing_title">Allow profile sharing</string>
+    <string name="allow_profile_sharing">Lets other share my profile</string>
+
+    <string name="limit_messages_title">Limit messages</string>
+    <string name="limit_messages_text">Turn on to only recieve messages from verified users</string>
+    <string name="hide_verification_details_title">Hide verification details</string>
+    <string name="hide_verification_details_text">Turn on to hide verification details on your profile</string>
+
+    <string name="hide_cloacked">Don\'t show me as profile visitor on people\'s profiles</string>
+    <string name="messages">Сообщения</string>
+
+    <string name="profile_visitors">Profile visitors</string>
+
+    <string name="liked_you">Вы нравитесь</string>
+    <string name="like_title">Симпатии</string>
+    <string name="matches">Matches</string>
+
+    <string name="favorited_you">Favorited you</string>
+
+    <string name="alerts">Alerts</string>
+
+    <string name="bumped_into_n">Bumped into</string>
+
+    <string name="news">News</string>
+
+    <string name="get_verified">Get Verified</string>
+
+    <string name="limit_messages">Limit messages</string>
+
+    <string name="verify">Verify</string>
+
+    <string name="phone_number">Phone number</string>
+
+    <string name="facebook">Facebook</string>
+
+    <string name="g_plus">G+</string>
+
+    <string name="vkontakte">VKontakte</string>
+
+    <string name="odnoklassniki">Odnoklassniki</string>
+
+    <string name="instagram">Instagram</string>
+
+    <string name="twitter">Twitter</string>
+
+    <string name="linked">LinkedIn</string>
+
+    <string name="ssp">SuperPower</string>
+
+    <string name="no_new_visitors_today">No new visitors today. Rise up to first place in search results to get more visitors.</string>
+
+    <string name="encounters">Знакомства</string>
+
+    <string name="people_nearby">Люди рядом</string>
+
+    <string name="messages_">Сообщения</string>
+
+    <string name="visitors">Посетители</string>
+
+    <string name="liked_you_">Симпатии</string>
+
+    <string name="favorites">Избранные</string>
+
+    <string name="invite_friends">Пригласить друга</string>
+    <string name="settings">Настройки</string>
+    <string name="demo_min_label">Min</string>
+
+    <string name="demo_max_label">Max</string>
+
+    <string name="almost_invisible">Almost invisible</string>
+
+    <string name="hide_presence">Hide my presence from other users</string>
+
+    <string name="cloaked_invisibility">Cloaked Invisibility</string>
+
+    <string name="dont_show_me"> Don\'t show me as a profile</string>
+
+    <string name="private_powers">Private Powers</string>
+
+    <string name="hide_my_sp">Hide my Super Powers from other users</string>
+
+    <string name="account_double">Make sure your email address is correct so we can send you your password. You will then be able to sign out. If you don\'t see our email, please check your spam folder.</string>
+
+    <string name="get_pass">Get password</string>
+
+    <string name="terms_and_conditions_summary">Terms and Conditions summary</string>
+
+    <string name="terms_and_conditions">Terms and Conditions</string>
+
+    <string name="privacy_in_about">Privacy</string>
+
+    <string name="about_badoo">About Badoo</string>
+
+    <string name="MeetNewPeople">Знакомьтесь с новыми людьми</string>
+
+    <string name="slogan">Menimi это идеальное место для поиска \n новых друзей, интересных знакомств \n и общения.</string>
+
+    <string name="signIn">Войти</string>
+
+    <string name="friendsCountEnd5_">друзей</string>
+
+    <string name="friendsCountEnd2_3_4">друга</string>
+
+    <string name="friendsCountEnd1">друг</string>
+
+    <string name="interests">Интересы</string>
+
+
+    <string name="Register"><u>Зарегистрироваться</u></string>
+
+    <string name="register_button">Войти</string>
+
+    <string name="email_in_login_page">E-mail</string>
+
+    <string name="password_in_login_page">Пароль</string>
+
+    <string name="favorite_list">Favorite</string>
+
+    <string name="show_people">Пол:</string>
+
+    <string name="show_status">Показать: </string>
+
+    <string name="man">Мужчин</string>
+
+    <string name="online_status_filter">Онлайн</string>
+
+    <string name="woman">Девушек</string>
+
+    <string name="offline_status_filter">Оффлайн</string>
+
+    <string name="age">Возраст:</string>
+
+    <string name="cancel">Отмена</string>
+
+    <string name="search">Поиск</string>
+
+    <string name="all">Всех</string>
+
+    <string name="test_languages">Английский(свободный), Русский(родной), Французский(низкий).</string>
+    <string name="all_photos">Все</string>
+    <string name="title_languages">Языки</string>
+    <string name="your_likes">Вам понравились</string>
+    <string name="you_want">Вы хотите...</string>
+    <string name="you_want_friend">Найти новых друзей</string>
+    <string name="you_want_chat">Общаться</string>
+    <string name="you_are">Вы...</string>
+    <string name="you_man">Мужчина</string>
+    <string name="you_woman">Девушка</string>
+    <string name="you_want_meet">Встречаться</string>
+    <string name="no_internet_message">Подключение к интернету, отсутствует.</string>
+    <string name="upload_photo_text">Загрузить фото:</string>
+    <string name="upload_photo_gallery">Галерея</string>
+    <string name="upload_photo_google">Google+</string>
+    <string name="upload_photo_vk">  ВКонтакте  </string>
+    <string name="upload_photo_ok">Одноклассники</string>
+    <string name="upload_photo_fb">Facebook</string>
+    <string name="upload_photo_instagram">Instagram</string>
+    <string name="upload_photo_create_photo">Сделать снимок</string>
+    <string name="open_for_money">Открыть за монеты</string>
+    <string name="buy_money">Купить</string>
+    <string name="cancel_in_pay_for_photo">Отмена</string>
+    <string name="coins_in_pay_photo_fragment">монет</string>
+    <string name="price_for_photo">Цена за фото:</string>
+    <string name="your_balance">Ваш баланс:</string>
+
+    <string name="change">Изменить</string>
+    <string name="verification">Верификация</string>
+    <string name="phone">Телефон</string>
+    <string name="verified">(подтвержден)</string>
+    <string name="photo_label">Фото</string>
+    <string name="verified1">(подтверждено)</string>
+    <string name="vk">ВКонтакте</string>
+    <string name="verify_do">(привязать)</string>
+    <string name="add_more_photo">добавить фото</string>
+    <string name="show_more_photo">загрузить еще</string>
+    <string name="Balance">Баланс:</string>
+    <string name="Rate">Рейтинг:</string>
+    <string name="test_balance">Баланс: 250 монет</string>
+    <string name="text_in_pay_coins_fragment">Чем больше монет Вы покупаете,\n тем выгоднее!</string>
+    <string name="invite_friends_for_coins">Пригласи друга и получи</string>
+    <string name="coins_for_friend">100</string>
+    <string name="invite_friends_for_coins_2">монет бесплатно</string>
+    <string name="obtain_free_coins">Получить монеты бесплатно</string>
+    <string name="invite_friend_text_in_button">Пригласить друга</string>
+    <string name="text_in_bay_container">Популярное</string>
+    <string name="total">Итого:</string>
+    <string name="total_coins">14.99$</string>
+    <string name="views_label">Просмотров: </string>
+    <string name="test_views_data">52</string>
+    <string name="price_label">Цена за просмотр:</string>
+    <string name="test_price_data">125</string>
+    <string name="body_parts">Части тела на фото:</string>
+    <string name="Cancel">Отмена</string>
+    <string name="send_for_moderation">Отправить на модерацию</string>
+    <string name="vip">VIP пользователи</string>
+    <string name="date_of_reciving">Дата получения: </string>
+    <string name="close">Закрыть</string>
+    <string name="unbind">Отвязать</string>
+    <string name="create_photo_in_verify_layout">Сделать снимок</string>
+    <string name="some_text_in_verify_layout">csdcsdcdscsddcsccccccccccccccccccccccccccerfefefegtgtgtgtggtgtgtgtggthytghvvtyhthehytjutujtjtjtikykyuikkyhkykgerrthtyhjtjhtjtyjttjtjujtjujtrjtyjtyjtyjtyjtyjtyjtjytjtjtyjtyjtyjtyjytjtyjtyjtyjtjtjtyjtjtytyjtjtyjtjtjyjtyjtjtyjtyjtyjtyjtjttyjtyjtyjtyjtjfeffefrefrferfefeferfefefefwdewdewdddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeedeededededdedede.</string>
+    <string name="_1">1.</string>
+    <string name="first_instruction">Расположите руку ладонью вверх \n возле лица</string>
+    <string name="_2">2.</string>
+    <string name="second_instruction_in_verify_layout">Сделайте снимок</string>
+    <string name="_3">3.</string>
+    <string name="third_instruction_in_verify_layout">Подтвердите фото</string>
+    <string name="photo_upload">Загрузка фотографии</string>
+    <string name="photos_download">Загрузка фотографий</string>
+    <string name="mutual_likes">Взаимные симпатии</string>
+    <string name="Flowers">Цветы</string>
+    <string name="Martini">Мартини</string>
+    <string name="Kiss">Поцелуй</string>
+    <string name="Candies">Конфеты</string>
+    <string name="Car">Машина</string>
+    <string name="Cake">Торт</string>
+    <string name="Hards">Сердечки</string>
+    <string name="Icecream">Мороженое</string>
+    <string name="Rose">Роза</string>
+    <string name="Beer">Пиво</string>
+    <string name="Balls">Шарики</string>
+    <string name="download_category">Загрузка категорий интересов</string>
+    <string name="download_interests_from_category">Загрузка интересов</string>
+    <string name="google_places_api_key">AIzaSyCAiADf4VQjnUfTxxeF8AQYYJMzTFnfWAY</string>
+    <string name="search_text">Где искать?</string>
+    <string name="edit_person_info"><font size="8">Что отличает Вас от других?Чем больше информации Вы предоставите,
+                         тем интереснее вы будете для других.</font></string>
+
+
+    <string name="on">Вкл.</string>
+    <string name="off">Выкл.</string>
+    <string name="buy_coins">Пополнить баланс</string>
+    <string name="buy_vip">Купить VIP статус</string>
+    <string name="buy_gift">Сделать подарок</string>
+    <string name="interests_conf">Интересы</string>
+    <string name="set_interests">Добавить интересы</string>
+    <string name="edit_personal_info">Инфо</string>
+    <string name="find_interests">Добавить интересы</string>
+    <string name="add_interests_text">Добавьте десять интересов чтобы увидеть общие интересы с другими пользователями</string>
+    <string name="one_choiced">\u0020 выбран</string>
+    <string name="two_choiced">\u0020 выбрано</string>
+    <string name="search_in_add_interests">Search</string>
+
+    <integer name="com_vk_sdk_AppId">5610489</integer>
+
+    <string name="write">Написать...</string>
+    <string name="attach_photo">Прикрепить фото</string>
+    <string name="from_gallery">Из галереи</string>
+    <string name="vip_label">VIP статус это:</string>
+    <string name="vip_goal_3">Общение с большим количеством людей в вашем регионе</string>
+    <string name="vip_goal_2">Вас увидят миллионы парней в вашем регионе</string>
+    <string name="vip_goal_1">1-ое место в результатах поиска</string>
+    <string name="vip_goal">Купить VIP на час</string>
+    <string name="typing">печатает...</string>
+    <string name="logout">Выйти из аккаунта</string>
+    <string name="auto_price">Авто цена:</string>
+    <string name="you_will_paid">You will paid</string>
+    <string name="paid_with">Paid with:</string>
+    <string name="send_gift">Отправить подарок</string>
+    <string name="send_gift_text">Вы уверены что хотите отправить подарок</string>
+    <string name="questionMark"> \?</string>
+    <string name="_for"> за </string>
+    <string name="change_gender">Смена пола</string>
+    <string name="gender_notification">Ваш пол может быть изменен только один раз, это изменение будет окончательным.</string>
+    <string name="change_age">Смена возраста</string>
+    <string name="age_notification">Ваша дата рождения может быть изменена только один раз, это изменение будет окончательным.</string>
+    <string name="change_name">Смена имени</string>
+    <string name="hide_account">Hide Account</string>
+    <string name="delete_account"><u>Delete account</u></string>
+    <string name="erase_imported_contacts">Erase Imported Contacts</string>
+</resources>

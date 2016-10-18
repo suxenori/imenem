@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <resources xmlns:tools="http://schemas.android.com/tools">
+         the theme applied to the application or activity
+        <style name="MyActionBarTheme"
+               parent="@style/Theme.AppCompat.Light.NoActionBar">
+            <item name="android:actionBarStyle" tools:targetApi="11">@style/MyActionBar</item>
+            <!-- Support library compatibility -->
+            <item name="colorControlNormal">@color/orange_text</item>
+            <item name="colorControlActivated">@color/orange_text</item>
+            <item name="colorControlHighlight">@color/orange_text</item>
+            <item name="actionBarStyle">@style/MyActionBar</item>
+        </style>
+        <!-- ActionBar styles -->
+        <style name="MyActionBar"
+               parent="@style/Widget.AppCompat.ActionBar">
+            <item name="android:logo">@drawable/ic_landing_logo_normal</item>
+            <!-- Support library compatibility -->
+            <item name="background">@color/actionbar_background</item>
+
+            <item name="android:titleTextStyle" tools:targetApi="11">@style/MyActionBarTitleText</item>
+            <!-- Support library compatibility -->
+            <item name="titleTextStyle">@style/MyActionBarTitleText</item>
+        </style>
+        <!-- ActionBar title text -->
+        <style name="MyActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+            <item name="android:textColor">@color/orange_text</item>
+        </style>
+
+    <style name="Theme_Sphinx_Dialog_Alert" parent="@style/AlertDialog.AppCompat.Light">
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle</item>
+    </style>
+
+
+    </resources>
