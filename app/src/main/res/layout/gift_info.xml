@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@color/no_color"
+>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:background="@color/actionbar_text"
+        style="@style/dialog_margined"
+        android:layout_marginTop="@dimen/_30sdp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/margined"
+        android:layout_marginTop="@dimen/_40sdp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nameAgeText"
+            android:textStyle="bold"
+            android:textColor="@color/text_main"
+            android:text="Александр, 25"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:text=" отправил вам подарок"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/margined"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_main"
+                android:text="@string/date_of_reciving"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_main"
+                android:id="@+id/sendDate"
+                android:text="25.07.2016"/>
+        </LinearLayout>
+    <Button
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_44sdp"
+        android:text="@string/close"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textAllCaps="false"
+        android:textSize="@dimen/app_font_size"
+        android:textColor="@color/actionbar_text"
+        android:layout_alignParentBottom="true"
+        style="@style/margined"
+        android:background="@drawable/orange_cornered_button"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:id="@+id/closeButton" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="@dimen/_144sdp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@color/no_color">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+            <ImageView
+                style="@style/settings_body_part"
+
+                android:layout_marginRight="@dimen/_minus15sdp"
+                android:layout_marginEnd="@dimen/_minus15sdp"
+                android:padding="@dimen/_8sdp"
+
+                android:id="@+id/photo"
+                android:background="@drawable/test_circle_shadow"
+                android:scaleType="centerCrop"/>
+        <ImageView
+            style="@style/settings_body_part"
+            android:padding="@dimen/_8sdp"
+            android:scaleType="centerInside"
+
+            android:background="@drawable/test_circle_shadow"
+            android:id="@+id/gift"
+            />
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

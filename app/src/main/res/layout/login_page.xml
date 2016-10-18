@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/login_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical">
+        <ImageButton
+            android:layout_width="@dimen/arrow_width"
+            android:layout_height="@dimen/arrow_height"
+
+            android:background="@color/no_color"
+            android:src="@drawable/arrow_back"
+            android:scaleType="fitXY"
+            android:id="@+id/arrowBackButtonInLoginPage"
+            android:layout_marginLeft="@dimen/arrow_margin_left"
+            android:layout_marginStart="@dimen/arrow_margin_left"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:layout_width="@dimen/logo_width_ss"
+            android:layout_height="@dimen/logo_height_ss"
+            android:src="@drawable/logo_in"
+            android:scaleType="fitXY"
+            android:layout_centerInParent="true"
+           />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:inputType="textPassword"
+            android:theme="@style/EditTextStyle">
+
+            <EditText
+                android:id="@+id/loginEmailPhoneNumberEditText"
+                android:layout_width="@dimen/login_pass_edit_width"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:hint="@string/email_in_login_page" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:inputType="textPassword"
+            android:theme="@style/EditTextStyle">
+
+            <EditText
+                android:id="@+id/loginPasswordEditText"
+                android:layout_width="@dimen/login_pass_edit_width"
+                android:layout_height="wrap_content"
+
+                android:inputType="textPassword"
+                android:hint="@string/password_in_login_page" />
+
+        </android.support.design.widget.TextInputLayout>
+        <TextView
+            android:id="@+id/wrongLogPassNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/font_size"
+            android:text="Wrong password or email"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:visibility="invisible"
+            android:textColor="@color/red_underline"/>
+        <LinearLayout
+            android:id="@+id/loginButtonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_18sdp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/loginButton"
+                style="@style/SignInUpButton"
+                android:text="@string/signIn"
+
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/forgotPassButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/font_size"
+            android:text="Забыли пароль?" />
+
+    </LinearLayout>
+
+</RelativeLayout>

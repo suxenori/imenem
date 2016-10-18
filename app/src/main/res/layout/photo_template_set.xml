@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <ImageView
+
+            android:id="@+id/template0"
+            style="@style/settings_body_part" />
+
+        <ImageView
+            android:id="@+id/templateBorder0"
+            style="@style/settings_body_part" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/template1"
+            style="@style/settings_body_part"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/templateBorder1"
+            style="@style/settings_body_part" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/template2"
+            style="@style/settings_body_part"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/templateBorder2"
+            style="@style/settings_body_part" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/template3"
+            style="@style/settings_body_part"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/templateBorder3"
+            style="@style/settings_body_part" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_10sdp"
+    style="@style/photo_margined"
+    android:layout_marginRight="@dimen/_20sdp"
+    android:layout_marginEnd="@dimen/_20sdp">
+    <ImageView
+        style="@style/dialogs_list_photo_size"
+
+        android:scaleType="centerCrop"
+        android:id="@+id/photo"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_50sdp"
+        android:layout_marginLeft="@dimen/_50sdp"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/messageContainer"
+        android:layout_marginRight="@dimen/_60sdp"
+        android:layout_marginEnd="@dimen/_60sdp"
+        android:background="@drawable/message_to_background"
+
+        >
+        <io.github.rockerhieu.emojicon.EmojiconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_14sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:textColor="@color/actionbar_text"
+            android:id="@+id/text"
+            android:textSize="@dimen/greeting_font_size"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/picture"
+            android:scaleType="centerCrop"
+/>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginLeft="@dimen/_minus50sdp"
+        android:layout_marginStart="@dimen/_minus50sdp"
+        android:id="@+id/time"
+        android:layout_toRightOf="@+id/messageContainer"
+        android:layout_toEndOf="@+id/messageContainer"
+
+        android:textSize="@dimen/min_font_size"
+        android:text="09:35"/>
+</RelativeLayout>

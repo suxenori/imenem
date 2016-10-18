@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/photo_margined"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:layout_marginLeft="@dimen/_20sdp"
+    android:layout_marginStart="@dimen/_20sdp"
+    android:layout_marginTop="@dimen/_10sdp">
+
+    <ImageView
+        android:id="@+id/photo"
+        style="@style/dialogs_list_photo_size"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/messageContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_60sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_60sdp"
+        android:background="@drawable/message_me_background"
+        android:orientation="vertical"
+
+        >
+
+        <io.github.rockerhieu.emojicon.EmojiconTextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_14sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+android:text="asdfasdfasdffsda  asdf sdafsda fsd fa sdfsdf aasd f sdfasd aff sadfsd afsd faasd fasdf sdaf sdfa sdaf sdf asdf asdfa fdsasfdasdfasd fasd fasd fas fasdf asdf asd fasf asd fasd fasdasd a"
+            android:textColor="@color/black"
+            android:textSize="@dimen/greeting_font_size" />
+
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="@dimen/_minus50sdp"
+        android:layout_marginRight="@dimen/_minus50sdp"
+        android:layout_toLeftOf="@+id/messageContainer"
+        android:layout_toStartOf="@+id/messageContainer"
+        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:gravity="center_vertical|end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="09:35"
+            android:textSize="@dimen/min_font_size" />
+
+        <ImageView
+            android:id="@+id/messageStatus"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="wrap_content"
+
+
+            />
+    </LinearLayout>
+</RelativeLayout>

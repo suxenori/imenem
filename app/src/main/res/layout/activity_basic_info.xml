@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+   <include
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/basicInfoButton"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            style="@style/main_text_for_button"
+            android:id="@+id/textView9" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            style="@style/secondary_text_for_button"
+            android:id="@+id/name" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/birthdayButton"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/birtrhday"
+            style="@style/main_text_for_button"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/birthday"
+            style="@style/secondary_text_for_button"
+             />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/genderButton"
+        android:gravity="center_vertical"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gender"
+            style="@style/main_text_for_button"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroup"
+            android:layout_marginLeft="@dimen/margin_left"
+            android:layout_marginStart="@dimen/margin_left"
+            android:layout_below="@+id/show"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/maleButton">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/you_man"
+                android:layout_gravity="center"
+                android:textColor="@color/black"/>
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:src="@drawable/all_gender_selector"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:scaleType="centerInside"
+                android:id="@+id/maleRadioButton"
+                android:layout_gravity="bottom"/>
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/femaleButton">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/you_woman"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
+                android:layout_marginStart="@dimen/filter_radio_drawable_padding"
+                />
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:src="@drawable/all_gender_selector"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:scaleType="centerInside"
+                android:textSize="@dimen/_11sdp"
+                android:id="@+id/femaleRadioButton"
+                android:layout_gravity="bottom"
+                />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

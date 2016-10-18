@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/_50sdp"
+              android:background="@color/text">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_centerInParent="true"
+        android:text="Удалить выбранное"
+        android:clickable="false"
+        android:id="@+id/deleteInterestsButton"
+        android:textColor="@color/text_second"
+        android:gravity="center_vertical|center_horizontal"
+        android:background="@color/actionbar_text"/>
+</RelativeLayout>

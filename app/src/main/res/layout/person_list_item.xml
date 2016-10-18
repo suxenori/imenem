@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_95sdp"
+    android:layout_height="@dimen/_130sdp"
+    android:id="@+id/topContainer"
+    >
+    <ImageView
+        android:layout_width="@dimen/_95sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:src="@drawable/shadow_png"
+        android:layout_marginTop="@dimen/_120sdp"
+        android:scaleType="fitXY"
+        />
+    <RelativeLayout
+        android:layout_width="@dimen/_95sdp"
+        android:layout_height="@dimen/_125sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:background="@drawable/test_backgr"
+        >
+
+    <RelativeLayout
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_83sdp"
+        android:id="@+id/photoContainer">
+    <ImageView
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_83sdp"
+        android:layout_alignParentTop="true"
+        android:src="@color/no_color"
+        android:scaleType="centerCrop"
+        android:id="@+id/photo" />
+        <ImageView
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_83sdp"
+            android:layout_alignParentTop="true"
+
+            android:id="@+id/like" />
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_below="@+id/photoContainer"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:id="@+id/linearLayout">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center|start">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Александр, 25"
+                android:textSize="@dimen/_7sdp"
+                android:id="@+id/nameAgeText"
+                />
+            <ImageView
+                android:layout_width="@dimen/_4sdp"
+                android:layout_height="@dimen/_4sdp"
+                android:src="@drawable/verification"
+                android:id="@+id/verification"/>
+            <ImageView
+                android:layout_width="@dimen/_3sdp"
+                android:layout_height="@dimen/_3sdp"
+                android:src="@drawable/online"
+                android:id="@+id/online"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_5sdp"
+            android:text="Украина, Одесса"
+            android:id="@+id/locationText"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/forShowMore"
+        android:src="@color/orange_filter"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/photoContainer"
+        android:layout_alignRight="@+id/photoContainer"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Показать еще..."
+        android:textColor="@color/actionbar_text"
+        android:id="@+id/moreText"
+        android:gravity="center"
+        />
+    </RelativeLayout>
+
+</RelativeLayout>

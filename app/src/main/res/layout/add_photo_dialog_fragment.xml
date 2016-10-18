@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/arrow_margin_top"
+            android:layout_marginLeft="@dimen/photo_price_margin_left"
+            android:layout_marginStart="@dimen/photo_price_margin_left">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attach_photo"
+                android:textColor="@color/orange_text"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_in_bay_photo_fragment"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/arrow_margin_top"
+            android:layout_marginTop="@dimen/text_size_in_invite_friend_container">
+            <Button
+                android:layout_width="@dimen/popular_button_bay_coins_container_width"
+                android:layout_height="wrap_content"
+                android:background="@drawable/orange_cornered_button"
+                android:text="@string/from_gallery"
+                android:textAllCaps="false"
+                android:textColor="@color/actionbar_text"
+                android:id="@+id/uploadFromGallery"/>
+            <Button
+                android:layout_width="@dimen/popular_button_bay_coins_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/price_cont_margin_left"
+                android:id="@+id/uploadFromCamera"
+                android:background="@drawable/orange_cornered_button"
+                android:text="@string/upload_photo_create_photo"
+                android:textAllCaps="false"
+                android:textColor="@color/actionbar_text"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

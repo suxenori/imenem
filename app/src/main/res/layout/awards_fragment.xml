@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/profile_container"
+    >
+    <LinearLayout
+        style="@style/profile_header_layout"
+        android:id="@+id/fragmentTitle"
+       >
+        <ImageView
+            android:src="@drawable/prise_icon"
+            style="@style/profile_element_logo" />
+        <TextView
+            android:id="@+id/friendsCountText"
+            style="@style/profile_element_title"
+            android:text="Награды"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/dataContainer"
+        style="@style/profile_data_container_no_margin"
+
+        >
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll"
+        android:scrollbarThumbHorizontal="@color/no_color"
+         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/profile_prise_element_size"
+            android:orientation="horizontal"
+
+            android:id="@+id/awardsScroll">
+            <View
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/profile_friends_photo_size"/>
+            <ImageView
+                android:src="@drawable/prise_like"
+                style="@style/awards_element" />
+            <ImageView
+                style="@style/awards_element"
+                android:src="@drawable/prise_active"/>
+            <ImageView
+                style="@style/awards_element"
+                android:src="@drawable/prise_dialog"/>
+            <ImageView
+                style="@style/awards_element"
+                android:src="@drawable/prise_magnet"/>
+            <ImageView
+                style="@style/awards_element"
+                android:src="@drawable/prise_poll"/>
+                    </LinearLayout>
+    </HorizontalScrollView>
+    </LinearLayout>
+    <ImageView style="@style/profile_divider" />
+
+
+</RelativeLayout>

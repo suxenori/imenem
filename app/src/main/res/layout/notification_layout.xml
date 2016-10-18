@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/messages"
+            android:layout_marginLeft="15dp"
+            style="@style/main_text_for_button"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="150dp">
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/messages"
+            android:src="@drawable/ic_tick_grey3"
+            style="@style/main_text_for_button"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/messages"
+            android:src="@drawable/ic_tick_grey3"
+            style="@style/main_text_for_button"
+            android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/settings_theme"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/profile_visitors"
+            style="@style/main_text_for_button"
+            />
+
+        <LinearLayout
+            style="@style/settings_theme"
+            android:orientation="vertical"
+            android:layout_width="111dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="150dp">
+
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/messages"
+                    android:src="@drawable/ic_tick_grey3"
+                    style="@style/main_text_for_button"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/messages"
+                    android:src="@drawable/ic_tick_grey3"
+                    style="@style/main_text_for_button"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/liked_you"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/matches"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/favorited_you"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/bumped_into_n"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/news"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/gifts"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+
+</LinearLayout>

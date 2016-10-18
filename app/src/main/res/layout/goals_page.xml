@@ -1,0 +1,71 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/login_bg2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical">
+        <ImageButton
+            android:layout_width="@dimen/arrow_width"
+            android:layout_height="@dimen/arrow_height"
+
+            android:background="@color/no_color"
+            android:src="@drawable/arrow_back"
+            android:scaleType="fitXY"
+            android:id="@+id/arrowBackButtonGoals"
+            android:layout_marginLeft="@dimen/arrow_margin_left"
+            android:layout_marginStart="@dimen/arrow_margin_left"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:layout_width="@dimen/logo_width_ss"
+            android:layout_height="@dimen/logo_height_ss"
+            android:src="@drawable/logo_in"
+            android:scaleType="fitXY"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/goals_page_text"
+        android:layout_marginRight="@dimen/goals_page_text"
+        android:gravity="center_horizontal"
+        android:layout_above="@+id/buttonsInGoals">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/you_want"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/goals_page_buttons"
+        android:id="@+id/buttonsInGoals"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true">
+        <Button
+            style="@style/SignInUpButton"
+            android:text="@string/you_want_friend"
+            android:id="@+id/findNewFriendButton"
+            android:layout_marginBottom="@dimen/goals_page_make_new_friend_button"/>
+
+        <Button
+            style="@style/SignInUpButton"
+            android:text="@string/you_want_chat"
+            android:id="@+id/communicateButton"
+            android:layout_marginBottom="@dimen/goals_page_communication_button"/>
+
+        <Button
+            style="@style/SignInUpButton"
+            android:text="@string/you_want_meet"
+            android:id="@+id/goToDateButton"/>
+    </LinearLayout>
+</RelativeLayout>

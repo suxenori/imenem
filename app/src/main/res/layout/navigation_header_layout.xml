@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20sdp">
+
+
+        <ImageView
+            android:id="@+id/ownerAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/blur_photo_height"
+            android:layout_gravity="bottom"
+            android:background="@color/text_second"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/circleAvatar"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_width="@dimen/avatar_owner_width_height"
+            android:layout_height="@dimen/avatar_owner_width_height"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:scaleType="centerCrop"
+            />
+        <ImageView
+            android:id="@+id/vipStatus"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_alignTop="@id/circleAvatar"
+            android:background="@drawable/gift_ava_shadow"
+            android:scaleType="fitXY"
+            android:src="@drawable/vip_status" />
+        <TextView
+            android:id="@+id/ownerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/font_size"
+            android:textStyle="bold"
+            android:textColor="@color/actionbar_text"
+            android:layout_alignStart="@id/circleAvatar"
+            android:layout_alignLeft="@id/circleAvatar"
+            android:layout_below="@+id/circleAvatar" />
+
+        <LinearLayout
+            android:id="@+id/balance"
+            android:layout_width="@dimen/balance_width_height"
+            android:layout_height="@dimen/balance_width_height"
+            android:background="@drawable/balance_bkgr"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_alignBottom="@+id/circleAvatar"
+            android:layout_alignRight="@+id/circleAvatar"
+            android:layout_alignEnd="@+id/circleAvatar">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/white_coins" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:id="@+id/balanceValue"
+                android:textColor="@color/actionbar_text"
+                android:textSize="@dimen/min_font_size" />
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/version"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_70sdp"
+            android:textColor="@color/actionbar_text"
+            android:textSize="@dimen/_30sdp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

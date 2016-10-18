@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+              android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+    android:background="#F1F4F9">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/text_in_bay_coins_margin_top">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/text_in_pay_coins_fragment"
+        android:textColor="@color/black"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/planContainer"
+        />
+     <LinearLayout
+        android:layout_width="@dimen/invite_friends_container_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bord"
+        android:paddingBottom="5dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingTop="2dp"
+         android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/_10sdp">
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/actionbar_text"
+             android:gravity="center_horizontal"
+
+             android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_view_in_invite_friend_container_margin_top"
+        android:text="@string/obtain_free_coins"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_in_invite_friend_container"
+        />
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+
+       android:orientation="horizontal">
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/invite_friends_for_coins"
+       android:textSize="@dimen/text_size_in_price"/>
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginLeft="@dimen/price_view_margins"
+       android:layout_marginStart="@dimen/price_view_margins"
+       android:textColor="@color/orange"
+       android:textSize="@dimen/text_size_in_price"
+       android:text="@string/coins_for_friend"/>
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginLeft="@dimen/_3sdp"
+       android:layout_marginStart="@dimen/_3sdp"
+       android:textSize="@dimen/text_size_in_price"
+       android:text="@string/invite_friends_for_coins_2"/>
+   </LinearLayout>
+
+   <Button
+       android:layout_width="@dimen/popular_button_bay_coins_container_width"
+       android:layout_height="@dimen/popular_button_bay_coins_container_height"
+       android:layout_marginTop="@dimen/_7sdp"
+       android:text="@string/invite_friend_text_in_button"
+       style="@style/InviteFriends"/>
+        <LinearLayout
+            android:id="@+id/socialNetworks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
+           android:layout_marginBottom="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/faceBookButton"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginStart="@dimen/_83sdp"
+                android:layout_marginLeft="@dimen/_18sdp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/fb_icon" />
+
+            <ImageButton
+                android:id="@+id/vkButton"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginLeft="@dimen/margin_between_buttons"
+                android:layout_marginStart="@dimen/_17sdp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/vk_icon" />
+
+            <ImageButton
+                android:id="@+id/gpButton"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginLeft="@dimen/_120sdp"
+                android:layout_marginStart="@dimen/_17sdp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/gplus_icon"/>
+        </LinearLayout>
+    </LinearLayout>
+         </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:layout_width="@dimen/profile_prise_element_size"
+        android:layout_height="@dimen/profile_prise_element_size"
+        android:layout_marginRight="@dimen/profile_friends_photo_margin"
+        android:layout_marginEnd="@dimen/profile_friends_photo_margin"
+        android:id="@+id/giftPhoto"
+
+        android:scaleType="centerInside" />
+    <ImageView
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_alignBottom="@+id/giftPhoto"
+        android:layout_alignEnd="@+id/giftPhoto"
+        android:layout_alignRight="@+id/giftPhoto"
+        android:id="@+id/addGiftButton"
+        />
+</RelativeLayout>

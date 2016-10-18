@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/profile_container"
+    android:id="@+id/totalContainer">
+
+    <LinearLayout
+        android:id="@+id/fragmentTitle"
+        style="@style/profile_header_layout"
+        >
+
+        <ImageView
+            style="@style/profile_element_logo"
+            android:src="@drawable/photo" />
+
+        <TextView
+            android:id="@+id/friendsCountText"
+            android:text="@string/photos"
+            style="@style/profile_element_title" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="end">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_20sdp"
+        android:background="@drawable/grey_cornered_button"
+        android:gravity="center"
+        android:paddingStart="@dimen/_12sdp"
+        android:paddingLeft="@dimen/_12sdp"
+        android:paddingEnd="@dimen/_12sdp"
+        android:paddingRight="@dimen/_12sdp"
+        android:id="@+id/iconContainer"
+        >
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/profile_elements_logo_size"
+            android:src="@drawable/photo_2"
+            android:layout_marginRight="@dimen/profile_elements_logontext_margin"
+            android:layout_marginEnd="@dimen/profile_elements_logontext_margin"
+            android:id="@+id/icon"/>
+
+        <TextView
+            android:id="@+id/photoCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12"
+            android:textColor="@color/actionbar_text"
+            android:textSize="@dimen/app_font_size" />
+        </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dataContainerPhoto"
+        style="@style/profile_data_container"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="@dimen/_95sdp"
+            android:id="@+id/container0"
+
+            >
+
+        <ImageView
+            android:id="@+id/photo0"
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="@dimen/_95sdp"
+            style="@style/add_photo_icon"
+
+             />
+            <ImageView
+                android:id="@+id/lock0"
+                style="@style/lock_style" />
+            <TextView
+                android:id="@+id/uploadPhotoText0"
+                style="@style/add_textStyle" />
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                style="@style/photoContainer"
+                android:id="@+id/container1">
+        <ImageView
+            style="@style/add_photo_icon"
+            android:id="@+id/photo1"
+        />
+                <ImageView
+                    android:id="@+id/lock1"
+                    style="@style/lock_style" />
+                <TextView
+                    android:id="@+id/uploadPhotoText1"
+                    style="@style/add_textStyle" />
+            </RelativeLayout>
+            <RelativeLayout
+                style="@style/photoContainer"
+                android:id="@+id/container2">
+        <ImageView
+
+            style="@style/add_photo_icon"
+            android:id="@+id/photo2"
+
+
+            />
+                <ImageView
+                    android:id="@+id/lock2"
+                    style="@style/lock_style"
+                    />
+                <TextView
+                    android:id="@+id/uploadPhotoText2"
+                    style="@style/add_textStyle" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    </LinearLayout>
+    <ImageView style="@style/profile_divider"
+        android:layout_below="@+id/dataContainerPhoto"/>
+</RelativeLayout>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/privacyButton"
+        style="@style/settings_theme"
+        android:layout_marginTop="20dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy"
+            style="@style/main_text_for_button"
+            />
+
+    </LinearLayout>
+    <ImageView style="@style/settings_divider" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/notificationsButton"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/notifications"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+    <ImageView style="@style/settings_divider" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/networkButton"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/network"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+    <ImageView style="@style/settings_divider" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/verificationsButton"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/verifications"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+    <ImageView style="@style/settings_divider" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/paymentSettingsButton"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/payment_settings"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+
+    <ImageView style="@style/settings_divider" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/invisibleModeButton"
+        style="@style/settings_theme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/invisible_mode"
+            style="@style/main_text_for_button"
+            />
+    </LinearLayout>
+    <ImageView style="@style/settings_divider" />
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:text="@string/erase_imported_contacts"
+        android:id="@+id/eraseImportedContactButton"
+        android:background="@drawable/orange_cornered_button"
+        android:textColor="@color/actionbar_text"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

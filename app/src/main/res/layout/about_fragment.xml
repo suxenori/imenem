@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/profile_container">
+
+    <LinearLayout
+        android:id="@+id/fragmentTitle"
+        style="@style/profile_header_layout">
+
+        <ImageView
+            android:layout_width="@dimen/profile_elements_logo_size"
+            android:layout_height="@dimen/profile_elements_logo_size"
+            android:src="@drawable/photo" />
+
+        <TextView
+            android:id="@+id/friendsCountText"
+            android:text="@string/about"
+            style="@style/profile_element_title" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+                    <TextView
+                        android:id="@+id/changeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/profile_elements_logontext_margin"
+                        android:layout_marginStart="@dimen/profile_elements_logontext_margin"
+                        android:text="@string/change"
+                        android:textColor="@color/orange_text"
+                        android:textSize="@dimen/app_font_size" />
+                </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/photosContainer"
+        style="@style/profile_data_container"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/containerForField0">
+            <TextView
+                style="@style/about_text_style_main"
+                android:text="@string/iamheretoLabel"
+                android:id="@+id/mainText0"
+                />
+            <TextView
+                style="@style/about_text_style_data"
+                android:id="@+id/dataText0"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/containerForField1">
+            <TextView
+                style="@style/about_text_style_main"
+                android:text="@string/relationshipsLabel"
+                android:id="@+id/mainText1"
+                />
+            <TextView
+                style="@style/about_text_style_data"
+                android:id="@+id/dataText1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/containerForField2">
+            <TextView
+                style="@style/about_text_style_main"
+                android:text="@string/orientationLabel"
+                android:id="@+id/mainText2"
+                />
+            <TextView
+                style="@style/about_text_style_data"
+                android:id="@+id/dataText2"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/containerForField3">
+            <TextView
+                style="@style/about_text_style_main"
+                android:text="@string/appearanceLabel"
+                android:id="@+id/mainText3"
+                />
+            <TextView
+                style="@style/about_text_style_data"
+                android:id="@+id/dataText3"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/containerForField4">
+            <TextView
+                style="@style/about_text_style_main"
+                android:text="@string/smokingLabel"
+                android:id="@+id/mainText4"
+                />
+            <TextView
+                style="@style/about_text_style_data"
+                android:id="@+id/dataText4"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/containerForField5">
+            <TextView
+                style="@style/about_text_style_main"
+                android:text="@string/alcoLabel"
+                android:id="@+id/mainText5"
+                />
+            <TextView
+                style="@style/about_text_style_data"
+                android:id="@+id/dataText5"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <ImageView style="@style/profile_divider"
+        android:layout_below="@+id/photosContainer"/>
+</RelativeLayout>

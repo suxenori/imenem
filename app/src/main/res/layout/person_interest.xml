@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:id="@+id/interestContent"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/_14sdp"
+                android:text="Вы можете легко импортировать Ваши интересы из Facebook, и удалить их влюбое время"/>
+            <Button
+                android:layout_width="@dimen/_240sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_gravity="center_horizontal"
+                android:text="Импортировать из Facebook"
+                android:textColor="@color/actionbar_text"
+                android:background="@drawable/button_social_network"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="@dimen/_1sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/border"/>
+
+       <include layout="@layout/scroll_interests_item">
+
+       </include>
+    </LinearLayout>
+</FrameLayout>

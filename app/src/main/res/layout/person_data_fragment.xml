@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
+
+    <com.nirhart.parallaxscroll.views.ParallaxScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/fragment1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_300sdp"
+                android:orientation="vertical" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_300sdp"
+                android:background="@drawable/parallax"/>
+            <TextView
+                android:id="@+id/locationText"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_34sdp"
+                android:layout_alignBottom="@+id/fragment1"
+                android:background="@color/photo_bottom_stripe"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/profile_elements_side_margin"
+                android:paddingStart="@dimen/profile_elements_side_margin"
+                android:text="Украина, Одесса"
+                android:textColor="@color/actionbar_text"
+                android:textSize="@dimen/app_font_size" />
+
+            <TextView
+                android:id="@+id/range"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_34sdp"
+                android:layout_alignBottom="@+id/fragment1"
+                android:layout_toRightOf="@+id/mapIcon"
+                android:layout_toEndOf="@+id/mapIcon"
+                android:background="@color/photo_bottom_stripe"
+                android:gravity="center_vertical"
+
+                android:text="1.5 км"
+                android:textColor="@color/orange_text"
+                android:textSize="@dimen/app_font_size" />
+
+            <LinearLayout
+                android:id="@+id/mapIcon"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_34sdp"
+                android:layout_alignBottom="@+id/fragment1"
+                android:background="@color/photo_bottom_stripe"
+                android:layout_toRightOf="@+id/locationText"
+                android:layout_toEndOf="@+id/locationText"
+                android:gravity="center">
+
+                <ImageView
+
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:src="@drawable/map_place" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/fragment1"
+                android:layout_alignTop="@+id/fragment1"
+                android:id="@+id/disLikeContainer"
+                android:gravity="center_horizontal|bottom"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_like_bottom">
+
+                <ImageButton
+                    android:id="@+id/buttonLike"
+                    android:layout_width="@dimen/like_button_height"
+                    android:layout_height="@dimen/like_button_height"
+                    android:background="@null"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/button_like" />
+
+                <ImageButton
+                    android:id="@+id/buttonDisLike"
+                    android:layout_width="@dimen/like_button_height"
+                    android:layout_height="@dimen/like_button_height"
+                    android:layout_marginLeft="@dimen/margin_like_button"
+                    android:layout_marginStart="@dimen/margin_like_button"
+                    android:background="@null"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/button_dislike" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment1"
+                android:background="@color/actionbar_text"
+                android:orientation="vertical" />
+        </RelativeLayout>
+    </com.nirhart.parallaxscroll.views.ParallaxScrollView>
+</LinearLayout>

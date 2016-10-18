@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/shadow_margined"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/test_backgr"
+        android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/_300sdp"
+    >
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_300sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_body_photo" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/parallax"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rotate_photo"
+        android:id="@+id/rotateButton"
+        android:layout_alignBottom="@+id/photo"
+        android:layout_alignRight="@+id/photo"
+        android:layout_alignEnd="@+id/photo"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"/>
+
+</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Приватное фото:"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/app_font_size" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/privateSwitch"
+                android:checked="true"
+                android:textOff="OFF"
+                android:textOn="ON"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/privacyContainer"
+            android:layout_marginTop="@dimen/_10sdp"
+            >
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/submitButton"
+            style="@style/margined"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/orange_cornered_button"
+            android:text="@string/send_for_moderation"
+            android:textAllCaps="false"
+            android:textColor="@color/actionbar_text"
+            android:textSize="@dimen/app_font_size" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            style="@style/margined"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/orange_empty_cornered_button"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_text"
+            android:textSize="@dimen/app_font_size" />
+    </LinearLayout>
+</ScrollView>
