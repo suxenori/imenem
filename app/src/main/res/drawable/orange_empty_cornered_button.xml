@@ -1,0 +1,41 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+
+                    <solid android:color="@color/orange"></solid>
+                    <padding android:bottom="@dimen/_2sdp" android:left="@dimen/_2sdp" android:right="@dimen/_2sdp" android:top="@dimen/_2sdp"></padding>
+                    <corners android:radius="@dimen/_45sdp"></corners>
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+
+                    <solid android:color="@color/actionbar_text"></solid>
+                    <padding android:bottom="@dimen/_5sdp" android:left="@dimen/_5sdp" android:right="@dimen/_5sdp" android:top="@dimen/_5sdp"></padding>
+                    <corners android:radius="@dimen/_45sdp"></corners>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/orange_pressed"></solid>
+                    <padding android:bottom="@dimen/_2sdp" android:left="@dimen/_2sdp" android:right="@dimen/_2sdp" android:top="@dimen/_2sdp"></padding>
+                    <corners android:radius="@dimen/_45sdp"></corners>
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+
+                    <solid android:color="@color/actionbar_text"></solid>
+                    <padding android:bottom="@dimen/_5sdp" android:left="@dimen/_5sdp" android:right="@dimen/_5sdp" android:top="@dimen/_5sdp"></padding>
+                    <corners android:radius="@dimen/_45sdp"></corners>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>
