@@ -1,0 +1,66 @@
+[
+    {
+        "outputFile": "C:\\work\\emojikeuboard\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 260,
+                    "endColumn": 47,
+                    "endOffset": 303
+                },
+                "from": {
+                    "file": "C:\\work\\emojikeuboard\\src\\main\\res\\values\\attrs.xml",
+                    "position": {
+                        "startLine": 25,
+                        "startColumn": 4,
+                        "startOffset": 936,
+                        "endColumn": 47,
+                        "endOffset": 979
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 308,
+                    "endColumn": 45,
+                    "endOffset": 349
+                },
+                "from": {
+                    "file": "C:\\work\\emojikeuboard\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 1,
+                        "startColumn": 4,
+                        "startOffset": 17,
+                        "endColumn": 45,
+                        "endOffset": 58
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 354,
+                    "endLine": 14,
+                    "endColumn": 12,
+                    "endOffset": 837
+                },
+                "from": {
+                    "file": "C:\\work\\emojikeuboard\\src\\main\\res\\values\\attrs.xml",
+                    "position": {
+                        "startLine": 27,
+                        "startColumn": 4,
+                        "startOffset": 987,
+                        "endLine": 36,
+                        "endColumn": 12,
+                        "endOffset": 1479
+                    }
+                }
+            }
+        ]
+    }
+]
