@@ -34,6 +34,17 @@ public class FilterObject
         this.personId = personId;
         this.isOnline = isOnline;
     }
+    public FilterObject(FilterObject oldFilterObject)
+    {
+        this.iWantValue = oldFilterObject.iWantValue;
+        this.iAmHereTo = oldFilterObject.iAmHereTo;
+        this.minAge = oldFilterObject.minAge;
+        this.maxAge = oldFilterObject.maxAge;
+        this.personId = oldFilterObject.personId;
+        this.placeModel = oldFilterObject.placeModel;
+        this.isOnline = oldFilterObject.isOnline;
+    }
+
     public FilterObject(){
 
     }

@@ -27,6 +27,7 @@
     <dimen name="margin_between_butntext">@dimen/_18sdp</dimen>
     <dimen name="text_in_filter_frag">@dimen/_11sdp</dimen>
     <dimen name="filter_fragment_height">@dimen/_140sdp</dimen>
+    <dimen name="filter_radio_button_size">@dimen/_18sdp</dimen>
     <dimen name="blur_photo_height">@dimen/_130sdp</dimen>
 
     <dimen name="toolbar_shadow_size">@dimen/_6sdp</dimen>
@@ -180,6 +181,7 @@
 
     <dimen name="chat_box_side_padding">@dimen/_20sdp</dimen>
     <dimen name="chat_elements_side_margin">@dimen/_10sdp</dimen>
+    <dimen name="settings_notification_item_size">@dimen/_25sdp</dimen>
 
     <dimen name="height_row_container_in_edit_info">@dimen/_30sdp</dimen>
     <dimen name="dialogs_side_margin">@dimen/_20sdp</dimen>

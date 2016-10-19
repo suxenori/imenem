@@ -21,6 +21,7 @@ import com.menemi.personobject.Configurations;
 import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.Interests;
+import com.menemi.personobject.NotificationSettings;
 import com.menemi.personobject.PersonFavorite;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
@@ -68,6 +69,8 @@ public class DBHandler {
     public ArrayList<InterestsGroup> interestsGroupArray = new ArrayList<>();
     private ArrayList<Interests> profileInterests;
     private ArrayList<Gift> gifts;
+    private Configurations configurations;
+    private NotificationSettings notificationSettings;
 
 
 
@@ -83,7 +86,7 @@ public class DBHandler {
         return myProfile;
     }
 
-    private Configurations configurations;
+
 
 
 
@@ -339,15 +342,8 @@ public void prepareSettings(Runnable runnable){
         });
     }
 
-    public void getNotifications(final ResultListener resultListener) {
-        isRESTAvailable(new ResultListener() {
-            @Override
-            public void onFinish(Object object) {
-                if ((boolean) object == true) {
-                    dbRest.getNotifications(getUserId(), resultListener);
-                }
-            }
-        });
+    public NotificationSettings getNotifications() {
+       return notificationSettings;
     }
 
     public void downloadFilterSettings(final int personId, final ResultListener resultListener) {
@@ -561,6 +557,9 @@ Log.d("logout", "logout1");
             public void onFinish(Object object) {
                 configurations = (Configurations) object;
             }
+        });
+        dbRest.getNotifications(id, (Object object)->{
+            notificationSettings = (NotificationSettings)object;
         });
 
     }

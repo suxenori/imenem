@@ -146,7 +146,7 @@ private boolean canChat;
 
     public UserStatus getUserStatus()
     {
-        return UserStatus.values()[filterObject.getiAmHereTo()];
+        return UserStatus.values()[filterObject.getIsOnline()];
     }
 
     public void setUserStatus(UserStatus userStatus)
@@ -221,7 +221,7 @@ private boolean canChat;
     }
 
     public InterestGender getInterestGender() {
-        return InterestGender.values()[filterObject.getiAmHereTo()];
+        return InterestGender.values()[filterObject.getiWantValue()];
     }
 
     public void setInterestGender(int value) {
@@ -229,7 +229,7 @@ private boolean canChat;
     }
 
     public void setInterestGender(InterestGender interestGender) {
-        this.filterObject.setiAmHereTo(interestGender.ordinal());
+        this.filterObject.setiWantValue(interestGender.ordinal());
 
     }
 
@@ -478,7 +478,7 @@ private boolean canChat;
     }
 
     public IamHereTo getiAmHereTo() {
-        return IamHereTo.values()[filterObject.getiWantValue()];
+        return IamHereTo.values()[filterObject.getiAmHereTo()];
     }
 
     /*public void setiAmHereTo(int value) {
@@ -637,7 +637,9 @@ private boolean canChat;
             isOnline = true;
         }
     }
-
+    public FilterObject getFilterObject(){
+        return  filterObject;
+    }
     public ArrayList<PersonalGift> getGifts() {
         return gifts;
     }
@@ -800,7 +802,7 @@ private boolean canChat;
         IN_FREE_RELATION
     }
 
-    public enum InterestGender {
+    public static enum InterestGender {
         WOMAN,
         MAN,
         ANY_GENDER

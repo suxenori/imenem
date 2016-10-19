@@ -72,8 +72,6 @@ public class GiftsFragment extends Fragment {
                 image.setImageBitmap(picture);
                 viewList.addView(item);
                 item.setOnClickListener(new ItemClickListener(giftsList.get(i)));
-
-
             }
         }
 

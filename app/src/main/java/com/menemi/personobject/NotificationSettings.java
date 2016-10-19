@@ -64,6 +64,37 @@ public class NotificationSettings {
     public void setMessages(String messages) {
         this.messages = prepareSettingFromString(messages);
     }
+    public void revertMessages(SETTINGTYPE settingtype) {
+       messages.setValue(settingtype, !messages.getValueOf(settingtype));
+    }
+
+    public void revertMutual_likes(SETTINGTYPE settingtype ) {
+        mutual_likes.setValue(settingtype,!mutual_likes.getValueOf(settingtype));
+    }
+
+    public void revertTheir_likes(SETTINGTYPE settingtype) {
+        their_likes.setValue(settingtype,!their_likes.getValueOf(settingtype));
+    }
+
+    public void revertNearby(SETTINGTYPE settingtype) {
+        nearby.setValue(settingtype,!nearby.getValueOf(settingtype));
+    }
+
+    public void revertVisitors(SETTINGTYPE settingtype) {
+        visitors.setValue(settingtype,!visitors.getValueOf(settingtype));
+    }
+
+    public void revertFavorites(SETTINGTYPE settingtype) {
+        favorites.setValue(settingtype,!favorites.getValueOf(settingtype));
+    }
+
+    public void revertGifts(SETTINGTYPE settingtype) {
+        gifts.setValue(settingtype,!gifts.getValueOf(settingtype));
+    }
+
+    public void revertOther(SETTINGTYPE settingtype) {
+        other.setValue(settingtype,!other.getValueOf(settingtype));
+    }
 
     public boolean getMutual_likes(SETTINGTYPE settingtype) {
         return mutual_likes.getValueOf(settingtype);
@@ -188,6 +219,19 @@ public class NotificationSettings {
             this.inApp = inApp;
         }
 
+        public void setValue(SETTINGTYPE settingtype, boolean value){
+            switch (settingtype){
+                case EMAIL:
+                    email = value;
+                    break;
+                case PUSH:
+                     push = value;
+                    break;
+                case INAPP:
+                    inApp = value;
+                    break;
+            }
+        }
         @Override
         public String toString() {
             String result = "";

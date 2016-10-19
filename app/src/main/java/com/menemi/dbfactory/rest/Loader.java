@@ -112,14 +112,7 @@ public class Loader extends JSONLoader {
     private static final String INTERESTS_GROUPS = "groups";
     private static final String INTERESTS_FROM_GROUPS = "interests";
     private static final String PROFILE_NOTIFICATIONS = "profile_notifications";
-    private static final String MESSAGES = "messages";
-    private static final String MUT_LIKES = "mutual_likes";
-    private static final String THEIR_LIKES = "their_likes";
-    private static final String NEARBY = "nearby";
-    private static final String VISITORS = "visitors";
-    private static final String FAVORITES = "favorites";
-    private static final String GIFTS = "gifts";
-    private static final String OTHER = "other";
+
     private static final String PLANS = "plans";
     private static final String PRICE = "price";
     private static final String COINS = "coins";
@@ -145,7 +138,7 @@ public class Loader extends JSONLoader {
 
     static final String G_GET_PLACES_LIST_TARGET_VALUE = "&types=(cities)&language=";
     static final String G_GET_PLACES_LIST_KEY_VALUE = "&key=";
-    static final String G_GOOGLE_PACES_API_KEY = "AIzaSyA6TYMX3_c33BUyqwyeqpBRZtbu86-ASI0";
+    static final String G_GOOGLE_PACES_API_KEY = "AIzaSyCAiADf4VQjnUfTxxeF8AQYYJMzTFnfWAY";//"AIzaSyA6TYMX3_c33BUyqwyeqpBRZtbu86-ASI0";
 
 
     static {
@@ -321,7 +314,7 @@ public class Loader extends JSONLoader {
                 JSONArray iWantArray = mainObject.getJSONArray("i_want");
                 JSONArray findFriendArray = iWantArray.getJSONArray(0);
                 int iWant = 0;
-                int interestGender = 0;
+                PersonObject.InterestGender interestGender = PersonObject.InterestGender.ANY_GENDER;
 
                 if (findFriendArray.getInt(2) == 1) {
                     iWant = 0;
@@ -338,19 +331,19 @@ public class Loader extends JSONLoader {
                 JSONArray gendersArray = mainObject.getJSONArray("genders");
                 JSONArray maleArray = gendersArray.getJSONArray(1);
                 if (maleArray.getInt(2) == 1) {
-                    interestGender = 1;
+                    interestGender = PersonObject.InterestGender.MAN;
 
                 }
                 JSONArray femaleArray = gendersArray.getJSONArray(0);
                 if (femaleArray.getInt(2) == 1) {
-                    interestGender = 0;
+                    interestGender = PersonObject.InterestGender.WOMAN;
                 }
                 JSONArray anyGendreArray = gendersArray.getJSONArray(2);
                 if (anyGendreArray.getInt(2) == 1) {
-                    interestGender = 2;
+                    interestGender = PersonObject.InterestGender.ANY_GENDER;
                 }
 
-                FilterObject filterObj = new FilterObject(iWant, interestGender, mainObject.getInt("min_age")
+                FilterObject filterObj = new FilterObject(iWant, interestGender.ordinal(), mainObject.getInt("min_age")
                         , mainObject.getInt("max_age"), DBHandler.getInstance().getUserId(), 0, null);     //TODO change value from REST, if this API will working correct
                 Log.i("gender from Loader", interestGender + "");
                 Log.i("gender from filterObj", filterObj.getiAmHereTo() + "");
@@ -542,6 +535,7 @@ public class Loader extends JSONLoader {
         messageTypesParcer.put(RestCommands.GET_PLACES_LIST,(String jsonString) -> {
 
                 JSONObject mainObject = new JSONObject(jsonString);
+            Log.e("PLACES", jsonString);
                 JSONArray placesJsonArray = mainObject.getJSONArray("predictions");
                 ArrayList<PlaceModel> placesArraylist = new ArrayList();
 
@@ -599,14 +593,14 @@ public class Loader extends JSONLoader {
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
                     JSONObject notificationObject = mainObject.getJSONObject(PROFILE_NOTIFICATIONS);
                     NotificationSettings notificationSettings = new NotificationSettings(notificationObject.getInt(Fields.ID), notificationObject.getInt(Fields.PROFILE_ID_2));
-                    notificationSettings.setMessages(notificationObject.getString(MESSAGES));
-                    notificationSettings.setMutual_likes(notificationObject.getString(MUT_LIKES));
-                    notificationSettings.setTheir_likes(notificationObject.getString(THEIR_LIKES));
-                    notificationSettings.setNearby(notificationObject.getString(NEARBY));
-                    notificationSettings.setVisitors(notificationObject.getString(VISITORS));
-                    notificationSettings.setFavorites(notificationObject.getString(FAVORITES));
-                    notificationSettings.setGifts(notificationObject.getString(GIFTS));
-                    notificationSettings.setOther(notificationObject.getString(OTHER));
+                    notificationSettings.setMessages(notificationObject.getString(Fields.MESSAGES));
+                    notificationSettings.setMutual_likes(notificationObject.getString(Fields.MUT_LIKES));
+                    notificationSettings.setTheir_likes(notificationObject.getString(Fields.THEIR_LIKES));
+                    notificationSettings.setNearby(notificationObject.getString(Fields.NEARBY));
+                    notificationSettings.setVisitors(notificationObject.getString(Fields.VISITORS));
+                    notificationSettings.setFavorites(notificationObject.getString(Fields.FAVORITES));
+                    notificationSettings.setGifts(notificationObject.getString(Fields.GIFTS));
+                    notificationSettings.setOther(notificationObject.getString(Fields.OTHER));
                     return notificationSettings;
                 }
                 return null;
@@ -759,7 +753,7 @@ public class Loader extends JSONLoader {
                 ArrayList<DialogMessage> dialogMessages = new ArrayList<>();
                 JSONObject mainObject = new JSONObject(jsonString);
 
-                JSONArray messagesArrayJ = mainObject.getJSONArray(MESSAGES);
+                JSONArray messagesArrayJ = mainObject.getJSONArray(Fields.MESSAGES);
                 for (int i = 0; i < messagesArrayJ.length(); i++) {
                     JSONObject messageJSON = messagesArrayJ.getJSONObject(i);
                     DialogMessage dialogMessage = new DialogMessage(messageJSON.getInt(Fields.PROFILE_ID_2));
@@ -865,7 +859,7 @@ public class Loader extends JSONLoader {
             JSONObject mainObject = new JSONObject(jsonString);
 
 
-                JSONArray templatesJSON = mainObject.getJSONArray(GIFTS);
+                JSONArray templatesJSON = mainObject.getJSONArray(Fields.GIFTS);
                 //(int photoId, boolean isPrivate, boolean autoprice, int price, int[] templateIds, Bitmap photo)
 
                 for (int i = 0; i < templatesJSON.length(); i++) {
@@ -1168,10 +1162,11 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
         String giftName = jsonObject.getString(Fields.NAME);
         int profileId = jsonObject.getInt("from_profile_id");
         int giftId = jsonObject.getInt("gift_id");
-        String personName = jsonObject.getString("name");
+        String personName = jsonObject.getString("from_name");
         String avatarUrl = jsonObject.getString("from_avatar_url");
-        int personAge = jsonObject.getInt("gift_id");
-        return new PersonalGift(profileId, giftId, personName, giftName, personAge, avatarUrl, "30.04.1987");
+
+        String date =  jsonObject.getString("date");
+        return new PersonalGift(profileId, giftId, personName, giftName, avatarUrl, date);
 
     }
     public static PersonalGift parceGift(Bundle extras){
@@ -1180,8 +1175,8 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
         int giftId = extras.getInt("gift_id");
         String personName = extras.getString("from_name");
         String avatarUrl = extras.getString("from_avatar_url");
-        int personAge = extras.getInt("gift_id");
-        return new PersonalGift(profileId, giftId, personName, giftName, personAge, avatarUrl, "30.04.1987");
+        String date =  extras.getString("date");
+        return new PersonalGift(profileId, giftId, personName, giftName, avatarUrl, date);
 
     }
 

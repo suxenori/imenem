@@ -364,11 +364,21 @@
         <item name="android:layout_height">@dimen/_75sdp</item>
         <item name="android:button">@null</item>
     </style>
+    <style name="filter_radio_button">
+        <item name="android:layout_width">@dimen/filter_radio_button_size</item>
+        <item name="android:layout_height">@dimen/filter_radio_button_size</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
 
     <style name="vip_photo_size">
         <item name="android:layout_width">@dimen/_50sdp</item>
         <item name="android:layout_height">@dimen/_50sdp</item>
     </style>
+    <style name="setting_notification_button_size">
+        <item name="android:layout_width">@dimen/settings_notification_item_size</item>
+        <item name="android:layout_height">@dimen/settings_notification_item_size</item>
+    </style>
+
 
     <style name="verify_photo_style">
         <item name="android:textColor">@color/orange</item>

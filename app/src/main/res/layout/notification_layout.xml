@@ -7,156 +7,325 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="@dimen/settings_notification_item_size"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_notification_item_size"
             android:text="@string/messages"
+            android:gravity="center_vertical"
             android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pushMessages"
+            android:layout_toStartOf="@+id/pushMessages"
             style="@style/main_text_for_button"/>
-    <LinearLayout
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/push_not_off"
+            android:id="@+id/pushMessages"
+            android:layout_toStartOf="@+id/emailMessages"
+            android:layout_toLeftOf="@+id/emailMessages"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            />
+
+        <ImageView
+          style="@style/setting_notification_button_size"
+            android:src="@drawable/email_not_off"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/emailMessages"
+            />
+
+
+    </RelativeLayout>
+    <ImageView style="@style/settings_divider" />
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="150dp">
-
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/messages"
-            android:src="@drawable/ic_tick_grey3"
+        android:layout_height="@dimen/settings_notification_item_size"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_notification_item_size"
+            android:text="@string/profile_visitors"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pushVisitors"
+            android:layout_toStartOf="@+id/pushVisitors"
             style="@style/main_text_for_button"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/messages"
-            android:src="@drawable/ic_tick_grey3"
-            style="@style/main_text_for_button"
-            android:layout_marginLeft="20dp"/>
-
-    </LinearLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/settings_theme"
-        >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/profile_visitors"
-            style="@style/main_text_for_button"
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/push_not_off"
+            android:id="@+id/pushVisitors"
+            android:layout_toStartOf="@+id/emailVisitors"
+            android:layout_toLeftOf="@+id/emailVisitors"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             />
 
-        <LinearLayout
-            style="@style/settings_theme"
-            android:orientation="vertical"
-            android:layout_width="111dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="150dp">
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/email_not_off"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/emailVisitors"
+            />
 
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/messages"
-                    android:src="@drawable/ic_tick_grey3"
-                    style="@style/main_text_for_button"/>
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/messages"
-                    android:src="@drawable/ic_tick_grey3"
-                    style="@style/main_text_for_button"
-                    android:layout_marginLeft="20dp"/>
-
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        style="@style/settings_theme">
-
+    </RelativeLayout>
+    <ImageView style="@style/settings_divider" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_notification_item_size"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/settings_notification_item_size"
             android:text="@string/liked_you"
-            style="@style/main_text_for_button"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pushliked_you"
+            android:layout_toStartOf="@+id/pushliked_you"
+            style="@style/main_text_for_button"/>
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/push_not_off"
+            android:id="@+id/pushliked_you"
+            android:layout_toStartOf="@+id/emailliked_you"
+            android:layout_toLeftOf="@+id/emailliked_you"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             />
-    </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        style="@style/settings_theme">
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/email_not_off"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/emailliked_you"
+            />
 
+
+    </RelativeLayout>
+    <ImageView style="@style/settings_divider" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_notification_item_size"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/settings_notification_item_size"
             android:text="@string/matches"
-            style="@style/main_text_for_button"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pushmatches"
+            android:layout_toStartOf="@+id/pushmatches"
+            style="@style/main_text_for_button"/>
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/push_not_off"
+            android:id="@+id/pushmatches"
+            android:layout_toStartOf="@+id/emailmatches"
+            android:layout_toLeftOf="@+id/emailmatches"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             />
-    </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        style="@style/settings_theme">
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/email_not_off"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/emailmatches"
+            />
 
+
+    </RelativeLayout>
+    <ImageView style="@style/settings_divider" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_notification_item_size"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/settings_notification_item_size"
             android:text="@string/favorited_you"
-            style="@style/main_text_for_button"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pushfavorited_you"
+            android:layout_toStartOf="@+id/pushfavorited_you"
+            style="@style/main_text_for_button"/>
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/push_not_off"
+            android:id="@+id/pushfavorited_you"
+            android:layout_toStartOf="@+id/emailfavorited_you"
+            android:layout_toLeftOf="@+id/emailfavorited_you"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             />
-    </LinearLayout>
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/email_not_off"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/emailfavorited_you"
+            />
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        style="@style/settings_theme">
-
+    </RelativeLayout>
+    <ImageView style="@style/settings_divider" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_notification_item_size"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/settings_notification_item_size"
             android:text="@string/bumped_into_n"
-            style="@style/main_text_for_button"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pushbumped_into_n"
+            android:layout_toStartOf="@+id/pushbumped_into_n"
+            style="@style/main_text_for_button"/>
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/push_not_off"
+            android:id="@+id/pushbumped_into_n"
+            android:layout_toStartOf="@+id/emailbumped_into_n"
+            android:layout_toLeftOf="@+id/emailbumped_into_n"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             />
-    </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        style="@style/settings_theme">
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/email_not_off"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/emailbumped_into_n"
+            />
 
+
+    </RelativeLayout>
+    <ImageView style="@style/settings_divider" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_notification_item_size"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/settings_notification_item_size"
             android:text="@string/news"
-            style="@style/main_text_for_button"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pushnews"
+            android:layout_toStartOf="@+id/pushnews"
+            style="@style/main_text_for_button"/>
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/push_not_off"
+            android:id="@+id/pushnews"
+            android:layout_toStartOf="@+id/emailnews"
+            android:layout_toLeftOf="@+id/emailnews"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             />
-    </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        style="@style/settings_theme">
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/email_not_off"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/emailnews"
+            />
 
+
+    </RelativeLayout>
+    <ImageView style="@style/settings_divider" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_notification_item_size"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/settings_notification_item_size"
             android:text="@string/gifts"
-            style="@style/main_text_for_button"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pushgifts"
+            android:layout_toStartOf="@+id/pushgifts"
+            style="@style/main_text_for_button"/>
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/push_not_off"
+            android:id="@+id/pushgifts"
+            android:layout_toStartOf="@+id/emailgifts"
+            android:layout_toLeftOf="@+id/emailgifts"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             />
-    </LinearLayout>
+
+        <ImageView
+            style="@style/setting_notification_button_size"
+            android:src="@drawable/email_not_off"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/emailgifts"
+            />
+
+
+    </RelativeLayout>
+    <ImageView style="@style/settings_divider" />
 
 </LinearLayout>

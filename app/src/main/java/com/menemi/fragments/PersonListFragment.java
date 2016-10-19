@@ -62,6 +62,8 @@ public class PersonListFragment extends Fragment {
     }
 
     private void lunchFragment() {
+        LinearLayout rows = (LinearLayout) rootView.findViewById(R.id.rows);
+        rows.removeAllViews();
         if (purpose == ShowPeopleCompositeFragment.Purpose.VISITORS) {
             title = getString(R.string.visitors);
             showVisitors();
@@ -180,14 +182,14 @@ public class PersonListFragment extends Fragment {
 
     }
 
-    private void prepare() {
+   /* private void prepare() {
         PeopleRowFragment row = new PeopleRowFragment();
         row.setLastRow(true);
         row.setPersonObjects(personObjects);
         row.setRowsShown(0);
         getFragmentManager().beginTransaction().add(R.id.rows, row).commitAllowingStateLoss();
-    }
-    /*private void prepare() {
+    }*/
+    private void prepare() {
 
 
         alignArray(personObjects);
@@ -195,7 +197,7 @@ public class PersonListFragment extends Fragment {
             final boolean isLastRow = rowsShown == j;
             addRow2(j, isLastRow);
         }
-    }*/
+    }
 
     private void addRow2(int j, final boolean isLastRow) {
         final int start = j * 3;
@@ -385,9 +387,7 @@ public class PersonListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(personObjects == null){
-            lunchFragment();
-        }
+
 
     }
 

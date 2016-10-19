@@ -80,7 +80,7 @@ public class PersonPage extends AppCompatActivity {
     private static final int MY_LIKES = 5;
     private static final int INVITE_FRIENDS = 6;
     private static final int SETTINGS = 7;
-
+    public static boolean isFilterVisible = false;
     private ArrayList<ItemSlideMenu> listSliding = new ArrayList<>();
 
     private static ScrollView listViewSliding;
@@ -552,7 +552,7 @@ public class PersonPage extends AppCompatActivity {
         }
     }
     static class OnFilterClickListener implements View.OnClickListener {
-        static boolean isFilterVisible;
+        FilterFragment fragment;
         private static PersonObject owner;
         FragmentManager fm;
 
@@ -581,11 +581,11 @@ public class PersonPage extends AppCompatActivity {
             Log.v("onClick", "onClick");
             if ( isFilterVisible) {
                 isFilterVisible = false;
-                fm.popBackStack();
+                fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
 
             } else {
                 isFilterVisible = true;
-                FilterFragment fragment = new FilterFragment();
+                fragment = new FilterFragment();
                 fragment.setPersonObject(owner);
                 FragmentTransaction transaction = fm.beginTransaction();
                 transaction.replace(com.menemi.R.id.messageFragmentPlaceHolder, fragment);

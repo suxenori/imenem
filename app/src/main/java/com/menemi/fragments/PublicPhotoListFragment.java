@@ -10,7 +10,6 @@ import android.widget.GridView;
 
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
-import com.menemi.dbfactory.Fields;
 import com.menemi.personobject.PhotoSetting;
 import com.menemi.social_network.social_profile_photo_handler.GridViewAdapter;
 import com.menemi.social_network.social_profile_photo_handler.ScrollViewListener;
@@ -47,9 +46,10 @@ public class PublicPhotoListFragment extends Fragment{
                 return;
             }
             ArrayList<PhotoSetting> pictures = (ArrayList<PhotoSetting>)object;
+            pictures.size();
             ArrayList<String> urls = new ArrayList<>();
             for (int i = 0; i < pictures.size(); i++) {
-                urls.add( Fields.URL_FOR_SERVER + pictures.get(i).getPhotoUrl());
+                urls.add( pictures.get(i).getPhotoUrl());
             }
 
             GridView gv = (GridView) rootView.findViewById(R.id.grid_view);

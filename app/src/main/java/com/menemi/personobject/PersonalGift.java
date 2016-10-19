@@ -1,5 +1,7 @@
 package com.menemi.personobject;
 
+import com.menemi.utils.Utils;
+
 import java.io.Serializable;
 
 /**
@@ -10,19 +12,18 @@ public class PersonalGift implements Serializable{
     private int giftId;
     private String personName;
     private String giftName;
-    private int personAge;
+
     private String avatarUrl;
     private String sendDate = "30.04.1987";
 
 
-    public PersonalGift(int personId, int giftId, String personName, String giftName, int personAge, String avatarUrl, String sendDate) {
+    public PersonalGift(int personId, int giftId, String personName, String giftName, String avatarUrl, String sendDate) {
         this.personId = personId;
         this.giftId = giftId;
         this.personName = personName;
         this.giftName = giftName;
-        this.personAge = personAge;
         this.avatarUrl = avatarUrl;
-        this.sendDate = sendDate;
+        this.sendDate = Utils.getStringFromDate(Utils.getDateFromServer(sendDate));
     }
 
     public int getPersonId() {
@@ -35,10 +36,6 @@ public class PersonalGift implements Serializable{
 
     public String getPersonName() {
         return personName;
-    }
-
-    public int getPersonAge() {
-        return personAge;
     }
 
     public String getAvatarUrl() {

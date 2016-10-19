@@ -100,9 +100,19 @@ public  class Fields {
     public static final String HIDE_MY_VERIFICATIONS = "hide_my_verifications";
     public static final String HIDE_PROFILE_AS_DELETED = "hide_profile_as_deleted";
 
+    public static final String MESSAGES = "messages";
+    public static final String MUT_LIKES = "mutual_likes";
+    public static final String THEIR_LIKES = "their_likes";
+    public static final String NEARBY = "nearby";
+    public static final String VISITORS = "visitors";
+    public static final String FAVORITES = "favorites";
+
+    public static final String OTHER = "other";
+
     public static final String N_EMAIL = "email";
     public static final String N_PUSH = "push";
     public static final String N_INAPP = "inapp";
+
     public static String PREFIX;
 
 

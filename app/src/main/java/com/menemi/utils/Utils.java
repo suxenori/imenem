@@ -107,19 +107,29 @@ public class Utils {
         Date date = null;
 
         try {
-            date = format.parse(dateString);
+            if(dateString != null) {
+                date = format.parse(dateString);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        java.sql.Date sqlDate = null;
+        if(date != null) {
+        sqlDate = new java.sql.Date(date.getTime());
+        }
         return sqlDate;
     }
 
     public static String getStringFromDate(Date date) {
+        if(date == null){
+            return "";
+        }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
+
+
+
 
     public static String getStringTimeFromDate(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");

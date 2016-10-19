@@ -95,14 +95,12 @@ try{
                 disLikeContainer.removeView(likeButton);
                 disLikeContainer.removeView(dislikeButton);
             } else if (purpose == Purpose.PROFILE) {
-                //
-                if (personObject.canChat()) {
+
+                    likeButton.setOnClickListener(new LikeClickListener(preparedObject));
                     dislikeButton.setImageResource(R.drawable.message);
                     dislikeButton.setOnClickListener(new OpenDialogListener(preparedObject));
-                } else {
-                    disLikeContainer.removeView(dislikeButton);
-                }
-                likeButton.setOnClickListener(new LikeClickListener(preparedObject));
+
+
             } else {
                 likeButton.setOnClickListener(new LikeClickListener(preparedObject));
                 dislikeButton.setOnClickListener(new DislikeClickListener(preparedObject));
@@ -206,6 +204,8 @@ try{
         @Override
         public void onClick(View v) {
             isLiked = !isLiked;
+            final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
+            likeButton.setImageResource(R.drawable.ic_voted_liked);
             DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, new DBHandler.ResultListener() {
                 @Override
                 public void onFinish(Object object) {
@@ -254,23 +254,27 @@ try{
 
         @Override
         public void onClick(View view) {
-            final DialogInfo dialogInfo = new DialogInfo();
+            if(personObject.canChat()){
+                final DialogInfo dialogInfo = new DialogInfo();
+                dialogInfo.setProfileId(contactObject.getPersonId());
+                dialogInfo.setContactName(contactObject.getPersonName());
+                dialogInfo.setOnline(contactObject.isOnline());
 
-            dialogInfo.setProfileId(contactObject.getPersonId());
-            dialogInfo.setContactName(contactObject.getPersonName());
-            dialogInfo.setOnline(contactObject.isOnline());
+                DBHandler.getInstance().getDialog(dialogInfo, new DBHandler.ResultListener() {
+                    @Override
+                    public void onFinish(Object object) {
+                        ChatFragment chatFragment = new ChatFragment();
+                        chatFragment.setDialogInfo(dialogInfo);
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.content, chatFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commitAllowingStateLoss();
+                    }
+                });
+            } else {
 
-            DBHandler.getInstance().getDialog(dialogInfo, new DBHandler.ResultListener() {
-                @Override
-                public void onFinish(Object object) {
-                    ChatFragment chatFragment = new ChatFragment();
-                    chatFragment.setDialogInfo(dialogInfo);
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content, chatFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commitAllowingStateLoss();
-                }
-            });
+            }
+
 
         }
     }

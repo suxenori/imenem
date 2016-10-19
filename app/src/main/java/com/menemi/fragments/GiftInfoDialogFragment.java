@@ -76,10 +76,12 @@ public class GiftInfoDialogFragment extends android.app.DialogFragment {
         gift.setImageBitmap(DBHandler.getInstance().getGiftById(personalGift.getGiftId()));
 
         TextView nameAgeText = (TextView)dialogView.findViewById(R.id.nameAgeText);
-        nameAgeText.setText(""+ personalGift.getPersonName() +", "+ personalGift.getPersonAge());
+        nameAgeText.setText(""+ personalGift.getPersonName() +", ");
 
         TextView sendDate = (TextView)dialogView.findViewById(R.id.sendDate);
         sendDate.setText("" + personalGift.getSendDate());
+
+
         final ImageView sender = (ImageView)dialogView.findViewById(R.id.photo);
         new PictureLoader(personalGift.getAvatarUrl(), (Object bitmap) ->{
                 Bitmap photo = (Bitmap)bitmap;

@@ -25,7 +25,7 @@
             android:layout_marginLeft="@dimen/margin_left"
             android:layout_marginStart="@dimen/margin_left"
             />
-        <RadioGroup
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/radioGroup"
@@ -40,10 +40,10 @@
                 android:text="@string/man"
                 android:layout_gravity="center"
                 android:textColor="@color/black"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/all_gender_selector"
+            <ImageView
+                style="@style/filter_radio_button"
+                android:src="@drawable/all_gender_selector"
+                android:scaleType="centerInside"
                 android:textSize="@dimen/_11sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:id="@+id/maleRadioButton"
@@ -57,12 +57,12 @@
                 android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
                 android:layout_marginStart="@dimen/filter_radio_drawable_padding"
                 />
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                style="@style/filter_radio_button"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:button="@drawable/all_gender_selector"
+                android:src="@drawable/all_gender_selector"
                 android:textSize="@dimen/_11sdp"
+                android:scaleType="centerInside"
                 android:id="@+id/femaleRadioButton"
                 android:layout_gravity="bottom"
                 />
@@ -75,15 +75,15 @@
                 android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
                 android:layout_marginStart="@dimen/filter_radio_drawable_padding"
                 />
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/all_gender_selector"
+            <ImageView
+                style="@style/filter_radio_button"
+                android:src="@drawable/all_gender_selector"
                 android:textSize="@dimen/_11sdp"
                 android:layout_marginLeft="@dimen/_4sdp"
+                android:scaleType="centerInside"
                 android:id="@+id/anyGenderRadioButton"
                 android:layout_gravity="bottom"/>
-        </RadioGroup>
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                 android:layout_marginTop="@dimen/_6sdp"
                 android:layout_marginLeft="@dimen/margin_left"
                 android:layout_marginStart="@dimen/margin_left"/>
-            <RadioGroup
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioGroupStatus"
@@ -113,12 +113,12 @@
                     android:layout_gravity="center"
                     android:text="@string/online_status_filter"
                     android:textColor="@color/black"/>
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/all_gender_selector"
+                <ImageView
+                    style="@style/filter_radio_button"
+                    android:src="@drawable/all_gender_selector"
                     android:textSize="@dimen/_11sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
+                    android:scaleType="centerInside"
                     android:id="@+id/onlineRadioButton"
                     android:layout_gravity="bottom"/>
                 <TextView
@@ -129,15 +129,14 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
                     android:layout_marginStart="@dimen/filter_radio_drawable_padding"/>
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    style="@style/filter_radio_button"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    android:button="@drawable/all_gender_selector"
+                    android:src="@drawable/all_gender_selector"
                     android:textSize="@dimen/_11sdp"
                     android:id="@+id/offlineRadioButton"
                     android:layout_gravity="bottom"
-
+                    android:scaleType="centerInside"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -148,15 +147,14 @@
                     android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
                     android:layout_marginStart="@dimen/filter_radio_drawable_padding"
                     />
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/all_gender_selector"
-                    android:textSize="@dimen/_11sdp"
+                <ImageView
+                    style="@style/filter_radio_button"
+                    android:src="@drawable/all_gender_selector"
+                    android:scaleType="centerInside"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:id="@+id/anyStatusRadioButton"
                     android:layout_gravity="bottom"/>
-            </RadioGroup>
+            </LinearLayout>
 
         </RelativeLayout>
         <TextView
