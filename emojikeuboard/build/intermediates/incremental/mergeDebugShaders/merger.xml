@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\work\emojikeuboard\src\main\shaders"/></dataSet><dataSet config="debug"><source path="C:\work\emojikeuboard\src\debug\shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="D:\Programming\imenem\emojikeuboard\src\main\shaders"/></dataSet><dataSet config="debug"><source path="D:\Programming\imenem\emojikeuboard\src\debug\shaders"/></dataSet></merger>

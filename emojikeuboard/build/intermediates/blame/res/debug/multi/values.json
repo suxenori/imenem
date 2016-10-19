@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "C:\\work\\emojikeuboard\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "outputFile": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 303
                 },
                 "from": {
-                    "file": "C:\\work\\emojikeuboard\\src\\main\\res\\values\\attrs.xml",
+                    "file": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\values\\attrs.xml",
                     "position": {
                         "startLine": 25,
                         "startColumn": 4,
@@ -30,7 +30,7 @@
                     "endOffset": 349
                 },
                 "from": {
-                    "file": "C:\\work\\emojikeuboard\\src\\main\\res\\values\\strings.xml",
+                    "file": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 1,
                         "startColumn": 4,
@@ -50,7 +50,7 @@
                     "endOffset": 837
                 },
                 "from": {
-                    "file": "C:\\work\\emojikeuboard\\src\\main\\res\\values\\attrs.xml",
+                    "file": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\values\\attrs.xml",
                     "position": {
                         "startLine": 27,
                         "startColumn": 4,

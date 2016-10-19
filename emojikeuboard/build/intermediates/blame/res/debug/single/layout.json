@@ -1,14 +1,14 @@
 [
     {
-        "merged": "C:\\work\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\layout\\emojicons.xml",
-        "source": "C:\\work\\emojikeuboard\\src\\main\\res\\layout\\emojicons.xml"
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\layout\\emojicons.xml",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\layout\\emojicons.xml"
     },
     {
-        "merged": "C:\\work\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\layout\\emojicon_grid.xml",
-        "source": "C:\\work\\emojikeuboard\\src\\main\\res\\layout\\emojicon_grid.xml"
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\layout\\emojicon_item.xml",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\layout\\emojicon_item.xml"
     },
     {
-        "merged": "C:\\work\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\layout\\emojicon_item.xml",
-        "source": "C:\\work\\emojikeuboard\\src\\main\\res\\layout\\emojicon_item.xml"
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\layout\\emojicon_grid.xml",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\layout\\emojicon_grid.xml"
     }
 ]
