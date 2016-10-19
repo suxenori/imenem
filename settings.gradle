@@ -1,0 +1,3 @@
+include ':odnoklassniki-android-sdk',':vksdk_library',':app'
+include ':emojikeuboard'
+
