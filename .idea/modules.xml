@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/emojikeuboard/emojikeuboard.iml" filepath="$PROJECT_DIR$/emojikeuboard/emojikeuboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/odnoklassniki-android-sdk/odnoklassniki-android-sdk.iml" filepath="$PROJECT_DIR$/odnoklassniki-android-sdk/odnoklassniki-android-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vksdk_library/vksdk_library.iml" filepath="$PROJECT_DIR$/vksdk_library/vksdk_library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/work.iml" filepath="$PROJECT_DIR$/work.iml" />
+    </modules>
+  </component>
+</project>
