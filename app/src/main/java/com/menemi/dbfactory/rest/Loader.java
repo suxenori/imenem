@@ -342,9 +342,24 @@ public class Loader extends JSONLoader {
                 if (anyGendreArray.getInt(2) == 1) {
                     interestGender = PersonObject.InterestGender.ANY_GENDER;
                 }
+            JSONArray statusArray = mainObject.getJSONArray("status");
+            JSONArray onlineArray = statusArray.getJSONArray(0);
+            PersonObject.UserStatus userStatus = PersonObject.UserStatus.ANY;
+            if (onlineArray.getInt(2) == 1) {
+                userStatus = PersonObject.UserStatus.ONLINE;
+
+            }
+            JSONArray offlineArray = statusArray.getJSONArray(1);
+            if (offlineArray.getInt(2) == 1) {
+                userStatus = PersonObject.UserStatus.OFFLINE;
+            }
+            JSONArray anyStatusArray = statusArray.getJSONArray(2);
+            if (anyStatusArray.getInt(2) == 1) {
+                userStatus = PersonObject.UserStatus.ANY;
+            }
 
                 FilterObject filterObj = new FilterObject(iWant, interestGender.ordinal(), mainObject.getInt("min_age")
-                        , mainObject.getInt("max_age"), DBHandler.getInstance().getUserId(), 0, null);     //TODO change value from REST, if this API will working correct
+                        , mainObject.getInt("max_age"), DBHandler.getInstance().getUserId(), userStatus.ordinal(), null);     //TODO change value from REST, if this API will working correct
                 Log.i("gender from Loader", interestGender + "");
                 Log.i("gender from filterObj", filterObj.getiAmHereTo() + "");
                 Log.i("min age from loader", mainObject.getInt("min_age") + "");
@@ -1061,6 +1076,7 @@ public class Loader extends JSONLoader {
 
     private static String parceFilterObject(FilterObject filterObject) {
         return filterObject.getiWantValue() + "/" + filterObject.getiAmHereTo() + "/" +
+                filterObject.getIsOnline() + "/"+
                 filterObject.getMinAge() + "/" + filterObject.getMaxAge() + "/"
                 + filterObject.getPlaceModel().getLocationLat() + ","
                 + filterObject.getPlaceModel().getLocationLng() + "/" + filterObject.getPlaceModel().getNortheastLat() + "/"
