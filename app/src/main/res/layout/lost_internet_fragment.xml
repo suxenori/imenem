@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:text="@string/no_internet_message"
+        android:background="@color/red"
+        android:textAllCaps="false"
+        android:textSize="@dimen/font_size"
+        android:textColor="@color/actionbar_text"
+        android:gravity="center"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_80sdp"
+        android:src="@drawable/internet_connection"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textSize="@dimen/font_size"
+        android:text="@string/connection_lost_n_please_check_your_internet_connection_n_and_try_again"
+        android:gravity="center"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_60sdp"
+        android:layout_marginLeft="@dimen/_60sdp"
+        android:layout_marginEnd="@dimen/_60sdp"
+        android:layout_marginRight="@dimen/_60sdp"
+        android:textColor="@color/actionbar_text"
+        android:textSize="@dimen/font_size"
+        android:textAllCaps="false"
+        android:text="@string/retry"
+        android:id="@+id/retryButton"
+        android:background="@drawable/orange_cornered_button"/>
+
+
+</LinearLayout>
