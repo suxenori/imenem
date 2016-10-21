@@ -183,7 +183,7 @@ public class PersonPage extends AppCompatActivity {
                 DBHandler.getInstance().getAvatar(userId, Utils.PICTURE_QUALITY_THUMBNAIL, object -> {
                     final Bitmap bitmap = (Bitmap) object;
                     if (bitmap != null) {
-                        final Bitmap avatar = prepareAvatar(bitmap);
+                        final Bitmap avatar = prepareNavigationalHeader(bitmap);
                         DBHandler.getInstance().getMyProfile(object1 -> ((PersonObject) object1).setPersonAvatar(avatar));
                     Log.d("Size", ownerAvatar.getWidth() + "");
                     Log.d("Size", ownerAvatar.getHeight() + "");
@@ -196,7 +196,7 @@ public class PersonPage extends AppCompatActivity {
             }
         });
 
-        prepareAvatar(Utils.getBitmapFromResource(this, com.menemi.R.drawable.empty_photo));
+        prepareNavigationalHeader(Utils.getBitmapFromResource(this, com.menemi.R.drawable.empty_photo));
         //Add component
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.meet, com.menemi.R.string.encounters));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.nearby, com.menemi.R.string.people_nearby));
@@ -237,11 +237,12 @@ public class PersonPage extends AppCompatActivity {
             @Override
             public void internetON() {
                 hideNoInternetMessage(getFragmentManager());
+
             }
 
             @Override
             public void internetOFF() {
-                if(getCallingActivity() != null && getFragmentManager() != null) {
+                if(getFragmentManager() != null) {
                     showNoInternetMessage(getFragmentManager());
                 }
 
@@ -267,12 +268,11 @@ public class PersonPage extends AppCompatActivity {
 
     }
 
-    private Bitmap prepareAvatar(Bitmap bitmap) {
+    private Bitmap prepareNavigationalHeader(Bitmap bitmap) {
         final Bitmap avatar = Utils.getCroppedBitmap(bitmap);
         ownerAvatar.setColorFilter(getResources().getColor(R.color.avatarFilter), PorterDuff.Mode.MULTIPLY);
         ownerCircleAvatar.setImageBitmap(avatar);
         ownerAvatar.setImageBitmap(Utils.megaBlur(getApplicationContext(), bitmap));
-
 
         ownerAvatar.setOnClickListener(new OnMyProfileOpenListener());
         ownerCircleAvatar.setOnClickListener(new OnMyProfileOpenListener());

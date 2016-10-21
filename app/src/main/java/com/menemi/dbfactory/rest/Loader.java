@@ -879,7 +879,16 @@ public class Loader extends JSONLoader {
 
                 for (int i = 0; i < templatesJSON.length(); i++) {
                     JSONObject jsonObject = templatesJSON.getJSONObject(i);
-                    gifts.add(new Gift(jsonObject.getString(PICTURE), jsonObject.getInt(Fields.ID), jsonObject.getString(Fields.NAME), jsonObject.getInt(PRICE)));
+
+                    String url = jsonObject.getString(PICTURE);
+                    int id = jsonObject.getInt(Fields.ID);
+                    String name =  jsonObject.getString(Fields.NAME);
+                    int price = jsonObject.getInt(PRICE);
+
+
+                        gifts.add(new Gift(url,id ,name, price));
+
+
 
                 }
 

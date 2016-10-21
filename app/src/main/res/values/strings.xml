@@ -436,6 +436,8 @@
     <string name="hide_account">Hide Account</string>
     <string name="delete_account"><u>Delete account</u></string>
     <string name="erase_imported_contacts">Erase Imported Contacts</string>
-    <string name="connection_lost_n_please_check_your_internet_connection_n_and_try_again">Connection lost \n please check your internet connection \n and try again</string>
-
+    <string name="retry">Retry</string>
+    <string name="connection_lost_n_please_check_your_internet_connection_n_and_try_again">Connection lost \n Please check your internet connection \n and try again</string>
+    <string name="erase_imported_contacts_message">This will permanently remove all of your friends. You will lose the network you have built.</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

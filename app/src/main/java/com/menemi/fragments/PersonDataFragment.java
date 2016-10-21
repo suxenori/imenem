@@ -45,11 +45,33 @@ public class PersonDataFragment extends Fragment {
                 parent.removeAllViews();
             }
         }
-        if (purpose == Purpose.LIKE) {
-            generateNextRandomPerson(listener);
-        } else {
-            listener.onPrepare(personObject);
-        }
+        DBHandler.getInstance().isRESTAvailable(object -> {
+                if((boolean) object == true) {
+                    if (purpose == Purpose.LIKE) {
+                        generateNextRandomPerson(listener);
+                    } else {
+                        listener.onPrepare(personObject);
+                    }
+                } else {
+                    if (purpose == Purpose.LIKE) {
+                        LostInternetFragment lostInternetFragment = new LostInternetFragment();
+                        lostInternetFragment.setOnRetryListener(()->{
+
+                            generateNextRandomPerson(listener);
+                            getFragmentManager().popBackStack();
+                        });
+                        getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
+                    } else if(personObject == null){
+                        LostInternetFragment lostInternetFragment = new LostInternetFragment();
+                        lostInternetFragment.setOnRetryListener(()->{
+
+                        });
+                        getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
+                    }
+                }
+            }
+            );
+
 
 
         return rootView;

@@ -28,6 +28,9 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public static final String TABLE_AWARDS = "personAwards";
     public static final String TABLE_LANGUAGES = "person_languages";
     public static final String TABLE_FIRE_BASE = "fire_base";
+    public static final String TABLE_GIFTS_BASE = "gifts_base";
+    public static final String TABLE_TEMPLATES_BASE = "templates_base";
+
     private static final int DATABASE_VERSION = 1; // In case of any changes in database structure this variable should be incremented
     private static final String DATABASE_LAST_USER_CREATE_SCRIPT = "CREATE TABLE IF NOT EXISTS " +
             TABLE_LAST_ID + " (" + Fields.ID + " integer)";
@@ -87,7 +90,20 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             Fields.ID + " integer, " +
             Fields.CATEGORY + " integer, " +
             Fields.INTERESTS + " text)";
-    
+
+    private static final String CREATE_TABLE_GIFTS = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_GIFTS_BASE + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.PHOTO + " text, " +
+            Fields.ID + " integer, " +
+            Fields.NAME + " text, " +
+            Fields.PRICE + " integer)";
+
+    private static final String CREATE_TABLE_TEMPLATES = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_TEMPLATES_BASE + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.PHOTO + " text, " +
+            Fields.ID + " integer)";
 
     private static final String CREATE_TABLE_SOCIAL_FB = "CREATE TABLE IF NOT EXISTS " +
             TABLE_SOCIAL_FB + " (" + BaseColumns._ID +
@@ -166,6 +182,9 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             db.execSQL(CREATE_TABLE_SOCIAL_FB);
             db.execSQL(CREATE_TABLE_SOCIAL_INSTA);
             db.execSQL(DATABASE_FIREBASE_TOKEN_CREATE_SCRIPT);
+            db.execSQL(CREATE_TABLE_GIFTS);
+            db.execSQL(CREATE_TABLE_TEMPLATES);
+
 
             this.addDefaultId(db);
         }catch (SQLException sqle){

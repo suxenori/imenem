@@ -7,10 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.menemi.personobject.Gift;
 import com.menemi.personobject.PersonObject;
+import com.menemi.personobject.PhotoTemplate;
 import com.menemi.social_network.SocialNetworkHandler;
 import com.menemi.social_network.SocialProfile;
 import com.menemi.utils.Utils;
+
+import java.util.ArrayList;
 
 class DBSQLite {
     SQLiteEngine sqliteInstance;
@@ -47,11 +51,11 @@ class DBSQLite {
         return data;
     }
 
-    public boolean isEmtyTable(String tableName){
+    public boolean isEmtyTable(String tableName) {
         boolean empty = true;
         Cursor cur = sqliteDB.rawQuery("SELECT COUNT(*) FROM " + tableName, null);
         if (cur != null && cur.moveToFirst()) {
-            empty = (cur.getInt (0) == 0);
+            empty = (cur.getInt(0) == 0);
         }
         cur.close();
 
@@ -112,20 +116,144 @@ class DBSQLite {
         return null;
     }
 
+    public ArrayList<Gift> getGifts() {
 
-    public SocialProfile getSocial(String socNetwork){
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_GIFTS_BASE, null, null, null, null, null, null);
+        ArrayList<Gift> gifts = new ArrayList<>();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                Gift gift = new Gift(Utils.getBitmapFromStringBase64(cursor.getString(cursor.getColumnIndex(Fields.PHOTO))),
+                        cursor.getInt(cursor.getColumnIndex(Fields.ID)), cursor.getString(cursor.getColumnIndex(Fields.NAME)),
+                        cursor.getInt(cursor.getColumnIndex(Fields.PRICE)));
+                gifts.add(gift);
+                cursor.moveToNext();
+            }
+
+        }
+        return gifts;
+
+    }
+    public void setGift(Gift gift){
+
+            ContentValues values = new ContentValues();
+
+            values.put(Fields.PHOTO, Utils.getBitmapToBase64String(gift.getImage()));
+            values.put(Fields.ID, gift.getGiftId());
+            values.put(Fields.NAME, gift.getGiftName());
+            values.put(Fields.PRICE, gift.getPrice());
+
+
+
+            if (isFirstTime(SQLiteEngine.TABLE_GIFTS_BASE)) {
+                sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
+            } else {
+                Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_GIFTS_BASE, null, Fields.ID + "=?",
+                        new String[]{""+gift.getGiftId()}, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst() == true){
+                    sqliteDB.update(SQLiteEngine.TABLE_GIFTS_BASE, values,
+                            Fields.ID + "= ?", new String[]{"" + gift.getGiftId()});
+                } else {
+                    sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
+                }
+
+            }
+
+        }
+
+
+
+    public void setGifts(ArrayList<Gift> gifts){
+        for (int i = 0; i < gifts.size(); i++) {
+            ContentValues values = new ContentValues();
+
+            values.put(Fields.PHOTO, Utils.getBitmapToBase64String(gifts.get(i).getImage()));
+            values.put(Fields.ID, gifts.get(i).getGiftId());
+            values.put(Fields.NAME, gifts.get(i).getGiftName());
+            values.put(Fields.PRICE, gifts.get(i).getPrice());
+
+            Log.d("DBHandler", "setPersonalInfo(), isFirstTime = " + isFirstTime(SQLiteEngine.TABLE_OWNER));
+
+            if (isFirstTime(SQLiteEngine.TABLE_GIFTS_BASE)) {
+                sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
+            } else {
+                Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_GIFTS_BASE, null, Fields.ID + "=?",
+                        new String[]{""+gifts.get(i).getGiftId()}, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst() == true){
+                    sqliteDB.update(SQLiteEngine.TABLE_GIFTS_BASE, values,
+                            Fields.ID + "= ?", new String[]{"" + gifts.get(i).getGiftId()});
+                } else {
+                    sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
+                }
+
+            }
+
+        }
+
+
+    }
+    public ArrayList<PhotoTemplate> getTemplates() {
+
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_TEMPLATES_BASE, null, null, null, null, null, null);
+        ArrayList<PhotoTemplate> templates = new ArrayList<>();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                PhotoTemplate template = new PhotoTemplate(cursor.getInt(cursor.getColumnIndex(Fields.ID)),
+                        Utils.getBitmapFromStringBase64(cursor.getString(cursor.getColumnIndex(Fields.PHOTO))));
+                templates.add(template);
+                cursor.moveToNext();
+            }
+
+        }
+        return templates;
+
+    }
+
+    public void setTemplates(ArrayList<PhotoTemplate> templates){
+        for (int i = 0; i < templates.size(); i++) {
+            ContentValues values = new ContentValues();
+
+            values.put(Fields.PHOTO, Utils.getBitmapToBase64String(templates.get(i).getTemplatePicture()));
+            values.put(Fields.ID, templates.get(i).getTemplateID());
+
+            //Log.d("DBHandler", "setPersonalInfo(), isFirstTime = " + isFirstTime(SQLiteEngine.TABLE_OWNER));
+
+            if (isFirstTime(SQLiteEngine.TABLE_TEMPLATES_BASE)) {
+                sqliteDB.insert(SQLiteEngine.TABLE_TEMPLATES_BASE, null, values);
+            } else {
+                Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_TEMPLATES_BASE, null, Fields.ID + "=?",
+                        new String[]{"" + templates.get(i).getTemplateID()}, null, null, null, null);
+                if (cursor != null) {
+                    sqliteDB.update(SQLiteEngine.TABLE_TEMPLATES_BASE, values,
+                            Fields.ID + "= ?", new String[]{"" + templates.get(i).getTemplateID()});
+                } else {
+                    sqliteDB.insert(SQLiteEngine.TABLE_TEMPLATES_BASE, null, values);
+                }
+
+            }
+
+        }
+
+
+    }
+
+
+    public SocialProfile getSocial(String socNetwork) {
         SocialProfile profile = new SocialProfile();
         Cursor cursor = null;
-        if (socNetwork.equals(SocialNetworkHandler.getInstance().VK_SOCIAL)){
-           cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL_VK, null, Fields.SOCIAL_ID + "=?",
+        if (socNetwork.equals(SocialNetworkHandler.getInstance().VK_SOCIAL)) {
+            cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL_VK, null, Fields.SOCIAL_ID + "=?",
                     new String[]{socNetwork}, null, null, null, null);
         } else if (socNetwork.equals(SocialNetworkHandler.getInstance().FB_SOCIAL)) {
             cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL_FB, null, Fields.SOCIAL_ID + "=?",
                     new String[]{socNetwork}, null, null, null, null);
-        } else if (socNetwork.equals(SocialNetworkHandler.getInstance().OK_SOCIAL)){
+        } else if (socNetwork.equals(SocialNetworkHandler.getInstance().OK_SOCIAL)) {
             cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL_OK, null, Fields.SOCIAL_ID + "=?",
                     new String[]{socNetwork}, null, null, null, null);
-        } else if (socNetwork.equals(SocialNetworkHandler.getInstance().INSTA_SOCIAL)){
+        } else if (socNetwork.equals(SocialNetworkHandler.getInstance().INSTA_SOCIAL)) {
             cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL_INSTA, null, Fields.SOCIAL_ID + "=?",
                     new String[]{socNetwork}, null, null, null, null);
         }
@@ -177,11 +305,10 @@ class DBSQLite {
     }
 
 
-
-
     public int getUserId() {
         return getIntFromDB(SQLiteEngine.TABLE_OWNER, Fields.ID);
     }
+
     public String getFireBaseToken() {
 
         return getStringFromDB(SQLiteEngine.TABLE_FIRE_BASE, Fields.FIRE_BASE_TOKEN);
@@ -272,7 +399,6 @@ class DBSQLite {
     }
 
 
-
     public void setPersonalInfo(PersonObject personObject) {
         Log.d("DBHandler", "setPersonalInfo(), isFirstTime = " + isFirstTime(SQLiteEngine.TABLE_OWNER));
 
@@ -306,31 +432,31 @@ class DBSQLite {
     }
 
 
-
-    public ContentValues prepareSocProfile(SocialProfile profile, String soc_network){
+    public ContentValues prepareSocProfile(SocialProfile profile, String soc_network) {
 
         ContentValues values = new ContentValues();
         values.put(Fields.SOCIAL_ID, soc_network);
-        values.put(Fields.SOCIAL_PROFILE_FIRST_NAME,profile.getFirstName());
-        values.put(Fields.SOCIAL_PROFILE_MIDDLE_NAME,profile.getMiddleName());
-        values.put(Fields.SOCIAL_PROFILE_LAST_NAME,profile.getLastName());
-        values.put(Fields.SOCIAL_PROFILE_IMAGE,Utils.getBitmapToBase64String(profile.getImage()));
+        values.put(Fields.SOCIAL_PROFILE_FIRST_NAME, profile.getFirstName());
+        values.put(Fields.SOCIAL_PROFILE_MIDDLE_NAME, profile.getMiddleName());
+        values.put(Fields.SOCIAL_PROFILE_LAST_NAME, profile.getLastName());
+        values.put(Fields.SOCIAL_PROFILE_IMAGE, Utils.getBitmapToBase64String(profile.getImage()));
+
+
         return values;
 
 
     }
 
-    public void clearTable(String table){
-        sqliteDB.delete(table, null,null);
+    public void clearTable(String table) {
+        sqliteDB.delete(table, null, null);
     }
 
-    public void setSocialVK(SocialProfile profile, String soc_network)
-    {
+    public void setSocialVK(SocialProfile profile, String soc_network) {
 
-        sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL_VK,null, prepareSocProfile(profile,soc_network));
+        sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL_VK, null, prepareSocProfile(profile, soc_network));
     }
-    public void setFireBaseToken(String token)
-    {
+
+    public void setFireBaseToken(String token) {
         ContentValues values = new ContentValues();
         values.put(Fields.FIRE_BASE_TOKEN, token);
         if (isFirstTime(SQLiteEngine.TABLE_FIRE_BASE)) {
@@ -340,29 +466,24 @@ class DBSQLite {
         }
 
 
-
     }
 
 
-    public void setSocialOK(SocialProfile profile, String socNetwork)
-    {
-        sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL_OK,null, prepareSocProfile(profile,socNetwork));
+    public void setSocialOK(SocialProfile profile, String socNetwork) {
+        sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL_OK, null, prepareSocProfile(profile, socNetwork));
     }
 
-    public void setSocialINSTA(SocialProfile profile, String socNetwork)
-    {
-        sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL_INSTA,null, prepareSocProfile(profile,socNetwork));
+    public void setSocialINSTA(SocialProfile profile, String socNetwork) {
+        sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL_INSTA, null, prepareSocProfile(profile, socNetwork));
     }
 
 
-    public void setSocialFB(SocialProfile profile, String socNetwork)
-    {
-        sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL_FB,null, prepareSocProfile(profile, socNetwork));
+    public void setSocialFB(SocialProfile profile, String socNetwork) {
+        sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL_FB, null, prepareSocProfile(profile, socNetwork));
     }
 
-    public int loadLastId()
-    {
-     return getIntFromDB(SQLiteEngine.TABLE_LAST_ID, Fields.ID);
+    public int loadLastId() {
+        return getIntFromDB(SQLiteEngine.TABLE_LAST_ID, Fields.ID);
     }
 
     public void updatePhoto(int userID, String photo) {

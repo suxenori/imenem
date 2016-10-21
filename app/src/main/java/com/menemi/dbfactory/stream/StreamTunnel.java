@@ -2,7 +2,6 @@ package com.menemi.dbfactory.stream;
 
 import android.util.Log;
 
-import com.menemi.dbfactory.InternetConnectionListener;
 import com.menemi.dbfactory.stream.messages.StreamMessage;
 
 import java.io.BufferedInputStream;
@@ -57,7 +56,7 @@ public class StreamTunnel {
             public void run() {
                 try {
                     socket = new Socket();
-                    socket.connect(new InetSocketAddress(ipAdress, port), CONNECT_TIMEOUT_MILLIS);
+                    socket.connect(new InetSocketAddress(ipAdress, port));
                     afterConnectToHost(ipAdress, port);
                 } catch (UnknownHostException e) {
                     e.printStackTrace();

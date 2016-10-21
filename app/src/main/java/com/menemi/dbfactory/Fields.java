@@ -5,7 +5,7 @@ package com.menemi.dbfactory;
  */
 public  class Fields {
     public static final String URL_FOR_SERVER = "http://minemi.ironexus.com";
-
+    public static final String URL_FOR_MESSAGING = "minemi.ironexus.com";
     public static final String PROFILE = "profile";
     public static final String SOCIAL_PROFILE_IMAGE = "profile";
     public static final String SOCIAL_PROFILE_FIRST_NAME = "f_name";
@@ -68,7 +68,7 @@ public  class Fields {
     public static final String VAL = "val";
     public static final String IS_MUTUAL = "is_mutual";
     public static final String VIP_STATUS = "vip_until";// : "2016-09-30T15:06:12.000Z"
-
+    public static final String PRICE = "price";
 
 
     public static final String PHOTO_COUNT = "pictures_count";

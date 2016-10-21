@@ -170,12 +170,16 @@ public class DBHandler {
             new DBRest().checkIsRestAvailable(new ResultListener() {
                 @Override
                 public void onFinish(Object object) {
-                    wasAvailableLastTime = (boolean) object;
+                    if((boolean)object) {
+                        internetConnectionListener.internetON();
+                    } else{
+                        internetConnectionListener.internetOFF();
+                    }
                     resultListener.onFinish(object);
                 }
             });
         } else {
-            wasAvailableLastTime = false;
+            internetConnectionListener.internetOFF();
             resultListener.onFinish(false);
         }
 
@@ -879,17 +883,81 @@ Log.d("logout", "logout1");
         return null;
     }
     private void preparePhotoTemplates(ResultListener resultListener) {
-        dbRest.getPhotoTemplates(1, (Object object) ->{
+     /*   dbRest.getPhotoTemplates(1, (Object object) ->{
                 photoTemplates = (ArrayList<PhotoTemplate>) object;
             resultListener.onFinish(null);
+        });*/
+
+           isRESTAvailable((Object isAvailable) ->{
+            if((boolean)isAvailable){
+                dbRest.getPhotoTemplates(1, (Object object) ->{
+                    photoTemplates = (ArrayList<PhotoTemplate>) object;
+                    dbSQLite.setTemplates(photoTemplates);
+                    resultListener.onFinish(null);
+                });
+            } else{
+                photoTemplates = dbSQLite.getTemplates();
+                if(photoTemplates.size() == 0){
+                    subscribeToRest(new InternetConnectionListener() {
+                        @Override
+                        public void internetON() {
+                            dbRest.getPhotoTemplates(1, (Object object) ->{
+                                photoTemplates = (ArrayList<PhotoTemplate>) object;
+                                dbSQLite.setTemplates(photoTemplates);
+                            });
+                        }
+
+                        @Override
+                        public void internetOFF() {
+
+                        }
+                    });
+                }
+
+            }
+
+
+
         });
     }
 
+    public void setGiftToDB(Gift gift) {
+       dbSQLite.setGift(gift);
+    }
+
     private void prepareGifts(ResultListener resultListener) {
-        dbRest.prepareGifts(1, (Object object) ->{
-            gifts = (ArrayList<Gift>) object;
-            resultListener.onFinish(null);
+        isRESTAvailable((Object isAvailable) ->{
+            if((boolean)isAvailable){
+                dbRest.prepareGifts(1, (Object object) ->{
+                    gifts = (ArrayList<Gift>) object;
+                    dbSQLite.setGifts(gifts);
+                    resultListener.onFinish(null);
+                });
+            } else{
+                gifts = dbSQLite.getGifts();
+                if(gifts.size() == 0){
+                    subscribeToRest(new InternetConnectionListener() {
+                        @Override
+                        public void internetON() {
+                            dbRest.prepareGifts(1, (Object object) ->{
+                                gifts = (ArrayList<Gift>) object;
+                                dbSQLite.setGifts(gifts);
+                            });
+                        }
+
+                        @Override
+                        public void internetOFF() {
+
+                        }
+                    });
+                }
+
+            }
+
+
+
         });
+
     }
 
     public ArrayList<Gift> getGifts() {

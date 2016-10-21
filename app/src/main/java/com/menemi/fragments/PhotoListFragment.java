@@ -239,9 +239,20 @@ DBHandler.getInstance().getPhotoUrls(personObject.getPersonId(), Utils.PICTURE_Q
 
         @Override
         public void onClick(View view) {
-            PayForPhotoDialogFragment dialogFragment = new PayForPhotoDialogFragment();
-            dialogFragment.setPhotoSetting(photo);
-            dialogFragment.show(getFragmentManager(), "Pay Fragment");
+            if(!photo.isUnlocked()) {
+
+                PayForPhotoDialogFragment dialogFragment = new PayForPhotoDialogFragment();
+                dialogFragment.setPhotoSetting(photo);
+                dialogFragment.show(getFragmentManager(), "Pay Fragment");
+            } else{
+                PhotoFragment photoFragment = new PhotoFragment();
+                ArrayList<PhotoSetting> photoSetting = new ArrayList<>();
+                photoSetting.add(photo);
+                photoFragment.setUrlsArray(photoSetting);
+                photoFragment.setFullScreen(true);
+                photoFragment.setPageNumber(0);
+                getFragmentManager().beginTransaction().replace(R.id.content, photoFragment).addToBackStack(null).commitAllowingStateLoss();
+            }
         }
     }
 

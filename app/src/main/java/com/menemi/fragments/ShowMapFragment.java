@@ -329,7 +329,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
         PersonObject personObject = null;
         MarkerOptions markerOptions = null;
         POSITION animationPosition;
-
+Bitmap icon;
         public void animate() {
             if (animationPosition == POSITION.END) {
                 endAnimation();
@@ -422,16 +422,12 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
         }
 
         public PersonMarker(Bitmap icon, PersonObject personObject) {
-if(icon == null){
-    icon = Utils.getBitmapFromResource(getActivity(), R.drawable.empty_photo);
-}
+        if(icon == null){
+            icon = Utils.getBitmapFromResource(getActivity(), R.drawable.empty_photo);
+        }
+            this.icon = icon;
             this.personObject = personObject;
-            this.markerOptions = new MarkerOptions()
-                    .position(new LatLng(personObject.getPositionLatitude(), personObject.getPositionLongitude()))
-                    .title(personObject.getPersonName())
-                   .icon(BitmapDescriptorFactory.fromBitmap(Utils.overlay(Utils.getCroppedBitmap(icon), BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.test_circle_shadow))))
-                    .draggable(false)
-                    .zIndex(0.5f);
+
 
 
         }
@@ -441,6 +437,13 @@ if(icon == null){
         }
 
         public MarkerOptions getMarkerOptions() {
+
+            this.markerOptions = new MarkerOptions()
+                    .position(new LatLng(personObject.getPositionLatitude(), personObject.getPositionLongitude()))
+                    .title(personObject.getPersonName())
+                    .icon(BitmapDescriptorFactory.fromBitmap(Utils.overlay(Utils.getCroppedBitmap(icon), BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.test_circle_shadow))))
+                    .draggable(false)
+                    .zIndex(0.5f);
             return markerOptions;
         }
     }

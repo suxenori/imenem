@@ -23,7 +23,7 @@ public class StreamController implements StreamTunnel.CommunicationDelegate {
     LinkedList<StreamMessage> incomingMessagesQueue = new LinkedList<>();
     LinkedList<StreamMessage> outgoingMessagesQueue = new LinkedList<>();
     private InternetConnectionListener internetConnectionListener;
-    private String ipAdress = Fields.URL_FOR_SERVER;
+    private String ipAdress = Fields.URL_FOR_MESSAGING;
     private int port = 55_555;
 
     public StreamController(int userId, InternetConnectionListener internetConnectionListener) {

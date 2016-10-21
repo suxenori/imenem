@@ -269,10 +269,20 @@ public class PicturesListRowFragment extends Fragment implements View.OnClickLis
 
         @Override
         public void onClick(View view) {
+            if(!photo.isUnlocked()) {
 
-            PayForPhotoDialogFragment dialogFragment = new PayForPhotoDialogFragment();
-            dialogFragment.setPhotoSetting(photo);
-            dialogFragment.show(getFragmentManager(), "Pay Fragment");
+                PayForPhotoDialogFragment dialogFragment = new PayForPhotoDialogFragment();
+                dialogFragment.setPhotoSetting(photo);
+                dialogFragment.show(getFragmentManager(), "Pay Fragment");
+            } else{
+                PhotoFragment photoFragment = new PhotoFragment();
+                ArrayList<PhotoSetting> photoSetting = new ArrayList<>();
+                photoSetting.add(photo);
+                photoFragment.setUrlsArray(photoSetting);
+                photoFragment.setFullScreen(true);
+                photoFragment.setPageNumber(0);
+                getFragmentManager().beginTransaction().replace(R.id.content, photoFragment).addToBackStack(null).commitAllowingStateLoss();
+            }
         }
     }
 }

@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="50dp"
               android:id="@+id/checker"
-                android:layout_marginTop="@dimen/toolbar_shadow_size"
+
               android:background="@color/connectorColor">
     <TextView
         android:layout_width="match_parent"
