@@ -29,9 +29,7 @@ public class StreamController implements StreamTunnel.CommunicationDelegate {
     public StreamController(int userId, InternetConnectionListener internetConnectionListener) {
         this.userId = userId;
         startMessageSender();
-        outgoingTunnel = new StreamTunnel();
-        outgoingTunnel.initWithIP(ipAdress, port);
-        outgoingTunnel.delegate = this;
+
         connect();
         this.internetConnectionListener = internetConnectionListener;
     }
@@ -190,6 +188,9 @@ public class StreamController implements StreamTunnel.CommunicationDelegate {
     }
 
     void connect() {
+        outgoingTunnel = new StreamTunnel();
+        outgoingTunnel.initWithIP(ipAdress, port);
+        outgoingTunnel.delegate = this;
         outgoingTunnel.connect();
 
     }

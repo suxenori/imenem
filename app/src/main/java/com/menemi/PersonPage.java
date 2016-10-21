@@ -236,12 +236,15 @@ public class PersonPage extends AppCompatActivity {
         DBHandler.getInstance().subscribeToRest(new InternetConnectionListener() {
             @Override
             public void internetON() {
-                showNoInternetMessage(getFragmentManager());
+                hideNoInternetMessage(getFragmentManager());
             }
 
             @Override
             public void internetOFF() {
-                hideNoInternetMessage(getFragmentManager());
+                if(getCallingActivity() != null && getFragmentManager() != null) {
+                    showNoInternetMessage(getFragmentManager());
+                }
+
             }
         } );
         if(getIntent() != null && getIntent().getExtras() != null){
@@ -295,9 +298,10 @@ public class PersonPage extends AppCompatActivity {
         transaction.commitAllowingStateLoss();
     }
     public static void hideNoInternetMessage(FragmentManager fm){
-        if(fm == null){
+        if(fm == null || connectionInformerFragment == null){
             return;
         }
+
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.remove( connectionInformerFragment);
         transaction.commitAllowingStateLoss();
