@@ -93,8 +93,8 @@ public class Loader extends JSONLoader {
     //TODO: add friends add interests add gifts
 
     private static final String PICTURE_COUNT = "pictures_count";
-    private static final String PICTURES = "pictures";
-    private static final String PICTURE = "picture";
+
+
     private static final String MUTUAL_LIKES = "new_likers_arr";
     private static final String LIKES = "mutual_likers_arr";
     private static final String PROFILES = "profiles";
@@ -114,7 +114,7 @@ public class Loader extends JSONLoader {
     private static final String PROFILE_NOTIFICATIONS = "profile_notifications";
 
     private static final String PLANS = "plans";
-    private static final String PRICE = "price";
+
     private static final String COINS = "coins";
     private static final String IS_POPULAR = "is_popular";
     private static final String DIALOGS = "dialogs";
@@ -126,15 +126,7 @@ public class Loader extends JSONLoader {
     private static final String LAST_MESSAGE = "last_message";
     private static final String LAST_MESSAGE_AT = "last_message_date";
     private static final String UNREAD_COUNT = "unread_msgs_count";
-    private static final String TEMPLATE_IDS = "template_ids";
-    private static final String TEMPLATES = "pictures_templates_ids";
-    private static final String PHOTO_TEMPLATES = "templates";
-    private static final String TOTAL_PROFIT= "total_profit";
-    private static final String IS_AUTO_PRICE = "is_auto_price";
-    private static final String TOTAL_VIEWS  = "total_views";
-    private static final String IS_UNLOCKED = "is_unlocked";
-    private static final String IS_PRIVATE = "is_private";
-    private static final String URLS = "url";
+
 
     static final String G_GET_PLACES_LIST_TARGET_VALUE = "&types=(cities)&language=";
     static final String G_GET_PLACES_LIST_KEY_VALUE = "&key=";
@@ -393,18 +385,12 @@ public class Loader extends JSONLoader {
                 }
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
 
-                    JSONArray photoArray = mainObject.getJSONArray(PICTURES);
+                    JSONArray photoArray = mainObject.getJSONArray(Fields.PICTURES);
 
                     for (int i = 0; i < photoArray.length(); i++) {
                         try {
-
-                            //  photoHashMap.put(Integer.getInteger(String.valueOf(photoArray.getJSONObject(i).get("id"))),photoArray.getJSONObject(i).getString(PICTURE));
-                            //  hashMaps.add(photoHashMap);
-
-
-                            String url = photoArray.getJSONObject(i).getString(PICTURE);
+                            String url = photoArray.getJSONObject(i).getString(Fields.PICTURE);
                             int id = photoArray.getJSONObject(i).getInt(Fields.ID);
-
                             Log.d("id", "" + id);
 
                                 pictures.add(new PhotoSetting(id, url, true));
@@ -433,7 +419,7 @@ public class Loader extends JSONLoader {
 
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
 
-                    JSONArray photoArray = mainObject.getJSONArray(PICTURES);
+                    JSONArray photoArray = mainObject.getJSONArray(Fields.PICTURES);
 
 
                     for (int i = 0; i < photoArray.length(); i++) {
@@ -777,7 +763,7 @@ public class Loader extends JSONLoader {
                     dialogMessage.setMessageBody(messageJSON.getString(BODY));
                     dialogMessage.setSortId(messageJSON.getInt(SORT_ID));
 
-                    byte[] decodedString = Base64.decode(messageJSON.getString(PICTURE), Base64.DEFAULT);
+                    byte[] decodedString = Base64.decode(messageJSON.getString(Fields.PICTURE), Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                     dialogMessage.setPicture(decodedByte);
@@ -798,13 +784,13 @@ public class Loader extends JSONLoader {
                 JSONObject mainObject = new JSONObject(jsonString);
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
 
-                    JSONArray picturesStats = mainObject.getJSONArray(PICTURES);
-                    JSONArray templates = mainObject.getJSONArray(TEMPLATES);
+                    JSONArray picturesStats = mainObject.getJSONArray(Fields.PICTURES);
+                    JSONArray templates = mainObject.getJSONArray(Fields.TEMPLATES);
                     //(int photoId, boolean isPrivate, boolean autoprice, int price, int[] templateIds, Bitmap photo)
                     for (int i = 0; i < picturesStats.length(); i++) {
                         new PhotoSetting(picturesStats.getJSONObject(i).getInt(Fields.ID),
                                 true,
-                                picturesStats.getJSONObject(i).getBoolean(IS_AUTO_PRICE),
+                                picturesStats.getJSONObject(i).getBoolean(Fields.IS_AUTO_PRICE),
                                 picturesStats.getJSONObject(i).getInt(PRICE),
                                 Utils.JSONArrayToIntArray(templates.getJSONArray(i)),
                                 null);
@@ -830,7 +816,7 @@ public class Loader extends JSONLoader {
                 JSONObject mainObject = new JSONObject(jsonString);
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
 
-                    JSONObject pictureJSON = mainObject.getJSONObject(PICTURE);
+                    JSONObject pictureJSON = mainObject.getJSONObject(Fields.PICTURE);
                     PhotoSetting photoSetting = getPhotoSettingFromJSON(pictureJSON);
 
 
@@ -856,12 +842,12 @@ public class Loader extends JSONLoader {
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
 
 
-                    JSONArray templatesJSON = mainObject.getJSONArray(PHOTO_TEMPLATES);
+                    JSONArray templatesJSON = mainObject.getJSONArray(Fields.PHOTO_TEMPLATES);
                     //(int photoId, boolean isPrivate, boolean autoprice, int price, int[] templateIds, Bitmap photo)
 
                     for (int i = 0; i < templatesJSON.length(); i++) {
                         templates.add(new PhotoTemplate(templatesJSON.getJSONObject(i).getInt(Fields.ID),
-                                templatesJSON.getJSONObject(i).getString(PICTURE)));
+                                templatesJSON.getJSONObject(i).getString(Fields.PICTURE)));
                     }
                 }
                 return templates;
@@ -880,10 +866,10 @@ public class Loader extends JSONLoader {
                 for (int i = 0; i < templatesJSON.length(); i++) {
                     JSONObject jsonObject = templatesJSON.getJSONObject(i);
 
-                    String url = jsonObject.getString(PICTURE);
+                    String url = jsonObject.getString(Fields.PICTURE);
                     int id = jsonObject.getInt(Fields.ID);
                     String name =  jsonObject.getString(Fields.NAME);
-                    int price = jsonObject.getInt(PRICE);
+                    int price = jsonObject.getInt(Fields.PRICE);
 
 
                         gifts.add(new Gift(url,id ,name, price));
@@ -913,16 +899,16 @@ public class Loader extends JSONLoader {
 
     @NonNull
     private static PhotoSetting getPhotoSettingFromJSON(JSONObject photosettingJSON) throws JSONException {
-        PhotoSetting photoSetting = new PhotoSetting(photosettingJSON.getString(URLS), false);
-        photoSetting.setPrivate(photosettingJSON.getBoolean(IS_PRIVATE));// is_private : true
-        photoSetting.setAutoprice(photosettingJSON.getBoolean(IS_AUTO_PRICE));
-        photoSetting.setPrice(photosettingJSON.getInt(PRICE));
+        PhotoSetting photoSetting = new PhotoSetting(photosettingJSON.getString(Fields.URLS), false);
+        photoSetting.setPrivate(photosettingJSON.getBoolean(Fields.IS_PRIVATE));// is_private : true
+        photoSetting.setAutoprice(photosettingJSON.getBoolean(Fields.IS_AUTO_PRICE));
+        photoSetting.setPrice(photosettingJSON.getInt(Fields.PRICE));
         photoSetting.setPhotoId(photosettingJSON.getInt(Fields.ID));
-        photoSetting.setProfit(photosettingJSON.getDouble(TOTAL_PROFIT));
-        photoSetting.setViews(photosettingJSON.getInt(TOTAL_VIEWS));
-        photoSetting.setUnlocked(photosettingJSON.getBoolean(IS_UNLOCKED));
+        photoSetting.setProfit(photosettingJSON.getDouble(Fields.TOTAL_PROFIT));
+        photoSetting.setViews(photosettingJSON.getInt(Fields.TOTAL_VIEWS));
+        photoSetting.setUnlocked(photosettingJSON.getBoolean(Fields.IS_UNLOCKED));
 
-        JSONArray templatesJSON = photosettingJSON.getJSONArray(TEMPLATE_IDS);
+        JSONArray templatesJSON = photosettingJSON.getJSONArray(Fields.TEMPLATE_IDS);
         int[] templates = new int[templatesJSON.length()];
         for (int j = 0; j < templatesJSON.length(); j++) {
             templates[j] = templatesJSON.getInt(j);

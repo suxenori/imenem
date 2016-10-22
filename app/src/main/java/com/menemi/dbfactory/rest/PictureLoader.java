@@ -65,7 +65,7 @@ public class PictureLoader extends AsyncTask<Void, Void, String> {
 
             //loading picture
             downloadedPicture = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-
+            DBHandler.getInstance().saveBitmap(dataURL, downloadedPicture);
 
         }catch (FileNotFoundException fileNotFoundException){
             fileNotFoundException.printStackTrace();

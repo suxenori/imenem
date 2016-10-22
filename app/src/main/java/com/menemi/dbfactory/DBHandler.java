@@ -467,16 +467,25 @@ public void prepareSettings(Runnable runnable){
 
         isRESTAvailable( (Object object) -> {
                 if ((boolean) object == true) {
-                    dbRest.getPhotoUrls(id, isThumbnail, Utils.boolToInt(isPrivate), getUserId(), resultListener);
+                    dbRest.getPhotoUrls(id, isThumbnail, Utils.boolToInt(isPrivate), getUserId(), (Object obj) ->{
+                        ArrayList<PhotoSetting> pictures = (ArrayList<PhotoSetting>)obj;
+                        for (int i = 0; i < pictures.size(); i++) {
+                        dbSQLite.savePicture(id, isThumbnail,pictures.get(i));
+                        }
+
+                    });
                 } else {
-                    resultListener.onFinish(null);// instead of null should be dbSQLite.getPhoto(personId)
+
+                    resultListener.onFinish(dbSQLite.getPhotoUrls(id, isThumbnail, isPrivate)); // instead of null should be dbSQLite.getPhoto(personId)
                 }
 
         });
 
 
     }
-
+    public void saveBitmap(String url, Bitmap photo) {
+        dbSQLite.saveBitmap(url, photo);
+    }
     public void logout(Context ctx) {
 Log.d("logout", "logout1");
         restSubscribers = new LinkedList<>();
@@ -883,16 +892,12 @@ Log.d("logout", "logout1");
         return null;
     }
     private void preparePhotoTemplates(ResultListener resultListener) {
-     /*   dbRest.getPhotoTemplates(1, (Object object) ->{
-                photoTemplates = (ArrayList<PhotoTemplate>) object;
-            resultListener.onFinish(null);
-        });*/
 
            isRESTAvailable((Object isAvailable) ->{
             if((boolean)isAvailable){
                 dbRest.getPhotoTemplates(1, (Object object) ->{
                     photoTemplates = (ArrayList<PhotoTemplate>) object;
-                    dbSQLite.setTemplates(photoTemplates);
+
                     resultListener.onFinish(null);
                 });
             } else{
@@ -903,7 +908,6 @@ Log.d("logout", "logout1");
                         public void internetON() {
                             dbRest.getPhotoTemplates(1, (Object object) ->{
                                 photoTemplates = (ArrayList<PhotoTemplate>) object;
-                                dbSQLite.setTemplates(photoTemplates);
                             });
                         }
 
@@ -924,13 +928,15 @@ Log.d("logout", "logout1");
     public void setGiftToDB(Gift gift) {
        dbSQLite.setGift(gift);
     }
-
+    public void setTemplateToDB(PhotoTemplate template) {
+        dbSQLite.setTemplate(template);
+    }
     private void prepareGifts(ResultListener resultListener) {
         isRESTAvailable((Object isAvailable) ->{
             if((boolean)isAvailable){
                 dbRest.prepareGifts(1, (Object object) ->{
                     gifts = (ArrayList<Gift>) object;
-                    dbSQLite.setGifts(gifts);
+
                     resultListener.onFinish(null);
                 });
             } else{
@@ -941,7 +947,7 @@ Log.d("logout", "logout1");
                         public void internetON() {
                             dbRest.prepareGifts(1, (Object object) ->{
                                 gifts = (ArrayList<Gift>) object;
-                                dbSQLite.setGifts(gifts);
+
                             });
                         }
 

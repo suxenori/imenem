@@ -64,6 +64,8 @@ public class Utils {
     public static final String PICTURE_QUALITY_MEDIUM = "medium";
     public static final String PICTURE_QUALITY_LARGE = "large";
 
+    public static String strSeparator = "_,_";
+
     public static int boolToInt(boolean value) {
         return value ? 1 : 0;
     }
@@ -606,6 +608,41 @@ public class Utils {
     }
     public static String constructStartURL() {
         return Fields.URL_FOR_SERVER + "/" + Fields.PREFIX;
+    }
+
+    public static String convertArrayToString(String[] array){
+        String str = "";
+        for (int i = 0;i<array.length; i++) {
+            str = str+array[i];
+            // Do not append comma at the end of last element
+            if(i<array.length-1){
+                str = str+strSeparator;
+            }
+        }
+        return str;
+    }
+    public static String convertArrayToString(int[] array){
+        String str = "";
+        for (int i = 0;i<array.length; i++) {
+            str = str+array[i];
+            // Do not append comma at the end of last element
+            if(i<array.length-1){
+                str = str+strSeparator;
+            }
+        }
+        return str;
+    }
+    public static int[] convertStringToIntArray(String str){
+        String[] arr = str.split(strSeparator);
+        int[] result = new int[arr.length];
+         for (int i = 0; i < arr.length; i++) {
+            result[i] = Integer.parseInt(arr[i]);
+        }
+        return result;
+    }
+    public static String[] convertStringToArray(String str){
+        String[] arr = str.split(strSeparator);
+        return arr;
     }
 
 }

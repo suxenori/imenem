@@ -1,11 +1,11 @@
 [
     {
-        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_attach_photo_pressed.png",
-        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\orca_attach_photo_pressed.png"
-    },
-    {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_composer_popup_active_normal.png",
         "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\orca_composer_popup_active_normal.png"
+    },
+    {
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_attach_photo_pressed.png",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\orca_attach_photo_pressed.png"
     },
     {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_composer_tab_pressed.9.png",

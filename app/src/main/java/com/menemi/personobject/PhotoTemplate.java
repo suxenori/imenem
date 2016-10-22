@@ -2,6 +2,7 @@ package com.menemi.personobject;
 
 import android.graphics.Bitmap;
 
+import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.rest.PictureLoader;
 
 /**
@@ -20,6 +21,8 @@ public class PhotoTemplate {
         this.templateID = templateID;
         new PictureLoader(templatePictureURL, (Object obj) ->{
             this.templatePicture = (Bitmap) obj;
+            DBHandler.getInstance().setTemplateToDB(this);
+
         });
 
     }

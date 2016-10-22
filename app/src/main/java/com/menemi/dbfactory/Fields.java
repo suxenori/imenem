@@ -68,7 +68,7 @@ public  class Fields {
     public static final String VAL = "val";
     public static final String IS_MUTUAL = "is_mutual";
     public static final String VIP_STATUS = "vip_until";// : "2016-09-30T15:06:12.000Z"
-    public static final String PRICE = "price";
+
 
 
     public static final String PHOTO_COUNT = "pictures_count";
@@ -115,7 +115,19 @@ public  class Fields {
 
     public static String PREFIX;
 
-
-
+    //PhotoSettings
+    public  static final String TEMPLATE_IDS = "template_ids";
+    public  static final String TEMPLATES = "pictures_templates_ids";
+    public  static final String PHOTO_TEMPLATES = "templates";
+    public  static final String TOTAL_PROFIT= "total_profit";
+    public  static final String IS_AUTO_PRICE = "is_auto_price";
+    public  static final String TOTAL_VIEWS  = "total_views";
+    public  static final String IS_UNLOCKED = "is_unlocked";
+    public  static final String IS_PRIVATE = "is_private";
+    public  static final String URLS = "url";
+    public static final String PICTURES = "pictures";
+    public static final String PICTURE = "picture";
+    public static final String PRICE = "price";
+    public static final String QUALITY = "quality";
     //TODO VIP UNTIL
 }

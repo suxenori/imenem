@@ -30,6 +30,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public static final String TABLE_FIRE_BASE = "fire_base";
     public static final String TABLE_GIFTS_BASE = "gifts_base";
     public static final String TABLE_TEMPLATES_BASE = "templates_base";
+    public static final String TABLE_PHOTOS = "photos";
 
     private static final int DATABASE_VERSION = 1; // In case of any changes in database structure this variable should be incremented
     private static final String DATABASE_LAST_USER_CREATE_SCRIPT = "CREATE TABLE IF NOT EXISTS " +
@@ -39,7 +40,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
 
     private static final String DATABASE_CREATE_SCRIPT = "CREATE TABLE IF NOT EXISTS " +
             TABLE_OWNER + " (" + BaseColumns._ID +
-             " integer primary key autoincrement, " +
+            " integer primary key autoincrement, " +
             Fields.ID + " integer, " +
             Fields.NAME + " text not null, " +
             Fields.AGE + " integer, " +
@@ -86,7 +87,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
 
     private static final String CREATE_TABLE_INTEREST = "CREATE TABLE IF NOT EXISTS " +
             TABLE_INTEREST + " (" + BaseColumns._ID +
-             " integer primary key autoincrement, " +
+            " integer primary key autoincrement, " +
             Fields.ID + " integer, " +
             Fields.CATEGORY + " integer, " +
             Fields.INTERESTS + " text)";
@@ -153,13 +154,29 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
 
     private static final String CREATE_TABLE_AWARDS = "CREATE TABLE IF NOT EXISTS " +
             TABLE_AWARDS + " (" + BaseColumns._ID +
-             " integer primary key autoincrement, " +
+            " integer primary key autoincrement, " +
             Fields.ID + " integer, " +
             Fields.AWARDS + " text)";
 
+    private static final String CREATE_TABLE_PHOTOS = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_PHOTOS + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.PROFILE_ID_2 + " integer, " +
+            Fields.QUALITY + " text, " +
+            Fields.URLS + " text, " +
+            Fields.IS_PRIVATE + " integer, " +
+            Fields.ID + " integer, " +
+            Fields.IS_AUTO_PRICE + " integer, " +
+            Fields.PRICE + " integer, " +
+            Fields.TOTAL_PROFIT + " integer, " +
+            Fields.TOTAL_VIEWS + " integer, " +
+            Fields.IS_UNLOCKED + " integer, " +
+            Fields.TEMPLATE_IDS + " text)";
+
+
     private static final String CREATE_TABLE_LANGUAGE = "CREATE TABLE IF NOT EXISTS " +
             TABLE_LANGUAGES + " (" + BaseColumns._ID +
-             " integer primary key autoincrement, " +
+            " integer primary key autoincrement, " +
             Fields.ID + " integer, " +
             Fields.LANGUAGES + " text, " +
             Fields.LEVEL_LANGUAGES + " integer)";
@@ -173,8 +190,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.v("SQLite", "onCreate");
-        try
-        {
+        try {
             db.execSQL(DATABASE_CREATE_SCRIPT);
             db.execSQL(DATABASE_LAST_USER_CREATE_SCRIPT);
             db.execSQL(CREATE_TABLE_SOCIAL_OK);
@@ -184,18 +200,21 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             db.execSQL(DATABASE_FIREBASE_TOKEN_CREATE_SCRIPT);
             db.execSQL(CREATE_TABLE_GIFTS);
             db.execSQL(CREATE_TABLE_TEMPLATES);
+            db.execSQL(CREATE_TABLE_PHOTOS);
 
 
             this.addDefaultId(db);
-        }catch (SQLException sqle){
-         sqle.printStackTrace();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
     }
+
     public void addDefaultId(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
         values.put(Fields.ID, -1);
         db.insert(TABLE_LAST_ID, null, values);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
