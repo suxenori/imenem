@@ -101,6 +101,7 @@ public class FirstActivity extends Activity
             @Override
             public void onClick(View v)
             {
+                finish();
                Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
                 startActivity(intent);
 

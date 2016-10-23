@@ -52,14 +52,14 @@ public class DialogListItem extends Fragment {
 
 
         final LinearLayout messageContainer = (LinearLayout)rootView.findViewById(R.id.messageContainer);
-        DBHandler.getInstance().getPhotos(ownerId, dialogInfo.getProfileId(), 0, 1, Utils.PICTURE_QUALITY_THUMBNAIL, new DBHandler.ResultListener() {
+        DBHandler.getInstance().getAvatar(dialogInfo.getProfileId(), new DBHandler.ResultListener() {
             @Override
             public void onFinish(Object object) {
-                ArrayList<PhotoSetting> pictures = (ArrayList<PhotoSetting>) object;
+                Bitmap picture = (Bitmap)object;
                 ImageView photo = (ImageView) rootView.findViewById(R.id.photo);
                 Bitmap contactAvatar;
-                if(pictures != null && pictures.size() != 0){
-                    contactAvatar = Utils.getCroppedBitmap(pictures.get(0).getPhoto());
+                if(picture != null ){
+                    contactAvatar = Utils.getCroppedBitmap(picture);
 
                 } else {
                     contactAvatar = Utils.getCroppedBitmap(Utils.getBitmapFromResource(getActivity(), R.drawable.empty_photo));

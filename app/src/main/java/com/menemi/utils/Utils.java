@@ -138,6 +138,10 @@ public class Utils {
         return format.format(date);
     }
 
+    public static String getStringDateForDB(Date date){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
+        return format.format(date);
+    }
     public static java.sql.Date getDateFromServer2(String dateString) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
         format.setTimeZone(TimeZone.getTimeZone("GMT"));  // 2016-08-12T16:44:24.640+00:00"
@@ -305,7 +309,7 @@ public class Utils {
         Bitmap outputBitmap = null;
         try {
             System.gc();
-            outputBitmap = Bitmap.createBitmap(image);
+            outputBitmap = image.copy(image.getConfig(),true);//Bitmap.createScaledBitmap(src, dstWidth, dstHeight, filter);Bitmap.createBitmap(image);
             RenderScript renderScript = RenderScript.create(ctx);
             Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
             Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);

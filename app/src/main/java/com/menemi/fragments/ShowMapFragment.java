@@ -58,7 +58,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
 
     private void getPersonMarker(final Runnable onFinishListener) {
         myLocation = new LatLng(personToShow.getPositionLatitude(), personToShow.getPositionLongitude());
-        DBHandler.getInstance().getAvatar(personToShow.getPersonId(), Utils.PICTURE_QUALITY_THUMBNAIL, new DBHandler.ResultListener() {
+        DBHandler.getInstance().getAvatar(personToShow.getPersonId(), new DBHandler.ResultListener() {
             @Override
             public void onFinish(Object object) {
                 Bitmap avatar = (Bitmap) object;

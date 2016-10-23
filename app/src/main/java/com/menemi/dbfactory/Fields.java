@@ -130,4 +130,11 @@ public  class Fields {
     public static final String PRICE = "price";
     public static final String QUALITY = "quality";
     //TODO VIP UNTIL
+    public static final String SORT_ID = "sort_id";
+    public static final String BODY = "body";
+    public static final String DATE = "date";
+    public static final String DIALOG_ID = "dialog_id";
+    public static final String LAST_MESSAGE = "last_message";
+    public static final String LAST_MESSAGE_AT = "last_message_date";
+    public static final String UNREAD_COUNT = "unread_msgs_count";
 }

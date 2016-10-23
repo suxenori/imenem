@@ -33,9 +33,7 @@ public class PersonObject {
     private ArrayList<Language> personLanguages;
     private int personCredits;
     private int personPopularity;
-    private int personSuperPower;
     private Bitmap personAvatar = null;
-    private ArrayList<Bitmap> personPhotos;
     private String personRelationship;
     private String livingWith = "";
     private HairColor hairColor = HairColor.BROWN_HAIR_COLOR;
@@ -106,9 +104,7 @@ private boolean canChat;
         this.personLanguages = personObject.personLanguages;
         this.personCredits = personObject.personCredits;
         this.personPopularity = personObject.personPopularity;
-        this.personSuperPower = personObject.personSuperPower;
         this.personAvatar = personObject.personAvatar;
-        this.personPhotos = personObject.personPhotos;
         this.personRelationship = personObject.personRelationship;
         this.livingWith = personObject.livingWith;
         this.hairColor = personObject.hairColor;
@@ -422,21 +418,9 @@ private boolean canChat;
         this.personAvatar = personAvatar;
     }
 
-    public ArrayList<Bitmap> getPersonPhotos() {
-        return personPhotos;
-    }
 
-    public void setPersonPhotos(ArrayList<Bitmap> personPhotos) {
-        this.personPhotos = personPhotos;
-    }
 
-    public int getPersonSuperPower() {
-        return personSuperPower;
-    }
 
-    public void setPersonSuperPower(int personSuperPower) {
-        this.personSuperPower = personSuperPower;
-    }
    public int getPersonPopularity() {
         return personPopularity;
     }

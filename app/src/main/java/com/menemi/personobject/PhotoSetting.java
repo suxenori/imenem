@@ -112,7 +112,7 @@ public class PhotoSetting {
         this.photoId = photoId;
     }
 
-    public void setTemplateIDs(ArrayList<PhotoTemplate> photoTemplates){
+    public void setTemplateIds(ArrayList<PhotoTemplate> photoTemplates){
         ArrayList<PhotoTemplate> templates = new ArrayList<>();
         for (int i = 0; i < photoTemplates.size(); i++) {
             if(photoTemplates.get(i).isOn()) {

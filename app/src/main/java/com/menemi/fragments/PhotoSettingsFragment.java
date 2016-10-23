@@ -131,7 +131,7 @@ public class PhotoSettingsFragment extends Fragment {
                 progress.show();
                 progress.setCancelable(false);
                 photoSetting.setProfileId(DBHandler.getInstance().getUserId());
-                photoSetting.setTemplateIDs(photoTemplates);
+                photoSetting.setTemplateIds(photoTemplates);
 
                 DBHandler.getInstance().addPhoto(photoSetting, new DBHandler.ResultListener() {
                     @Override

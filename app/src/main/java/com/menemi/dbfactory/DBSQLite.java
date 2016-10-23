@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
@@ -88,7 +89,6 @@ class DBSQLite {
             personObject.setPersonScore(cursor.getInt(cursor.getColumnIndex(Fields.SCORE)));//PersonScore());
             personObject.setPersonWork(cursor.getString(cursor.getColumnIndex(Fields.WORK)));//PersonWork());
             personObject.setiAmHereTo(cursor.getInt(cursor.getColumnIndex(Fields.HERE_TO)));//iAmHereTo().toString());
-            personObject.setPersonSuperPower(cursor.getInt(cursor.getColumnIndex(Fields.SUPERPOWER)));//PersonSuperPower());
             personObject.setLivingWith(cursor.getString(cursor.getColumnIndex(Fields.LIVING_WITH)));//LivingWith().ordinal());
             personObject.setBirthday(cursor.getString(cursor.getColumnIndex(Fields.BIRTH_DAY)));
             personObject.setPersonTwitter(cursor.getString(cursor.getColumnIndex(Fields.TWITTER_ACCOUNT)));
@@ -108,7 +108,6 @@ class DBSQLite {
             personObject.setDrinkingPerson(cursor.getString(cursor.getColumnIndex(Fields.DRINKING)));
             personObject.setSmokingPerson(cursor.getString(cursor.getColumnIndex(Fields.SMOKING)));
             //  personObject.setPersonSexuality(cursor.getInt(cursor.getColumnIndex(Fields.SEXUALITY)));
-            personObject.setPersonSuperPower(cursor.getInt(cursor.getColumnIndex(Fields.SUPERPOWER)));
             personObject.setPersonRelationship(cursor.getString(cursor.getColumnIndex(Fields.RELATIONSHIP)));
 
             // return contact
@@ -127,7 +126,7 @@ class DBSQLite {
         if (cursor != null) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
-                Gift gift = new Gift(Utils.getBitmapFromStringBase64(cursor.getString(cursor.getColumnIndex(Fields.PHOTO))),
+                Gift gift = new Gift(cursor.getString(cursor.getColumnIndex(Fields.PHOTO)),
                         cursor.getInt(cursor.getColumnIndex(Fields.ID)), cursor.getString(cursor.getColumnIndex(Fields.NAME)),
                         cursor.getInt(cursor.getColumnIndex(Fields.PRICE)));
                 gifts.add(gift);
@@ -138,34 +137,32 @@ class DBSQLite {
         return gifts;
 
     }
-    public void setGift(Gift gift){
 
-            ContentValues values = new ContentValues();
+    public void setGift(Gift gift) {
 
-            values.put(Fields.PHOTO, Utils.getBitmapToBase64String(gift.getImage()));
-            values.put(Fields.ID, gift.getGiftId());
-            values.put(Fields.NAME, gift.getGiftName());
-            values.put(Fields.PRICE, gift.getPrice());
+        ContentValues values = new ContentValues();
+
+        values.put(Fields.PHOTO, gift.getUrl());
+        values.put(Fields.ID, gift.getGiftId());
+        values.put(Fields.NAME, gift.getGiftName());
+        values.put(Fields.PRICE, gift.getPrice());
 
 
-
-            if (isFirstTime(SQLiteEngine.TABLE_GIFTS_BASE)) {
-                sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
+        if (isFirstTime(SQLiteEngine.TABLE_GIFTS_BASE)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_GIFTS_BASE, null, Fields.ID + "=?",
+                    new String[]{"" + gift.getGiftId()}, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst() == true) {
+                sqliteDB.update(SQLiteEngine.TABLE_GIFTS_BASE, values,
+                        Fields.ID + "=?", new String[]{"" + gift.getGiftId()});
             } else {
-                Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_GIFTS_BASE, null, Fields.ID + "=?",
-                        new String[]{""+gift.getGiftId()}, null, null, null, null);
-                if (cursor != null && cursor.moveToFirst() == true){
-                    sqliteDB.update(SQLiteEngine.TABLE_GIFTS_BASE, values,
-                            Fields.ID + "= ?", new String[]{"" + gift.getGiftId()});
-                } else {
-                    sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
-                }
-
+                sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
             }
 
         }
 
-
+    }
 
 
     public ArrayList<PhotoTemplate> getTemplates() {
@@ -177,7 +174,7 @@ class DBSQLite {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
                 PhotoTemplate template = new PhotoTemplate(cursor.getInt(cursor.getColumnIndex(Fields.ID)),
-                        Utils.getBitmapFromStringBase64(cursor.getString(cursor.getColumnIndex(Fields.PHOTO))));
+                        cursor.getString(cursor.getColumnIndex(Fields.PHOTO)));
                 templates.add(template);
                 cursor.moveToNext();
             }
@@ -188,10 +185,8 @@ class DBSQLite {
     }
 
     public ArrayList<PhotoSetting> getPhotoUrls(int id, String isThumbnail, boolean isPrivate) {
-
-
-        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_PHOTOS, null, Fields.PROFILE_ID_2 + "=?" + " AND " + Fields.QUALITY + "=?" + " AND " + Fields.IS_PRIVATE + "=?" , new String[]{""+id, isThumbnail,""+Utils.boolToInt(isPrivate)}, null, null, null);
-        ArrayList<PhotoSetting> photoSettings= new ArrayList<>();
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_PHOTOS, null, Fields.PROFILE_ID_2 + "=?" + " AND " + Fields.QUALITY + "=?" + " AND " + Fields.IS_PRIVATE + "=?", new String[]{"" + id, isThumbnail, "" + Utils.boolToInt(isPrivate)}, null, null, null);
+        ArrayList<PhotoSetting> photoSettings = new ArrayList<>();
         if (cursor != null) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -206,6 +201,7 @@ class DBSQLite {
                 photoSetting.setUnlocked(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.IS_UNLOCKED))));
 
                 int[] templates = Utils.convertStringToIntArray(cursor.getString(cursor.getColumnIndex(Fields.TEMPLATE_IDS)));
+                photoSetting.setTemplateIds(templates);
                 photoSettings.add(photoSetting);
                 cursor.moveToNext();
             }
@@ -214,20 +210,66 @@ class DBSQLite {
         return photoSettings;
 
     }
+
+    public Bitmap getBitmap(String url) {
+
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_PHOTOS, new String[]{Fields.PHOTO}, Fields.URLS + "=?", new String[]{url}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            return Utils.getBitmapFromStringBase64(cursor.getString(cursor.getColumnIndex(Fields.PHOTO)));
+        }
+        return null;
+    }
+
     public void saveBitmap(String url, Bitmap photo) {
         ContentValues values = new ContentValues();
         values.put(Fields.PHOTO, Utils.getBitmapToBase64String(photo));
-
-        sqliteDB.update(SQLiteEngine.TABLE_PHOTOS, values,
-                Fields.URLS + "= ?", new String[]{"" + url});
+        if (sqliteDB.update(SQLiteEngine.TABLE_PHOTOS, values, Fields.URLS + "=?", new String[]{url}) == 0) {
+            values.put(Fields.URLS, url);
+            sqliteDB.insert(SQLiteEngine.TABLE_PHOTOS, null, values);
+        }
 
     }
+
+    public void saveAvatarURL(int userID, String url) {
+        ContentValues values = new ContentValues();
+        values.put(Fields.ID, userID);
+        values.put(Fields.URLS, url);
+
+        if (isFirstTime(SQLiteEngine.TABLE_AVATARS)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_AVATARS, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_AVATARS, null, Fields.ID + "=?",
+                    new String[]{"" + userID}, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                sqliteDB.update(SQLiteEngine.TABLE_AVATARS, values,
+                        Fields.ID + "=?", new String[]{"" + userID});
+            } else {
+                sqliteDB.insert(SQLiteEngine.TABLE_AVATARS, null, values);
+            }
+        }
+    }
+
+    /**
+     * @param userID
+     * @return null if nothig found
+     */
+    public String getAvatarURL(int userID) {
+
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_AVATARS, new String[]{Fields.URLS}, Fields.ID + "=?", new String[]{"" + userID}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            return cursor.getString(cursor.getColumnIndex(Fields.URLS));
+        }
+        return null;
+    }
+
     public void savePicture(int userID, String quality, PhotoSetting photoSetting) {
         ContentValues values = new ContentValues();
         values.put(Fields.PROFILE_ID_2, userID);
         values.put(Fields.QUALITY, quality);
         values.put(Fields.URLS, photoSetting.getPhotoUrl());
-        if(photoSetting.getPhoto() != null) {
+        if (photoSetting.getPhoto() != null) {
             values.put(Fields.PHOTO, Utils.getBitmapToBase64String(photoSetting.getPhoto()));
         }
         values.put(Fields.IS_PRIVATE, photoSetting.isPrivate());
@@ -247,66 +289,84 @@ class DBSQLite {
                     new String[]{"" + photoSetting.getPhotoId()}, null, null, null, null);
             if (cursor != null && cursor.moveToFirst() == true) {
                 sqliteDB.update(SQLiteEngine.TABLE_PHOTOS, values,
-                        Fields.ID + "= ?", new String[]{"" + photoSetting.getPhotoId()});
+                        Fields.ID + "=?", new String[]{"" + photoSetting.getPhotoId()});
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_PHOTOS, null, values);
             }
         }
     }
 
-    public void setTemplate(PhotoTemplate template){
+    public void setTemplate(PhotoTemplate template) {
 
 
-            ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();
 
-            values.put(Fields.PHOTO, Utils.getBitmapToBase64String(template.getTemplatePicture()));
-            values.put(Fields.ID, template.getTemplateID());
+        values.put(Fields.PHOTO, template.getUrl());
+        values.put(Fields.ID, template.getTemplateID());
 
-            if (isFirstTime(SQLiteEngine.TABLE_TEMPLATES_BASE)) {
-                sqliteDB.insert(SQLiteEngine.TABLE_TEMPLATES_BASE, null, values);
+        if (isFirstTime(SQLiteEngine.TABLE_TEMPLATES_BASE)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_TEMPLATES_BASE, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_TEMPLATES_BASE, null, Fields.ID + "=?",
+                    new String[]{"" + template.getTemplateID()}, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst() == true) {
+                sqliteDB.update(SQLiteEngine.TABLE_TEMPLATES_BASE, values,
+                        Fields.ID + "=?", new String[]{"" + template.getTemplateID()});
             } else {
-                Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_TEMPLATES_BASE, null, Fields.ID + "=?",
-                        new String[]{"" + template.getTemplateID()}, null, null, null, null);
-                if (cursor != null && cursor.moveToFirst() == true) {
-                    sqliteDB.update(SQLiteEngine.TABLE_TEMPLATES_BASE, values,
-                            Fields.ID + "= ?", new String[]{"" + template.getTemplateID()});
-                } else {
-                    sqliteDB.insert(SQLiteEngine.TABLE_TEMPLATES_BASE, null, values);
-                }
-
-            }
-
-
-
-
-    }
-
-    public void setTemplates(ArrayList<PhotoTemplate> templates){
-        for (int i = 0; i < templates.size(); i++) {
-            ContentValues values = new ContentValues();
-
-            values.put(Fields.PHOTO, Utils.getBitmapToBase64String(templates.get(i).getTemplatePicture()));
-            values.put(Fields.ID, templates.get(i).getTemplateID());
-
-            //Log.d("DBHandler", "setPersonalInfo(), isFirstTime = " + isFirstTime(SQLiteEngine.TABLE_OWNER));
-
-            if (isFirstTime(SQLiteEngine.TABLE_TEMPLATES_BASE)) {
                 sqliteDB.insert(SQLiteEngine.TABLE_TEMPLATES_BASE, null, values);
-            } else {
-                Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_TEMPLATES_BASE, null, Fields.ID + "=?",
-                        new String[]{"" + templates.get(i).getTemplateID()}, null, null, null, null);
-                if (cursor != null) {
-                    sqliteDB.update(SQLiteEngine.TABLE_TEMPLATES_BASE, values,
-                            Fields.ID + "= ?", new String[]{"" + templates.get(i).getTemplateID()});
-                } else {
-                    sqliteDB.insert(SQLiteEngine.TABLE_TEMPLATES_BASE, null, values);
-                }
-
             }
 
         }
 
 
+    }
+    public ArrayList<DialogInfo> getDialogs() {
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_DIALOGS, null, null, null, null, null, null);
+        ArrayList<DialogInfo> dialogs = new ArrayList<>();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                DialogInfo dialogInfo = new DialogInfo();
+                dialogInfo.setDialogID(cursor.getInt(cursor.getColumnIndex(Fields.DIALOG_ID)));
+                dialogInfo.setProfileId(cursor.getInt(cursor.getColumnIndex(Fields.PROFILE_ID_2)));
+                dialogInfo.setLastMessage(cursor.getString(cursor.getColumnIndex(Fields.LAST_MESSAGE)));
+                dialogInfo.setLastMessageDate(cursor.getString(cursor.getColumnIndex(Fields.LAST_MESSAGE_AT)));
+                dialogInfo.setNewMessagesCount(cursor.getInt(cursor.getColumnIndex(Fields.UNREAD_COUNT)));
+                dialogInfo.setContactName(cursor.getString(cursor.getColumnIndex(Fields.NAME)));
+
+
+
+                dialogs.add(dialogInfo);
+                cursor.moveToNext();
+            }
+
+        }
+        return dialogs;
+
+    }
+    public void setDialog(DialogInfo dialog) {
+        ContentValues values = new ContentValues();
+        values.put(Fields.DIALOG_ID, dialog.getDialogID());
+        values.put(Fields.PROFILE_ID_2, dialog.getProfileId());
+        values.put(Fields.LAST_MESSAGE, dialog.getLastMessage());
+        values.put(Fields.LAST_MESSAGE_AT, Utils.getStringDateForDB(dialog.getLastMessageDate()));
+        values.put(Fields.UNREAD_COUNT, dialog.getNewMessagesCount());
+        values.put(Fields.NAME, dialog.getContactName());
+
+
+        if (isFirstTime(SQLiteEngine.TABLE_DIALOGS)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_DIALOGS, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_DIALOGS, null, Fields.DIALOG_ID + "=?",
+                    new String[]{"" + dialog.getDialogID()}, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst() == true) {
+                sqliteDB.update(SQLiteEngine.TABLE_DIALOGS, values,
+                        Fields.DIALOG_ID + "=?", new String[]{"" + dialog.getDialogID()});
+            } else {
+                sqliteDB.insert(SQLiteEngine.TABLE_DIALOGS, null, values);
+            }
+        }
     }
 
 
@@ -434,7 +494,6 @@ class DBSQLite {
         values.put(Fields.WORK, personObject.getPersonWork());
         values.put(Fields.VIP, personObject.isPersonVIP());
         values.put(Fields.HERE_TO, personObject.getiAmHereTo().toString());
-        values.put(Fields.SUPERPOWER, personObject.getPersonSuperPower());
         values.put(Fields.LIVING_WITH, personObject.getLivingWith());
         values.put(Fields.PASSWORD, personObject.getPassword());
         values.put(Fields.EMAIL, personObject.getEmail());
@@ -460,7 +519,6 @@ class DBSQLite {
         //values.put(Fields.LANGUAGES, String.valueOf((personObject.getPersonLanguages())));//
         // values.put(Fields.LEVEL_LANGUAGES,personObject.getLevelLanguage());            //   <== how working with this array? IN ANOTHER SQL TABLE!
         //values.put(Fields.AWARDS, String.valueOf(personObject.getPersonAwards()));    //
-        values.put(Fields.SUPERPOWER, personObject.getPersonSuperPower());
         values.put(Fields.POPULARITY, personObject.getPersonPopularity());
         values.put(Fields.RELATIONSHIP, personObject.getPersonRelationship());
 
@@ -475,7 +533,7 @@ class DBSQLite {
             sqliteDB.insert(SQLiteEngine.TABLE_OWNER, null, getContentValues(personObject));
         } else {
             sqliteDB.update(SQLiteEngine.TABLE_OWNER, getContentValues(personObject),
-                    Fields.ID + "= ?", new String[]{"" + personObject.getPersonId()});
+                    Fields.ID + "=?", new String[]{"" + personObject.getPersonId()});
         }
 
     }
@@ -484,7 +542,7 @@ class DBSQLite {
         ContentValues values = new ContentValues();
         values.put(field, data);
         sqliteDB.update(tableName, values,
-                Fields.ID + "= ?", new String[]{"" + userId});
+                Fields.ID + "=?", new String[]{"" + userId});
 
     }
 
@@ -509,8 +567,6 @@ class DBSQLite {
         values.put(Fields.SOCIAL_PROFILE_MIDDLE_NAME, profile.getMiddleName());
         values.put(Fields.SOCIAL_PROFILE_LAST_NAME, profile.getLastName());
         values.put(Fields.SOCIAL_PROFILE_IMAGE, Utils.getBitmapToBase64String(profile.getImage()));
-
-
         return values;
 
 

@@ -11,6 +11,7 @@ import com.menemi.dbfactory.rest.PictureLoader;
 
 public class Gift {
     private Bitmap image;
+    private String url;
     private int giftId;
     private String giftName;
     private int price;
@@ -23,6 +24,7 @@ public class Gift {
         this.giftId = giftId;
         this.giftName = giftName;
         this.price = price;
+        this.url = imageURL;
         new PictureLoader(imageURL, (Object bitmap) -> {
             this.image = (Bitmap) bitmap;
             DBHandler.getInstance().setGiftToDB(this);
@@ -43,6 +45,9 @@ public class Gift {
         return image;
     }
 
+    public String getUrl() {
+        return url;
+    }
 
     public int getGiftId() {
         return giftId;

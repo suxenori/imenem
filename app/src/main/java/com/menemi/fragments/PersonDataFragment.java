@@ -61,10 +61,10 @@ public class PersonDataFragment extends Fragment {
                             getFragmentManager().popBackStack();
                         });
                         getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
-                    } else if(personObject == null){
+                    } else {
                         LostInternetFragment lostInternetFragment = new LostInternetFragment();
                         lostInternetFragment.setOnRetryListener(()->{
-
+                            listener.onPrepare(personObject);
                         });
                         getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
                     }

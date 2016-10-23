@@ -217,8 +217,15 @@ public class DBHandler {
                                 dbSQLite.saveLastId(myProfile.getPersonId());
                                 prepareSettingsForProfile();
                             }
+                            if(photoTemplates == null || gifts == null){
+                                prepareSettings(() -> {
+                                    resultListener.onFinish(object);
+                                });
+                            } else {
+                                resultListener.onFinish(object);
+                            }
 
-                            resultListener.onFinish(object);
+
                         }
                     });
                 } else {
@@ -426,29 +433,35 @@ public void prepareSettings(Runnable runnable){
 
     /**
      * @param personId       id of picture owner
-     * @param isThumbnail    false to get big picture, true for avatars
      * @param resultListener will return Bitmap photo = (Bitmap)object;
      */
-    public void getAvatar(final int personId, final String isThumbnail, final ResultListener resultListener) {
+    public void getAvatar(final int personId, final ResultListener resultListener) {
 
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
                 if ((boolean) object == true) {
-                    dbRest.getPicture(personId, isThumbnail, new ResultListener() {
+                    dbRest.getPicture(personId, Utils.PICTURE_QUALITY_THUMBNAIL, new ResultListener() {
                         @Override
                         public void onFinish(Object object) {
                             String url = (String) object;
+                            dbSQLite.saveAvatarURL(personId, url);
                             new PictureLoader(url, (Object obj) ->{
-                                Bitmap photo = (Bitmap) obj;
                                 resultListener.onFinish(obj);
-                                dbSQLite.updatePhoto(personId, Utils.getBitmapToBase64String(photo));
                             });
-
                         }
                     });
                 } else {
-                    resultListener.onFinish(dbSQLite.getPhoto(personId));
+                    String avatarUrl = dbSQLite.getAvatarURL(personId);
+                    if(avatarUrl != null){
+                        new PictureLoader(avatarUrl, (Object obj) ->{
+                            resultListener.onFinish(obj);
+                        });
+                    } else {
+                        resultListener.onFinish(null);
+                    }
+
+
                 }
             }
         });
@@ -472,8 +485,9 @@ public void prepareSettings(Runnable runnable){
                         for (int i = 0; i < pictures.size(); i++) {
                         dbSQLite.savePicture(id, isThumbnail,pictures.get(i));
                         }
-
+                        resultListener.onFinish(pictures);
                     });
+
                 } else {
 
                     resultListener.onFinish(dbSQLite.getPhotoUrls(id, isThumbnail, isPrivate)); // instead of null should be dbSQLite.getPhoto(personId)
@@ -481,9 +495,11 @@ public void prepareSettings(Runnable runnable){
 
         });
 
-
     }
-    public void saveBitmap(String url, Bitmap photo) {
+    public Bitmap getBitmapFromDB(String url){
+        return dbSQLite.getBitmap(url);
+    }
+    public void saveBitmapToDB(String url, Bitmap photo) {
         dbSQLite.saveBitmap(url, photo);
     }
     public void logout(Context ctx) {
@@ -545,16 +561,9 @@ Log.d("logout", "logout1");
 
     }
 
-    /**
-     * @param personId
-     * @param photoNumber
-     * @param count
-     * @param resultListener ArrayList<PhotoSetting> pictures = (ArrayList<PhotoSetting>) object;
-     */
+/*
+    */
 
-    public void getPhotos(int personId, int requestedId, int photoNumber, int count, String quality, ResultListener resultListener) {
-        dbRest.getPhotos(getUserId(), requestedId, photoNumber, count, quality, resultListener);
-    }
 
     public void addFavorites(int personId, int slavePersonId, boolean isAdded, ResultListener resultListener) {
         dbRest.addFavorites(personId, slavePersonId, isAdded, resultListener);
@@ -735,13 +744,9 @@ Log.d("logout", "logout1");
     }
 
 
-    /* public void getDialogsList(ResultListener resultListener) {
-         dbRest.getDialogsList(getUserId(), resultListener);
-     }
 
      /**
       *
-      * @param dialogId
       * @param count
       * @param offset
       * @param requestedId
@@ -826,7 +831,29 @@ Log.d("logout", "logout1");
 
 
     public void getDialogsList(ResultListener resultListener) {
-        dbRest.getDialogsList(getUserId(), resultListener);
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if((boolean) object) {
+                    dbRest.getDialogsList(getUserId(), new ResultListener() {
+                        @Override
+                        public void onFinish(Object object) {
+                            ArrayList<DialogInfo> dialogInfos = (ArrayList<DialogInfo>)object;
+                            resultListener.onFinish(dialogInfos);
+                            for (int i = 0; i < dialogInfos.size(); i++) {
+                                dbSQLite.setDialog(dialogInfos.get(i));
+                            }
+
+                        }
+                    });
+                } else{
+                    resultListener.onFinish(dbSQLite.getDialogs());
+
+                }
+            }
+        });
+
+
     }
 
     public void getDialog(final DialogInfo dialogInfo, final ResultListener resultListener) {
@@ -834,7 +861,7 @@ Log.d("logout", "logout1");
             @Override
             public void onFinish(Object object) {
                 dialogInfo.setDialogID((int) object);
-                dbRest.getPicture(dialogInfo.getProfileId(), Utils.PICTURE_QUALITY_THUMBNAIL, new ResultListener() {
+                getAvatar(dialogInfo.getProfileId(), new ResultListener() {
                     @Override
                     public void onFinish(Object object) {
                         Bitmap photo = (Bitmap) object;
@@ -880,6 +907,7 @@ Log.d("logout", "logout1");
 
 
     public int getGiftsCount() {
+
         return gifts.size();
     }
 

@@ -14,6 +14,7 @@ import com.menemi.dbfactory.DBHandler;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class PictureLoader extends AsyncTask<Void, Void, String> {
@@ -23,7 +24,7 @@ public class PictureLoader extends AsyncTask<Void, Void, String> {
             Log.w("OnBitmapLoadListener", "Custom listener is not defined");
     };
 
-    private HashMap<String, Bitmap> cashedPictures = new HashMap<>();
+    private static HashMap<String, Bitmap> cashedPictures = new HashMap<>();
     private String dataURL = "";
     private Bitmap downloadedPicture;
     private static Bitmap defaultPicture;
@@ -38,6 +39,7 @@ public class PictureLoader extends AsyncTask<Void, Void, String> {
 
     /**
      * new PictureLoader(personalGift.getAvatarUrl(), (Object bitmap) ->{});
+     * handles cashing, and saving bitmaps to db
      * @param dataURL              link to the JSON file.
      * @param onBitmapLoadListener implement this interface to get picture in place
      *                             where you create object of this class
@@ -48,10 +50,20 @@ public class PictureLoader extends AsyncTask<Void, Void, String> {
         if(cashedPictures.get(dataURL) != null){
             onBitmapLoadListener.onFinish(cashedPictures.get(dataURL));
 
-        } else{
-        this.dataURL = dataURL;
-        this.onBitmapLoadListener = onBitmapLoadListener;
-        execute();
+        } else {
+            Bitmap picureFromDB = DBHandler.getInstance().getBitmapFromDB(dataURL);
+            if (picureFromDB != null){
+                cashedPictures.put(dataURL,picureFromDB);
+                if(dataURL.equals("http://minemi.ironexus.com/system/profile_pictures/pictures/000/000/001/thumb/open-uri20161014-9573-gq2e4l?1476466426")){
+                    Log.d("stackTrace", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
+                }
+                onBitmapLoadListener.onFinish(picureFromDB);
+            } else {
+                this.dataURL = dataURL;
+                this.onBitmapLoadListener = onBitmapLoadListener;
+                execute();
+            }
+
         }
     }
 
@@ -65,7 +77,8 @@ public class PictureLoader extends AsyncTask<Void, Void, String> {
 
             //loading picture
             downloadedPicture = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-            DBHandler.getInstance().saveBitmap(dataURL, downloadedPicture);
+            cashedPictures.put(dataURL,downloadedPicture);
+            DBHandler.getInstance().saveBitmapToDB(dataURL, downloadedPicture);
 
         }catch (FileNotFoundException fileNotFoundException){
             fileNotFoundException.printStackTrace();

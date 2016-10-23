@@ -65,7 +65,7 @@ public class PeopleRowFragment extends Fragment {
             if (i < personObjects.size()) {
                 final int finalI = i;
                 if (personObjects.get(i) != null) {
-                    DBHandler.getInstance().getAvatar(personObjects.get(i).getPersonId(), Utils.PICTURE_QUALITY_THUMBNAIL, (Object object) -> {
+                    DBHandler.getInstance().getAvatar(personObjects.get(i).getPersonId(), (Object object) -> {
                         Bitmap avatar = ((Bitmap) object);
                         personObjects.get(finalI).setPersonAvatar(avatar);
                         if (finalI == start + 2 || finalI == personObjects.size() - 1) {

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
 
     public static final String DATABASE_NAME = "menime1.db";
-    public static final String TABLE_OWNER = "device_owner";
+    public static final String TABLE_OWNER = "profiles";
     public static final String TABLE_LAST_ID = "last_id";
     public static final String TABLE_INTEREST = "personInterests";
     public static final String TABLE_SOCIAL_OK = "social_ok";
@@ -31,6 +31,8 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public static final String TABLE_GIFTS_BASE = "gifts_base";
     public static final String TABLE_TEMPLATES_BASE = "templates_base";
     public static final String TABLE_PHOTOS = "photos";
+    public static final String TABLE_AVATARS = "avatars";
+    public static final String TABLE_DIALOGS = "dialogs_base";
 
     private static final int DATABASE_VERSION = 1; // In case of any changes in database structure this variable should be incremented
     private static final String DATABASE_LAST_USER_CREATE_SCRIPT = "CREATE TABLE IF NOT EXISTS " +
@@ -70,7 +72,6 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             Fields.SEARCH_AGE_MIN + " integer," +
             Fields.FRIENDS + " text, " +
             Fields.AWARDS + " text, " +
-            Fields.EMAIL + " email, " +
             Fields.LINKEDIN_ACCOUNT + " text, " +
             Fields.Gplus_ACCOUNT + " text, " +
             Fields.FACEBOOK_ACCOUNT + " text, " +
@@ -82,8 +83,8 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             Fields.WEIGHT + " integer, " +
             Fields.INTEREST_GENDER + " integer, " +
             Fields.ORIENTATION + " integer, " +
-            Fields.PASSWORD + " text, " +
-            Fields.PHOTO + " text)";
+            Fields.EMAIL + " email, " +
+            Fields.PASSWORD + " text)";
 
     private static final String CREATE_TABLE_INTEREST = "CREATE TABLE IF NOT EXISTS " +
             TABLE_INTEREST + " (" + BaseColumns._ID +
@@ -105,6 +106,24 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             " integer primary key autoincrement, " +
             Fields.PHOTO + " text, " +
             Fields.ID + " integer)";
+
+    private static final String CREATE_TABLE_AVATARS = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_AVATARS + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.URLS + " text, " +
+            Fields.ID + " integer)";
+
+    private static final String CREATE_TABLE_DIALOGS = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_DIALOGS + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.DIALOG_ID + " integer, " +
+            Fields.PROFILE_ID_2 + " integer, " +
+            Fields.LAST_MESSAGE + " text, " +
+            Fields.LAST_MESSAGE_AT + " text, " +
+            Fields.UNREAD_COUNT + " integer, " +
+            Fields.NAME + " text)";
+
+
 
     private static final String CREATE_TABLE_SOCIAL_FB = "CREATE TABLE IF NOT EXISTS " +
             TABLE_SOCIAL_FB + " (" + BaseColumns._ID +
@@ -162,6 +181,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             TABLE_PHOTOS + " (" + BaseColumns._ID +
             " integer primary key autoincrement, " +
             Fields.PROFILE_ID_2 + " integer, " +
+            Fields.PHOTO + " text, " +
             Fields.QUALITY + " text, " +
             Fields.URLS + " text, " +
             Fields.IS_PRIVATE + " integer, " +
@@ -201,6 +221,8 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             db.execSQL(CREATE_TABLE_GIFTS);
             db.execSQL(CREATE_TABLE_TEMPLATES);
             db.execSQL(CREATE_TABLE_PHOTOS);
+            db.execSQL(CREATE_TABLE_AVATARS);
+            db.execSQL(CREATE_TABLE_DIALOGS);
 
 
             this.addDefaultId(db);
@@ -221,7 +243,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
         Log.w("SQLite", "Update from version " + oldVersion + " to version " + newVersion);
 
 
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OWNER);
+        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFILES);
 
         //TODO: Copy data to new table code
 

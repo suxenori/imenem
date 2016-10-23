@@ -119,13 +119,7 @@ public class Loader extends JSONLoader {
     private static final String IS_POPULAR = "is_popular";
     private static final String DIALOGS = "dialogs";
 
-    private static final String SORT_ID = "sort_id";
-    private static final String BODY = "body";
-    private static final String DATE = "date";
-    private static final String DIALOG_ID = "dialog_id";
-    private static final String LAST_MESSAGE = "last_message";
-    private static final String LAST_MESSAGE_AT = "last_message_date";
-    private static final String UNREAD_COUNT = "unread_msgs_count";
+
 
 
     static final String G_GET_PLACES_LIST_TARGET_VALUE = "&types=(cities)&language=";
@@ -716,7 +710,7 @@ public class Loader extends JSONLoader {
                     for (int i = 0; i < plansArray.length(); i++) {
                         JSONObject planJSON = plansArray.getJSONObject(i);
                         plans.add(new PayPlan(planJSON.getInt(Fields.ID),
-                                planJSON.getInt(PRICE),
+                                planJSON.getInt(Fields.PRICE),
                                 planJSON.getInt(COINS),
                                 planJSON.getString(IS_POPULAR)));
                     }
@@ -734,11 +728,11 @@ public class Loader extends JSONLoader {
                 for (int i = 0; i < dialogsArrayJ.length(); i++) {
                     JSONObject dialogJSON = dialogsArrayJ.getJSONObject(i);
                     DialogInfo dialogInfo = new DialogInfo();
-                    dialogInfo.setDialogID(dialogJSON.getInt(DIALOG_ID));
+                    dialogInfo.setDialogID(dialogJSON.getInt(Fields.DIALOG_ID));
                     dialogInfo.setProfileId(dialogJSON.getInt(Fields.PROFILE_ID_2));
-                    dialogInfo.setLastMessage(dialogJSON.getString(LAST_MESSAGE));
-                    dialogInfo.setLastMessageDate(dialogJSON.getString(LAST_MESSAGE_AT));
-                    dialogInfo.setNewMessagesCount(dialogJSON.getInt(UNREAD_COUNT));
+                    dialogInfo.setLastMessage(dialogJSON.getString(Fields.LAST_MESSAGE));
+                    dialogInfo.setLastMessageDate(dialogJSON.getString(Fields.LAST_MESSAGE_AT));
+                    dialogInfo.setNewMessagesCount(dialogJSON.getInt(Fields.UNREAD_COUNT));
                     dialogInfo.setContactName(dialogJSON.getString(Fields.NAME));
                     dialogInfo.setOnline(dialogJSON.getString(Fields.STATUS));
 
@@ -760,14 +754,14 @@ public class Loader extends JSONLoader {
                     DialogMessage dialogMessage = new DialogMessage(messageJSON.getInt(Fields.PROFILE_ID_2));
 
                     dialogMessage.setMessageId(messageJSON.getInt(Fields.ID));
-                    dialogMessage.setMessageBody(messageJSON.getString(BODY));
-                    dialogMessage.setSortId(messageJSON.getInt(SORT_ID));
+                    dialogMessage.setMessageBody(messageJSON.getString(Fields.BODY));
+                    dialogMessage.setSortId(messageJSON.getInt(Fields.SORT_ID));
 
                     byte[] decodedString = Base64.decode(messageJSON.getString(Fields.PICTURE), Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                     dialogMessage.setPicture(decodedByte);
-                    dialogMessage.setDate(messageJSON.getString(DATE));
+                    dialogMessage.setDate(messageJSON.getString(Fields.DATE));
 
                     dialogMessages.add(dialogMessage);
                 }
@@ -791,7 +785,7 @@ public class Loader extends JSONLoader {
                         new PhotoSetting(picturesStats.getJSONObject(i).getInt(Fields.ID),
                                 true,
                                 picturesStats.getJSONObject(i).getBoolean(Fields.IS_AUTO_PRICE),
-                                picturesStats.getJSONObject(i).getInt(PRICE),
+                                picturesStats.getJSONObject(i).getInt(Fields.PRICE),
                                 Utils.JSONArrayToIntArray(templates.getJSONArray(i)),
                                 null);
                     }
@@ -805,7 +799,7 @@ public class Loader extends JSONLoader {
                 Log.v("loader", requestNumber + jsonString);
                 JSONObject mainObject = new JSONObject(jsonString);
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
-                    return mainObject.getInt(DIALOG_ID);
+                    return mainObject.getInt(Fields.DIALOG_ID);
                 }
                 return -1;
 

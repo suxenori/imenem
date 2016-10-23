@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.menemi.PersonPage;
 import com.menemi.R;
+import com.menemi.dbfactory.DBHandler;
 
 /**
  * Created by tester03 on 21.06.2016.
@@ -43,28 +44,47 @@ public class ShowPeopleCompositeFragment extends Fragment
 
             }
         }
+        DBHandler.getInstance().isRESTAvailable(new DBHandler.ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if((boolean) object == true){
+                    initLayout();
+                } else{
+                    LostInternetFragment lostInternetFragment = new LostInternetFragment();
+                    lostInternetFragment.setOnRetryListener(()->{
+                        getFragmentManager().popBackStack();
+                        initLayout();
+                    });
+                    getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
+                }
+            }
+        });
+
+        configureToolbar(purpose);
+        return rootView;
+    }
+
+    private void initLayout() {
         LinearLayout fragment1 = (LinearLayout) rootView.findViewById(R.id.fragment1);
         fragment1.removeAllViews();
 
-                //DBHandler.getInstance().
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //DBHandler.getInstance().
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                PersonListFragment personListFragment = new PersonListFragment();
-                fragmentTransaction.replace(R.id.fragment1, personListFragment);
-                personListFragment.setPurpose(purpose);
+        PersonListFragment personListFragment = new PersonListFragment();
+        fragmentTransaction.replace(R.id.fragment1, personListFragment);
+        personListFragment.setPurpose(purpose);
 
-                if (purpose == Purpose.LIKES || purpose == Purpose.MUTUAL_LIKES) {
-                    personListFragment.setPurpose(Purpose.LIKES);
+        if (purpose == Purpose.LIKES || purpose == Purpose.MUTUAL_LIKES) {
+            personListFragment.setPurpose(Purpose.LIKES);
 
-                    PersonListFragment personListFragment2 = new PersonListFragment();
-                    personListFragment2.setPurpose(Purpose.MUTUAL_LIKES);
-                    fragmentTransaction.add(R.id.fragment1, personListFragment2);
+            PersonListFragment personListFragment2 = new PersonListFragment();
+            personListFragment2.setPurpose(Purpose.MUTUAL_LIKES);
+            fragmentTransaction.add(R.id.fragment1, personListFragment2);
 
-                }
-                fragmentTransaction.commitAllowingStateLoss();
-        configureToolbar(purpose);
-        return rootView;
+        }
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     public enum Purpose {

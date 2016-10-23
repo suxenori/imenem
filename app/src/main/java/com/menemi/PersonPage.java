@@ -180,14 +180,12 @@ public class PersonPage extends AppCompatActivity {
         DBHandler.getInstance().subscribeToRest(new InternetConnectionListener() {
             @Override
             public void internetON() {
-                DBHandler.getInstance().getAvatar(userId, Utils.PICTURE_QUALITY_THUMBNAIL, object -> {
+                DBHandler.getInstance().getAvatar(userId, object -> {
                     final Bitmap bitmap = (Bitmap) object;
                     if (bitmap != null) {
-                        final Bitmap avatar = prepareNavigationalHeader(bitmap);
-                        DBHandler.getInstance().getMyProfile(object1 -> ((PersonObject) object1).setPersonAvatar(avatar));
-                    Log.d("Size", ownerAvatar.getWidth() + "");
-                    Log.d("Size", ownerAvatar.getHeight() + "");
-                    }});
+                        prepareNavigationalHeader(bitmap);
+                    }
+                    });
             }
 
             @Override
@@ -196,7 +194,14 @@ public class PersonPage extends AppCompatActivity {
             }
         });
 
-        prepareNavigationalHeader(Utils.getBitmapFromResource(this, com.menemi.R.drawable.empty_photo));
+        DBHandler.getInstance().getAvatar(userId, object -> {
+            if(object != null){
+                prepareNavigationalHeader((Bitmap)object);
+            } else {
+                prepareNavigationalHeader(Utils.getBitmapFromResource(this, com.menemi.R.drawable.empty_photo));
+            }
+        });
+
         //Add component
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.meet, com.menemi.R.string.encounters));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.nearby, com.menemi.R.string.people_nearby));
@@ -273,6 +278,7 @@ public class PersonPage extends AppCompatActivity {
         ownerAvatar.setColorFilter(getResources().getColor(R.color.avatarFilter), PorterDuff.Mode.MULTIPLY);
         ownerCircleAvatar.setImageBitmap(avatar);
         ownerAvatar.setImageBitmap(Utils.megaBlur(getApplicationContext(), bitmap));
+
 
         ownerAvatar.setOnClickListener(new OnMyProfileOpenListener());
         ownerCircleAvatar.setOnClickListener(new OnMyProfileOpenListener());
@@ -588,8 +594,9 @@ public class PersonPage extends AppCompatActivity {
                 fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
 
             } else {
+                DBHandler.getInstance().isRESTAvailable();
                 isFilterVisible = true;
-                fragment = new FilterFragment();
+                fragment = new FilterF ragment();
                 fragment.setPersonObject(owner);
                 FragmentTransaction transaction = fm.beginTransaction();
                 transaction.replace(com.menemi.R.id.messageFragmentPlaceHolder, fragment);

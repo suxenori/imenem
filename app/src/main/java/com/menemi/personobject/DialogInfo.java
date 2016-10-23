@@ -19,6 +19,7 @@ public class DialogInfo {
     private boolean isOnline = false;
     private int dialogID = -1;
     private Bitmap conatactAvatar = null;
+    private String avatarURL;
 
     public int getDialogID() {
         return dialogID;
@@ -48,6 +49,10 @@ public class DialogInfo {
         return lastMessageDate;
     }
 
+    /**
+     * Date will be formated inside
+     * @param lastMessageDate
+     */
     public void setLastMessageDate(String lastMessageDate) {
         this.lastMessageDate = Utils.getDateFromServer2(lastMessageDate);
     }
@@ -70,6 +75,14 @@ public class DialogInfo {
 
     public void setConatactAvatar(Bitmap conatactAvatar) {
         this.conatactAvatar = conatactAvatar;
+    }
+
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
     }
 
     public String getContactName() {

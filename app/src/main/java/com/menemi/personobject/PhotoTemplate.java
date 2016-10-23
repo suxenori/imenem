@@ -11,6 +11,7 @@ import com.menemi.dbfactory.rest.PictureLoader;
 public class PhotoTemplate {
     private int templateID;
     private Bitmap templatePicture;
+    private String url;
     private boolean isOn = false;
 
     public PhotoTemplate(int templateID, Bitmap templatePicture) {
@@ -19,6 +20,7 @@ public class PhotoTemplate {
     }
     public PhotoTemplate(int templateID, String templatePictureURL) {
         this.templateID = templateID;
+        this.url = templatePictureURL;
         new PictureLoader(templatePictureURL, (Object obj) ->{
             this.templatePicture = (Bitmap) obj;
             DBHandler.getInstance().setTemplateToDB(this);
@@ -28,6 +30,10 @@ public class PhotoTemplate {
     }
     public int getTemplateID() {
         return templateID;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public Bitmap getTemplatePicture() {

@@ -144,12 +144,12 @@
         "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\orca_emoji_backspace_back_normal.png"
     },
     {
-        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\orca_attach_photo_pressed.png",
-        "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\orca_attach_photo_pressed.png"
-    },
-    {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
         "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\orca_attach_photo_pressed.png",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\orca_attach_photo_pressed.png"
     },
     {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\orca_composer_popup_active_normal.png",

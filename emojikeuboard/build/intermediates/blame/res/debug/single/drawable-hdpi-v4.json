@@ -1,11 +1,11 @@
 [
     {
-        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_composer_popup_active_normal.png",
-        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\orca_composer_popup_active_normal.png"
-    },
-    {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_attach_photo_pressed.png",
         "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\orca_attach_photo_pressed.png"
+    },
+    {
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_composer_popup_active_normal.png",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\orca_composer_popup_active_normal.png"
     },
     {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_composer_tab_pressed.9.png",
@@ -80,12 +80,12 @@
         "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\orca_emoji_more_front_normal.png"
     },
     {
-        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_emoji_places_light_activated.png",
-        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\ic_emoji_places_light_activated.png"
-    },
-    {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\orca_attach_location_pressed.png",
         "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\orca_attach_location_pressed.png"
+    },
+    {
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_emoji_places_light_activated.png",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\src\\main\\res\\drawable-hdpi\\ic_emoji_places_light_activated.png"
     },
     {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_emoji_places_light_normal.png",

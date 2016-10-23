@@ -54,7 +54,7 @@ public class LoginActivity extends ActionBarActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
-                                               PersonObject personObject = new PersonObject(setLoginPhoneOrEmail.getText().toString(), setLoginPassword.getText().toString());
+                                               PersonObject personObject = new PersonObject(setLoginPhoneOrEmail.getText().toString().toLowerCase(), setLoginPassword.getText().toString());
                                                Log.i("PersonObject created", personObject + "");
                                                Log.i("PersonObject created", personObject.getPassword() + "");
                                                Log.i("Login data", setLoginPhoneOrEmail.getText().toString());
