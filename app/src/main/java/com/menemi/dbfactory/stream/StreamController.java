@@ -165,7 +165,7 @@ public class StreamController implements StreamTunnel.CommunicationDelegate {
                 String strMessage = prepareMessage(queuedMessage.toJSON().toString());
                 outgoingTunnel.writeData(strMessage);
                 sendedMessages++;
-                Log.d("MessageTest", "sended " + sendedMessages);
+                Log.d("MessageTest", "sended " + strMessage);
                 outgoingMessagesQueue.removeFirst();
 
             } catch (JSONException e) {

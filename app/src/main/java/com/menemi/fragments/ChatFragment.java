@@ -30,6 +30,7 @@ import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.stream.messages.DialogResponceMessage;
 import com.menemi.dbfactory.stream.messages.DialogSendMessage;
 import com.menemi.dbfactory.stream.messages.RecievedMessage;
+import com.menemi.dbfactory.stream.messages.ResponceReadMessage;
 import com.menemi.dbfactory.stream.messages.StreamMessage;
 import com.menemi.dbfactory.stream.messages.TypingMessage;
 import com.menemi.personobject.DialogInfo;
@@ -101,6 +102,7 @@ public class ChatFragment extends Fragment {
         messageText.addTextChangedListener(new OnTypeListener());
         RecievedMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_RECEIVED_MESSAGE, new OnMessageRecieve());
         DialogResponceMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_SEND_MESSAGE_RESPONSE, new OnMessageResponceListener());
+        ResponceReadMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_READ_MESSAGE_RESPONSE, new OnSendedMessageReadedListener());
         return rootView;
     }
     class OnMessageResponceListener implements StreamMessage.OnRecieveListener{
@@ -378,5 +380,31 @@ public class ChatFragment extends Fragment {
         }
 
 
+    }
+
+    private class OnSendedMessageReadedListener implements StreamMessage.OnRecieveListener {
+        @Override
+        public void onRecieve(StreamMessage message) {
+            if(getActivity() == null){
+                return;
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    //LinearLayout typingContainer = (LinearLayout) rootView.findViewById(R.id.typingContainer);
+                    ResponceReadMessage responceReadMessage = (ResponceReadMessage) message;
+                    Log.d("responce", "responce on message Readed");
+                    //Log.d("TYPING", "listener");
+                    /*if (responceReadMessage.getgetFromProfileID() == dialogInfo.getProfileId() && typingMessage.getIsTyping()) {
+                        typingContainer.setVisibility(View.VISIBLE);
+                        Log.d("TYPING", "visible");
+                    } else if (typingMessage.getFromProfileID() == dialogInfo.getProfileId() && !typingMessage.getIsTyping()) {
+                        typingContainer.setVisibility(View.GONE);
+                        Log.d("TYPING", "not visible");
+                    }*/
+                }
+            });
+        }
     }
 }

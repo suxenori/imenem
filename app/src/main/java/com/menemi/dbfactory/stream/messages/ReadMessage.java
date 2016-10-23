@@ -1,5 +1,7 @@
 package com.menemi.dbfactory.stream.messages;
 
+import com.menemi.dbfactory.DBHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +26,14 @@ public class ReadMessage extends  StreamMessage{
         this.profileID = profileID;
         setCommand(ConnectorCommands.ZCMD_READ_MESSAGE);
     }
-
+    public ReadMessage(RecievedMessage recievedMessage) {
+        ArrayList<Integer> id = new ArrayList<>();
+        id.add(recievedMessage.getMessageId());
+        this.ids = id;
+        this.dialogID = recievedMessage.getDialogID();
+        this.profileID = DBHandler.getInstance().getUserId();
+        setCommand(ConnectorCommands.ZCMD_READ_MESSAGE);
+    }
     public ArrayList<Integer> getIds() {
         return ids;
     }

@@ -1,15 +1,15 @@
 [
     {
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ic_emoji_places_light_activated.png",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ic_emoji_places_light_activated.png"
+    },
+    {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\orca_emoji_category_cars.png",
         "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\orca_emoji_category_cars.png"
     },
     {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\orca_emoji_category_nature.png",
         "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\orca_emoji_category_nature.png"
-    },
-    {
-        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ic_emoji_places_light_activated.png",
-        "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ic_emoji_places_light_activated.png"
     },
     {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\orca_attach_location_pressed.png",

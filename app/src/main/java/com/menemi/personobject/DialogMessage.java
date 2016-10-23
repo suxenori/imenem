@@ -38,7 +38,12 @@ public class DialogMessage {
 
         this.profileId = recievedMessage.getFromProfileID();
         this.setDate(new Date(System.currentTimeMillis()));
-        isOwner = true;
+        if(profileId == DBHandler.getInstance().getUserId()){
+            isOwner = true;
+        } else {
+            isOwner = false;
+        }
+
     }
 
     public DialogMessage(DialogSendMessage dialogSendMessage) {

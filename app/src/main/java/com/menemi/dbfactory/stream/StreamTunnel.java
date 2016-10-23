@@ -154,7 +154,7 @@ public class StreamTunnel {
                 while (true) {
 
                     char val = (char) in.read();
-                    Log.d("COMMAND", "read " + val);
+                    //Log.d("COMMAND", "read " + val);
 
                     afterRead("" + val);
                 }

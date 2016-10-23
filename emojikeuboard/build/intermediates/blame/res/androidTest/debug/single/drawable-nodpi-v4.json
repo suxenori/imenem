@@ -2860,12 +2860,12 @@
         "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-nodpi-v4\\emoji_1f3a7.png"
     },
     {
-        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-nodpi-v4\\emoji_1f23a.png",
-        "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-nodpi-v4\\emoji_1f23a.png"
-    },
-    {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-nodpi-v4\\emoji_1f4f4.png",
         "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-nodpi-v4\\emoji_1f4f4.png"
+    },
+    {
+        "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-nodpi-v4\\emoji_1f23a.png",
+        "source": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\bundles\\debug\\res\\drawable-nodpi-v4\\emoji_1f23a.png"
     },
     {
         "merged": "D:\\Programming\\imenem\\emojikeuboard\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-nodpi-v4\\emoji_3297.png",
