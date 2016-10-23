@@ -177,22 +177,7 @@ public class PersonPage extends AppCompatActivity {
                 replaceFragment(ENCOUNTERS);
 
 
-        DBHandler.getInstance().subscribeToRest(new InternetConnectionListener() {
-            @Override
-            public void internetON() {
-                DBHandler.getInstance().getAvatar(userId, object -> {
-                    final Bitmap bitmap = (Bitmap) object;
-                    if (bitmap != null) {
-                        prepareNavigationalHeader(bitmap);
-                    }
-                    });
-            }
 
-            @Override
-            public void internetOFF() {
-
-            }
-        });
 
         DBHandler.getInstance().getAvatar(userId, object -> {
             if(object != null){
@@ -241,6 +226,13 @@ public class PersonPage extends AppCompatActivity {
         DBHandler.getInstance().subscribeToRest(new InternetConnectionListener() {
             @Override
             public void internetON() {
+
+                DBHandler.getInstance().getAvatar(userId, object -> {
+                    final Bitmap bitmap = (Bitmap) object;
+                    if (bitmap != null) {
+                        prepareNavigationalHeader(bitmap);
+                    }
+                });
                 hideNoInternetMessage(getFragmentManager());
 
             }
@@ -383,7 +375,7 @@ public class PersonPage extends AppCompatActivity {
 
             PersonDataFragment personDataFragment1 = new PersonDataFragment();
             personDataFragment1.setPurpose(PersonDataFragment.Purpose.MY_PROFILE);
-            personDataFragment1.setPersonObject(personObject);
+            personDataFragment1.setPersonObject(DBHandler.getInstance().getMyProfile());
             openFragment(personDataFragment1);
 
         }
@@ -594,14 +586,23 @@ public class PersonPage extends AppCompatActivity {
                 fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
 
             } else {
-                DBHandler.getInstance().isRESTAvailable();
-                isFilterVisible = true;
-                fragment = new FilterF ragment();
-                fragment.setPersonObject(owner);
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(com.menemi.R.id.messageFragmentPlaceHolder, fragment);
-                transaction.addToBackStack(null);
-                transaction.commitAllowingStateLoss();
+                DBHandler.getInstance().isRESTAvailable(new DBHandler.ResultListener() {
+                    @Override
+                    public void onFinish(Object object) {
+                        if((boolean)object){
+                            isFilterVisible = true;
+                            fragment = new FilterFragment();
+                            fragment.setPersonObject(owner);
+                            FragmentTransaction transaction = fm.beginTransaction();
+                            transaction.replace(com.menemi.R.id.messageFragmentPlaceHolder, fragment);
+                            transaction.addToBackStack(null);
+                            transaction.commitAllowingStateLoss();
+                        } else{
+
+                        }
+                    }
+                });
+
             }
         }
     }

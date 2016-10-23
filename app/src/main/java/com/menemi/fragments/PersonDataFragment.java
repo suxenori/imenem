@@ -64,7 +64,18 @@ public class PersonDataFragment extends Fragment {
                     } else {
                         LostInternetFragment lostInternetFragment = new LostInternetFragment();
                         lostInternetFragment.setOnRetryListener(()->{
-                            listener.onPrepare(personObject);
+                            if(purpose == Purpose.MY_PROFILE){
+                                DBHandler.getInstance().authorise(personObject, (Object obj)->{
+                                    listener.onPrepare((PersonObject) obj);
+                                });
+
+                            } else{
+                                DBHandler.getInstance().getOtherProfile(personObject.getPersonId(), (Object obj)->{
+                                    listener.onPrepare((PersonObject) obj);
+                                });
+                            }
+
+                            getFragmentManager().popBackStack();
                         });
                         getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
                     }

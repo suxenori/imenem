@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class PictureLoader extends AsyncTask<Void, Void, String> {
     //Listener to be called after all data is loaded
-    private DBHandler.ResultListener onBitmapLoadListener = (Object bitmap) -> {
+    private BitmapLoadListener onBitmapLoadListener = (Bitmap picture) -> {
 
             Log.w("OnBitmapLoadListener", "Custom listener is not defined");
     };
@@ -46,7 +46,7 @@ public class PictureLoader extends AsyncTask<Void, Void, String> {
      */
 
 
-    public PictureLoader(String dataURL, DBHandler.ResultListener onBitmapLoadListener) {
+    public  PictureLoader(String dataURL, BitmapLoadListener onBitmapLoadListener) {
         if(cashedPictures.get(dataURL) != null){
             onBitmapLoadListener.onFinish(cashedPictures.get(dataURL));
 
@@ -99,5 +99,7 @@ public class PictureLoader extends AsyncTask<Void, Void, String> {
 
     }
 
-
+        public interface BitmapLoadListener {
+            void onFinish(Bitmap picture);
+        }
 }

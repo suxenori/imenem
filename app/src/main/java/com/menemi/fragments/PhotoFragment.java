@@ -102,8 +102,8 @@ public class PhotoFragment extends Fragment implements View.OnTouchListener {
         //(int personId, int requestedId, int photoNumber, int count, String quality,
 
         if(urlsArray.size() > pageNumber) {
-            new PictureLoader(urlsArray.get(pageNumber).getPhotoUrl(), (Object object) -> {
-                Bitmap picture = (Bitmap) object;
+            new PictureLoader(urlsArray.get(pageNumber).getPhotoUrl(), (Bitmap picture) -> {
+
                 ImageView pictureView = (ImageView) rootView.findViewById(R.id.imageView);
                 pictureView.setImageBitmap(picture);
 

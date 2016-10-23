@@ -229,6 +229,13 @@ public class DBHandler {
                         }
                     });
                 } else {
+                    subscribeToRest(new InternetConnectionListener() {
+                        @Override
+                        public void internetON() {
+                            authorise(personObject, (Object obj)->{});
+
+                        }@Override public void internetOFF() {}});
+
                     if (dbSQLite.getIdOnLoginData(personObject) != -1) {
                         Log.v("DBHandler", "id != -1");
                         myProfile = dbSQLite.getProfile(personObject.getPersonId());
@@ -417,7 +424,9 @@ public void prepareSettings(Runnable runnable){
         restSubscribers.add(connectionListener);
     }
 
-
+    public void unsubscribeFromRest(InternetConnectionListener connectionListener){
+        restSubscribers.remove(connectionListener);
+    }
 
     private void prepareDB() {
         //TODO: change and update db instance if necessary
@@ -446,16 +455,16 @@ public void prepareSettings(Runnable runnable){
                         public void onFinish(Object object) {
                             String url = (String) object;
                             dbSQLite.saveAvatarURL(personId, url);
-                            new PictureLoader(url, (Object obj) ->{
-                                resultListener.onFinish(obj);
+                            new PictureLoader(url, (Bitmap picture) ->{
+                                resultListener.onFinish(picture);
                             });
                         }
                     });
                 } else {
                     String avatarUrl = dbSQLite.getAvatarURL(personId);
                     if(avatarUrl != null){
-                        new PictureLoader(avatarUrl, (Object obj) ->{
-                            resultListener.onFinish(obj);
+                        new PictureLoader(avatarUrl, (Bitmap picture) ->{
+                            resultListener.onFinish(picture);
                         });
                     } else {
                         resultListener.onFinish(null);

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.menemi.R;
+import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.personobject.DialogMessage;
 import com.menemi.utils.Utils;
 
@@ -84,13 +85,21 @@ public enum STATUS{
         }
 
         final TextView text = (TextView) rootView.findViewById(R.id.text);
-        if (message.getPicture() == null) {
+        if (message.getPictureURL() == null || message.getPictureURL().equals("")) {
             text.setText(message.getMessageBody());
         } else {
-            ImageView picture = (ImageView) rootView.findViewById(R.id.picture);
-            picture.setImageBitmap(message.getPicture());
-
-            messageContainer.removeView(text);
+            if (message.getPicture() != null) {
+                ImageView picture = (ImageView) rootView.findViewById(R.id.picture);
+                picture.setImageBitmap(message.getPicture());
+                messageContainer.removeView(text);
+            } else{
+            new PictureLoader(message.getPictureURL(), (Bitmap pictureLoaded)->{
+                message.setPicture(pictureLoaded);
+                ImageView picture = (ImageView) rootView.findViewById(R.id.picture);
+                picture.setImageBitmap(message.getPicture());
+                messageContainer.removeView(text);
+                });
+            }
         }
 
         TextView time = (TextView) rootView.findViewById(R.id.time);

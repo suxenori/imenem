@@ -756,11 +756,7 @@ public class Loader extends JSONLoader {
                     dialogMessage.setMessageId(messageJSON.getInt(Fields.ID));
                     dialogMessage.setMessageBody(messageJSON.getString(Fields.BODY));
                     dialogMessage.setSortId(messageJSON.getInt(Fields.SORT_ID));
-
-                    byte[] decodedString = Base64.decode(messageJSON.getString(Fields.PICTURE), Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-                    dialogMessage.setPicture(decodedByte);
+                    dialogMessage.setPictureURL(messageJSON.getString(Fields.PICTURE));
                     dialogMessage.setDate(messageJSON.getString(Fields.DATE));
 
                     dialogMessages.add(dialogMessage);

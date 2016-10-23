@@ -20,8 +20,7 @@ import com.menemi.dbfactory.DBHandler;
 /**
  * Created by tester03 on 21.06.2016.
  */
-public class ShowPeopleCompositeFragment extends Fragment
-{
+public class ShowPeopleCompositeFragment extends Fragment {
     private static View rootView = null;
     private Purpose purpose = Purpose.NEAR;
 
@@ -31,8 +30,7 @@ public class ShowPeopleCompositeFragment extends Fragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.scroll_list_container, container, false);
@@ -47,11 +45,11 @@ public class ShowPeopleCompositeFragment extends Fragment
         DBHandler.getInstance().isRESTAvailable(new DBHandler.ResultListener() {
             @Override
             public void onFinish(Object object) {
-                if((boolean) object == true){
+                if ((boolean) object == true) {
                     initLayout();
-                } else{
+                } else {
                     LostInternetFragment lostInternetFragment = new LostInternetFragment();
-                    lostInternetFragment.setOnRetryListener(()->{
+                    lostInternetFragment.setOnRetryListener(() -> {
                         getFragmentManager().popBackStack();
                         initLayout();
                     });
@@ -95,44 +93,57 @@ public class ShowPeopleCompositeFragment extends Fragment
         FAVORITES,
         NEAR
     }
+
     private void configureToolbar(Purpose purpose) {
         Toolbar toolbar = PersonPage.getToolbar();
 
-        LinearLayout  toolbarContainer = (LinearLayout) toolbar.findViewById(R.id.toolbarContainer);
+        LinearLayout toolbarContainer = (LinearLayout) toolbar.findViewById(R.id.toolbarContainer);
         toolbarContainer.removeAllViews();
 
-        if(purpose == Purpose.NEAR) {
-            toolbarContainer.addView(View.inflate(getActivity(),R.layout.ab_people_near,null));
-            ImageView showMap = (ImageView)toolbarContainer.findViewById(R.id.nearButton);
+        if (purpose == Purpose.NEAR) {
+            toolbarContainer.addView(View.inflate(getActivity(), R.layout.ab_people_near, null));
+            ImageView showMap = (ImageView) toolbarContainer.findViewById(R.id.nearButton);
             showMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    ShowMapFragment showMapFragment = new ShowMapFragment();
-                    showMapFragment.setOwnPosition(true);
-                    fragmentTransaction.replace(R.id.content, showMapFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commitAllowingStateLoss();
+                    DBHandler.getInstance().isRESTAvailable(new DBHandler.ResultListener() {
+                        @Override
+                        public void onFinish(Object object) {
+
+                            if ((boolean) object) {
+                                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                ShowMapFragment showMapFragment = new ShowMapFragment();
+                                showMapFragment.setOwnPosition(true);
+                                fragmentTransaction.replace(R.id.content, showMapFragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commitAllowingStateLoss();
+                            }
+                        }});
+                        }});
+        } else
+
+                {
+                    toolbarContainer.addView(View.inflate(getActivity(), R.layout.ab_people_list, null)); // TODO insertt enother
+                    TextView title = (TextView) toolbarContainer.findViewById(R.id.screenTitle);
+                    if (purpose == Purpose.VISITORS) {
+                        title.setText(R.string.visitors);
+                    } else if (purpose == Purpose.FAVORITES) {
+                        title.setText(R.string.favorites);
+                    } else if (purpose == Purpose.LIKES) {
+                        title.setText(R.string.liked_you);
+                    }
+
                 }
-            });
-        } else {
-            toolbarContainer.addView(View.inflate(getActivity(),R.layout.ab_people_list,null)); // TODO insertt enother
-            TextView title = (TextView) toolbarContainer.findViewById(R.id.screenTitle);
-            if(purpose == Purpose.VISITORS){
-                title.setText(R.string.visitors);
-            } else if(purpose == Purpose.FAVORITES){
-                title.setText(R.string.favorites);
-            } else if(purpose == Purpose.LIKES){
-                title.setText(R.string.liked_you);
+
+
+                ImageView menuButton = (ImageView) toolbarContainer.findViewById(R.id.menuButton);
+                menuButton.setOnClickListener(PersonPage.getMenuListener());
+
+                ImageView filterButton = (ImageView) toolbarContainer.findViewById(R.id.filterButton);
+                filterButton.setOnClickListener(PersonPage.getFilterButtonListener(
+
+                getFragmentManager()
+
+                ));
             }
-
         }
-
-
-        ImageView menuButton = (ImageView) toolbarContainer.findViewById(R.id.menuButton);
-        menuButton.setOnClickListener(PersonPage.getMenuListener());
-
-        ImageView filterButton = (ImageView) toolbarContainer.findViewById(R.id.filterButton);
-        filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager()));
-    }
-}

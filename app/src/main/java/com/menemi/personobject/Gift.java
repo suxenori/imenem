@@ -25,8 +25,8 @@ public class Gift {
         this.giftName = giftName;
         this.price = price;
         this.url = imageURL;
-        new PictureLoader(imageURL, (Object bitmap) -> {
-            this.image = (Bitmap) bitmap;
+        new PictureLoader(imageURL, (Bitmap bitmap) -> {
+            this.image =  bitmap;
             DBHandler.getInstance().setGiftToDB(this);
         });
         //this.imageURL = imageURL;

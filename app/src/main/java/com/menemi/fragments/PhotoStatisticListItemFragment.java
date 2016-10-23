@@ -42,8 +42,8 @@ public class PhotoStatisticListItemFragment extends Fragment {
         }
         ImageView photo = (ImageView) rootView.findViewById(R.id.photo);
         if(photoSetting.getPhoto() == null){
-            new PictureLoader(photoSetting.getPhotoUrl(), (Object object)->{
-                photoSetting.setPhoto((Bitmap)object);
+            new PictureLoader(photoSetting.getPhotoUrl(), (Bitmap object)->{
+                photoSetting.setPhoto(object);
                 photo.setImageBitmap(photoSetting.getPhoto());
             });
 

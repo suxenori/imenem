@@ -82,8 +82,8 @@ public class PhotoSettingsFragment extends Fragment {
             DBHandler.getInstance().getPhotoByID(photoSetting.getPhotoId(), Utils.PICTURE_QUALITY_LARGE, (Object object) ->{
                 Log.d("PrivatTagFinder","4" +  photoSetting.isPrivate());
                     photoSetting = (PhotoSetting) object;
-                    new PictureLoader(photoSetting.getPhotoUrl(),(Object bitmap) ->{
-                        photoSetting.setPhoto((Bitmap) bitmap);
+                    new PictureLoader(photoSetting.getPhotoUrl(),(Bitmap bitmap) ->{
+                        photoSetting.setPhoto( bitmap);
                         photo.setImageBitmap(photoSetting.getPhoto());
 
                     });

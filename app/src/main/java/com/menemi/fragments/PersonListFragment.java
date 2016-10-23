@@ -277,8 +277,8 @@ public class PersonListFragment extends Fragment {
                 HashMap<Integer, String> pictures = (HashMap<Integer, String>) object;
 
                 for (Map.Entry<Integer, String> entry : pictures.entrySet()) {
-                    new PictureLoader(entry.getValue(), (Object bitmap) -> {
-                        setPictureToPerson(personObjects, entry.getKey(), (Bitmap) bitmap);
+                    new PictureLoader(entry.getValue(), (Bitmap bitmap) -> {
+                        setPictureToPerson(personObjects, entry.getKey(), bitmap);
                     });
 
                 }

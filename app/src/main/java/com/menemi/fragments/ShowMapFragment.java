@@ -105,8 +105,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
 
                                     for (int i = 0; i < people.size(); i++) {
                                         int finalI = i;
-                                        new PictureLoader(bitmaps.get(people.get(i).getPersonId()), (Object bitmap) ->{
-                                           Bitmap icon =(Bitmap)bitmap;
+                                        new PictureLoader(bitmaps.get(people.get(i).getPersonId()), (Bitmap icon) ->{
                                            if (icon == null) {
                                                icon = Utils.getBitmapFromResource(getActivity(), R.drawable.empty_photo);
                                            }

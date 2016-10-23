@@ -83,8 +83,8 @@ public class GiftInfoDialogFragment extends android.app.DialogFragment {
 
 
         final ImageView sender = (ImageView)dialogView.findViewById(R.id.photo);
-        new PictureLoader(personalGift.getAvatarUrl(), (Object bitmap) ->{
-                Bitmap photo = (Bitmap)bitmap;
+        new PictureLoader(personalGift.getAvatarUrl(), (Bitmap photo) ->{
+
                 if(photo != null){
                     sender.setImageBitmap(Utils.getCroppedBitmap(photo));
                 } else {

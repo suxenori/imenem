@@ -159,7 +159,8 @@ public class StreamTunnel {
                     afterRead("" + val);
                 }
 
-
+            }catch (java.net.SocketException se){
+                socketDidDisconnect();
             } catch (IOException e) {
                 e.printStackTrace();
             }

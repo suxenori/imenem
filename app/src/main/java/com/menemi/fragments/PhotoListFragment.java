@@ -102,8 +102,8 @@ DBHandler.getInstance().getPhotoUrls(personObject.getPersonId(), Utils.PICTURE_Q
 
                 if (purpose == PersonDataFragment.Purpose.MY_PROFILE) { // My profile
                     int finalI = i;
-                    new PictureLoader(pictures.get(i).getPhotoUrl(), (Object obj) ->{
-                        pictures.get(finalI).setPhoto((Bitmap) obj);
+                    new PictureLoader(pictures.get(i).getPhotoUrl(), (Bitmap obj) ->{
+                        pictures.get(finalI).setPhoto( obj);
                         photosList[finalI].setImageBitmap(pictures.get(finalI).getPhoto());
                         photosList[finalI].setOnClickListener(new PrivatePhotoChangeListener( pictures.get(finalI) ));
                     });
@@ -111,8 +111,8 @@ DBHandler.getInstance().getPhotoUrls(personObject.getPersonId(), Utils.PICTURE_Q
 
                 } else { //another person profile
                     int finalI1 = i;
-                    new PictureLoader(pictures.get(i).getPhotoUrl(), (Object obj) ->{
-                        pictures.get(finalI1).setPhoto((Bitmap) obj);
+                    new PictureLoader(pictures.get(i).getPhotoUrl(), (Bitmap obj) ->{
+                        pictures.get(finalI1).setPhoto(obj);
                         if(!pictures.get(finalI1).isUnlocked()) {
                             photosList[finalI1].setImageBitmap(Utils.blur(getActivity(), pictures.get(finalI1).getPhoto(),10));
                             lockList[finalI1].setImageResource(R.drawable.lock);

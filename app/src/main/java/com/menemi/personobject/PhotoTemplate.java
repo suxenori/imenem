@@ -21,8 +21,8 @@ public class PhotoTemplate {
     public PhotoTemplate(int templateID, String templatePictureURL) {
         this.templateID = templateID;
         this.url = templatePictureURL;
-        new PictureLoader(templatePictureURL, (Object obj) ->{
-            this.templatePicture = (Bitmap) obj;
+        new PictureLoader(templatePictureURL, (Bitmap obj) ->{
+            this.templatePicture =  obj;
             DBHandler.getInstance().setTemplateToDB(this);
 
         });

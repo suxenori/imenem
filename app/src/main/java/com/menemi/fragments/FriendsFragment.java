@@ -61,9 +61,9 @@ public class FriendsFragment extends Fragment {
 
 
                         if (entry.getValue() != null) {
-                            new PictureLoader(entry.getValue(), (Object bitmap)->{
-                                if((Bitmap) bitmap != null) {
-                                    Bitmap photo = Utils.scaleBitmapToMin((Bitmap) bitmap);
+                            new PictureLoader(entry.getValue(), (Bitmap bitmap)->{
+                                if( bitmap != null) {
+                                    Bitmap photo = Utils.scaleBitmapToMin(bitmap);
                                     photo = Utils.getCroppedBitmap(photo);
                                     image.setImageBitmap(photo);
                                 } else {

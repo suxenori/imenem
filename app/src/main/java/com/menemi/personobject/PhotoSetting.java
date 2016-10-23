@@ -27,8 +27,8 @@ public class PhotoSetting {
 
     public PhotoSetting(String photoUrl, boolean loadNow) {
         if(loadNow){
-        new PictureLoader(photoUrl, (Object obj)->{
-            photo = (Bitmap) obj;
+        new PictureLoader(photoUrl, (Bitmap obj)->{
+            photo = obj;
             this.photoUrl = photoUrl;
         });
         }
@@ -36,8 +36,8 @@ public class PhotoSetting {
     }
     public PhotoSetting(int photoId, String photoUrl, boolean loadNow) {
         if(loadNow){
-            new PictureLoader(photoUrl, (Object obj)->{
-                photo = (Bitmap) obj;
+            new PictureLoader(photoUrl, (Bitmap obj)->{
+                photo =  obj;
                 this.photoUrl = photoUrl;
             });
         }
@@ -46,8 +46,8 @@ public class PhotoSetting {
     }
     public PhotoSetting(int photoId, boolean isPrivate, boolean autoprice, int price, int[] templateIds, String photoUrl, boolean loadNow) {
         if(loadNow){
-            new PictureLoader(photoUrl, (Object obj)->{
-                photo = (Bitmap) obj;
+            new PictureLoader(photoUrl, (Bitmap obj)->{
+                photo =  obj;
                 this.photoUrl = photoUrl;
             });
         }

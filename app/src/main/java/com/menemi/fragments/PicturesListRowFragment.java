@@ -100,15 +100,15 @@ public class PicturesListRowFragment extends Fragment implements View.OnClickLis
                             Log.d("ShowMorePhotoClick", "row" + pictures.size());
                             if (purpose == PersonDataFragment.Purpose.MY_PROFILE) { // My profile
                                 int finalI = i;
-                                new PictureLoader(pictures.get(i+start).getPhotoUrl(), (Object obj) -> {
-                                    pictures.get(finalI+start).setPhoto((Bitmap) obj);
+                                new PictureLoader(pictures.get(i+start).getPhotoUrl(), (Bitmap obj) -> {
+                                    pictures.get(finalI+start).setPhoto( obj);
                                     photosList[finalI].setImageBitmap(pictures.get(finalI+start).getPhoto());
                                     photosList[finalI].setOnClickListener(new PrivatePhotoChangeListener(pictures.get(finalI+start)));
                                 });
                             } else { //another person profile
                                 int finalI = i;
-                                new PictureLoader(pictures.get(i+start).getPhotoUrl(), (Object obj) -> {
-                                    pictures.get(finalI+start).setPhoto((Bitmap) obj);
+                                new PictureLoader(pictures.get(i+start).getPhotoUrl(), (Bitmap obj) -> {
+                                    pictures.get(finalI+start).setPhoto( obj);
                                     if(!pictures.get(finalI + start).isUnlocked()) {
                                         photosList[finalI].setImageBitmap(Utils.blur(getActivity(), pictures.get(finalI + start).getPhoto(),10));
                                         lockList[finalI].setImageResource(R.drawable.lock);
@@ -145,8 +145,8 @@ public class PicturesListRowFragment extends Fragment implements View.OnClickLis
                                 photosList[i].setOnClickListener(new ShowMorePhotoClickListener(personObject, photosList[i], uploadPhotoText[i], lockList[i], pictures.get(i)));
                             } else { // if this is a last photo, no need to show message "load more", just load this freaking photo and that's it
                                 int finalI = i;
-                                new PictureLoader(pictures.get(i+start).getPhotoUrl(), (Object obj) -> {
-                                    pictures.get(finalI + start).setPhoto((Bitmap) obj);
+                                new PictureLoader(pictures.get(i+start).getPhotoUrl(), (Bitmap obj) -> {
+                                    pictures.get(finalI + start).setPhoto( obj);
                                     if(!pictures.get(finalI + start).isUnlocked()) {
                                         photosList[finalI].setImageBitmap(Utils.blur(getActivity(), pictures.get(finalI + start).getPhoto(),10));
                                         lockList[finalI].setImageResource(R.drawable.lock);
@@ -213,8 +213,8 @@ public class PicturesListRowFragment extends Fragment implements View.OnClickLis
 
         @Override
         public void onClick(View view) {
-            new PictureLoader(bitmap.getPhotoUrl(), (Object obj) -> {
-                bitmap.setPhoto((Bitmap) obj);
+            new PictureLoader(bitmap.getPhotoUrl(), (Bitmap obj) -> {
+                bitmap.setPhoto( obj);
                 if(!bitmap.isUnlocked()) {
                     imageView.setImageBitmap(Utils.blur(getActivity(), bitmap.getPhoto(),10));
                     lock.setImageResource(R.drawable.lock);

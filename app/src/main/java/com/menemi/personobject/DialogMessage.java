@@ -18,6 +18,7 @@ public class DialogMessage {
     private int sortId;
     private int profileId;
     private Bitmap picture;
+    private String pictureURL;
     private Date date;
     private boolean isOwner;
     private int rnd1;
@@ -56,6 +57,14 @@ public class DialogMessage {
             return true;
         }
         return false;
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
     }
 
     public int getRnd1() {
