@@ -108,6 +108,7 @@
     <dimen name="item_container">@dimen/_235sdp</dimen>
     <dimen name="text_in_center">@dimen/_31sdp</dimen>
     <dimen name="text_in_center_margin_bottom">@dimen/_15sdp</dimen>
+    <dimen name="anti_text_margin_bottom">@dimen/_minus15sdp</dimen>
     <dimen name="register_button_margin_bottom">@dimen/_48sdp</dimen>
     <dimen name="text_in_bay_coins_margin_top">@dimen/_20sdp</dimen>
     <dimen name="bay_coins_container_height">@dimen/_75sdp</dimen>

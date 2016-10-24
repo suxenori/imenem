@@ -42,9 +42,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/editEmail"
+        android:id="@+id/hint"
         android:text="Почти готово..."
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/text_in_center_margin_bottom"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hint"
+        android:id="@+id/wrongLogPassNotification"
+        android:textColor="@color/red"
+        android:textSize="@dimen/font_size"
+        android:visibility="invisible"
+        android:text="@string/wrong_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_minus15sdp"
         android:layout_gravity="center_horizontal"/>
 
     <android.support.design.widget.TextInputLayout
@@ -58,25 +71,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:ems="10"
-            android:hint="Введите свой e-mail"/>
+            android:ems="16"
+            android:hint="@string/e_mail"/>
     </android.support.design.widget.TextInputLayout>
-    <TextView
-        android:id="@+id/wrongLogPassNotification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="@dimen/font_size"
-        android:text="Wrong email"
-        android:layout_above="@+id/editEmail"
-        android:visibility="invisible"
-        android:textColor="@color/red_underline"/>
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editPass"
         android:layout_above="@+id/editName"
-        android:layout_weight="1"
+
         android:theme="@style/EditTextStyle">
     <EditText
         android:id="@+id/editPassField"

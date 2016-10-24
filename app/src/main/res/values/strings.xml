@@ -145,7 +145,6 @@
     <string name="distance">Show distance</string>
 
     <string name="photos">Фотографии</string>
-    <string name="choose_avatar">Выберите аватарку</string>
     <string name="no_gps_title">GPS недоступен</string>
     <string name="no_gps_message">Включите геолокацию, чтобы пользоваться картой</string>
 
@@ -440,6 +439,10 @@
     <string name="retry">Retry</string>
     <string name="connection_lost_n_please_check_your_internet_connection_n_and_try_again">Connection lost \n Please check your internet connection \n and try again</string>
     <string name="erase_imported_contacts_message">This will permanently remove all of your friends. You will lose the network you have built.</string>
-    <string name="rating">Рейтинг</string>
+    <string name="wrong_email">Wrong email</string>
+    <string name="e_mail">Введите свой e-mail</string>
+    <string name="wrong_password_or_email">Wrong password or email</string>
+    <string name="rating">Рейтинг:</string>
+    <string name="choose_avatar">Choose avatar</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

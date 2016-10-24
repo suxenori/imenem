@@ -82,10 +82,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="@dimen/font_size"
-            android:text="Wrong password or email"
+            android:text="@string/wrong_password_or_email"
             android:layout_marginBottom="@dimen/_20sdp"
             android:visibility="invisible"
-            android:textColor="@color/red_underline"/>
+            android:textColor="@color/red"/>
         <LinearLayout
             android:id="@+id/loginButtonContainer"
             android:layout_width="match_parent"

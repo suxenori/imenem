@@ -59,6 +59,7 @@
             android:layout_alignStart="@id/ownerName"
             android:layout_alignLeft="@id/ownerName"
             android:layout_below="@+id/ownerName"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:id="@+id/linearLayout2">
 
@@ -76,6 +77,8 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="wrap_content"
+                android:minHeight="@dimen/_10sdp"
+                android:scaleY="2"
                 android:progressTint="@color/orange"
                 android:progressBackgroundTint="@color/actionbar_text"
                 android:layout_marginLeft="@dimen/_10sdp"

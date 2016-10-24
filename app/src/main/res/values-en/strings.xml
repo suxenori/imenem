@@ -142,7 +142,7 @@
     <string name="distance">Show distance</string>
 
     <string name="photos">Фотографии</string>
-    <string name="choose_avatar">Choose avatar</string>
+
     <string name="online_status">Show online status</string>
 
     <string name="public_search">Enable public search</string>
@@ -432,5 +432,9 @@
     <string name="retry">Retry</string>
     <string name="connection_lost_n_please_check_your_internet_connection_n_and_try_again">Connection lost \n Please check your internet connection \n and try again</string>
     <string name="delete_account"><u>Delete account</u></string>
-    <string name="rating">Рейтинг</string>
+    <string name="wrong_email">Wrong email</string>
+    <string name="e_mail">Введите свой e-mail</string>
+    <string name="wrong_password_or_email">Wrong password or email</string>
+    <string name="rating">Rating:</string>
+    <string name="choose_avatar">Choose avatar</string>
 </resources>
