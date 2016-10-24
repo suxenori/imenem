@@ -27,8 +27,8 @@ public class PhotoSwipeFragment extends Fragment {
 
     private int pageNumber = 0;
     private View rootView = null;
-    boolean isFullScreen = false;
-    ArrayList<PhotoSetting> urlsArray = new ArrayList<>();
+    private boolean isFullScreen = false;
+    private ArrayList<PhotoSetting> urlsArray = new ArrayList<>();
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;

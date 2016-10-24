@@ -83,7 +83,7 @@
                     android:layout_height="@dimen/like_button_height"
                     android:background="@null"
                     android:scaleType="fitXY"
-                    android:src="@drawable/button_like" />
+                    />
 
                 <ImageButton
                     android:id="@+id/buttonDisLike"
@@ -93,10 +93,21 @@
                     android:layout_marginStart="@dimen/margin_like_button"
                     android:background="@null"
                     android:scaleType="fitXY"
-                    android:src="@drawable/button_dislike" />
+                     />
 
             </LinearLayout>
-
+<Button
+    android:layout_width="@dimen/_40sdp"
+    android:layout_height="@dimen/_40sdp"
+        android:background="@color/no_color"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:id="@+id/addAvatarButton"
+    />
             <LinearLayout
                 android:id="@+id/fragment2"
                 android:layout_width="match_parent"

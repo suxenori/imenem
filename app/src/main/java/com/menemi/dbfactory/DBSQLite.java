@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.menemi.filter.FilterObject;
 import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.PersonObject;
@@ -15,8 +16,6 @@ import com.menemi.personobject.PhotoTemplate;
 import com.menemi.social_network.SocialNetworkHandler;
 import com.menemi.social_network.SocialProfile;
 import com.menemi.utils.Utils;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -164,7 +163,40 @@ class DBSQLite {
 
     }
 
+public void saveFilter(FilterObject filterObject){
+        ContentValues values = new ContentValues();
+        values.put(Fields.SEARCH_AGE_MIN, filterObject.getMinAge());
+        values.put(Fields.SEARCH_AGE_MAX, filterObject.getMaxAge());
+        values.put(Fields.HERE_TO, filterObject.getiAmHereTo());
+        values.put(Fields.STATUS, filterObject.getIsOnline());
+        values.put(Fields.INTEREST_GENDER, filterObject.getiWantValue());
+        if (isFirstTime(SQLiteEngine.TABLE_FILTER)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_FILTER, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_FILTER, null, null,
+                    null, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst() == true) {
+                sqliteDB.update(SQLiteEngine.TABLE_GIFTS_BASE, values, null,null);
+            } else {
+                sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
+            }
 
+        }
+    }
+
+    public FilterObject getFilter(){
+        FilterObject filterObject = null;
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_FILTER, null, null, null, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst() == true) {
+            filterObject = new FilterObject();
+            filterObject.setMinAge(cursor.getInt(cursor.getColumnIndex(Fields.SEARCH_AGE_MIN)));
+            filterObject.setMaxAge(cursor.getInt(cursor.getColumnIndex(Fields.SEARCH_AGE_MAX)));
+            filterObject.setiAmHereTo(cursor.getInt(cursor.getColumnIndex(Fields.HERE_TO)));
+            filterObject.setIsOnline(cursor.getInt(cursor.getColumnIndex(Fields.STATUS)));
+            filterObject.setiWantValue(cursor.getInt(cursor.getColumnIndex(Fields.INTEREST_GENDER)));
+        }
+        return filterObject;
+    }
     public ArrayList<PhotoTemplate> getTemplates() {
 
 

@@ -11,6 +11,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class PersonObject {
+
+    public static final double INCORRECT_LAT_LONG = 666;
     public static final String EMPTY = "";
     private int personId;
     private String personSexuality;
@@ -59,14 +61,17 @@ public class PersonObject {
     private int photoCountPrivate;
     private ArrayList<PersonalGift> gifts = new ArrayList<>();
     private ArrayList<Reward> rewards = new ArrayList<>();
-    private double positionLatitude;
-    private double positionLongitude;
+    private double positionLatitude = INCORRECT_LAT_LONG;
+    private double positionLongitude = INCORRECT_LAT_LONG;
     private boolean isOnline = false;
     private ArrayList<PersonFavorite> favorites = new ArrayList<>();
     private FilterObject filterObject = new FilterObject();
     private int searchAgeMax;
     private ArrayList<PhotoSetting> pictureUrlsPrivate = new ArrayList<>();
     private ArrayList<PhotoSetting> pictureUrlsPublic = new ArrayList<>();
+    private LikeStatus likeStatus = LikeStatus.none;
+    private int rating;
+
 private boolean canChat;
 
     public PersonObject(String email, String password) {
@@ -461,6 +466,14 @@ private boolean canChat;
         this.personLivingCity = personLivingCity;
     }
 
+    public LikeStatus getLikeStatus() {
+        return likeStatus;
+    }
+
+    public void setLikeStatus(LikeStatus likeStatus) {
+        this.likeStatus = likeStatus;
+    }
+
     public IamHereTo getiAmHereTo() {
         return IamHereTo.values()[filterObject.getiAmHereTo()];
     }
@@ -696,6 +709,14 @@ private boolean canChat;
     public void setCanChat(boolean canChat) {
         this.canChat = canChat;
     }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
     /*   public enum PersonSexuality {
         WITHOUT_INFO,
         GAY,
@@ -796,5 +817,11 @@ private boolean canChat;
         ONLINE,
         OFFLINE,
         ANY,
+    }
+    public enum LikeStatus{
+        none,// - ни одна сторона не поставила лайк друг другу
+        mutual_like,// - друг другу уже проставили лайк
+        liked_me,// - профиль залайкал меня
+        like_him// - я залайкал уже просматриваемый профиль
     }
 }

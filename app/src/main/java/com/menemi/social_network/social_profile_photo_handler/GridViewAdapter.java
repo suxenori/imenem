@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.menemi.R;
 import com.menemi.social_network.PhotoSettingsContainer;
@@ -25,7 +24,6 @@ public class GridViewAdapter extends BaseAdapter
     private final Context context;
 
     private ArrayList<String> urls = new ArrayList<>() ;
-
 
     public GridViewAdapter(Context context, ArrayList<String> urls) {
         this.context = context;
@@ -61,7 +59,6 @@ public class GridViewAdapter extends BaseAdapter
             public void onClick(View view)
             {
                 Bitmap image = ((BitmapDrawable)finalSquaredImageView.getDrawable()).getBitmap();
-                Toast.makeText(context, image + " ",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(context, PhotoSettingsContainer.class);
                 PhotoSettingsContainer.image = image;
                 context.startActivity(i);

@@ -88,7 +88,7 @@ public class Loader extends JSONLoader {
     static final String G_GET_UNLOCK_PHOTO = "/profile/unlock_photo/"; ///(:photo_id)/(:requesting_profile_id)
     static final String G_GET_ALL_GIFTS = "/profile/allgifts/"; // (:requesting_profile_id)
     static final String G_BUY_GIFT = "/profile/buygift/"; //(:gift_id)/(:to_profile_id)/(:requesting_profile_id)
-
+    static final String G_SET_AVATAR = "/profile/setavatar/";//(:picture_id)/(:requesting_profile_id)
 
     //TODO: add friends add interests add gifts
 
@@ -118,7 +118,7 @@ public class Loader extends JSONLoader {
     private static final String COINS = "coins";
     private static final String IS_POPULAR = "is_popular";
     private static final String DIALOGS = "dialogs";
-
+    private static final String LIKED = "liked";
 
 
 
@@ -482,7 +482,12 @@ public class Loader extends JSONLoader {
                 return mainObject.getString("result").equals("success");
 
         });
+        messageTypesParcer.put(RestCommands.SET_AVATAR, (String jsonString) -> {
+            Log.v("loader", requestNumber + jsonString);
+            JSONObject mainObject = new JSONObject(jsonString);
+            return mainObject.getString("result").equals("success");
 
+        });
         messageTypesParcer.put(RestCommands.UPLOAD_FILTER_SETTINGS,(String jsonString) -> {
                 Log.v("loader", requestNumber + jsonString);
                 JSONObject mainObject = new JSONObject(jsonString);
@@ -1062,11 +1067,12 @@ public class Loader extends JSONLoader {
     private static String parceFilterObject(FilterObject filterObject) {
         return filterObject.getiWantValue() + "/" + filterObject.getiAmHereTo() + "/" +
                 filterObject.getIsOnline() + "/"+
-                filterObject.getMinAge() + "/" + filterObject.getMaxAge() + "/"
+                filterObject.getMinAge() + "/" + filterObject.getMaxAge() + "/" + filterObject.getIsOnline() + "/"
                 + filterObject.getPlaceModel().getLocationLat() + ","
-                + filterObject.getPlaceModel().getLocationLng() + "/" + filterObject.getPlaceModel().getNortheastLat() + "/"
+                + filterObject.getPlaceModel().getLocationLng() + "/" + filterObject.getPlaceModel().getNortheastLat()
                 + "," + filterObject.getPlaceModel().getNortheastLng() + "/"
                 + DBHandler.getInstance().getUserId();
+        //(:i_want_val)/(:im_interested_val)/(:im_interested_status_val)/(:min_age)/(:max_age)/(:online)/(:center_coord)/(:/edge_coord)/(:requesting_profile_id)
     }
 
     private static PersonObject profileParceFull(JSONObject mainObject) throws JSONException {
@@ -1089,6 +1095,8 @@ public class Loader extends JSONLoader {
         personObject.setSmokingPerson(mainObject.getString(Fields.SMOKING));
         personObject.setDrinkingPerson(mainObject.getString(Fields.DRINKING));
         personObject.setPersonRelationship(mainObject.getString(Fields.RELATIONSHIP));
+
+        personObject.setLikeStatus(PersonObject.LikeStatus.valueOf(mainObject.getString(LIKED)));;
         ArrayList<Integer> friendsList = new ArrayList<>();
         Log.d("LOG", "friendsList.size()" + friendsList.size());
         for (int i = 0; i < mainObject.getJSONArray(FRIENDS).length(); i++) {
@@ -1123,7 +1131,7 @@ public class Loader extends JSONLoader {
 //        personObject.setPersonSexuality(profileObject.getInt(Fields.SEXUALITY));
         personObject.setSearchAgeMin(profileObject.getInt(Fields.SEARCH_AGE_MIN));
         personObject.setSearchAgeMax(profileObject.getInt(Fields.SEARCH_AGE_MAX));
-
+        personObject.setRating(profileObject.getInt(Fields.RATING));
 
 
 
@@ -1322,9 +1330,9 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
             case BUY_GIFT:
                 url = constructStartURL() + G_BUY_GIFT;
                 break;
-
-
-
+            case SET_AVATAR:
+                url = constructStartURL() + G_SET_AVATAR;
+                break;
 
         }
         return url;
@@ -1408,6 +1416,7 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
         GET_PHOTO_TEMPLATES,
         GET_ALL_GIFTS,
         BUY_GIFT,
+        SET_AVATAR,
         SET_NOTIFICATION_TOKEN
     }
 

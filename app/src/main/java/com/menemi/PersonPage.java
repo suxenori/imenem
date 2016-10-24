@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,11 +92,12 @@ public class PersonPage extends AppCompatActivity {
     public static final int SELECTED_PICTURES_FROM_CAMERA = 2;
     private long back_pressed;
     private PersonObject personObject = null;
-
-    private ImageView ownerAvatar = null;
-    private ImageView ownerCircleAvatar = null;
-    private TextView ownerName = null;
-    private TextView balanceValue = null;
+    private static View header;
+    private static ImageView ownerAvatar = null;
+    private static ImageView ownerCircleAvatar = null;
+    private static TextView ownerName = null;
+    private static TextView balanceValue = null;
+    private static ProgressBar ratingBar;
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -115,6 +117,10 @@ public class PersonPage extends AppCompatActivity {
     }
     public static OnMenuButtonListener getMenuListener(){
         return new OnMenuButtonListener();
+    }
+
+    public static View getHeader() {
+        return header;
     }
 
     public static View.OnClickListener getFilterButtonListener(FragmentManager fragmentManager) {
@@ -138,7 +144,7 @@ public class PersonPage extends AppCompatActivity {
         Log.d("TAG", "subscribed");
         Toast.makeText(PersonPage.this, "subscribed", Toast.LENGTH_SHORT).show();
         DBHandler.getInstance().lunchStreams();
-        View header = getLayoutInflater().inflate(com.menemi.R.layout.navigation_header_layout, listViewSliding, false);
+        header = getLayoutInflater().inflate(com.menemi.R.layout.navigation_header_layout, listViewSliding, false);
         View footer = getLayoutInflater().inflate(com.menemi.R.layout.vip_users, listViewSliding, false);
         setSupportActionBar(toolbar);
 
@@ -163,6 +169,10 @@ public class PersonPage extends AppCompatActivity {
         ownerCircleAvatar = (ImageView) header.findViewById(com.menemi.R.id.circleAvatar);
         ownerName = (TextView) header.findViewById(com.menemi.R.id.ownerName);
         balanceValue = (TextView) header.findViewById(com.menemi.R.id.balanceValue);
+        ownerAvatar.setOnClickListener(new OnMyProfileOpenListener());
+        ownerCircleAvatar.setOnClickListener(new OnMyProfileOpenListener());
+        ratingBar = (ProgressBar) header.findViewById(R.id.ratingBar);
+
 
         final int userId = DBHandler.getInstance().getUserId();
                 personObject = DBHandler.getInstance().getMyProfile();
@@ -173,6 +183,7 @@ public class PersonPage extends AppCompatActivity {
                     vipStatus.setImageResource(com.menemi.R.drawable.vip_off);
                     vipStatus.setOnClickListener(new OnVipClickListener(false));
                 }
+
                 OnFilterClickListener.setOwner(personObject);
                 replaceFragment(ENCOUNTERS);
 
@@ -181,9 +192,9 @@ public class PersonPage extends AppCompatActivity {
 
         DBHandler.getInstance().getAvatar(userId, object -> {
             if(object != null){
-                prepareNavigationalHeader((Bitmap)object);
+                prepareNavigationalHeader(getApplicationContext(), (Bitmap)object);
             } else {
-                prepareNavigationalHeader(Utils.getBitmapFromResource(this, com.menemi.R.drawable.empty_photo));
+                prepareNavigationalHeader(getApplicationContext(), Utils.getBitmapFromResource(this, com.menemi.R.drawable.empty_photo));
             }
         });
 
@@ -193,7 +204,7 @@ public class PersonPage extends AppCompatActivity {
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.messages, com.menemi.R.string.messages));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.favorite, com.menemi.R.string.favorites));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.guests, com.menemi.R.string.visitors));
-        listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.like, com.menemi.R.string.liked_you));
+        listSliding.add(new ItemSlideMenu(R.drawable.menu_like, com.menemi.R.string.liked_you));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.invite_fr, com.menemi.R.string.invite_friends));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.setting, com.menemi.R.string.settings));
         LinearLayout container = (LinearLayout) listViewSliding.findViewById(com.menemi.R.id.sliding_menu_container);
@@ -230,7 +241,7 @@ public class PersonPage extends AppCompatActivity {
                 DBHandler.getInstance().getAvatar(userId, object -> {
                     final Bitmap bitmap = (Bitmap) object;
                     if (bitmap != null) {
-                        prepareNavigationalHeader(bitmap);
+                        prepareNavigationalHeader(getApplicationContext(),bitmap);
                     }
                 });
                 hideNoInternetMessage(getFragmentManager());
@@ -265,19 +276,17 @@ public class PersonPage extends AppCompatActivity {
 
     }
 
-    private Bitmap prepareNavigationalHeader(Bitmap bitmap) {
-        final Bitmap avatar = Utils.getCroppedBitmap(bitmap);
-        ownerAvatar.setColorFilter(getResources().getColor(R.color.avatarFilter), PorterDuff.Mode.MULTIPLY);
+    public static void prepareNavigationalHeader(Context ctx, Bitmap bitmap) {
+        Bitmap avatar = Utils.getCroppedBitmap(bitmap);
+        ownerAvatar.setColorFilter(ctx.getResources().getColor(R.color.avatarFilter), PorterDuff.Mode.MULTIPLY);
         ownerCircleAvatar.setImageBitmap(avatar);
-        ownerAvatar.setImageBitmap(Utils.megaBlur(getApplicationContext(), bitmap));
+        ownerAvatar.setImageBitmap(Utils.megaBlur(ctx.getApplicationContext(), bitmap));
+        ratingBar.setProgress(DBHandler.getInstance().getMyProfile().getRating());
 
 
-        ownerAvatar.setOnClickListener(new OnMyProfileOpenListener());
-        ownerCircleAvatar.setOnClickListener(new OnMyProfileOpenListener());
         ownerName.setText(DBHandler.getInstance().getMyProfile().getPersonName());
         balanceValue.setText(""+DBHandler.getInstance().getMyProfile().getPersonCredits());
 
-        return avatar;
     }
 
     private static IConnectionInformerFragment connectionInformerFragment = new IConnectionInformerFragment();

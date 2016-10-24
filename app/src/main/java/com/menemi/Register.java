@@ -37,33 +37,36 @@ public class Register extends Fragment
         registerButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
-            {
-                        PersonObject personObject = new PersonObject(SelectSexPage.isMale(),Goals.getiamHereTo()
-                        , PersonObject.InterestGender.ANY_GENDER,
-                        editEmail.getText().toString(),editName.getText().toString(), Utils.getDateFromString1(editBDay.getText().toString()), editPass.getText().toString());
-                        DBHandler.getInstance().register(personObject, new DBHandler.ResultListener()
-                {
-                    @Override
-                    public void onFinish(Object object)
-                    {
-                        if(object != null){
-                            Intent personPage = new Intent(getActivity(), PersonPage.class);
-                            startActivity(personPage);
-                            Log.i("register","register is successful");
-                        }
+            public void onClick(View v) {
+                if (Utils.isEmailValid(editEmail.getText().toString())) {
+                    PersonObject personObject = new PersonObject(SelectSexPage.isMale(), Goals.getiamHereTo()
+                            , PersonObject.InterestGender.ANY_GENDER,
+                            editEmail.getText().toString(), editName.getText().toString(), Utils.getDateFromString1(editBDay.getText().toString()), editPass.getText().toString());
+                    DBHandler.getInstance().register(personObject, new DBHandler.ResultListener()
 
-                    }
-                });
-                Log.i("Button reg is pressed","Button register is pressed");
-                Log.i("Name ",editName.getText().toString());
-                Log.i("Man? ",SelectSexPage.isMale() + "");
-                Log.i("Here to ",Goals.getiamHereTo() + "");
-                Log.i("Interest gender",PersonObject.InterestGender.ANY_GENDER+ "");
-                Log.i("Email ",editEmail.getText().toString());
-                Log.i("Pass",editPass.getText().toString());
-                Log.i("Date", String.valueOf(Utils.getDateFromString1(editBDay.getText().toString())));
-                Log.i("Button reg is pressed","Button register is pressed");
+                    {
+                        @Override
+                        public void onFinish(Object object) {
+                            if (object != null) {
+                                Intent personPage = new Intent(getActivity(), PersonPage.class);
+                                startActivity(personPage);
+                                Log.i("register", "register is successful");
+                            }
+
+                        }
+                    });
+                    Log.i("Button reg is pressed", "Button register is pressed");
+                    Log.i("Name ", editName.getText().toString());
+                    Log.i("Man? ", SelectSexPage.isMale() + "");
+                    Log.i("Here to ", Goals.getiamHereTo() + "");
+                    Log.i("Interest gender", PersonObject.InterestGender.ANY_GENDER + "");
+                    Log.i("Email ", editEmail.getText().toString());
+                    Log.i("Pass", editPass.getText().toString());
+                    Log.i("Date", String.valueOf(Utils.getDateFromString1(editBDay.getText().toString())));
+                    Log.i("Button reg is pressed", "Button register is pressed");
+                } else{
+
+                }
             }
         });
         editName = (EditText) rootView.findViewById(com.menemi.R.id.editNameField);

@@ -33,6 +33,8 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public static final String TABLE_PHOTOS = "photos";
     public static final String TABLE_AVATARS = "avatars";
     public static final String TABLE_DIALOGS = "dialogs_base";
+    public static final String TABLE_FILTER = "filter";
+
 
     private static final int DATABASE_VERSION = 1; // In case of any changes in database structure this variable should be incremented
     private static final String DATABASE_LAST_USER_CREATE_SCRIPT = "CREATE TABLE IF NOT EXISTS " +
@@ -112,6 +114,16 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             " integer primary key autoincrement, " +
             Fields.URLS + " text, " +
             Fields.ID + " integer)";
+    private static final String CREATE_FILTER_TABLE = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_AVATARS + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.SEARCH_AGE_MIN + " integer, " +
+            Fields.SEARCH_AGE_MAX + " integer, " +
+            Fields.HERE_TO + " integer, " +
+            Fields.STATUS + " integer, " +
+            Fields.INTEREST_GENDER + " integer)";
+
+
 
     private static final String CREATE_TABLE_DIALOGS = "CREATE TABLE IF NOT EXISTS " +
             TABLE_DIALOGS + " (" + BaseColumns._ID +
@@ -223,6 +235,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             db.execSQL(CREATE_TABLE_PHOTOS);
             db.execSQL(CREATE_TABLE_AVATARS);
             db.execSQL(CREATE_TABLE_DIALOGS);
+            db.execSQL(CREATE_FILTER_TABLE);
 
 
             this.addDefaultId(db);

@@ -69,7 +69,7 @@ public  class Fields {
     public static final String IS_MUTUAL = "is_mutual";
     public static final String VIP_STATUS = "vip_until";// : "2016-09-30T15:06:12.000Z"
 
-
+    public static final String RATING = "profile_rating";
 
     public static final String PHOTO_COUNT = "pictures_count";
     public static final String PUBLIC_PHOTO_COUNT = "public_pictures_count";

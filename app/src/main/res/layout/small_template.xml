@@ -7,7 +7,6 @@
     android:layout_height="@dimen/_20sdp"
     android:layout_marginEnd="@dimen/_2sdp"
     android:layout_marginRight="@dimen/_2sdp"
-    android:src="@drawable/test_body_photo"
     android:scaleType="centerInside"
     android:id="@+id/template"/>
 </LinearLayout>

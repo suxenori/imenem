@@ -5,18 +5,16 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
-
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 import com.menemi.PersonPage;
 import com.menemi.R;
@@ -45,44 +43,45 @@ public class PersonDataFragment extends Fragment {
                 parent.removeAllViews();
             }
         }
+
+
         DBHandler.getInstance().isRESTAvailable(object -> {
-                if((boolean) object == true) {
-                    if (purpose == Purpose.LIKE) {
-                        generateNextRandomPerson(listener);
-                    } else {
-                        listener.onPrepare(personObject);
-                    }
-                } else {
-                    if (purpose == Purpose.LIKE) {
-                        LostInternetFragment lostInternetFragment = new LostInternetFragment();
-                        lostInternetFragment.setOnRetryListener(()->{
-
+                    if ((boolean) object == true) {
+                        if (purpose == Purpose.LIKE) {
                             generateNextRandomPerson(listener);
-                            getFragmentManager().popBackStack();
-                        });
-                        getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
+                        } else {
+                            listener.onPrepare(personObject);
+                        }
                     } else {
-                        LostInternetFragment lostInternetFragment = new LostInternetFragment();
-                        lostInternetFragment.setOnRetryListener(()->{
-                            if(purpose == Purpose.MY_PROFILE){
-                                DBHandler.getInstance().authorise(personObject, (Object obj)->{
-                                    listener.onPrepare((PersonObject) obj);
-                                });
+                        if (purpose == Purpose.LIKE) {
+                            LostInternetFragment lostInternetFragment = new LostInternetFragment();
+                            lostInternetFragment.setOnRetryListener(() -> {
 
-                            } else{
-                                DBHandler.getInstance().getOtherProfile(personObject.getPersonId(), (Object obj)->{
-                                    listener.onPrepare((PersonObject) obj);
-                                });
-                            }
+                                generateNextRandomPerson(listener);
+                                getFragmentManager().popBackStack();
+                            });
+                            getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
+                        } else {
+                            LostInternetFragment lostInternetFragment = new LostInternetFragment();
+                            lostInternetFragment.setOnRetryListener(() -> {
+                                if (purpose == Purpose.MY_PROFILE) {
+                                    DBHandler.getInstance().authorise(personObject, (Object obj) -> {
+                                        listener.onPrepare((PersonObject) obj);
+                                    });
 
-                            getFragmentManager().popBackStack();
-                        });
-                        getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
+                                } else {
+                                    DBHandler.getInstance().getOtherProfile(personObject.getPersonId(), (Object obj) -> {
+                                        listener.onPrepare((PersonObject) obj);
+                                    });
+                                }
+
+                                getFragmentManager().popBackStack();
+                            });
+                            getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
+                        }
                     }
                 }
-            }
-            );
-
+        );
 
 
         return rootView;
@@ -93,57 +92,81 @@ public class PersonDataFragment extends Fragment {
         @Override
         public void onPrepare(final PersonObject preparedObject) {
             personObject = preparedObject;
-try{
-            if (getActivity() == null || getFragmentManager() == null || personObject == null) {
-                return;
-            }
-            personObject.prepaparePictureUrls(()->{
-
-                if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
+            try {
+                if (getActivity() == null || getFragmentManager() == null || personObject == null) {
                     return;
                 }
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                personObject.prepaparePictureUrls(() -> {
 
-            final EncountersFragment encountersFragment = new EncountersFragment();
-            encountersFragment.setPurpose(purpose);
-            encountersFragment.setPerson(preparedObject);
-            fragmentTransaction.replace(R.id.fragment1, encountersFragment);
-            Log.v("onClick", "FILTER");
-            configureToolbar();
-            if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
-                return;
+                    if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
+                        return;
+                    }
+
+                    if(purpose == Purpose.MY_PROFILE){
+                        Button addAvatarButton = (Button)rootView.findViewById(R.id.addAvatarButton);
+                        addAvatarButton.setBackgroundResource(R.drawable.add_avatar);
+                        addAvatarButton.setOnClickListener(new AddAvatarClickListener());
+                    }
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    final EncountersFragment encountersFragment = new EncountersFragment();
+                    encountersFragment.setPurpose(purpose);
+                    encountersFragment.setPerson(preparedObject);
+                    fragmentTransaction.replace(R.id.fragment1, encountersFragment);
+                    Log.v("onClick", "FILTER");
+                    configureToolbar();
+                    if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
+                        return;
+                    }
+
+                    final FragmentWithInfoAboutPerson fragmentWithInfoAboutPerson = new FragmentWithInfoAboutPerson();
+                    fragmentWithInfoAboutPerson.setPuropose(purpose);
+                    fragmentTransaction.replace(R.id.fragment2, fragmentWithInfoAboutPerson);
+                    fragmentWithInfoAboutPerson.setPersonObject(preparedObject);
+                    fragmentTransaction.commitAllowingStateLoss();
+
+                    LinearLayout disLikeContainer = (LinearLayout) rootView.findViewById(R.id.disLikeContainer);
+                    final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
+                    final ImageButton dislikeButton = (ImageButton) rootView.findViewById(R.id.buttonDisLike);
+                    if (purpose == Purpose.MY_PROFILE) {
+                        disLikeContainer.removeView(likeButton);
+                        disLikeContainer.removeView(dislikeButton);
+                    } else if (purpose == Purpose.PROFILE) {
+
+                        configureLikePicture(likeButton);
+                        likeButton.setOnClickListener(new LikeClickListener(preparedObject));
+                        dislikeButton.setImageResource(R.drawable.message);
+                        dislikeButton.setOnClickListener(new OpenDialogListener(preparedObject));
+
+
+                    } else {
+                        configureLikePicture(likeButton);
+                        dislikeButton.setImageResource(R.drawable.button_dislike);
+                        likeButton.setOnClickListener(new LikeClickListener(preparedObject));
+                        dislikeButton.setOnClickListener(new DislikeClickListener(preparedObject));
+                    }
+                });
+            } catch (IllegalArgumentException e) {
+                Log.e("Fragment error", "activity is already closed");
             }
-
-            final FragmentWithInfoAboutPerson fragmentWithInfoAboutPerson = new FragmentWithInfoAboutPerson();
-            fragmentWithInfoAboutPerson.setPuropose(purpose);
-            fragmentTransaction.replace(R.id.fragment2, fragmentWithInfoAboutPerson);
-            fragmentWithInfoAboutPerson.setPersonObject(preparedObject);
-            fragmentTransaction.commitAllowingStateLoss();
-
-            LinearLayout disLikeContainer = (LinearLayout) rootView.findViewById(R.id.disLikeContainer);
-            final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
-            final ImageButton dislikeButton = (ImageButton) rootView.findViewById(R.id.buttonDisLike);
-            if (purpose == Purpose.MY_PROFILE) {
-                disLikeContainer.removeView(likeButton);
-                disLikeContainer.removeView(dislikeButton);
-            } else if (purpose == Purpose.PROFILE) {
-
-                    likeButton.setOnClickListener(new LikeClickListener(preparedObject));
-                    dislikeButton.setImageResource(R.drawable.message);
-                    dislikeButton.setOnClickListener(new OpenDialogListener(preparedObject));
-
-
-            } else {
-                likeButton.setOnClickListener(new LikeClickListener(preparedObject));
-                dislikeButton.setOnClickListener(new DislikeClickListener(preparedObject));
-            }
-            });
-}catch (IllegalArgumentException e){
-    Log.e("Fragment error", "activity is already closed");
-}
         }
     };
+
+    private void configureLikePicture(ImageButton likeButton) {
+        if(personObject.getLikeStatus() == PersonObject.LikeStatus.none){
+            likeButton.setImageResource(R.drawable.button_like);
+        } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me){
+            likeButton.setImageResource(R.drawable.button_like_mutual);
+        } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.like_him){
+            likeButton.setImageResource(R.drawable.button_like_unclick);
+        }
+        if(personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like){
+            likeButton.setImageResource(R.drawable.button_like_mutual_unclick);
+        }
+
+    }
+
 
     private void configureToolbar() {
         Toolbar toolbar = PersonPage.getToolbar();
@@ -166,13 +189,7 @@ try{
         }
     }
 
-    private void pressButton(Action action) {
-        if (action == Action.BUTTON_LIKE) {
-
-        }
-        if (action == Action.BUTTON_DISLIKE) {
-            //TODO: OPEN CHAT
-        }
+    private void getNextPerson() {
 
         if (purpose == Purpose.LIKE) {
             if (getActivity() == null || getFragmentManager() == null) {
@@ -211,7 +228,7 @@ try{
                     @Override
                     public void onFinish(Object object) {
                         onPersonPrepared.onPrepare((PersonObject) object);
-                       // Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
+                        // Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
                     }
                 });
 
@@ -228,7 +245,7 @@ try{
 
     class LikeClickListener implements View.OnClickListener {
         private PersonObject personObject = null;
-        boolean isLiked = false;
+
 
         public LikeClickListener(PersonObject personObject) {
             this.personObject = personObject;
@@ -236,21 +253,31 @@ try{
 
         @Override
         public void onClick(View v) {
-            isLiked = !isLiked;
+
             final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
-            likeButton.setImageResource(R.drawable.ic_voted_liked);
+            likeButton.setImageResource(R.drawable.like_presed);
+            boolean isLiked;
+            if(personObject.getLikeStatus() == PersonObject.LikeStatus.none || personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me ){
+                isLiked = true;
+            } else {
+                isLiked = false;
+            }
+            if(personObject.getLikeStatus() == PersonObject.LikeStatus.none) {
+                personObject.setLikeStatus(PersonObject.LikeStatus.like_him);
+            } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.like_him) {
+                personObject.setLikeStatus(PersonObject.LikeStatus.none);
+            } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
+                personObject.setLikeStatus(PersonObject.LikeStatus.mutual_like);
+            } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
+                personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
+            }
+            configureLikePicture(likeButton);
             DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, new DBHandler.ResultListener() {
                 @Override
                 public void onFinish(Object object) {
-                    final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
-                    final ImageButton dislikeButton = (ImageButton) rootView.findViewById(R.id.buttonDisLike);
-                    if (isLiked) {
-                        likeButton.setImageResource(R.drawable.ic_vote_hot_white);
-                    } else {
-                        likeButton.setImageResource(R.drawable.ic_voted_liked);
+                    if (purpose == Purpose.LIKE) {
+                        getNextPerson();
                     }
-                    pressButton(Action.BUTTON_LIKE);
-
                 }
             });
         }
@@ -265,14 +292,18 @@ try{
 
         @Override
         public void onClick(View view) {
+            final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
+            if(personObject.getLikeStatus() == PersonObject.LikeStatus.like_him){
+                personObject.setLikeStatus(PersonObject.LikeStatus.none);
+            } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like){
+                personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
+            }
+            configureLikePicture(likeButton);
             DBHandler.getInstance().disLike(personObject.getPersonId(), false, new DBHandler.ResultListener() {
                 @Override
                 public void onFinish(Object object) {
-                    final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
-                    likeButton.setImageResource(R.drawable.ic_vote_hot_white);
-                    pressButton(Action.BUTTON_DISLIKE);
-
-
+                    if(purpose == Purpose.LIKE)
+                    getNextPerson();
                 }
             });
         }
@@ -287,7 +318,7 @@ try{
 
         @Override
         public void onClick(View view) {
-            if(personObject.canChat()){
+            if (personObject.canChat()) {
                 final DialogInfo dialogInfo = new DialogInfo();
                 dialogInfo.setProfileId(contactObject.getPersonId());
                 dialogInfo.setContactName(contactObject.getPersonName());
@@ -321,4 +352,20 @@ try{
         BUTTON_DISLIKE
     }
 
+    private class AddAvatarClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            if (getActivity() == null || getFragmentManager() == null) {
+                return;
+            }
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            PublicPhotoListFragment publicPhotoListFragment = new  PublicPhotoListFragment();
+            publicPhotoListFragment.setPurpose(PublicPhotoListFragment.Purpose.CHOOSE_AVATAR);
+            ft.addToBackStack(null);
+            ft.replace(R.id.content, publicPhotoListFragment);
+            ft.commitAllowingStateLoss();
+        }
+    }
 }

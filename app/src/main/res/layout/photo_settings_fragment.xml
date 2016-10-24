@@ -18,8 +18,7 @@
             android:id="@+id/photo"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_300sdp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/test_body_photo" />
+            android:scaleType="centerCrop" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -61,7 +61,16 @@
             android:ems="10"
             android:hint="Введите свой e-mail"/>
     </android.support.design.widget.TextInputLayout>
-
+    <TextView
+        android:id="@+id/wrongLogPassNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/font_size"
+        android:text="Wrong email"
+        android:layout_above="@+id/editEmail"
+        android:visibility="invisible"
+        android:textColor="@color/red_underline"/>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

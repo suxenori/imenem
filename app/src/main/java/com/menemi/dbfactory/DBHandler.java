@@ -1003,6 +1003,18 @@ Log.d("logout", "logout1");
 
     }
 
+    public FilterObject getFilterObjectFromDB() {
+        return dbSQLite.getFilter();
+    }
+
+    public void setFilterObjectToDB(FilterObject filterObject) {
+        dbSQLite.saveFilter(filterObject);
+    }
+
+    public void setAvatar(PhotoSetting photoSetting, ResultListener resultListener){
+        dbRest.setAvatar(dbSQLite.getUserId(), photoSetting.getPhotoId(), resultListener);
+    }
+
     public ArrayList<Gift> getGifts() {
         return gifts;
     }

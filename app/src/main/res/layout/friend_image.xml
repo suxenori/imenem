@@ -10,6 +10,5 @@
         android:layout_marginRight="@dimen/profile_friends_photo_margin"
         android:layout_marginEnd="@dimen/profile_friends_photo_margin"
         android:id="@+id/friendPhoto"
-        android:src="@drawable/test_photo_big"
         android:scaleType="centerCrop" />
 </RelativeLayout>

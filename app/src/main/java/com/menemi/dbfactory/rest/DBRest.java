@@ -254,6 +254,9 @@ public class DBRest {
     public void getPhotoUrls(int id, String isThumbnail, int isPrivate, int ownerID, OnDataRecieveListener onDataRecieveListener){
         new Loader(Loader.RestCommands.GET_PICTURES_URLS,id,isThumbnail, isPrivate, ownerID, onDataRecieveListener ).execute() ;
     }
+    public void setAvatar(int personId, int pictureId, OnDataRecieveListener onDataRecieveListener){
+        new Loader(Loader.RestCommands.SET_AVATAR, pictureId, personId,onDataRecieveListener ).execute() ;
+    }
     public interface OnDataRecieveListener extends JSONLoader.OnLoadFinishListener {
     }
 }
