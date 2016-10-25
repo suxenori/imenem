@@ -205,10 +205,19 @@ public class DBHandler {
                     if (dbRest == null || dbSQLite == null) {
                         prepareDB();
                     }
-
+                    int id = 1;
+if(personObject.getEmail() == "2"){
+    id = 2;
+} else if(personObject.getEmail() == "3"){
+ id = 3;
+} else if(personObject.getEmail() == "4"){
+    id = 4;
+}
                     Log.v("DBHandler", "authorise rest" + dbRest);
-                      dbRest.authorise(personObject, new DBRest.OnDataRecieveListener() {
-                        @Override
+                      //dbRest.authorise(personObject, new DBRest.OnDataRecieveListener() {
+                          dbRest.getProfile(id, new ResultListener() {
+
+                              @Override
                         public void onFinish(Object object) {
                             if (object != null) {
 
@@ -259,6 +268,20 @@ public void prepareSettings(Runnable runnable){
 
 
 }
+
+    public void setInfo(PersonObject personObject, ResultListener resultListener){
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if((boolean)object){
+                    dbRest.setInfo(personObject, resultListener);
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
+
+    }
     private void prepareSettingsForProfile(){
         prepareConfigurations(myProfile.getPersonId());
         getMyFavorites(new ResultListener() {
@@ -269,13 +292,24 @@ public void prepareSettings(Runnable runnable){
         });
     }
     public void addPhoto(final PhotoSetting photoSetting, final ResultListener resultListener) {
+        subscribeToRest(new InternetConnectionListener() {
+            @Override
+            public void internetON() {
+
+            }
+
+            @Override
+            public void internetOFF() {
+                resultListener.onFinish(false);
+            }
+        });
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
                 if ((boolean) object == true) {
                     dbRest.addPhoto(photoSetting, resultListener);
-                    myProfile.setPhotoCount(photoSetting.isPrivate(), myProfile.getPhotoCount(photoSetting.isPrivate()) + 1);
-                }
+                   // myProfile.setPhotoCount(photoSetting.isPrivate(), myProfile.getPhotoCount(photoSetting.isPrivate()) + 1);
+                } else {resultListener.onFinish(false);}
             }
         });
     }
@@ -287,7 +321,8 @@ public void prepareSettings(Runnable runnable){
             public void onFinish(Object object) {
                 if ((boolean) object == true) {
                     dbRest.deletePhoto(photoSetting.getPhotoId(), personId, resultListener);
-                    myProfile.setPhotoCount(photoSetting.isPrivate(), myProfile.getPhotoCount(photoSetting.isPrivate()) - 1);
+                   myProfile.deletePhoto(photoSetting);
+                    //TODO delete photo from db
                 }
             }
         });

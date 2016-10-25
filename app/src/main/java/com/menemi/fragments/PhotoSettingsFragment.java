@@ -129,7 +129,7 @@ public class PhotoSettingsFragment extends Fragment {
                 progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progress.setIndeterminate(true);
                 progress.show();
-                progress.setCancelable(false);
+
                 photoSetting.setProfileId(DBHandler.getInstance().getUserId());
                 photoSetting.setTemplateIds(photoTemplates);
 

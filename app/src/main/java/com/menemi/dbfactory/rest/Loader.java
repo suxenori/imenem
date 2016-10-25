@@ -1082,8 +1082,6 @@ public class Loader extends JSONLoader {
         personObject.setLivingWith(mainObject.getString(Fields.LIVING_WITH));
 
         personObject.setCanChat(mainObject.getBoolean(Fields.CAN_MESSAGE));
-        personObject.setPhotoCountPublic(mainObject.getInt(Fields.PUBLIC_PICTURES_COUNT));
-        personObject.setPhotoCountPrivate(mainObject.getInt(Fields.PRIVATE_PICTURES_COUNT));
         personObject.setPersonVIP(Utils.intToBool(mainObject.getInt(Fields.VIP)));
 
         personObject.setOnline(mainObject.getString(Fields.STATUS));

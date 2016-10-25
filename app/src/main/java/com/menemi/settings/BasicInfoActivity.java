@@ -1,5 +1,7 @@
 package com.menemi.settings;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.menemi.DatePicker;
+import com.menemi.PersonPage;
 import com.menemi.R;
 import com.menemi.customviews.OCDialog;
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.utils.Utils;
 
 import java.sql.Date;
 
@@ -109,11 +113,19 @@ public class BasicInfoActivity extends AppCompatActivity {
                 dialogFragment.show(getFragmentManager(),"tag");
                 dialogFragment.setTitle(getString(R.string.change_age));
                 dialogFragment.setOkListener((Date date) ->{
+                    ProgressDialog progressDialog =  Utils.startLodingProgress(BasicInfoActivity.this, getString(R.string.change_age),new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+
+                        }
+                    });
                     this.date = date;
                     DBHandler.getInstance().getMyProfile().setBirthday(date);
-
                     TextView birthday = (TextView) findViewById(R.id.birthday);
                     birthday.setText(date.toString());
+                    progressDialog.dismiss();
+
+
                 });
 
                 //TODO change birthday on server
@@ -131,8 +143,24 @@ public class BasicInfoActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             new OCDialog(BasicInfoActivity.this, getString(R.string.change_name), name.getText().toString(), OCDialog.NO_ICON,(String data) -> {
+                String oldName = DBHandler.getInstance().getMyProfile().getPersonName();
 
-              name.setText(data);
+                ProgressDialog progressDialog =  Utils.startLodingProgress(BasicInfoActivity.this,  getString(R.string.change_name), new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+
+                    }
+                });
+                DBHandler.getInstance().setInfo(DBHandler.getInstance().getMyProfile(), succseed -> {
+                    if(!(boolean)succseed){
+                        DBHandler.getInstance().getMyProfile().setPersonName(oldName);
+                    } else{
+                        DBHandler.getInstance().getMyProfile().setPersonName(data);
+                        name.setText(data);
+                        PersonPage.prepareNavigationalHeader();
+                    }
+                    progressDialog.dismiss();
+                });
               //TODO change name on server
             }, () -> {});
 

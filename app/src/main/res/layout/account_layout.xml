@@ -91,7 +91,7 @@
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:text="@string/get_pass"
+        android:text="@string/forgot_pass"
         android:textAllCaps="false"
         android:id="@+id/getPassButton"
         android:textColor="@color/actionbar_text"

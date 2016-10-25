@@ -74,8 +74,9 @@ public class PersonDataFragment extends Fragment {
                                         listener.onPrepare((PersonObject) obj);
                                     });
                                 }
-
-                                getFragmentManager().popBackStack();
+if(getFragmentManager() != null) {
+    getFragmentManager().popBackStack();
+}
                             });
                             getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
                         }

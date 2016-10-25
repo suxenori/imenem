@@ -54,6 +54,11 @@ public class LoginActivity extends ActionBarActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
+
+                                               DBHandler.getInstance().isRESTAvailable((online)->{
+                                                   if((boolean)online == true){
+
+
                                                PersonObject personObject = new PersonObject(setLoginPhoneOrEmail.getText().toString().toLowerCase(), setLoginPassword.getText().toString());
                                                Log.i("PersonObject created", personObject + "");
                                                Log.i("PersonObject created", personObject.getPassword() + "");
@@ -106,12 +111,19 @@ public class LoginActivity extends ActionBarActivity {
                                                        } else {
                                                            setLoginPhoneOrEmail.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
                                                            setLoginPassword.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
-
+                                                           wrongLogPassNotification.setText(R.string.wrong_password_or_email);
                                                            wrongLogPassNotification.setVisibility(View.VISIBLE);
 
                                                            //TODO SHOW ERROR
                                                        }
 
+                                                   }
+                                               });
+                                                   } else{
+                                                       setLoginPhoneOrEmail.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
+                                                       setLoginPassword.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
+                                                        wrongLogPassNotification.setText(R.string.no_internet_message);
+                                                       wrongLogPassNotification.setVisibility(View.VISIBLE);
                                                    }
                                                });
                                            }

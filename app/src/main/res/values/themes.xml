@@ -10,8 +10,6 @@
             <item name="colorControlActivated">@color/orange_text</item>
             <item name="colorControlHighlight">@color/orange_text</item>
             <item name="actionBarStyle">@style/MyActionBar</item>
-
-
         </style>
         <!-- ActionBar styles -->
         <style name="MyActionBar"

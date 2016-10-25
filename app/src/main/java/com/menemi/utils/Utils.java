@@ -3,7 +3,9 @@ package com.menemi.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -259,7 +261,15 @@ public class Utils {
         }
 
     }
-
+public static ProgressDialog startLodingProgress(Context ctx, String title, DialogInterface.OnDismissListener cancelListener){
+    ProgressDialog progress = new ProgressDialog(ctx);
+    progress.setMessage(title);
+    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    progress.setIndeterminate(true);
+    progress.show();
+    progress.setOnDismissListener(cancelListener);
+    return progress;
+}
     public static int dpToPx(Context context, int dp) {
         int px = Math.round(dp * getPixelScaleFactor(context));
         return px;

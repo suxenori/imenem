@@ -288,7 +288,13 @@ public class PersonPage extends AppCompatActivity {
         balanceValue.setText(""+DBHandler.getInstance().getMyProfile().getPersonCredits());
 
     }
+    public static void prepareNavigationalHeader() {
 
+        ratingBar.setProgress(DBHandler.getInstance().getMyProfile().getRating());
+        ownerName.setText(DBHandler.getInstance().getMyProfile().getPersonName());
+        balanceValue.setText(""+DBHandler.getInstance().getMyProfile().getPersonCredits());
+
+    }
     private static IConnectionInformerFragment connectionInformerFragment = new IConnectionInformerFragment();
     public static void showNoInternetMessage(FragmentManager fm){
         if(fm == null){
@@ -302,7 +308,11 @@ public class PersonPage extends AppCompatActivity {
 
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(com.menemi.R.id.messageFragmentPlaceHolder, connectionInformerFragment);
+        try {
         transaction.commitAllowingStateLoss();
+        } catch (IllegalStateException ise){
+
+        }
     }
     public static void hideNoInternetMessage(FragmentManager fm){
         if(fm == null || connectionInformerFragment == null){
@@ -311,7 +321,11 @@ public class PersonPage extends AppCompatActivity {
 
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.remove( connectionInformerFragment);
-        transaction.commitAllowingStateLoss();
+        try {
+            transaction.commitAllowingStateLoss();
+        } catch (IllegalStateException ise){
+
+        }
         connectionInformerFragment = null;
 
     }

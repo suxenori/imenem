@@ -1,6 +1,5 @@
 package com.menemi;
 
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -115,23 +114,24 @@ public class Register extends Fragment
         return rootView;
     }
 
-class EmailChangeListener implements TextWatcher{
+    class EmailChangeListener implements TextWatcher{
 
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    }
+        }
 
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        TextView wrongLogPassNotification = (TextView)rootView.findViewById(R.id.wrongLogPassNotification);
-        wrongLogPassNotification.setVisibility(View.INVISIBLE);
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            TextView wrongLogPassNotification = (TextView)rootView.findViewById(R.id.wrongLogPassNotification);
+            wrongLogPassNotification.setVisibility(View.INVISIBLE);
 
-    }
+        }
 
-    @Override
-    public void afterTextChanged(Editable editable) {
+        @Override
+        public void afterTextChanged(Editable editable) {
 
+        }
     }
 }
-}
+

@@ -57,8 +57,6 @@ public class PersonObject {
     private String password;
     private ArrayList<Interests> interests;
     private String email;
-    private int photoCountPublic;
-    private int photoCountPrivate;
     private ArrayList<PersonalGift> gifts = new ArrayList<>();
     private ArrayList<Reward> rewards = new ArrayList<>();
     private double positionLatitude = INCORRECT_LAT_LONG;
@@ -72,7 +70,7 @@ public class PersonObject {
     private LikeStatus likeStatus = LikeStatus.none;
     private int rating;
 
-private boolean canChat;
+    private boolean canChat;
 
     public PersonObject(String email, String password) {
         this.email = email;
@@ -131,8 +129,6 @@ private boolean canChat;
         this.password = personObject.password;
         this.interests = personObject.interests;
         this.email = personObject.email;
-        this.photoCountPublic = personObject.photoCountPublic;
-        this.photoCountPrivate = personObject.photoCountPrivate;
         this.gifts = personObject.gifts;
         this.rewards = personObject.rewards;
         this.positionLatitude = personObject.positionLatitude;
@@ -145,43 +141,36 @@ private boolean canChat;
         this.pictureUrlsPublic = personObject.pictureUrlsPublic;
     }
 
-    public UserStatus getUserStatus()
-    {
+    public UserStatus getUserStatus() {
         return UserStatus.values()[filterObject.getIsOnline()];
     }
 
-    public void setUserStatus(UserStatus userStatus)
-    {
+    public void setUserStatus(UserStatus userStatus) {
         this.filterObject.setIsOnline(userStatus.ordinal());
     }
 
     public int getPhotoCountPublic() {
-        return photoCountPublic;
+        return pictureUrlsPublic.size();
     }
 
-    public void setPhotoCountPublic(int photoCountPublic) {
-        this.photoCountPublic = photoCountPublic;
-    }
 
     public int getPhotoCountPrivate() {
-        return photoCountPrivate;
+        return pictureUrlsPrivate.size();
     }
-    public void setPhotoCount(boolean isPrivate, int count){
-        if(isPrivate){
-            this.photoCountPrivate = count;
-        } else{
-            this.photoCountPublic = count;
+
+    public void deletePhoto(PhotoSetting photoSetting) {
+        ArrayList<PhotoSetting> photoArray = null;
+        if (photoSetting.isPrivate()) {
+            photoArray = pictureUrlsPrivate;
+        } else {
+            photoArray = pictureUrlsPublic;
         }
-    }
-    public int getPhotoCount(boolean isPrivate) {
-        if(isPrivate) {
-            return photoCountPrivate;
-        } else{
-            return photoCountPublic;
+
+        for (int i = 0; i < photoArray.size(); i++) {
+            if (photoArray.get(i).getPhotoId() == photoSetting.getPhotoId()) {
+                photoArray.remove(i);
+            }
         }
-    }
-    public void setPhotoCountPrivate(int photoCountPrivate) {
-        this.photoCountPrivate = photoCountPrivate;
     }
 
     public ArrayList<Interests> getInterests() {
@@ -192,14 +181,15 @@ private boolean canChat;
         this.interests = interests;
     }
 
-    public boolean isInterestMatches(String interest){
+    public boolean isInterestMatches(String interest) {
         for (int i = 0; i < interests.size(); i++) {
-            if(interests.get(i).getInterest().equals(interest)){
+            if (interests.get(i).getInterest().equals(interest)) {
                 return true;
             }
         }
         return false;
     }
+
     public String getPassword() {
         return password;
     }
@@ -237,7 +227,7 @@ private boolean canChat;
     public void setiAmHereTo(IamHereTo iAmHereTo) {
         this.filterObject.setiWantValue(iAmHereTo.ordinal());
     }
-    
+
     public ArrayList<Integer> getPersonFriends() {
         return personFriends;
     }
@@ -265,7 +255,8 @@ private boolean canChat;
     public String getPersonFBook() {
         return personFBook;
     }
-   public void setPersonFBook(String personFBook) {
+
+    public void setPersonFBook(String personFBook) {
         this.personFBook = personFBook;
     }
 
@@ -292,6 +283,7 @@ private boolean canChat;
     public void setPersonInstagram(String personInstagram) {
         this.personInstagram = personInstagram;
     }
+
     public String getPersonTwitter() {
         return personTwitter;
     }
@@ -341,17 +333,17 @@ private boolean canChat;
         this.personRelationship = personRelationship;
     }
 
-  public void prepaparePictureUrls(Runnable callback){
+    public void prepaparePictureUrls(Runnable callback) {
 
-      DBHandler.getInstance().getPhotoUrls(personId,Utils.PICTURE_QUALITY_THUMBNAIL,false,(Object obj)->{
-          this.pictureUrlsPublic = (ArrayList<PhotoSetting>)obj;
-          DBHandler.getInstance().getPhotoUrls(personId,Utils.PICTURE_QUALITY_THUMBNAIL, true,(Object object)->{
-              this.pictureUrlsPrivate = (ArrayList<PhotoSetting>)object;
-              callback.run();
-          });
-      });
+        DBHandler.getInstance().getPhotoUrls(personId, Utils.PICTURE_QUALITY_THUMBNAIL, false, (Object obj) -> {
+            this.pictureUrlsPublic = (ArrayList<PhotoSetting>) obj;
+            DBHandler.getInstance().getPhotoUrls(personId, Utils.PICTURE_QUALITY_THUMBNAIL, true, (Object object) -> {
+                this.pictureUrlsPrivate = (ArrayList<PhotoSetting>) object;
+                callback.run();
+            });
+        });
 
-  }
+    }
 
     public ArrayList<PhotoSetting> getPictureUrlsPrivate() {
         return pictureUrlsPrivate;
@@ -424,9 +416,7 @@ private boolean canChat;
     }
 
 
-
-
-   public int getPersonPopularity() {
+    public int getPersonPopularity() {
         return personPopularity;
     }
 
@@ -576,7 +566,7 @@ private boolean canChat;
     }
 
     public void setVipUntil(String vipUntil) {
-        this.vipUntil =  Utils.getDateFromServer(vipUntil);
+        this.vipUntil = Utils.getDateFromServer(vipUntil);
     }
 
     public PersonKids getPersonKids() {
@@ -606,7 +596,8 @@ private boolean canChat;
     public double getPositionLatitude() {
         return positionLatitude;
     }
-    public LatLng getPosition(){
+
+    public LatLng getPosition() {
         return new LatLng(getPositionLatitude(), getPositionLongitude());
     }
 
@@ -629,14 +620,17 @@ private boolean canChat;
     public void setOnline(boolean online) {
         isOnline = online;
     }
+
     public void setOnline(String value) {
-        if(value.equals("online")){
+        if (value.equals("online")) {
             isOnline = true;
         }
     }
-    public FilterObject getFilterObject(){
-        return  filterObject;
+
+    public FilterObject getFilterObject() {
+        return filterObject;
     }
+
     public ArrayList<PersonalGift> getGifts() {
         return gifts;
     }
@@ -653,13 +647,11 @@ private boolean canChat;
         this.rewards = rewards;
     }
 
-    public void setFilterObject(FilterObject filterObject)
-    {
+    public void setFilterObject(FilterObject filterObject) {
         this.filterObject = filterObject;
     }
 
-    public void setiAmHereTo(int iAmHereTo)
-    {
+    public void setiAmHereTo(int iAmHereTo) {
         filterObject.setiAmHereTo(iAmHereTo);
     }
 
@@ -673,32 +665,34 @@ private boolean canChat;
     public ArrayList<PersonFavorite> getFavorites() {
         return favorites;
     }
-    public boolean isAddedAsFavorite(PersonObject personObject){
+
+    public boolean isAddedAsFavorite(PersonObject personObject) {
         for (int i = 0; i < favorites.size(); i++) {
-            if(favorites.get(i).getPersonId() == personObject.getPersonId()){
+            if (favorites.get(i).getPersonId() == personObject.getPersonId()) {
                 return true;
             }
         }
         return false;
     }
-    public void setAddedAsFavorite(PersonObject personObject, boolean isAdded){
-        if(isAdded){
+
+    public void setAddedAsFavorite(PersonObject personObject, boolean isAdded) {
+        if (isAdded) {
             favorites.add(new PersonFavorite(personObject));
-        } else{
+        } else {
             for (int i = 0; i < favorites.size(); i++) {
-                if(favorites.get(i).getPersonId() == personObject.getPersonId()){
+                if (favorites.get(i).getPersonId() == personObject.getPersonId()) {
                     favorites.remove(i);
                 }
             }
         }
 
     }
+
     public void setFavorites(ArrayList<PersonFavorite> favorites) {
         this.favorites = favorites;
     }
 
-    public void setPersonCurrLocation(String personCurrLocation)
-    {
+    public void setPersonCurrLocation(String personCurrLocation) {
         this.personCurrLocation = personCurrLocation;
     }
 
@@ -734,14 +728,14 @@ private boolean canChat;
         SMOKE_ONE_AFTER_THE_OTHER_PERSON
     }*/
 
-   /* public enum DrinkingPerson {
-        WITHOUT_INFO_ABOUT_DRINKING,
-        DRINKING_PERSON,
-        NO_DRINKING_PERSON,
-        IN_COMPANY_DRINKING_PERSON,
-        HIGHLY_DRINKING_PERSON
-    }
-*/
+    /* public enum DrinkingPerson {
+         WITHOUT_INFO_ABOUT_DRINKING,
+         DRINKING_PERSON,
+         NO_DRINKING_PERSON,
+         IN_COMPANY_DRINKING_PERSON,
+         HIGHLY_DRINKING_PERSON
+     }
+ */
     public enum PersonKids {
         WITHOUT_KIDS_PERSON,
         NEVER_MAKE_KIDS,
@@ -813,12 +807,13 @@ private boolean canChat;
         ANY_GENDER
     }
 
-    public enum UserStatus{
+    public enum UserStatus {
         ONLINE,
         OFFLINE,
         ANY,
     }
-    public enum LikeStatus{
+
+    public enum LikeStatus {
         none,// - ни одна сторона не поставила лайк друг другу
         mutual_like,// - друг другу уже проставили лайк
         liked_me,// - профиль залайкал меня

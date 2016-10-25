@@ -60,10 +60,24 @@ public class DBRest {
             @Override
             public void onUploadFinish(String s)
             {
-                Log.v("DBRest","on upload finish listener");
-                Loader.parcing(Loader.RestCommands.GET_MY_PROFILE,s,onDataRecieveListener);
+                if(s.equals("{\"result\":\"success\"}")){
+                    onDataRecieveListener.onFinish(true);
+                } else{onDataRecieveListener.onFinish(false);}
             }
         }).execute();
+    }
+    public void setInfo(PersonObject personObject, final OnDataRecieveListener onDataRecieveListener){
+        new Sender(Sender.RestCommands.SET_INFO, personObject, new Sender.OnUploadListener()
+        {
+            @Override
+            public void onUploadFinish(String s)
+            {
+                if(s.equals("{\"result\":\"success\"}")){
+                    onDataRecieveListener.onFinish(true);
+                } else{onDataRecieveListener.onFinish(false);}
+            }
+        }).execute();
+
     }
 
     public void uploadFilterSettings(FilterObject filterObject, final  OnDataRecieveListener onDataRecieveListener){

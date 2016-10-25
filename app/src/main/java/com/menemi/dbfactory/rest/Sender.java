@@ -23,6 +23,11 @@ public class Sender extends JSONSender {
     static final String urlForAPIAuthorise = "http://minemi.ironexus.com/profile/authorize";
     static final String urlForAPIAddPhoto = "http://minemi.ironexus.com/ru/profile/addphoto";
     static final String urlForAPISetConfigurations = "http://minemi.ironexus.com/ru/settings/setconfigurations";//(:requesting_profile_id)
+    static final String urlForAPISetINFO = "http://minemi.ironexus.com/ru/settings/savegeneralinfo/";
+
+
+
+    private static final String USER_ID = "requesting_profile_id";
     private static HashMap<RestCommands, JSONParcer> messageTypesParcer;
 
     static {
@@ -121,11 +126,28 @@ public class Sender extends JSONSender {
                 return obj.toString();
             }
         });
+        messageTypesParcer.put(RestCommands.SET_INFO, new JSONParcer()
+        {
+            @Override
+            public String parce(Object object) throws JSONException
+            {
+                PersonObject personData = (PersonObject)object;
 
+                JSONObject obj = new JSONObject();
+                //requesting_profile_id, name, gender (в виде 1 или 0), и birth в формате "%Y-%m-%d"
+
+                obj.put(Fields.NAME, personData.getPersonName());
+                obj.put(Fields.IS_MALE, Utils.boolToInt(personData.isMale()));
+                obj.put(Fields.BIRTH_DAY, Utils.getStringFromDate(personData.getBirthday()));
+                obj.put(USER_ID, personData.getPersonId());
+
+                return obj.toString();
+            }
+        });
         //TODO: add actions for all other types
     }
 
-    PhotoSetting photoSettind;
+
     Object object = null;
     RestCommands command;
 
@@ -151,6 +173,9 @@ public class Sender extends JSONSender {
             case SET_CONFIGURATIONS:
                 url = urlForAPISetConfigurations;
                 break;
+            case SET_INFO:
+                url = urlForAPISetINFO;
+                break;
         }
         return url;
     }
@@ -165,7 +190,8 @@ public class Sender extends JSONSender {
         REGISTER,
         AUTHORISE,
         ADD_PHOTO,
-        SET_CONFIGURATIONS
+        SET_CONFIGURATIONS,
+        SET_INFO
     }
 
 

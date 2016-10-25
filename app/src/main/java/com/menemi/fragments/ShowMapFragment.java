@@ -2,6 +2,7 @@ package com.menemi.fragments;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
@@ -24,7 +26,6 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -84,7 +85,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
             }
         }
 
-        MapsInitializer.initialize(getActivity()); /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //MapsInitializer.initialize(getActivity()); /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         if (isOwnPosition) {
             configureToolbar();
@@ -157,9 +158,9 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
          */
         try {
             if (googleMap == null) {
-                MapFragment mapFragment = (MapFragment) getFragmentManager()
-                        .findFragmentById(R.id.mapView);
+                MapFragment mapFragment = (MapFragment) getMapFragment();
                 mapFragment.getMapAsync(this);
+
 
                 /**
                  * If the map is still null after attempted initialisation,
@@ -174,7 +175,21 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
         }
     }
 
+    private MapFragment getMapFragment() {
+        FragmentManager fm = null;
 
+
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            fm = getFragmentManager();
+        } else {
+
+            fm = getChildFragmentManager();
+        }
+
+        return (MapFragment) fm.findFragmentById(R.id.mapView);
+    }
     @Override
     public void onLocationChanged(Location location) {
         Log.v("ShowMapFragment", "onLocationChanged " + location.toString());
@@ -280,6 +295,17 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));//2 - 22
 
         }
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                googleMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("хуй")
+                        .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.test_circle_shadow)))
+                        .draggable(false)
+                        .zIndex(0.5f));
+            }
+        });
     }
 
     public byte calculateZoomLevel(int rangeMiles) {

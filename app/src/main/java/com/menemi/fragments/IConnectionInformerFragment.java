@@ -1,7 +1,6 @@
 package com.menemi.fragments;
 
 import android.app.Fragment;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.menemi.R;
+import com.menemi.dbfactory.DBHandler;
 
 
 public class IConnectionInformerFragment extends Fragment
@@ -30,7 +30,33 @@ public class IConnectionInformerFragment extends Fragment
 
             }
         }
+        new Thread(new ConnectionListener()).start();
 
         return rootView;
+    }
+    class ConnectionListener implements Runnable{
+
+        @Override
+        public void run() {
+            DBHandler.getInstance().isRESTAvailable(new DBHandler.ResultListener() {
+                @Override
+                public void onFinish(Object object) {
+                    if((boolean)object == true){
+                        try {
+                            getFragmentManager().beginTransaction().remove(IConnectionInformerFragment.this).commitAllowingStateLoss();
+                        } catch (IllegalStateException ilse){
+
+                        }
+                    } else {
+                        try {
+                            Thread.sleep(1000l);
+                            new Thread(new ConnectionListener()).start();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
     }
 }

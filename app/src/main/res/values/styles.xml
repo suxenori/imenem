@@ -386,4 +386,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="PaymentSettingsMargin">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginStart">@dimen/_43sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_43sdp</item>
+        <item name="android:layout_marginRight">@dimen/_43sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_43sdp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>
