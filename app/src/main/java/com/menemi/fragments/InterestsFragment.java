@@ -42,7 +42,10 @@ public class InterestsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
+        if(purpose != PersonDataFragment.Purpose.MY_PROFILE && interests.size() == 0){
+            return null;
+        }
+        if (rootView == null ) {
             rootView = inflater.inflate(R.layout.interests_fragment, container, false);
         } else {
             ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -90,26 +93,33 @@ public class InterestsFragment extends Fragment {
 
         for (int i = 0; i < interests.size(); i++) {
             int finalI = i;
-            new PictureLoader(interests.get(i).getGroupIconUrl(), (Bitmap icon)->{
+
                 View item = inflater.inflate(R.layout.interest_item, interestsLayout, false);
                 TextView interest = (TextView) item.findViewById(R.id.interestText);
                 interest.setText(interests.get(finalI).getInterest());
                 if (interests.get(finalI).isMutual()) {
                     interest.setTextColor(getResources().getColor(R.color.orange_text));
                 }
+            new PictureLoader(interests.get(i).getGroupIconUrl(), (Bitmap icon)->{
                 ImageView groupIcon = (ImageView) item.findViewById(R.id.groupIcon);
                 groupIcon.setImageBitmap(icon);
+            });
                 interestsLayout.addView(item);
                 items[finalI] = item;
-                picturesLoaded++;
-            });
+               // picturesLoaded++;
+
+            /*int delay = 1000;
             while(picturesLoaded != i ) {
                 try {
                     Thread.sleep(50);
+                    delay-=50;
+                    if (delay <=0){
+                        break;
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
         }
 
     }
