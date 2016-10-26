@@ -29,7 +29,12 @@ public class PersonDataFragment extends Fragment {
     private View rootView = null;
     private static final String TAG = "scroll_tag";
     private PersonObject personObject = null;
+    private PersonObject personPrevious = null;
     private Purpose purpose = Purpose.LIKE;
+
+    public void setPersonPrevious(PersonObject personPrevious) {
+        this.personPrevious = personPrevious;
+    }
 
     @Nullable
     @Override
@@ -48,7 +53,17 @@ public class PersonDataFragment extends Fragment {
         DBHandler.getInstance().isRESTAvailable(object -> {
                     if ((boolean) object == true) {
                         if (purpose == Purpose.LIKE) {
-                            generateNextRandomPerson(listener);
+                            if(personPrevious != null){
+                                ImageView buttonShowPreviousUser = (ImageView ) rootView.findViewById(R.id.buttonShowPreviousUser);
+                                buttonShowPreviousUser.setImageResource(R.drawable.profile_back);
+                                buttonShowPreviousUser.setOnClickListener(new OpenPreviousPerson(personPrevious));
+
+                            }
+                            if(personObject != null){
+                                listener.onPrepare(personObject);
+                            } else {
+                                generateNextRandomPerson(listener);
+                            }
                         } else {
                             listener.onPrepare(personObject);
                         }
@@ -74,9 +89,9 @@ public class PersonDataFragment extends Fragment {
                                         listener.onPrepare((PersonObject) obj);
                                     });
                                 }
-if(getFragmentManager() != null) {
-    getFragmentManager().popBackStack();
-}
+                                if (getFragmentManager() != null) {
+                                    getFragmentManager().popBackStack();
+                                }
                             });
                             getFragmentManager().beginTransaction().replace(com.menemi.R.id.content, lostInternetFragment).addToBackStack(null).commitAllowingStateLoss();
                         }
@@ -103,8 +118,8 @@ if(getFragmentManager() != null) {
                         return;
                     }
 
-                    if(purpose == Purpose.MY_PROFILE){
-                        Button addAvatarButton = (Button)rootView.findViewById(R.id.addAvatarButton);
+                    if (purpose == Purpose.MY_PROFILE) {
+                        Button addAvatarButton = (Button) rootView.findViewById(R.id.addAvatarButton);
                         addAvatarButton.setBackgroundResource(R.drawable.add_avatar);
                         addAvatarButton.setOnClickListener(new AddAvatarClickListener());
                     }
@@ -155,14 +170,14 @@ if(getFragmentManager() != null) {
     };
 
     private void configureLikePicture(ImageButton likeButton) {
-        if(personObject.getLikeStatus() == PersonObject.LikeStatus.none){
+        if (personObject.getLikeStatus() == PersonObject.LikeStatus.none) {
             likeButton.setImageResource(R.drawable.button_like);
-        } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me){
+        } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
             likeButton.setImageResource(R.drawable.button_like_mutual);
-        } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.like_him){
+        } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.like_him) {
             likeButton.setImageResource(R.drawable.button_like_unclick);
         }
-        if(personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like){
+        if (personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
             likeButton.setImageResource(R.drawable.button_like_mutual_unclick);
         }
 
@@ -196,10 +211,13 @@ if(getFragmentManager() != null) {
             if (getActivity() == null || getFragmentManager() == null) {
                 return;
             }
+
+
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.remove(this);
             PersonDataFragment personDataFragment = new PersonDataFragment();
             personDataFragment.setPurpose(Purpose.LIKE);
+            personDataFragment.setPersonPrevious(personObject);
             ft.replace(R.id.content, personDataFragment);
             ft.commitAllowingStateLoss();
         }
@@ -258,18 +276,18 @@ if(getFragmentManager() != null) {
             final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
             likeButton.setImageResource(R.drawable.like_presed);
             boolean isLiked;
-            if(personObject.getLikeStatus() == PersonObject.LikeStatus.none || personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me ){
+            if (personObject.getLikeStatus() == PersonObject.LikeStatus.none || personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
                 isLiked = true;
             } else {
                 isLiked = false;
             }
-            if(personObject.getLikeStatus() == PersonObject.LikeStatus.none) {
+            if (personObject.getLikeStatus() == PersonObject.LikeStatus.none) {
                 personObject.setLikeStatus(PersonObject.LikeStatus.like_him);
-            } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.like_him) {
+            } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.like_him) {
                 personObject.setLikeStatus(PersonObject.LikeStatus.none);
-            } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
+            } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
                 personObject.setLikeStatus(PersonObject.LikeStatus.mutual_like);
-            } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
+            } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
                 personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
             }
             configureLikePicture(likeButton);
@@ -294,19 +312,44 @@ if(getFragmentManager() != null) {
         @Override
         public void onClick(View view) {
             final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
-            if(personObject.getLikeStatus() == PersonObject.LikeStatus.like_him){
+            if (personObject.getLikeStatus() == PersonObject.LikeStatus.like_him) {
                 personObject.setLikeStatus(PersonObject.LikeStatus.none);
-            } else if(personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like){
+            } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
                 personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
             }
             configureLikePicture(likeButton);
             DBHandler.getInstance().disLike(personObject.getPersonId(), false, new DBHandler.ResultListener() {
                 @Override
                 public void onFinish(Object object) {
-                    if(purpose == Purpose.LIKE)
-                    getNextPerson();
+                    if (purpose == Purpose.LIKE)
+                        getNextPerson();
                 }
             });
+        }
+    }
+    class OpenPreviousPerson implements View.OnClickListener {
+        private PersonObject personObject = null;
+
+
+        public OpenPreviousPerson(PersonObject personObject) {
+            this.personObject = personObject;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (getActivity() == null || getFragmentManager() == null) {
+                return;
+            }
+
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.remove(PersonDataFragment.this);
+            PersonDataFragment personDataFragment = new PersonDataFragment();
+            personDataFragment.setPurpose(Purpose.LIKE);
+            personDataFragment.setPersonObject(personObject);
+            ft.replace(R.id.content, personDataFragment);
+            ft.commitAllowingStateLoss();
+
         }
     }
 
@@ -362,7 +405,7 @@ if(getFragmentManager() != null) {
                 return;
             }
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            PublicPhotoListFragment publicPhotoListFragment = new  PublicPhotoListFragment();
+            PublicPhotoListFragment publicPhotoListFragment = new PublicPhotoListFragment();
             publicPhotoListFragment.setPurpose(PublicPhotoListFragment.Purpose.CHOOSE_AVATAR);
             ft.addToBackStack(null);
             ft.replace(R.id.content, publicPhotoListFragment);

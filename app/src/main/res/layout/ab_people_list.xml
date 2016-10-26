@@ -28,9 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_20sdp"
         android:src="@drawable/show_filter"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:id="@+id/filterButton"/>
+        android:id="@+id/filterButton"
+        style="@style/filter_right_margin" />
 </RelativeLayout>

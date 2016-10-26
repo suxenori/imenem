@@ -6,6 +6,7 @@ import com.menemi.dbfactory.Fields;
 import com.menemi.personobject.Configurations;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
+import com.menemi.personobject.PostField;
 import com.menemi.utils.Utils;
 
 import org.json.JSONArray;
@@ -144,6 +145,21 @@ public class Sender extends JSONSender {
                 return obj.toString();
             }
         });
+        messageTypesParcer.put(RestCommands.SET_FIELD, new JSONParcer()
+        {
+            @Override
+            public String parce(Object object) throws JSONException
+            {
+                PostField data = (PostField)object;
+
+                JSONObject obj = new JSONObject();
+                //requesting_profile_id, name, gender (в виде 1 или 0), и birth в формате "%Y-%m-%d"
+                obj.put(USER_ID, data.getId());
+                obj.put(data.getField(), data.getData());
+
+                return obj.toString();
+            }
+        });
         //TODO: add actions for all other types
     }
 
@@ -191,7 +207,9 @@ public class Sender extends JSONSender {
         AUTHORISE,
         ADD_PHOTO,
         SET_CONFIGURATIONS,
-        SET_INFO
+        SET_INFO,
+        SET_PERSON_APPEARANCE,
+        SET_FIELD
     }
 
 

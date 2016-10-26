@@ -10,10 +10,19 @@ public class Interests
 
     }
 
+    public Interests(int interestId, String interest, String groupIconUrl, boolean isMutual) {
+        this.interestId = interestId;
+        this.interest = interest;
+        this.groupIconUrl = groupIconUrl;
+        this.isMutual = isMutual;
+    }
+
     private int interestId;
     private int groupId;
     private String interest;
     private boolean selected = false;
+    private String groupIconUrl;// : "http://minemi.ironexus.com/system/interest_groups/icon_mutuals/000/000/012/original/data?1477400224"
+    private boolean isMutual;// : true
 
     public int getInterestId()
     {
@@ -52,6 +61,13 @@ public class Interests
         this.selected = selected;
     }
 
+    public String getGroupIconUrl() {
+        return groupIconUrl;
+    }
+
+    public boolean isMutual() {
+        return isMutual;
+    }
 }
 
 

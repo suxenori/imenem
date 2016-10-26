@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/menuItemContainer"
     android:background="@drawable/click_menu">
     <LinearLayout
               xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,7 +13,9 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-                style="@style/margined">
+        android:layout_marginBottom="@dimen/_5sdp"
+                style="@style/menuLeftMargin">
+
 
     <ImageView
             android:layout_width="wrap_content"
@@ -35,8 +38,6 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
     </LinearLayout>
-    <ImageView style="@style/profile_divider"
-        android:layout_below="@+id/photosContainer"
-        android:layout_marginTop="@dimen/_5sdp"/>
+
 
     </LinearLayout>

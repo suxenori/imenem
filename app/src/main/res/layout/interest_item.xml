@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/interest"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    android:layout_marginLeft="@dimen/_5sdp"
+    android:layout_marginRight="@dimen/_5sdp"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:gravity="center_vertical">
 
-    >
-    <CheckBox
-        android:text="sdfasdfa"
-        style="@style/Interest"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:layout_gravity="fill"
-        android:gravity="center"
-        android:clickable="false"
-        android:lines="1"
-        android:id="@+id/interest"
-        android:paddingLeft="@dimen/_7sdp"
-        android:paddingStart="@dimen/_7sdp"
-        android:paddingRight="@dimen/_7sdp"
-        android:paddingEnd="@dimen/_7sdp"
-        android:layout_marginStart="@dimen/_5sdp"
+    <ImageView
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:src="@drawable/profile_back"
+        android:id="@+id/groupIcon"/>
+
+    <TextView
+        android:includeFontPadding="false"
+        android:id="@+id/interestText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        />
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_gravity="fill"
+        android:clickable="false"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="sdfasdfa"
+        android:textSize="@dimen/font_size" />
 </LinearLayout>

@@ -1140,13 +1140,18 @@ public class Loader extends JSONLoader {
         return personObject;
     }
 
+
+
     private static ArrayList<Interests> interestsParce(JSONObject mainObject) throws JSONException {
         JSONArray interests = mainObject.getJSONArray(Fields.INTERESTS);
         ArrayList<Interests> preparedInterests = new ArrayList<>();
 
         for (int i = 0; i < interests.length(); i++) {
-            String interestName = interests.getString(i);
-            preparedInterests.add(new Interests(interestName, 0, 0));
+
+            preparedInterests.add(new Interests( interests.getJSONObject(i).getInt(Fields.INTEREST_ID),
+                    interests.getJSONObject(i).getString(Fields.NAME),
+                    interests.getJSONObject(i).getString(Fields.ICON_URL),
+                    interests.getJSONObject(i).getBoolean(Fields.IS_MUTUAL) ));
         }
         return preparedInterests;
     }

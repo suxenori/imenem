@@ -68,6 +68,9 @@ public  class Fields {
     public static final String VAL = "val";
     public static final String IS_MUTUAL = "is_mutual";
     public static final String VIP_STATUS = "vip_until";// : "2016-09-30T15:06:12.000Z"
+    public static final String INTEREST_ID = "interest_id";
+    public static final String ICON_URL = "icon_url";
+
 
     public static final String RATING = "profile_rating";
 

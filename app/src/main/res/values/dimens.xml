@@ -1,6 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">@dimen/_25sdp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
 
@@ -72,7 +72,7 @@
     <dimen name="female_margin_start">@dimen/_12sdp</dimen>
     <dimen name="all_margin_left">@dimen/_11sdp</dimen>
     <dimen name="app_font_size">@dimen/_14sdp</dimen>
-    <dimen name="interest_height">@dimen/_30sdp</dimen>
+    <dimen name="interest_height">@dimen/_25sdp</dimen>
     <dimen name="cancel_button_filter_margin_top">@dimen/_15sdp</dimen>
     <dimen name="cancel_button_filter_margin_left">@dimen/_163sdp</dimen>
     <dimen name="button_filter_margin_left">@dimen/_48sdp</dimen>

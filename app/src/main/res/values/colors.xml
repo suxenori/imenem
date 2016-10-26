@@ -12,6 +12,9 @@
     <color name="text">#d4d4d4</color>
     <color name="orange">#f29c23</color>
     <color name="orange_pressed">#f9b453</color>
+    <color name="interest_fill">#f1f4f9</color>
+    <color name="interest_stroke">#d7d9dd</color>
+
 
 
     <color name="grey_message">#E2E3E5</color>

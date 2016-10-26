@@ -8,6 +8,7 @@ import com.menemi.filter.FilterObject;
 import com.menemi.personobject.Configurations;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
+import com.menemi.personobject.PostField;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,16 @@ public class DBRest {
             }
         }).execute();
     }
+    public void setField(String field, String data, final OnDataRecieveListener onDataRecieveListener) {
 
+        new Sender(Sender.RestCommands.SET_FIELD, new PostField(field,data), new Sender.OnUploadListener() {
+            @Override
+            public void onUploadFinish(String s) {
+                Log.v("DBRest", "on upload finish listener");
+                onDataRecieveListener.onFinish(true);
+            }
+        }).execute();
+    }
     public void addPhoto(PhotoSetting photoSetting,final OnDataRecieveListener onDataRecieveListener){
         new Sender(Sender.RestCommands.ADD_PHOTO,photoSetting, new Sender.OnUploadListener()
         {
@@ -273,4 +283,5 @@ public class DBRest {
     }
     public interface OnDataRecieveListener extends JSONLoader.OnLoadFinishListener {
     }
+
 }

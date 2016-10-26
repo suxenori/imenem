@@ -3,6 +3,7 @@ package com.menemi.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,11 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.menemi.R;
+import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.interests_classes.InterestContainer;
 import com.menemi.interests_classes.PersonInterestsFragment;
 import com.menemi.personobject.Interests;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 public class InterestsFragment extends Fragment {
     private View rootView = null;
 
-    String[] interests = new String[0];
+    ArrayList<Interests> interests;
     View[] items = null;
     boolean isLayoutSet = false;
     PersonObject ownerProfile = null;
@@ -82,19 +84,34 @@ public class InterestsFragment extends Fragment {
 
         return rootView;
     }
+    private int picturesLoaded = -1;
+    private void prepareOwnInterests(LayoutInflater inflater, LinearLayout interestsLayout) {
+        items = new View[interests.size()];
 
-    private void prepareOwnInterests(LayoutInflater inflater, LinearLayout interestsLayout, PersonObject myProfileObject) {
-        items = new View[interests.length];
-        for (int i = 0; i < interests.length; i++) {
-            View item = inflater.inflate(R.layout.interest_item, interestsLayout, false);
-            CheckBox interest = (CheckBox) item.findViewById(R.id.interest);
-            interest.setText(interests[i]);
-            if (myProfileObject.isInterestMatches(interests[i])) {
-                interest.setChecked(true);
+        for (int i = 0; i < interests.size(); i++) {
+            int finalI = i;
+            new PictureLoader(interests.get(i).getGroupIconUrl(), (Bitmap icon)->{
+                View item = inflater.inflate(R.layout.interest_item, interestsLayout, false);
+                TextView interest = (TextView) item.findViewById(R.id.interestText);
+                interest.setText(interests.get(finalI).getInterest());
+                if (interests.get(finalI).isMutual()) {
+                    interest.setTextColor(getResources().getColor(R.color.orange_text));
+                }
+                ImageView groupIcon = (ImageView) item.findViewById(R.id.groupIcon);
+                groupIcon.setImageBitmap(icon);
+                interestsLayout.addView(item);
+                items[finalI] = item;
+                picturesLoaded++;
+            });
+            while(picturesLoaded != i ) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            interestsLayout.addView(item);
-            items[i] = item;
         }
+
     }
 
     ArrayList<ArrayList<Integer>> preparePositions(int widthMeasureSpec, int[] sizes) {
@@ -174,20 +191,12 @@ public class InterestsFragment extends Fragment {
     }
 
     public void setInterests(ArrayList<Interests> interests) {
-        if (interests == null) {
-            return;
-        }
-        String[] interestsString = new String[interests.size()];
-        for (int i = 0; i < interests.size(); i++) {
-            interestsString[i] = interests.get(i).getInterest();
-        }
-
-        this.interests = interestsString;
+        this.interests = interests;
     }
     private ViewTreeObserver vto;
     public void refreshFragment(final Context ctx, LayoutInflater inflater, final LinearLayout interestsLayout){
         interestsLayout.removeAllViews();
-        prepareOwnInterests(inflater, interestsLayout, ownerProfile);
+        prepareOwnInterests(inflater, interestsLayout);
 
         if(vto == null){
             vto = interestsLayout.getViewTreeObserver();
@@ -208,15 +217,15 @@ public class InterestsFragment extends Fragment {
         if (!isLayoutSet) {
             isLayoutSet = true;
 
-            int[] sizes = new int[interests.length];
+            int[] sizes = new int[interests.size()];
 
             for (int i = 0; i < items.length; i++) {
-                sizes[i] = items[i].getMeasuredWidth();
+                sizes[i] = items[i].getWidth();
             }
             interestsLayout.removeAllViews();
 
 
-            ArrayList<ArrayList<Integer>> preparedPositions = preparePositions(interestsLayout.getMeasuredWidth(), sizes);
+            ArrayList<ArrayList<Integer>> preparedPositions = preparePositions(interestsLayout.getWidth(), sizes);
 
             LinearLayout[] layoutInUse = new LinearLayout[preparedPositions.size()];
             LinearLayout.LayoutParams layoutInUseParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

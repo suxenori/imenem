@@ -40,12 +40,16 @@ public class BasicInfoActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+
+
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(DBHandler.getInstance().getMyProfile().getPersonName());
-        name.setOnClickListener(new NameChangeListener(name));
+
+        LinearLayout basicInfoButton = (LinearLayout)findViewById(R.id.basicInfoButton);
+        basicInfoButton.setOnClickListener(new NameChangeListener(name));
 
         TextView birthday = (TextView) findViewById(R.id.birthday);
-        birthday.setText(DBHandler.getInstance().getMyProfile().getBirthday().toString());
+        birthday.setText(Utils.getStringFromDate(DBHandler.getInstance().getMyProfile().getBirthday()));
 
         LinearLayout birthdayButton = (LinearLayout) findViewById(R.id.birthdayButton);
         birthdayButton.setOnClickListener(new AgeChangeListener(DBHandler.getInstance().getMyProfile().getBirthday()));
@@ -76,23 +80,42 @@ public class BasicInfoActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.maleButton){
-                if(!isMaleSelected){
+            if(v.getId() == R.id.maleButton && !isMaleSelected){
+
                     new OCDialog(BasicInfoActivity.this, getString(R.string.change_gender), getString(R.string.gender_notification), OCDialog.NO_ICON,() -> {
-                            DBHandler.getInstance().getMyProfile().setMale(true);
-                            isMaleSelected = true;
-                            setChecked((ImageView)findViewById(R.id.maleRadioButton), (ImageView)findViewById(R.id.femaleRadioButton));
+                        ProgressDialog progressDialog =  Utils.startLodingProgress(BasicInfoActivity.this, getString(R.string.change_age),new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {}});
+                            DBHandler.getInstance().setMyGender(true,  (isSucceed)->{
+                                if(!(boolean)isSucceed){
+                                } else{
+                                    isMaleSelected = true;
+                                    setChecked((ImageView)findViewById(R.id.maleRadioButton), (ImageView)findViewById(R.id.femaleRadioButton));
+                                }
+                                progressDialog.dismiss();
+                            });
+
+
                         //TODO change gender on server
                     }, () -> {});
-                }
-            } else if(v.getId() == R.id.femaleButton){
-                if(isMaleSelected){
+
+            } else if(v.getId() == R.id.femaleButton && isMaleSelected){
+
               new OCDialog(BasicInfoActivity.this, getString(R.string.change_gender), getString(R.string.gender_notification), OCDialog.NO_ICON,() -> {
-                    DBHandler.getInstance().getMyProfile().setMale(false);
-                    isMaleSelected = false;
-                    setChecked((ImageView)findViewById(R.id.femaleRadioButton), (ImageView)findViewById(R.id.maleRadioButton));
+                  ProgressDialog progressDialog =  Utils.startLodingProgress(BasicInfoActivity.this, getString(R.string.change_age),new DialogInterface.OnDismissListener() {
+                      @Override
+                      public void onDismiss(DialogInterface dialog) {}});
+                  DBHandler.getInstance().setMyGender(true,  (isSucceed)->{
+                      if(!(boolean)isSucceed){
+                      } else{
+                          isMaleSelected = false;
+                          setChecked((ImageView)findViewById(R.id.femaleRadioButton), (ImageView)findViewById(R.id.maleRadioButton));
+                      }
+                      progressDialog.dismiss();
+                  });
+
                 }, () -> {});
-                }
+
             }
         }
     }
@@ -120,10 +143,16 @@ public class BasicInfoActivity extends AppCompatActivity {
                         }
                     });
                     this.date = date;
-                    DBHandler.getInstance().getMyProfile().setBirthday(date);
-                    TextView birthday = (TextView) findViewById(R.id.birthday);
-                    birthday.setText(date.toString());
-                    progressDialog.dismiss();
+                 DBHandler.getInstance().setBirthday(date, (isSucceed)->{
+                     if(!(boolean)isSucceed){
+                     } else{
+                         TextView birthday = (TextView) findViewById(R.id.birthday);
+                         birthday.setText(Utils.getStringFromDate(DBHandler.getInstance().getMyProfile().getBirthday()));
+                     }
+                     progressDialog.dismiss();
+                 });
+
+
 
 
                 });
@@ -143,7 +172,6 @@ public class BasicInfoActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             new OCDialog(BasicInfoActivity.this, getString(R.string.change_name), name.getText().toString(), OCDialog.NO_ICON,(String data) -> {
-                String oldName = DBHandler.getInstance().getMyProfile().getPersonName();
 
                 ProgressDialog progressDialog =  Utils.startLodingProgress(BasicInfoActivity.this,  getString(R.string.change_name), new DialogInterface.OnDismissListener() {
                     @Override
@@ -151,9 +179,9 @@ public class BasicInfoActivity extends AppCompatActivity {
 
                     }
                 });
-                DBHandler.getInstance().setInfo(DBHandler.getInstance().getMyProfile(), succseed -> {
-                    if(!(boolean)succseed){
-                        DBHandler.getInstance().getMyProfile().setPersonName(oldName);
+                DBHandler.getInstance().setName(data, isSucceed -> {
+                    if(!(boolean)isSucceed){
+
                     } else{
                         DBHandler.getInstance().getMyProfile().setPersonName(data);
                         name.setText(data);

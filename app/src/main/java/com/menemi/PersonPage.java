@@ -82,6 +82,7 @@ public class PersonPage extends AppCompatActivity {
     private static final int INVITE_FRIENDS = 6;
     private static final int SETTINGS = 7;
     public static boolean isFilterVisible = false;
+
     private ArrayList<ItemSlideMenu> listSliding = new ArrayList<>();
 
     private static ScrollView listViewSliding;
@@ -407,9 +408,11 @@ public class PersonPage extends AppCompatActivity {
     }
 
     private class ItemSlideMenu implements View.OnClickListener{
+
         int id = 0;
         private int imgId;
         private int titleId;
+        View view;
 
         public void setId(int id) {
             this.id = id;
@@ -421,7 +424,7 @@ public class PersonPage extends AppCompatActivity {
         }
 
         private View prepareItem() {
-            View view = View.inflate(PersonPage.this, com.menemi.R.layout.item_sliding_menu, null);
+            view = View.inflate(PersonPage.this, com.menemi.R.layout.item_sliding_menu, null);
             ImageView img = (ImageView) view.findViewById(com.menemi.R.id.img_id);
             TextView textView = (TextView) view.findViewById(com.menemi.R.id.item_title);
             img.setImageResource(imgId);
@@ -432,6 +435,12 @@ public class PersonPage extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            for (int i = 0; i < listSliding.size(); i++) {
+                LinearLayout menuItemContainer = (LinearLayout) listSliding.get(i).view.findViewById(R.id.menuItemContainer);
+                menuItemContainer.setBackgroundResource(R.drawable.click_menu);
+            }
+            LinearLayout thisMenuItemContainer = (LinearLayout) view.findViewById(R.id.menuItemContainer);
+            thisMenuItemContainer.setBackgroundResource(R.color.menu_item);
             replaceFragment(id);
             drawerLayout.closeDrawer(listViewSliding);
         }

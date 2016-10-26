@@ -49,7 +49,17 @@
                 android:text="1.5 км"
                 android:textColor="@color/orange_text"
                 android:textSize="@dimen/app_font_size" />
+<ImageView
+    android:layout_width="@dimen/_20sdp"
+    android:layout_height="@dimen/_20sdp"
 
+    android:layout_marginBottom="@dimen/_24sdp"
+    style="@style/filter_right_margin"
+    android:id="@+id/buttonShowPreviousUser"
+    android:layout_alignBottom="@+id/range"
+    android:layout_alignEnd="@+id/range"
+    android:layout_alignRight="@+id/range"
+    />
             <LinearLayout
                 android:id="@+id/mapIcon"
                 android:layout_width="@dimen/_18sdp"

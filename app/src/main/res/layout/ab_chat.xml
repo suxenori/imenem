@@ -19,10 +19,8 @@
             android:id="@+id/screenTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_main"
-            android:textSize="@dimen/app_font_size"
             android:text="@string/people_nearby"
-            />
+            style="@style/textViewSize" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -29,6 +29,7 @@ import com.menemi.personobject.PhotoTemplate;
 import com.menemi.social_network.SocialProfile;
 import com.menemi.utils.Utils;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -205,17 +206,17 @@ public class DBHandler {
                     if (dbRest == null || dbSQLite == null) {
                         prepareDB();
                     }
-                    int id = 1;
-if(personObject.getEmail() == "2"){
-    id = 2;
-} else if(personObject.getEmail() == "3"){
- id = 3;
-} else if(personObject.getEmail() == "4"){
-    id = 4;
-}
+                   /* int id = 1;
+                    if (personObject.getEmail() == "2") {
+                        id = 2;
+                    } else if (personObject.getEmail() == "3") {
+                        id = 3;
+                    } else if (personObject.getEmail() == "4") {
+                        id = 4;
+                    }*/
                     Log.v("DBHandler", "authorise rest" + dbRest);
-                      //dbRest.authorise(personObject, new DBRest.OnDataRecieveListener() {
-                          dbRest.getProfile(id, new ResultListener() {
+                      dbRest.authorise(personObject, new DBRest.OnDataRecieveListener() {
+                        //  dbRest.getProfile(id, new ResultListener() {
 
                               @Override
                         public void onFinish(Object object) {
@@ -275,6 +276,72 @@ public void prepareSettings(Runnable runnable){
             public void onFinish(Object object) {
                 if((boolean)object){
                     dbRest.setInfo(personObject, resultListener);
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
+
+    }
+    public void setName(String name, ResultListener resultListener){
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if((boolean)object){
+                    dbRest.setField(Fields.NAME, name, (isSucceed)->{
+                        if((boolean)isSucceed) {
+
+                            resultListener.onFinish(true);
+                            myProfile.setPersonName(name);
+
+                        } else{
+                            resultListener.onFinish(false);
+                        }
+                    });
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
+
+    }
+    public void setBirthday(Date birthday, ResultListener resultListener){
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if((boolean)object){
+                    dbRest.setField(Fields.BIRTH_DAY, Utils.getStringFromDate(birthday), (isSucceed)->{
+                        if((boolean)isSucceed) {
+
+                            resultListener.onFinish(true);
+                            myProfile.setBirthday(birthday);
+
+                        } else{
+                            resultListener.onFinish(false);
+                        }
+                    });
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
+
+    }
+    public void setMyGender(boolean isMale, ResultListener resultListener){
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if((boolean)object){
+                    dbRest.setField(Fields.IS_MALE, ""+Utils.boolToInt(isMale), (isSucceed)->{
+                        if((boolean)isSucceed) {
+
+                            resultListener.onFinish(true);
+                            myProfile.setMale(isMale);
+
+                        } else{
+                            resultListener.onFinish(false);
+                        }
+                    });
                 } else {
                     resultListener.onFinish(false);
                 }
