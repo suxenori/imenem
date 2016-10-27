@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.menemi.dbfactory.Fields;
 import com.menemi.personobject.Configurations;
+import com.menemi.personobject.CreditsInfo;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
 import com.menemi.personobject.PostField;
@@ -24,7 +25,8 @@ public class Sender extends JSONSender {
     static final String urlForAPIAuthorise = "http://minemi.ironexus.com/profile/authorize";
     static final String urlForAPIAddPhoto = "http://minemi.ironexus.com/ru/profile/addphoto";
     static final String urlForAPISetConfigurations = "http://minemi.ironexus.com/ru/settings/setconfigurations";//(:requesting_profile_id)
-    static final String urlForAPISetINFO = "http://minemi.ironexus.com/ru/settings/savegeneralinfo/";
+    static final String urlForAPISetINFO = "http://minemi.ironexus.com/ru/settings/saveprofileinfo/";
+    static final String urlForAPIAddCredits = "http://minemi.ironexus.com/ru/profile/credits_added";
 
 
 
@@ -150,14 +152,39 @@ public class Sender extends JSONSender {
             @Override
             public String parce(Object object) throws JSONException
             {
+                //Log.d("object", obj.toString());
                 PostField data = (PostField)object;
+JSONObject dataJSON = new JSONObject();
 
                 JSONObject obj = new JSONObject();
                 //requesting_profile_id, name, gender (в виде 1 или 0), и birth в формате "%Y-%m-%d"
-                obj.put(USER_ID, data.getId());
+                dataJSON.put(USER_ID, data.getId());
                 obj.put(data.getField(), data.getData());
 
-                return obj.toString();
+                dataJSON.put("values", obj);
+                Log.d("object", dataJSON.toString());
+                return dataJSON.toString();
+            }
+        });
+        messageTypesParcer.put(RestCommands.ADD_CREDITS, new JSONParcer()
+        {
+            @Override
+            public String parce(Object object) throws JSONException
+            {
+                //Log.d("object", obj.toString());
+                CreditsInfo data = (CreditsInfo)object;
+                JSONObject dataJSON = new JSONObject();
+
+                JSONObject obj = new JSONObject();
+                //requesting_profile_id, name, gender (в виде 1 или 0), и birth в формате "%Y-%m-%d"
+                dataJSON.put(USER_ID, data.getId());
+                obj.put(Fields.CREDITS_ADDED_TOKEN, data.getToken());
+                obj.put(Fields.CREDITS_ADDED_AMOUNT, data.getCreditsToAdd());
+
+
+                dataJSON.put("values", obj);
+                Log.d("object", dataJSON.toString());
+                return dataJSON.toString();
             }
         });
         //TODO: add actions for all other types
@@ -192,6 +219,13 @@ public class Sender extends JSONSender {
             case SET_INFO:
                 url = urlForAPISetINFO;
                 break;
+            case SET_FIELD:
+                url = urlForAPISetINFO;
+                break;
+            case ADD_CREDITS:
+                url = urlForAPIAddCredits;
+                break;
+
         }
         return url;
     }
@@ -209,7 +243,8 @@ public class Sender extends JSONSender {
         SET_CONFIGURATIONS,
         SET_INFO,
         SET_PERSON_APPEARANCE,
-        SET_FIELD
+        SET_FIELD,
+        ADD_CREDITS
     }
 
 

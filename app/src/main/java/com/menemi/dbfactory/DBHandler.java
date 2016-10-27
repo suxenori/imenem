@@ -220,24 +220,13 @@ public class DBHandler {
 
                               @Override
                         public void onFinish(Object object) {
-                            if (object != null) {
-
-                                myProfile = (PersonObject) object;
-                                dbSQLite.setPersonalInfo(myProfile);
-                                dbSQLite.saveLastId(myProfile.getPersonId());
-                                prepareSettingsForProfile();
-                            }
-                            if(photoTemplates == null || gifts == null){
-                                prepareSettings(() -> {
-                                    resultListener.onFinish(object);
-                                });
-                            } else {
-                                resultListener.onFinish(object);
-                            }
+                                  configureProfile(object,resultListener);
 
 
                         }
-                    });
+
+
+                      });
                 } else {
                     subscribeToRest(new InternetConnectionListener() {
                         @Override
@@ -260,6 +249,23 @@ public class DBHandler {
 
 
     }
+
+    private void configureProfile(Object object, ResultListener resultListener) {
+        if (object != null) {
+
+            myProfile = (PersonObject) object;
+            dbSQLite.setPersonalInfo(myProfile);
+            dbSQLite.saveLastId(myProfile.getPersonId());
+            prepareSettingsForProfile();
+        }
+        if(photoTemplates == null || gifts == null){
+            prepareSettings(() -> {
+                resultListener.onFinish(object);
+            });
+        } else {
+            resultListener.onFinish(object);
+        }
+    }
 public void prepareSettings(Runnable runnable){
     preparePhotoTemplates((Object obj) ->{
         prepareGifts((Object object) ->{
@@ -276,6 +282,30 @@ public void prepareSettings(Runnable runnable){
             public void onFinish(Object object) {
                 if((boolean)object){
                     dbRest.setInfo(personObject, resultListener);
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
+
+    }
+
+
+    public void addCredits(String token, int amount, ResultListener resultListener){
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if((boolean)object){
+                    dbRest.addCredits(token, amount, (isSucceed)->{
+                        if((boolean)isSucceed) {
+
+                            resultListener.onFinish(true);
+                            myProfile.setPersonCredits(myProfile.getPersonCredits() + amount);
+
+                        } else{
+                            resultListener.onFinish(false);
+                        }
+                    });
                 } else {
                     resultListener.onFinish(false);
                 }
@@ -745,16 +775,7 @@ Log.d("logout", "logout1");
                             Log.v("DBHandler", "register rest finish listener");
                             Log.v("DBHandler", "reg " + object);
 
-                            if (object != null) {
-                                PersonObject personObject = (PersonObject) object;
-                                myProfile = personObject;
-                                dbSQLite.setPersonalInfo(personObject);
-                                dbSQLite.saveLastId(personObject.getPersonId());
-
-                            }
-
-
-                            resultListener.onFinish(object);
+                            configureProfile(object,resultListener);
                         }
                     });
 

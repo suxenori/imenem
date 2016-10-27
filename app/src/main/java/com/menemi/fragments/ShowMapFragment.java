@@ -87,7 +87,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
         }
 
         MapsInitializer.initialize(getActivity()); /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        initMapKostyl();
         if (isOwnPosition) {
             configureToolbar();
 
@@ -175,7 +175,11 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
             Log.e("mapApp", exception.toString());
         }
     }
+private void initMapKostyl(){
 
+        getFragmentManager().beginTransaction().replace(R.id.mapView, new com.google.android.gms.maps.MapFragment()).commitAllowingStateLoss();
+
+    }
     private MapFragment getMapFragment() {
         FragmentManager fm = null;
 
@@ -187,6 +191,10 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
         } else {
 
             fm = getChildFragmentManager();
+            if(fm == null){
+                fm = getFragmentManager();
+            }
+
         }
 
         return (MapFragment) fm.findFragmentById(R.id.mapView);

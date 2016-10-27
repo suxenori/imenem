@@ -58,7 +58,7 @@ public class AccountActivity extends AppCompatActivity
 
                 Intent firstActivity = new Intent(AccountActivity.this, FirstActivity.class);
                 startActivity(firstActivity);
-                firstActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                firstActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
             }
         });

@@ -1093,7 +1093,7 @@ public class Loader extends JSONLoader {
         personObject.setSmokingPerson(mainObject.getString(Fields.SMOKING));
         personObject.setDrinkingPerson(mainObject.getString(Fields.DRINKING));
         personObject.setPersonRelationship(mainObject.getString(Fields.RELATIONSHIP));
-
+        personObject.setDistance(mainObject.getDouble(Fields.DISTANCE));
         personObject.setLikeStatus(PersonObject.LikeStatus.valueOf(mainObject.getString(LIKED)));;
         ArrayList<Integer> friendsList = new ArrayList<>();
         Log.d("LOG", "friendsList.size()" + friendsList.size());
@@ -1122,6 +1122,7 @@ public class Loader extends JSONLoader {
         personObject.setPersonId(profileObject.getInt(Fields.ID));
         personObject.setAboutPersonInfo(profileObject.getString(Fields.ABOUT));
         personObject.setBodyType(profileObject.getInt(Fields.BODY_TYPE));
+
 
         personObject.setPersonKids(profileObject.getInt(Fields.KIDS));
         personObject.setPersonCredits(profileObject.getInt(Fields.CREDITS));

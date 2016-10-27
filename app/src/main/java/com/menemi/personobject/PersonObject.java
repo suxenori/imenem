@@ -69,7 +69,7 @@ public class PersonObject {
     private ArrayList<PhotoSetting> pictureUrlsPublic = new ArrayList<>();
     private LikeStatus likeStatus = LikeStatus.none;
     private int rating;
-
+    private double distance;
     private boolean canChat;
 
     public PersonObject(String email, String password) {
@@ -138,6 +138,7 @@ public class PersonObject {
         this.filterObject = personObject.filterObject;
         this.searchAgeMax = personObject.searchAgeMax;
         this.pictureUrlsPrivate = personObject.pictureUrlsPrivate;
+        this.distance = personObject.distance;
         this.pictureUrlsPublic = personObject.pictureUrlsPublic;
     }
 
@@ -284,6 +285,7 @@ public class PersonObject {
         this.personInstagram = personInstagram;
     }
 
+
     public String getPersonTwitter() {
         return personTwitter;
     }
@@ -343,6 +345,14 @@ public class PersonObject {
             });
         });
 
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     public ArrayList<PhotoSetting> getPictureUrlsPrivate() {

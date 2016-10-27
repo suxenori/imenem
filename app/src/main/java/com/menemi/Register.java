@@ -21,8 +21,7 @@ import com.menemi.utils.Utils;
 
 import java.sql.Date;
 
-public class Register extends Fragment
-{
+public class Register extends Fragment {
 
     private EditText editName;
     private EditText editBDay;
@@ -34,28 +33,28 @@ public class Register extends Fragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
-        rootView = inflater.inflate(com.menemi.R.layout.register_page,container,false);
-        registerButton = (Button)rootView.findViewById(com.menemi.R.id.button_register);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(com.menemi.R.layout.register_page, container, false);
+        registerButton = (Button) rootView.findViewById(com.menemi.R.id.button_register);
         editName = (EditText) rootView.findViewById(com.menemi.R.id.editNameField);
-        editBDay = (EditText)rootView.findViewById(com.menemi.R.id.editBDayField);
+        editBDay = (EditText) rootView.findViewById(com.menemi.R.id.editBDayField);
         editEmail = (EditText) rootView.findViewById(com.menemi.R.id.editEmailField);
-        editPass = (EditText)rootView.findViewById(com.menemi.R.id.editPassField);
+        editPass = (EditText) rootView.findViewById(com.menemi.R.id.editPassField);
 
-        arrowBack = (ImageButton)rootView.findViewById(com.menemi.R.id.arrowBackButtonReg);
-        editEmail.addTextChangedListener(new EmailChangeListener());
-        registerButton.setOnClickListener(new View.OnClickListener()
-        {
+        arrowBack = (ImageButton) rootView.findViewById(com.menemi.R.id.arrowBackButtonReg);
+        editEmail.addTextChangedListener(new TextChangeListener(rootView.findViewById(R.id.wrongLogPassNotification)));
+        editName.addTextChangedListener(new TextChangeListener(rootView.findViewById(R.id.wrongName)));
+        editBDay.setKeyListener(null);//should not be edited by typing
+        editPass.addTextChangedListener(new TextChangeListener(rootView.findViewById(R.id.wrongPassword)));
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utils.isEmailValid(editEmail.getText().toString())) {
+                if (checkAllFieldsValid()) {
                     PersonObject personObject = new PersonObject(SelectSexPage.isMale(), Goals.getiamHereTo()
                             , PersonObject.InterestGender.ANY_GENDER,
                             editEmail.getText().toString(), editName.getText().toString(), Utils.getDateFromString(editBDay.getText().toString()), editPass.getText().toString());
-                    DBHandler.getInstance().register(personObject, new DBHandler.ResultListener()
-
-                    {
+                    DBHandler.getInstance().register(personObject, new DBHandler.ResultListener() {
                         @Override
                         public void onFinish(Object object) {
                             if (object != null) {
@@ -63,7 +62,7 @@ public class Register extends Fragment
                                 startActivity(personPage);
                                 Log.i("register", "register is successful");
                             } else {
-                                TextView wrongLogPassNotification = (TextView)rootView.findViewById(R.id.wrongLogPassNotification);
+                                TextView wrongLogPassNotification = (TextView) rootView.findViewById(R.id.wrongLogPassNotification);
                                 wrongLogPassNotification.setText(R.string.wrong_password_or_email);
                                 wrongLogPassNotification.setVisibility(View.VISIBLE);
                                 //editEmail.setHintTextColor(getResources().getColor(R.color.red_text));
@@ -71,50 +70,70 @@ public class Register extends Fragment
 
                         }
                     });
-                    Log.i("Button reg is pressed", "Button register is pressed");
-                    Log.i("Name ", editName.getText().toString());
-                    Log.i("Man? ", SelectSexPage.isMale() + "");
-                    Log.i("Here to ", Goals.getiamHereTo() + "");
-                    Log.i("Interest gender", PersonObject.InterestGender.ANY_GENDER + "");
-                    Log.i("Email ", editEmail.getText().toString());
-                    Log.i("Pass", editPass.getText().toString());
-                    Log.i("Date", String.valueOf(Utils.getDateFromString1(editBDay.getText().toString())));
-                    Log.i("Button reg is pressed", "Button register is pressed");
-                } else{
 
-                    TextView wrongLogPassNotification = (TextView)rootView.findViewById(R.id.wrongLogPassNotification);
-                    wrongLogPassNotification.setText(R.string.wrong_email);
-                    wrongLogPassNotification.setVisibility(View.VISIBLE);
                 }
             }
         });
 
-        arrowBack.setOnClickListener(new View.OnClickListener()
-        {
+        arrowBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 getFragmentManager().popBackStack();
                 //firstActivity.removeFragment(getFragmentManager().beginTransaction(),Register.this);
             }
         });
-        editBDay.setOnClickListener(new View.OnClickListener()
-        {
+        editBDay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 DatePicker dialogFragment = new DatePicker();
-                dialogFragment.setOkListener((Date date) ->{
+                dialogFragment.setOkListener((Date date) -> {
                     editBDay.setText(Utils.getStringFromDate(date));
+                    if(editBDay.getText().toString().length() > 6){ // TODO CHANGE TO REGEX
+                        TextView wrongNotification = (TextView) rootView.findViewById(R.id.wrongBDay);
+                        wrongNotification .setVisibility(View.INVISIBLE);
+
+                    }
                 });
-                dialogFragment.show(getFragmentManager(),"tag");
+                dialogFragment.show(getFragmentManager(), "tag");
+
             }
         });
 
         return rootView;
     }
 
-    class EmailChangeListener implements TextWatcher{
+    private boolean checkAllFieldsValid() {
+        boolean isAllCorrect = true;
+        if (!Utils.isEmailValid(editEmail.getText().toString())) {
+            TextView wrongLogPassNotification = (TextView) rootView.findViewById(R.id.wrongLogPassNotification);
+            wrongLogPassNotification.setVisibility(View.VISIBLE);
+            isAllCorrect = false;
+        }
+        if(Utils.isNameValid(editName.getText().toString())){ // TODO CHANGE TO REGEX
+            TextView wrongNotification = (TextView) rootView.findViewById(R.id.wrongName);
+            wrongNotification .setVisibility(View.VISIBLE);
+            isAllCorrect = false;
+        }
+        if(editPass.getText().toString().length() < 6){ // TODO CHANGE TO REGEX
+            TextView wrongNotification = (TextView) rootView.findViewById(R.id.wrongPassword);
+            wrongNotification .setVisibility(View.VISIBLE);
+            isAllCorrect = false;
+        }
+        if(editBDay.getText().toString().length() < 6){ // TODO CHANGE TO REGEX
+            TextView wrongNotification = (TextView) rootView.findViewById(R.id.wrongBDay);
+            wrongNotification .setVisibility(View.VISIBLE);
+            isAllCorrect = false;
+        }
+
+        return isAllCorrect;
+    }
+
+    class TextChangeListener implements TextWatcher {
+        View notificationView;
+
+        public TextChangeListener(View view) {
+            this.notificationView = view;
+        }
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -123,8 +142,7 @@ public class Register extends Fragment
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            TextView wrongLogPassNotification = (TextView)rootView.findViewById(R.id.wrongLogPassNotification);
-            wrongLogPassNotification.setVisibility(View.INVISIBLE);
+            notificationView.setVisibility(View.INVISIBLE);
 
         }
 

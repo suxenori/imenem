@@ -51,6 +51,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class Utils {
     public static final String PICTURE_QUALITY_LARGE = "large";
     public enum UNITS{METRIC, IMPERIAL}
     private static final Pattern emailPattern = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
+    private static final Pattern namePattern = Pattern.compile("^[\\p{L} .'-]+$");
     public static String strSeparator = "_,_";
 
     public static int boolToInt(boolean value) {
@@ -92,18 +94,6 @@ public class Utils {
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         return sqlDate;
     }
-
-
-
-
-
-
-        public static UNITS getUnits() {
-            String countryCode = Locale.getDefault().getCountry();
-            if ("US".equals(countryCode) || "LR".equals(countryCode) || "MM".equals(countryCode))
-            {return UNITS.IMPERIAL;} // burma
-            return UNITS.METRIC;
-        }
 
     public static java.sql.Date getDateFromString1(String dateString) {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
@@ -672,9 +662,26 @@ public static ProgressDialog startLodingProgress(Context ctx, String title, Dial
     public static boolean isEmailValid(String email){
         return emailPattern.matcher(email).matches();
     }
+    public static boolean isNameValid(String name){
+        if(name == null || name.length() == 0) {
+            return false;
+        }
+        return namePattern.matcher(name).matches();
+    }
+
     public static String[] convertStringToArray(String str){
         String[] arr = str.split(strSeparator);
         return arr;
     }
+    public static UNITS getUnits() {
+        String countryCode = Locale.getDefault().getCountry();
+        if ("US".equals(countryCode) || "LR".equals(countryCode) || "MM".equals(countryCode))
+        {return UNITS.IMPERIAL;} // burma
+        return UNITS.METRIC;
+    }
+    public static String prepareShortUnts(double distance) {
+        DecimalFormat df2 = new DecimalFormat("#.#");
+        return df2.format(distance);
 
+    }
 }

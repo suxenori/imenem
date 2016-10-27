@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_34sdp"
+    android:background="@color/photo_bottom_stripe"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_34sdp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/profile_elements_side_margin"
+        android:paddingStart="@dimen/profile_elements_side_margin"
+        android:text="Украина, Одесса"
+        android:textColor="@color/actionbar_text"
+        android:textSize="@dimen/app_font_size" />
+
+    <LinearLayout
+        android:id="@+id/mapIcon"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_34sdp"
+        android:gravity="center">
+
+        <ImageView
+
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:src="@drawable/map_place" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/range"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_34sdp"
+
+
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/profile_elements_side_margin"
+        android:paddingRight="@dimen/profile_elements_side_margin"
+
+        android:textColor="@color/orange_text"
+        android:textSize="@dimen/app_font_size" />
+
+</LinearLayout>

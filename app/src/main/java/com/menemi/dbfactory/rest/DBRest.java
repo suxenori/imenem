@@ -6,6 +6,7 @@ import com.menemi.dbfactory.Fields;
 import com.menemi.dbfactory.messages.SendableMessage;
 import com.menemi.filter.FilterObject;
 import com.menemi.personobject.Configurations;
+import com.menemi.personobject.CreditsInfo;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
 import com.menemi.personobject.PostField;
@@ -60,7 +61,26 @@ public class DBRest {
             @Override
             public void onUploadFinish(String s) {
                 Log.v("DBRest", "on upload finish listener");
-                onDataRecieveListener.onFinish(true);
+                if(s.equals("{\"result\":\"success\"}")) {
+                    onDataRecieveListener.onFinish(true);
+                } else {
+                    onDataRecieveListener.onFinish(false);
+                }
+            }
+        }).execute();
+    }
+
+    public void addCredits(String token, int amount, final OnDataRecieveListener onDataRecieveListener) {
+
+        new Sender(Sender.RestCommands.ADD_CREDITS, new CreditsInfo(token,amount), new Sender.OnUploadListener() {
+            @Override
+            public void onUploadFinish(String s) {
+                Log.v("DBRest", "on upload finish listener");
+                if(s.equals("{\"result\":\"success\"}")) {
+                    onDataRecieveListener.onFinish(true);
+                } else {
+                    onDataRecieveListener.onFinish(false);
+                }
             }
         }).execute();
     }

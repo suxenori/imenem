@@ -43,6 +43,7 @@ public  class Fields {
     public static final String LIVING_WITH = "living_with_string";
     public static final String HAIR_COLOR = "hair_color";
     public static final String BODY_TYPE = "body_type";
+    public static final String DISTANCE = "distance";
     public static final String EYE_COLOR = "eye_color";
     public static final String GROWTH = "height";
     public static final String WEIGHT = "wight";
@@ -71,7 +72,8 @@ public  class Fields {
     public static final String INTEREST_ID = "interest_id";
     public static final String ICON_URL = "icon_url";
 
-
+    public static final String CREDITS_ADDED_AMOUNT = "added_amount";
+    public static final String CREDITS_ADDED_TOKEN = "transaction_token";
     public static final String RATING = "profile_rating";
 
     public static final String PHOTO_COUNT = "pictures_count";

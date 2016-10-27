@@ -76,6 +76,7 @@ abstract class JSONSender extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         Log.v("response body", "" + s);
+
         onUploadFinishListener.onUploadFinish(s);
     }
 

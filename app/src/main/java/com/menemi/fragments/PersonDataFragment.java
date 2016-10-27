@@ -21,6 +21,7 @@ import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.PersonObject;
+import com.menemi.utils.Utils;
 
 /**
  * Created by irondev on 23.06.16.
@@ -52,6 +53,7 @@ public class PersonDataFragment extends Fragment {
 
         DBHandler.getInstance().isRESTAvailable(object -> {
                     if ((boolean) object == true) {
+
                         if (purpose == Purpose.LIKE) {
                             if(personPrevious != null){
                                 ImageView buttonShowPreviousUser = (ImageView ) rootView.findViewById(R.id.buttonShowPreviousUser);
@@ -117,11 +119,26 @@ public class PersonDataFragment extends Fragment {
                     if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
                         return;
                     }
-
+                        TextView locationText = (TextView) rootView.findViewById(R.id.locationText);
+                    locationText.setText(personObject.getPersonCurrLocation());
                     if (purpose == Purpose.MY_PROFILE) {
                         Button addAvatarButton = (Button) rootView.findViewById(R.id.addAvatarButton);
                         addAvatarButton.setBackgroundResource(R.drawable.add_avatar);
                         addAvatarButton.setOnClickListener(new AddAvatarClickListener());
+                    } else {
+
+                            String units;
+                            double distance;
+                            if(Utils.getUnits() == Utils.UNITS.IMPERIAL){
+                                distance = personObject.getDistance();
+                                units = getString(R.string.units_miles);
+                            } else {
+                                units = getString(R.string.units_killometers);
+                                distance = personObject.getDistance() * 1.60934d;
+                            }
+                            TextView range = (TextView) rootView.findViewById(R.id.range);
+                            range.setText(Utils.prepareShortUnts(distance) + " " + units);
+
                     }
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
