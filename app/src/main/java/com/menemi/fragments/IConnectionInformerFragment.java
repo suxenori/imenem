@@ -43,7 +43,9 @@ public class IConnectionInformerFragment extends Fragment
                 public void onFinish(Object object) {
                     if((boolean)object == true){
                         try {
-                            getFragmentManager().beginTransaction().remove(IConnectionInformerFragment.this).commitAllowingStateLoss();
+                            if(getFragmentManager()!=null) {
+                                getFragmentManager().beginTransaction().remove(IConnectionInformerFragment.this).commitAllowingStateLoss();
+                            }
                         } catch (IllegalStateException ilse){
 
                         }

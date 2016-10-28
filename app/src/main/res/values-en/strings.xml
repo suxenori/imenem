@@ -441,7 +441,7 @@
     <string name="password_must_have_at_least_6_characters">Password must have at least 6 characters</string>
     <string name="wrongName">Please enter your name</string>
     <string name="please_select_your_bday">Please select your birthday</string>
-    <string name="bday">ДР</string>
+    <string name="bday">Birthday(Tap to change)</string>
     <string name="enter_your_name">Введите свое имя</string>
     <string name="enter_your_password">Введите свой пароль</string>
     <string name="allmost_ready">Почти готово...</string>

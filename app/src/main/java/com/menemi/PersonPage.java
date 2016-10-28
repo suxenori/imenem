@@ -142,8 +142,8 @@ public class PersonPage extends AppCompatActivity {
 
         // Log and toast
         registerReceiver(myReceiver, new IntentFilter(MyFirebaseMessagingService.INTENT_FILTER));
-        Log.d("TAG", "subscribed");
-        Toast.makeText(PersonPage.this, "subscribed", Toast.LENGTH_SHORT).show();
+
+
         DBHandler.getInstance().lunchStreams();
         header = getLayoutInflater().inflate(com.menemi.R.layout.navigation_header_layout, listViewSliding, false);
         View footer = getLayoutInflater().inflate(com.menemi.R.layout.vip_users, listViewSliding, false);

@@ -1,6 +1,7 @@
 package com.menemi.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +19,6 @@ import com.menemi.customviews.GridAdapter;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.personobject.PhotoSetting;
-import com.menemi.social_network.social_profile_photo_handler.GridViewAdapter;
 import com.menemi.social_network.social_profile_photo_handler.ScrollViewListener;
 import com.menemi.utils.Utils;
 
@@ -36,9 +36,15 @@ public class PublicPhotoListFragment extends Fragment{
 
     private View rootView = null;
     private Purpose purpose = NORMAL;
-
+    GridAdapter gridAdapter =null;
     public void setPurpose(Purpose purpose) {
         this.purpose = purpose;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        configure();
     }
 
     @Nullable
@@ -53,6 +59,17 @@ public class PublicPhotoListFragment extends Fragment{
             }
         }
 
+
+configure();
+
+
+
+        return rootView;
+    }
+    public void configure(){
+        if(rootView == null){
+            return;
+        }
         if(purpose == CHOOSE_AVATAR){
             configureToolbar();
         }
@@ -67,31 +84,38 @@ public class PublicPhotoListFragment extends Fragment{
 
             GridView gv = (GridView) rootView.findViewById(R.id.grid_view);
             if(purpose != CHOOSE_AVATAR) {
-                ArrayList<String> urls = new ArrayList<>();
-                for (int i = 0; i < pictures.size(); i++) {
-                    urls.add( pictures.get(i).getPhotoUrl());
-                }
-                gv.setAdapter(new GridViewAdapter(getActivity(), urls));
+
+                gridAdapter = new GridAdapter(getActivity(), pictures, (PhotoSetting photoSetting) ->{
+                    PhotoSettingsFragment photoSettingsFragment = new PhotoSettingsFragment();
+                    photoSettingsFragment.setPhotoSetting(photoSetting);
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content, photoSettingsFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commitAllowingStateLoss();
+                    photoSettingsFragment.setOnChangeListener(new PhotoSettingsFragment.OnChangeListener() {
+                        @Override
+                        public void onChangesMade(PhotoSetting photoSetting) {
+                            configure();
+                        }
+                    });
+
+                }) ;
+                gv.setAdapter(gridAdapter);
             } else{
-                gv.setAdapter(new GridAdapter(getActivity(), pictures, (PhotoSetting photoSetting) ->{
-                    DBHandler.getInstance().setAvatar(photoSetting, (o)->{
-                        new PictureLoader(photoSetting.getPhotoUrl(), (bitmap)->{
+                gridAdapter = new GridAdapter(getActivity(), pictures, (PhotoSetting photoSetting) -> {
+                    DBHandler.getInstance().setAvatar(photoSetting, (o) -> {
+                        new PictureLoader(photoSetting.getPhotoUrl(), (bitmap) -> {
                             PersonPage.prepareNavigationalHeader(getActivity().getApplicationContext(), bitmap);
                             getFragmentManager().popBackStack();
                         });
 
                     });
-
-                }));
+                });
+                gv.setAdapter(gridAdapter);
             }
             gv.setOnScrollListener(new ScrollViewListener(getActivity()));
             gv.invalidateViews();
         });
-
-
-
-
-        return rootView;
     }
     public enum Purpose {
         NORMAL,

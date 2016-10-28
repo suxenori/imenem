@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/profile_container">
+
+    <LinearLayout
+        android:id="@+id/photosContainer"
+        style="@style/profile_data_container"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:id="@+id/verifyPhotoContainer"
+            style="@style/verification_type_container"
+            android:layout_marginTop="@dimen/_5sdp">
+            <ImageView
+                android:src="@drawable/add_gallery"
+                style="@style/verification_type_icon" />
+            <TextView
+                android:text="@string/photo_label"
+                style="@style/verification_type_label" />
+            <TextView
+                android:id="@+id/photoState"
+                android:text="@string/verified1"
+
+                style="@style/verification_type_state" />
+        </LinearLayout>
+        <LinearLayout
+            style="@style/verification_type_container"
+            android:id="@+id/verifyPhoneContainer">
+            <ImageView
+                android:src="@drawable/phone_icon"
+                style="@style/verification_type_icon" />
+            <TextView
+                android:text="@string/phone"
+                style="@style/verification_type_label" />
+            <TextView
+                android:id="@+id/phoneState"
+                android:text="@string/verified"
+                style="@style/verification_type_state" />
+        </LinearLayout>
+        <LinearLayout
+            style="@style/verification_type_container"
+            android:id="@+id/verifyGContainer">
+            <ImageView
+                android:src="@drawable/gplus_icon"
+                android:id="@+id/g_Src"
+                style="@style/verification_type_icon" />
+            <TextView
+                android:text="@string/g_plus"
+                style="@style/verification_type_label" />
+            <TextView
+                android:id="@+id/gState"
+                android:text="@string/verify_do"
+                style="@style/verification_type_state" />
+        </LinearLayout>
+        <LinearLayout
+            style="@style/verification_type_container"
+            android:id="@+id/verifyFBContainer">
+            <ImageView
+                android:src="@drawable/add_fb"
+                android:id="@+id/fbSrc"
+                style="@style/verification_type_icon" />
+            <TextView
+                android:text="@string/facebook"
+                style="@style/verification_type_label" />
+            <TextView
+                android:id="@+id/fbState"
+                android:text="@string/verify_do"
+                style="@style/verification_type_state" />
+        </LinearLayout>
+        <LinearLayout
+            style="@style/verification_type_container"
+            android:id="@+id/verifyVKContainer">
+            <ImageView
+                android:src="@drawable/add_vk"
+                android:id="@+id/vkSrc"
+                style="@style/verification_type_icon" />
+            <TextView
+                android:text="@string/vk"
+                style="@style/verification_type_label" />
+            <TextView
+                android:id="@+id/vkState"
+                android:text="@string/verify_do"
+                style="@style/verification_type_state" />
+        </LinearLayout>
+        <LinearLayout
+            style="@style/verification_type_container"
+            android:id="@+id/verifyInstaContainer">
+            <ImageView
+                android:src="@drawable/add_insta"
+                android:id="@+id/instaImage"
+                style="@style/verification_type_icon" />
+            <TextView
+                android:text="@string/instagram"
+                style="@style/verification_type_label" />
+            <TextView
+                android:id="@+id/instaState"
+                android:text="@string/verified"
+                style="@style/verification_type_state" />
+        </LinearLayout>
+        <LinearLayout
+            style="@style/verification_type_container"
+            android:id="@+id/verifyOkContainer">
+            <ImageView
+                android:id="@+id/okImage"
+                android:src="@drawable/ok_logo"
+                style="@style/verification_type_icon" />
+            <TextView
+                android:text="@string/upload_photo_ok"
+                style="@style/verification_type_label" />
+            <TextView
+                android:id="@+id/okState"
+                android:text="@string/verified"
+                style="@style/verification_type_state" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

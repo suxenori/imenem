@@ -29,11 +29,12 @@ public class VerificationActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("Verifications");
+        toolbar.setTitle(getString(R.string.verifications));
         if (getSupportActionBar() != null)
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
 
         LinearLayout getVerifiedButton = (LinearLayout)findViewById(R.id.getVerifiedButton);
         getVerifiedButton.setOnClickListener(new View.OnClickListener()
@@ -41,7 +42,7 @@ public class VerificationActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent getVerifiedActivity = new Intent(VerificationActivity.this, GetVerifiedActivity.class);
+                Intent getVerifiedActivity = new Intent(VerificationActivity.this, VerificationContainerActivity.class);
                 startActivity(getVerifiedActivity);
             }
         });
@@ -104,6 +105,13 @@ public class VerificationActivity extends AppCompatActivity
             startActivity(switcherActivity);
         });
     }
+    /*class Solution{}
+    public static Solution parceString(String data) throws JSONException {
+
+        JSONObject mainObjectJSON = new JSONObject(data);
+        JSONObject pageInfoObjectJSON = mainObjectJSON.getJSONObject("pageInfo");
+        String pageName = p.getString("pageName");//было "pageName": "abc",
+    }*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {

@@ -29,7 +29,7 @@ public class AccountActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar)findViewById(com.menemi.R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("Account");
+        toolbar.setTitle(getString(R.string.account));
         Configurations configurations = DBHandler.getInstance().getConfigurations();
 
         CheckBox hideProfileAsDeleted = (CheckBox) findViewById(R.id.hideAsDeleted);

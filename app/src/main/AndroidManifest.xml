@@ -55,6 +55,9 @@
 
         <activity android:name=".social_network.PhotoSettingsContainer"
                   android:screenOrientation="portrait"/>
+        <activity android:name=".settings.VerificationContainerActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".settings.SettingsActivity"
                   android:screenOrientation="portrait"/>
         <activity android:name=".social_network.social_profile_photo_handler.SocialGridView"

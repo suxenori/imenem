@@ -1,6 +1,8 @@
 package com.menemi;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.dbfactory.InternetConnectionListener;
+import com.menemi.fragments.IConnectionInformerFragment;
 import com.menemi.personobject.PersonObject;
 import com.menemi.utils.Utils;
 
@@ -53,13 +57,14 @@ public class Register extends Fragment {
                 if (checkAllFieldsValid()) {
                     PersonObject personObject = new PersonObject(SelectSexPage.isMale(), Goals.getiamHereTo()
                             , PersonObject.InterestGender.ANY_GENDER,
-                            editEmail.getText().toString(), editName.getText().toString(), Utils.getDateFromString(editBDay.getText().toString()), editPass.getText().toString());
+                            editEmail.getText().toString(), editName.getText().toString().toLowerCase(), Utils.getDateFromString(editBDay.getText().toString()), editPass.getText().toString());
                     DBHandler.getInstance().register(personObject, new DBHandler.ResultListener() {
                         @Override
                         public void onFinish(Object object) {
                             if (object != null) {
                                 Intent personPage = new Intent(getActivity(), PersonPage.class);
                                 startActivity(personPage);
+                                personPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Log.i("register", "register is successful");
                             } else {
                                 TextView wrongLogPassNotification = (TextView) rootView.findViewById(R.id.wrongLogPassNotification);
@@ -98,18 +103,66 @@ public class Register extends Fragment {
 
             }
         });
+        DBHandler.getInstance().subscribeToRest(new InternetConnectionListener() {
+            @Override
+            public void internetON() {
+
+                hideNoInternetMessage(getFragmentManager());
+
+            }
+
+            @Override
+            public void internetOFF() {
+                if(getFragmentManager() != null) {
+                    showNoInternetMessage(getFragmentManager());
+                }
+            }
+        } );
 
         return rootView;
     }
+    private static IConnectionInformerFragment connectionInformerFragment = new IConnectionInformerFragment();
+    public static void showNoInternetMessage(FragmentManager fm){
+        if(fm == null){
+            return;
+        }
+        if(connectionInformerFragment == null){
+            connectionInformerFragment = new IConnectionInformerFragment();
+        } else{
+            return;
+        }
 
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.add(R.id.messageFragmentPlaceHolder, connectionInformerFragment);
+        try {
+            transaction.commitAllowingStateLoss();
+        } catch (IllegalStateException ise){
+
+        }
+    }
+    public static void hideNoInternetMessage(FragmentManager fm){
+        if(fm == null || connectionInformerFragment == null){
+            return;
+        }
+
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.remove( connectionInformerFragment);
+        try {
+            transaction.commitAllowingStateLoss();
+        } catch (IllegalStateException ise){
+
+        }
+        connectionInformerFragment = null;
+
+    }
     private boolean checkAllFieldsValid() {
         boolean isAllCorrect = true;
-        if (!Utils.isEmailValid(editEmail.getText().toString())) {
+        if (!Utils.isEmailValid(editEmail.getText().toString().toLowerCase())) {
             TextView wrongLogPassNotification = (TextView) rootView.findViewById(R.id.wrongLogPassNotification);
             wrongLogPassNotification.setVisibility(View.VISIBLE);
             isAllCorrect = false;
         }
-        if(Utils.isNameValid(editName.getText().toString())){ // TODO CHANGE TO REGEX
+        if(!Utils.isNameValid(editName.getText().toString())){ // TODO CHANGE TO REGEX
             TextView wrongNotification = (TextView) rootView.findViewById(R.id.wrongName);
             wrongNotification .setVisibility(View.VISIBLE);
             isAllCorrect = false;

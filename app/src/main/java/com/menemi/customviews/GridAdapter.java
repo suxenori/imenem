@@ -30,7 +30,10 @@ public class GridAdapter extends BaseAdapter
 
     }
 
-
+public void removePhoto(PhotoSetting photoSetting){
+    photoSettings.remove(photoSetting);
+    notifyDataSetChanged();
+}
     @Override public View getView(int position, final View convertView, ViewGroup parent) {
         SquaredImageView squaredImageView = (SquaredImageView) convertView;
         if (squaredImageView == null) {

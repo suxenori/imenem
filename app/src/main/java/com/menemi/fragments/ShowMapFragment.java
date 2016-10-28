@@ -87,7 +87,8 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
         }
 
         MapsInitializer.initialize(getActivity()); /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        initMapKostyl();
+       // initMapKostyl();
+        createMapView();
         if (isOwnPosition) {
             configureToolbar();
 
@@ -114,7 +115,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
                                            markers.add(new PersonMarker(icon, people.get(finalI)));
                                             photosLoaded++;
                                            if(photosLoaded == people.size()-1){
-                                               createMapView();
+                                               configure(googleMap);
                                            }
                                        });
                                         //Bitmap icon = bitmaps.get(people.get(i).getPersonId());
@@ -132,7 +133,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
             getPersonMarker(new Runnable() {
                 @Override
                 public void run() {
-                    createMapView();
+                    configure(googleMap);
                 }
             });
 
@@ -191,7 +192,7 @@ private void initMapKostyl(){
         } else {
 
             fm = getChildFragmentManager();
-            if(fm == null){
+            if(fm.findFragmentById(R.id.mapView) == null){
                 fm = getFragmentManager();
             }
 
@@ -261,8 +262,15 @@ private void initMapKostyl(){
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        Log.v("ShowMapFragment", "markers size = " + markers.size());
+    }
 
+    public void configure(GoogleMap googleMap) {
+
+        Log.v("ShowMapFragment", "markers size = " + markers.size());
+if(googleMap == null){
+    Log.d("ShowMapFragment", "map is not init");
+    return;
+}
         for (int i = 0; i < markers.size(); i++) {
             Log.d("ShowMapFragment", "i = " + i + " marker = " + markers.get(i).getMarkerOptions());
             if (markers.get(i).getMarkerOptions() != null) {

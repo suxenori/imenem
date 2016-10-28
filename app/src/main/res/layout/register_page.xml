@@ -30,7 +30,13 @@
             android:layout_centerInParent="true"
             />
     </RelativeLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_600sdp"
+        android:layout_below="@+id/toolbar_with_checkBox"
+        android:id="@+id/messageFragmentPlaceHolder"
+        android:background="@color/no_color"
+        android:orientation="horizontal"/>
     <LinearLayout
         android:layout_width="@dimen/item_container"
         android:layout_height="wrap_content"
@@ -71,6 +77,7 @@
                 android:layout_above="@+id/editPass"
                 android:id="@+id/wrongLogPassNotification"
                 android:layout_alignLeft="@+id/editEmail"
+                android:layout_alignStart="@+id/editEmail"
                 android:textColor="@color/red"
                 android:visibility="invisible"
                 android:textSize="@dimen/min_font_size"
@@ -97,7 +104,9 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/editName"
                 android:id="@+id/wrongPassword"
-                android:layout_alignLeft="@+id/editEmail"
+                android:visibility="invisible"
+                android:layout_alignLeft="@+id/editPass"
+                android:layout_alignStart="@+id/editPass"
                 android:textColor="@color/red"
                 android:textSize="@dimen/min_font_size"
                 android:text="@string/password_must_have_at_least_6_characters"
@@ -123,9 +132,12 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/editBDay"
                 android:id="@+id/wrongName"
-                android:layout_alignLeft="@+id/editEmail"
+                android:layout_alignLeft="@+id/editName"
+                android:visibility="invisible"
                 android:textColor="@color/red"
                 android:textSize="@dimen/min_font_size"
+
+                android:layout_alignStart="@+id/editName"
                 android:text="@string/wrongName"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"/>
@@ -147,18 +159,7 @@
                     android:focusable="false"
                     android:cursorVisible="false"/>
             </android.support.design.widget.TextInputLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/buttonRegister"
-                android:id="@+id/wrongBDay"
-                android:layout_alignLeft="@+id/editEmail"
-                android:textColor="@color/red"
-                android:textSize="@dimen/min_font_size"
-                android:text="@string/please_select_your_bday"
-                android:layout_marginBottom="@dimen/_19sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,6 +172,22 @@
                     android:id="@+id/button_register"
                     android:layout_marginBottom="@dimen/register_button_margin_bottom"/>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wrongBDay"
+                android:textColor="@color/red"
+                android:textSize="@dimen/min_font_size"
+                android:text="@string/please_select_your_bday"
+                android:visibility="invisible"
+                android:layout_alignLeft="@id/editBDay"
+                android:layout_alignStart="@+id/editBDay"
+                android:layout_marginBottom="23dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_above="@+id/buttonRegister"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

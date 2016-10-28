@@ -58,11 +58,16 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
     private GoogleApiClient mGoogleApiClient;
     private OptionalPendingResult<GoogleSignInResult> opr;
     private InstagramApp instaObj;
+    private boolean isForSettings = false;
 
 
 
     public void setPersonObject(PersonObject personObject) {
         this.personObject = personObject;
+    }
+
+    public void setForSettings(boolean forSettings) {
+        isForSettings = forSettings;
     }
 
     @Nullable
@@ -77,7 +82,11 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
                 SocialNetworkHandler.CLIENT_SECRET, SocialNetworkHandler.CALLBACK_URL);
 
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.verification_fragment, container, false);
+            if(isForSettings){
+                rootView = inflater.inflate(R.layout.verification_settings_fragment, container, false);
+            } else {
+                rootView = inflater.inflate(R.layout.verification_fragment, container, false);
+            }
         } else {
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
