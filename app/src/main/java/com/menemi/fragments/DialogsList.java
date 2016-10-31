@@ -51,7 +51,7 @@ public class DialogsList extends Fragment {
             public void onFinish(Object object) {
                 ArrayList<DialogInfo> dialogsList = (ArrayList<DialogInfo>) object;
                 Log.d("DialogsList", "dialogsList." + dialogsList.size());
-                if (dialogsList != null && dialogsList.size() > 0) {
+                if (dialogsList != null && dialogsList.size() > 0 && getFragmentManager() != null) {
 
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
@@ -62,6 +62,7 @@ public class DialogsList extends Fragment {
                         fragmentTransaction.add(R.id.fragment1, dialogListItem);
                     }
                     fragmentTransaction.commitAllowingStateLoss();
+                    PersonPage.finishProgressDialog();
                 }
 
             }

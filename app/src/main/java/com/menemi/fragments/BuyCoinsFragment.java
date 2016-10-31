@@ -54,6 +54,7 @@ public class BuyCoinsFragment extends Fragment {
 
                 }
               fragmentTransaction.commitAllowingStateLoss();
+                    PersonPage.finishProgressDialog();
             }}
         });
 

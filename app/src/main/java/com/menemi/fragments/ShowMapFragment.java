@@ -312,15 +312,12 @@ if(googleMap == null){
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));//2 - 22
 
         }
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
-            public void onMapClick(LatLng latLng) {
-                googleMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title("хуй")
-                        .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.test_circle_shadow)))
-                        .draggable(false)
-                        .zIndex(0.5f));
+            public void onCameraMove() {
+                float zoom = googleMap.getCameraPosition().zoom;
+                LatLng pos = googleMap.getCameraPosition().target;
             }
         });
     }

@@ -26,13 +26,24 @@ android {
     }
 
 
+    signingConfigs {
+        release {
+            storeFile file("${rootProject.projectDir}/keystore.jks")
+            storePassword "123456"
+            keyAlias "vk sdk test"
+            keyPassword "123456"
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
+
+
     dexOptions {
         javaMaxHeapSize "14g"
     }
@@ -85,3 +96,4 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
+

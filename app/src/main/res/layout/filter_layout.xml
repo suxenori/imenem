@@ -191,7 +191,6 @@
             android:layout_width="@dimen/_20sdp"
             android:layout_height="wrap_content"
             android:textColor="@color/text_main"
-            android:text="18"
             android:textSize="@dimen/_11sdp"
             android:id="@+id/minValue"
             android:layout_below="@+id/textView8"
@@ -206,7 +205,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_main"
-            android:text="88"
             android:textSize="@dimen/_11sdp"
             android:id="@+id/maxValue"
             android:layout_below="@+id/textView8"
@@ -217,14 +215,46 @@
             android:layout_alignParentEnd="true"
             android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"/>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout">
+            android:id="@+id/relativeLayout2">
+        </RelativeLayout>
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180sdp"
+            android:id="@+id/buttonsFilter"
+            android:layout_below="@+id/rangeSeekBarTextColorWithCode"
+            android:layout_marginBottom="@dimen/_10sdp">
+         <Button
+            android:id="@+id/cancelButtonFilter"
+            style="@style/CancelButtonInFilterDialog"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/button_filter_margin_left"
+            android:layout_marginStart="@dimen/_48sdp"
+            android:text="@string/cancel"/>
+        <Button
+            android:id="@+id/submitButton"
+            android:background="@drawable/search_btn"
+            android:layout_alignParentBottom="true"
+            style="@style/SubmitButtonInFilterDialog"
+            android:layout_marginLeft = "@dimen/cancel_button_filter_margin_left"
+            android:layout_marginStart="@dimen/_163sdp"
+            android:text="@string/search"/>
+</RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout"
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_toRightOf="@+id/relativeLayout2"
+            android:layout_toEndOf="@+id/relativeLayout2">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Цель поиска:"
+                android:text="@string/find_goals"
                 android:textColor="@color/filterShadow"
                 android:textSize="@dimen/text_in_filter_frag"
                 android:layout_marginTop="@dimen/_127sdp"
@@ -249,8 +279,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:textColor="@color/black"
-                        android:text="Найти новых друзей"/>
+                        android:text="@string/find_new_friend"/>
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -270,8 +301,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:textColor="@color/black"
-                        android:text="Общение"/>
+                        android:text="@string/chat"/>
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -294,7 +326,7 @@
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:textColor="@color/black"
-                        android:text="Секс"/>
+                        android:text="@string/sex"/>
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -307,7 +339,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Где искать?"
+                    android:text="@string/where_find"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_6sdp"
@@ -340,32 +372,6 @@
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </RelativeLayout>
-            <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_180sdp"
-            android:id="@+id/buttonsFilter"
-            android:layout_below="@+id/rangeSeekBarTextColorWithCode"
-            android:layout_marginBottom="@dimen/_10sdp">
-         <Button
-            android:id="@+id/cancelButtonFilter"
-            style="@style/CancelButtonInFilterDialog"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/button_filter_margin_left"
-            android:layout_marginStart="@dimen/_48sdp"
-            android:text="@string/cancel"/>
-        <Button
-            android:id="@+id/submitButton"
-            android:background="@drawable/search_btn"
-            android:layout_alignParentBottom="true"
-            style="@style/SubmitButtonInFilterDialog"
-            android:layout_marginLeft = "@dimen/cancel_button_filter_margin_left"
-            android:layout_marginStart="@dimen/_163sdp"
-            android:text="@string/search"/>
-</RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
 

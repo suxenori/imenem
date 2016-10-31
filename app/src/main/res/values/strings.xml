@@ -1,9 +1,116 @@
 <?xml version="1.0"?>
 
 <resources>
+    <string-array
+        name="bodyType">
+        <item name="empty">@string/no_value</item>
+        <item name="average">@string/average</item>
+        <item name="few_extra">@string/few_extra</item>
+        <item name="athletic">@string/athletic</item>
+        <item name="slim">@string/slim</item>
+        <item name="strong">@string/strong</item>
+        <item name="obesity">@string/obesity</item>
+    </string-array>
+
+    <string name="average">Среднее</string>
+    <string name="few_extra">Пара лишних кило</string>
+    <string name="athletic">Атлетическое</string>
+    <string name="slim">Стройное</string>
+    <string name="strong">Крепкое</string>
+    <string name="obesity">Приятная полнота</string>
+
+    <string-array
+        name="eyeColor">
+        <item name="empty">@string/no_value</item>
+        <item name="brown">@string/brown</item>
+        <item name="gray">@string/gray</item>
+        <item name="green">@string/green</item>
+        <item name="blue">@string/blue</item>
+        <item name="light_blue">@string/light_blue</item>
+    </string-array>
+
+    <string name="brown">Карие</string>
+    <string name="gray">Серые</string>
+    <string name="green">Зеленые</string>
+    <string name="blue">Голубые</string>
+    <string name="light_blue">Светло-карие</string>
+
+    <string-array
+        name="hairColor">
+        <item>@string/no_value</item>
+        <item >@string/black</item>
+        <item >@string/brown_hair</item>
+        <item>@string/red</item>
+        <item>@string/light</item>
+        <item>@string/few_gray</item>
+        <item>@string/grizzle</item>
+        <item>@string/shave</item>
+        <item>@string/painted</item>
+        <item>@string/hairless</item>
+    </string-array>
+
+    <string name="black">Черные</string>
+    <string name="brown_hair">Каштановые</string>
+    <string name="red">Рыжие</string>
+    <string name="light">Светлые</string>
+    <string name="few_gray">Немного седины</string>
+    <string name="grizzle">Седые</string>
+    <string name="shave">Сбриты</string>
+    <string name="painted">Окрашенные</string>
+    <string name="hairless">Лысый</string>
+    <string-array
+
+        name="livingWith">
+        <item name="empty">@string/no_value</item>
+        <item name="LIVING_WITH_PARENTS">@string/LIVING_WITH_PARENTS</item>
+        <item name="LIVING_WITH_NEIGHBORS">@string/LIVING_WITH_NEIGHBORS</item>
+        <item name="LIVING_IN_DORMITORY">@string/LIVING_IN_DORMITORY</item>
+        <item name="LIVING_WITH_SECOND_HALF">@string/LIVING_WITH_SECOND_HALF</item>
+        <item name="LIVING_ALONE">@string/LIVING_ALONE</item>
+    </string-array>
+
+    <string name="LIVING_WITH_PARENTS">С родителями</string>
+    <string name="LIVING_WITH_NEIGHBORS">С соседями</string>
+    <string name="LIVING_IN_DORMITORY">В общежитии</string>
+    <string name="LIVING_WITH_SECOND_HALF">Со второй половинкой</string>
+    <string name="LIVING_ALONE">Один</string>
+
+    <string-array
+        name="smoking">
+        <item name="empty">@string/no_value</item>
+        <item name="IS_SMOKING_PERSON">@string/IS_SMOKING_PERSON</item>
+        <item name="IS_NO_SMOKING_PERSON">@string/IS_NO_SMOKING_PERSON</item>
+        <item name="ANTI_SMOKING_PERSON">@string/ANTI_SMOKING_PERSON</item>
+        <item name="SMOKING_IN_COMPANY_PERSON">@string/SMOKING_IN_COMPANY_PERSON</item>
+        <item name="SMOKE_ONE_AFTER_THE_OTHER_PERSON">@string/SMOKE_ONE_AFTER_THE_OTHER_PERSON</item>
+    </string-array>
+
+    <string name="IS_SMOKING_PERSON">Курю</string>
+    <string name="IS_NO_SMOKING_PERSON">Не курю</string>
+    <string name="ANTI_SMOKING_PERSON">Против курения</string>
+    <string name="SMOKING_IN_COMPANY_PERSON">Курю за компанию</string>
+    <string name="SMOKE_ONE_AFTER_THE_OTHER_PERSON">Курю одну за другой</string>
 
     <string name="app_name">menemi</string>
+    <string name="no_value">Не заполнено</string>
 
+
+    <string-array name="language_level">
+        <item>@string/no_value</item>
+        <item>@string/low</item>
+        <item>@string/awerage</item>
+        <item>@string/fluent</item>
+        <item>@string/native_s</item>
+    </string-array>
+
+    <string name="chooseLanguageLevel">Выберите уровень языка</string>
+    <string name="low">low</string>
+    <string name="awerage">awerage</string>
+    <string name="fluent">fluent</string>
+
+
+
+    <string name="native_s">native</string>
     <string name="fb_button">F</string>
 
     <string name="vk_button">Vk</string>
@@ -11,6 +118,17 @@
     <string name="Ok_button">Ok</string>
 
     <string name="title_activity_login_activity">Sign in</string>
+    <string name="less">меньше %1$s см </string>
+    <string name="more">больше %1$s см</string>
+
+    <string name="less_kg">меньше %1$s кг</string>
+    <string name="more_kg">больше %1$s кг</string>
+
+    <string name="sm">%1$s см</string>
+    <string name="kg">%1$s кг</string>
+
+    <string name="unit_sm">см</string>
+    <string name="unit_kg">кг</string>
 
     <!-- Strings related to login -->
 
@@ -258,7 +376,7 @@
 
     <string name="privacy_in_about">Privacy</string>
 
-    <string name="about_badoo">About Badoo</string>
+    <string name="about_badoo">About Menemi</string>
 
     <string name="MeetNewPeople">Знакомьтесь с новыми людьми</string>
 
@@ -408,9 +526,6 @@
     <string name="one_choiced">\u0020 выбран</string>
     <string name="two_choiced">\u0020 выбрано</string>
     <string name="search_in_add_interests">Search</string>
-
-    <integer name="com_vk_sdk_AppId">5610489</integer>
-
     <string name="write">Написать...</string>
     <string name="attach_photo">Прикрепить фото</string>
     <string name="from_gallery">Из галереи</string>
@@ -455,6 +570,69 @@
     <string name="register">Зарегистрироваться</string>
     <string name="units_killometers">Км.</string>
     <string name="units_miles">М.</string>
+
+    <string name="alone">Свободен</string>
+    <string name="in_relationship">Занят</string>
+    <string name="in_free_relationship">В свободных отношениях</string>
+
+    <string-array name="relationship">
+        <item>@string/no_value</item>
+        <item>@string/alone</item>
+        <item>@string/in_relationship</item>
+        <item>@string/in_free_relationship</item>
+    </string-array>
+
+    <string name="gay_orientation">Гей</string>
+    <string name="OPEN_MINDED">Без предубеждений</string>
+    <string name="getero_relationship">Гетеро</string>
+    <string name="bi_relationship">Би</string>
+
+    <string-array name="orientation">
+        <item>@string/no_value</item>
+        <item>@string/gay_orientation</item>
+        <item>@string/OPEN_MINDED</item>
+        <item>@string/getero_relationship</item>
+        <item>@string/bi_relationship</item>
+    </string-array>
+
+    <string name="NEVER_MAKE_KIDS">Нет, никогда</string>
+    <string name="SOMETIME_MAKE_KIDS">Когда нибудь</string>
+    <string name="already_have">Уже есть</string>
+    <string name="ADULT_KIDS">Уже взрослые</string>
+
+    <string-array name="alco">
+        <item>@string/NO_DRINKING_PERSON</item>
+        <item>@string/no_case</item>
+        <item>@string/drinking_person</item>
+        <item>@string/in_company</item>
+    </string-array>
+
+    <string name="NO_DRINKING_PERSON">Нет</string>
+    <string name="no_case">Ни в коем случае</string>
+    <string name="drinking_person">Да, конечно!</string>
+    <string name="in_company">В компании</string>
+
+    <string name="nearby">Люди рядом</string>
+    <string name="find_goals">Цель поиска:</string>
+    <string name="find_new_friend">Найти новых друзей</string>
+    <string name="chat">Общение</string>
+    <string name="sex">Секс</string>
+    <string name="CALLBACK_URL">https://localhost:3000/auth/instagram/callback</string>
+    <string name="where_find">Где искать?</string>
+    <string name="CLIENT_SECRET">d2f22dd0c6004e2dab3ea4a42a97de72</string>
+    <string name="CLIENT_ID">139c9a2739ae458696cb03defadbf186</string>
+    <string name="APPLICATION_OK_ID">1248077568</string>
+    <string name="PUBLICK_APPLICATION_OK_KEY">CBAICFGLEBABABABA</string>
+    <string name="REDIRECT_URI">okauth://ok1248077568</string>
+    <string name="update_info">Обновление информации</string>
+    <string name="update_info_failed">Не удалось обновить информацию. проверьте подключение к интернету</string>
+    <string name="info_is_updated">Информация успешно обновлена</string>
+    <integer name="com_vk_sdk_AppId">5610489</integer>
+
+    <string name="not_set">Не заполнено</string>
+
+    <string name="confirmed">(подтвержден)</string>
+    <string name="delete_selected">Удалить выбранное</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

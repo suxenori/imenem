@@ -72,6 +72,8 @@ public class LoginActivity extends ActionBarActivity {
                                                        PersonObject personObject = (PersonObject) object;
                                                        Log.i("PersonObject created", personObject + "");
                                                        if (personObject != null) {
+
+
                                                            DBHandler.getInstance().saveLastId(DBHandler.getInstance().getIdOnLoginData(personObject));
 
                                                            Intent personPage = new Intent(LoginActivity.this, PersonPage.class);
@@ -150,5 +152,7 @@ class TypingListener implements TextWatcher {
 
     }
 }
+
+
 }
 

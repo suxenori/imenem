@@ -36,6 +36,7 @@
             />
     </LinearLayout>
     <ImageView style="@style/settings_divider" />
+    <!--
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/networkButton"
@@ -49,6 +50,7 @@
             />
     </LinearLayout>
     <ImageView style="@style/settings_divider" />
+    -->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/verificationsButton"
@@ -62,31 +64,33 @@
             />
     </LinearLayout>
     <ImageView style="@style/settings_divider" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/paymentSettingsButton"
-        style="@style/settings_theme">
+    <!--
+ <LinearLayout
+     android:orientation="vertical"
+     android:id="@+id/paymentSettingsButton"
+     style="@style/settings_theme">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/payment_settings"
-            style="@style/main_text_for_button"
-            />
-    </LinearLayout>
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:text="@string/payment_settings"
+         style="@style/main_text_for_button"
+         />
+ </LinearLayout>
 
-    <ImageView style="@style/settings_divider" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/invisibleModeButton"
-        style="@style/settings_theme">
+ <ImageView style="@style/settings_divider" />
+ -->
+ <LinearLayout
+     android:orientation="vertical"
+     android:id="@+id/invisibleModeButton"
+     style="@style/settings_theme">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/invisible_mode"
-            style="@style/main_text_for_button"
-            />
-    </LinearLayout>
-    <ImageView style="@style/settings_divider" />
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:text="@string/invisible_mode"
+         style="@style/main_text_for_button"
+         />
+ </LinearLayout>
+ <ImageView style="@style/settings_divider" />
 </LinearLayout>

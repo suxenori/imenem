@@ -12,6 +12,7 @@ public  class Fields {
     public static final String SOCIAL_PROFILE_MIDDLE_NAME = "m_name";
     public static final String SOCIAL_PROFILE_LAST_NAME = "l_name";
     public static final String ORIENTATION = "orientation_string";//orientation : "Bisexual"
+    public static final String ORIENTATION_INT = "orientation";//orientation : "Bisexual"
     public static final String ID = "id";
     public static final String SOCIAL_ID = "s_id";
     public static final String NAME = "name";
@@ -24,6 +25,7 @@ public  class Fields {
     public static final String HERE_TO = "purpose";
     public static final String IS_MALE = "gender";
     public static final String RELATIONSHIP = "relationship_status_string";
+    public static final String RELATIONSHIP_INT = "relationship_status";
     public static final String KIDS = "childrens";
     public static final String CREDITS = "credits";
     public static final String POPULARITY = "popularity";
@@ -37,10 +39,13 @@ public  class Fields {
     public static final String SEXUALITY = "sexuality";
     public static final String SMOKING = "smoking_string";
     public static final String DRINKING = "drinking_string";
+    public static final String SMOKING_INT = "smoking";
+    public static final String DRINKING_INT = "drinking";
     public static final String WORK = "work";
     public static final String FRIENDS = "friends";
     public static final String LIVING_CITY = "living_city";
     public static final String LIVING_WITH = "living_with_string";
+    public static final String LIVING_WITH_INT = "living_with";
     public static final String HAIR_COLOR = "hair_color";
     public static final String BODY_TYPE = "body_type";
     public static final String DISTANCE = "distance";

@@ -72,92 +72,94 @@
 
     </LinearLayout>
     <ImageView style="@style/settings_divider" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/helpCenterButton"
-        style="@style/settings_theme">
+    <!--
+  <LinearLayout
+      android:orientation="vertical"
+      android:id="@+id/helpCenterButton"
+      style="@style/settings_theme">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/help_center"
-            style="@style/main_text_for_button"
-            />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/help_center"
+          style="@style/main_text_for_button"
+          />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/secondary_text_for_button"
-            />
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          style="@style/secondary_text_for_button"
+          />
 
-    </LinearLayout>
-    <ImageView style="@style/settings_divider" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/aboutButton"
-        style="@style/settings_theme">
+  </LinearLayout>
+  <ImageView style="@style/settings_divider" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/about"
-            style="@style/main_text_for_button"/>
+  <LinearLayout
+      android:orientation="vertical"
+      android:id="@+id/aboutButton"
+      style="@style/settings_theme">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/secondary_text_for_button"
-            />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/about"
+          style="@style/main_text_for_button"/>
 
-    </LinearLayout>
-    <ImageView style="@style/settings_divider" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/blockedUsersButton"
-        style="@style/settings_theme">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          style="@style/secondary_text_for_button"
+          />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/blocked_users"
-            style="@style/main_text_for_button"
-            />
+  </LinearLayout>
+  <ImageView style="@style/settings_divider" />
+  <LinearLayout
+      android:orientation="vertical"
+      android:id="@+id/blockedUsersButton"
+      style="@style/settings_theme">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/secondary_text_for_button"
-            />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/blocked_users"
+          style="@style/main_text_for_button"
+          />
 
-    </LinearLayout>
-    <ImageView style="@style/settings_divider" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/flikeButton"
-        style="@style/settings_theme">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          style="@style/secondary_text_for_button"
+          />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/flike_header"
-            style="@style/main_text_for_button"/>
+  </LinearLayout>
+  <ImageView style="@style/settings_divider" />
+  <LinearLayout
+      android:orientation="vertical"
+      android:id="@+id/flikeButton"
+      style="@style/settings_theme">
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/sym_action_chat"
-            android:text="Already pUCKed 1 000 000 000 000 times"
-            style="@style/secondary_text_for_button"
-            />
-
-    </LinearLayout>
-    <ImageView style="@style/settings_divider" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="data base manager (delete it before rollout)"
-        android:id="@+id/sqlite"/>
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/flike_header"
+          style="@style/main_text_for_button"/>
 
 
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawableLeft="@drawable/sym_action_chat"
+          android:text="Already pUCKed 1 000 000 000 000 times"
+          style="@style/secondary_text_for_button"
+          />
+
+  </LinearLayout>
+  <ImageView style="@style/settings_divider" />
+  <Button
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="data base manager (delete it before rollout)"
+      android:id="@+id/sqlite"/>
+
+-->
 </LinearLayout>

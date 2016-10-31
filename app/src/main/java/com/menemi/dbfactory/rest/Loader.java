@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.Fields;
+import com.menemi.edit_personal_Info.PersonalAppearanceSettingsModel;
 import com.menemi.filter.FilterObject;
 import com.menemi.interests_classes.InterestsGroup;
 import com.menemi.models.PlaceModel;
@@ -18,6 +19,7 @@ import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.DialogMessage;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.Interests;
+import com.menemi.personobject.Language;
 import com.menemi.personobject.NotificationSettings;
 import com.menemi.personobject.PayPlan;
 import com.menemi.personobject.PersonFavorite;
@@ -89,6 +91,7 @@ public class Loader extends JSONLoader {
     static final String G_GET_ALL_GIFTS = "/profile/allgifts/"; // (:requesting_profile_id)
     static final String G_BUY_GIFT = "/profile/buygift/"; //(:gift_id)/(:to_profile_id)/(:requesting_profile_id)
     static final String G_SET_AVATAR = "/profile/setavatar/";//(:picture_id)/(:requesting_profile_id)
+    static final String G_GET_ALL_LANGUAGES = "/profile/alllangueages/";//(:picture_id)/(:requesting_profile_id)
 
     //TODO: add friends add interests add gifts
 
@@ -344,8 +347,8 @@ public class Loader extends JSONLoader {
                 userStatus = PersonObject.UserStatus.ANY;
             }
 
-                FilterObject filterObj = new FilterObject(iWant, interestGender.ordinal(), mainObject.getInt("min_age")
-                        , mainObject.getInt("max_age"), DBHandler.getInstance().getUserId(), userStatus.ordinal(), null);     //TODO change value from REST, if this API will working correct
+                FilterObject filterObj = new FilterObject(iWant, interestGender.ordinal(), userStatus.ordinal(),mainObject.getInt("min_age")
+                        , mainObject.getInt("max_age"), DBHandler.getInstance().getUserId(), null);     //TODO change value from REST, if this API will working correct
                 Log.i("gender from Loader", interestGender + "");
                 Log.i("gender from filterObj", filterObj.getiAmHereTo() + "");
                 Log.i("min age from loader", mainObject.getInt("min_age") + "");
@@ -428,6 +431,28 @@ public class Loader extends JSONLoader {
                 }
 
                 return pictures;
+
+
+        });
+        messageTypesParcer.put(RestCommands.GET_ALL_LANGUAGES, (String jsonString) -> {
+            //ArrayList<PhotoSetting> pictures = new ArrayList<>();
+ArrayList<Language> allLanguages = new ArrayList<Language>();
+            JSONObject mainObject = new JSONObject(jsonString);
+
+
+
+                JSONArray languagesArray = mainObject.getJSONArray(Fields.LANGUAGES);
+
+            for (int i = 0; i < languagesArray.length(); i++) {
+                JSONArray language = languagesArray.getJSONArray(i);
+                Language preparedLanguage = new Language(language.getString(0), language.getInt(1));
+                allLanguages.add(preparedLanguage);
+            }
+
+                // Log.d("HashMap",hashMaps.size())
+
+
+            return allLanguages ;
 
 
         });
@@ -524,9 +549,17 @@ public class Loader extends JSONLoader {
                     JSONArray groups = mainGroups.getJSONArray(i);
                     int index = groups.getInt(1);
                     String nameGroup = groups.getString(0);
-                    byte[] decodedString = Base64.decode(groups.getString(2), Base64.DEFAULT);
-                    Bitmap categoryIcon = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    interestsGroup.add(new InterestsGroup(index, nameGroup, categoryIcon));
+                    //byte[] decodedString = Base64.decode(groups.getString(2), Base64.DEFAULT);
+                    //Bitmap categoryIcon = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    new PictureLoader(groups.getString(2), new PictureLoader.BitmapLoadListener()
+                    {
+                        @Override
+                        public void onFinish(Bitmap picture)
+                        {
+                            interestsGroup.add(new InterestsGroup(index, nameGroup, picture));
+                        }
+                    });
+
                 }
 
                 return interestsGroup;
@@ -1066,12 +1099,11 @@ public class Loader extends JSONLoader {
 
     private static String parceFilterObject(FilterObject filterObject) {
         return filterObject.getiWantValue() + "/" + filterObject.getiAmHereTo() + "/" +
-                filterObject.getIsOnline() + "/"+
-                filterObject.getMinAge() + "/" + filterObject.getMaxAge() + "/" + filterObject.getIsOnline() + "/"
-                + filterObject.getPlaceModel().getLocationLat() + ","
+                filterObject.getIsOnline() + "/" +
+                filterObject.getMinAge() + "/" + filterObject.getMaxAge() + "/"
+                + filterObject.getPlaceModel().getLocationLat() + "/"
                 + filterObject.getPlaceModel().getLocationLng() + "/" + filterObject.getPlaceModel().getNortheastLat()
-                + "," + filterObject.getPlaceModel().getNortheastLng() + "/"
-                + DBHandler.getInstance().getUserId();
+                + "/" + filterObject.getPlaceModel().getNortheastLng() + "/" + DBHandler.getInstance().getUserId();
         //(:i_want_val)/(:im_interested_val)/(:im_interested_status_val)/(:min_age)/(:max_age)/(:online)/(:center_coord)/(:/edge_coord)/(:requesting_profile_id)
     }
 
@@ -1090,6 +1122,7 @@ public class Loader extends JSONLoader {
         personObject.setGifts( parceGifts(mainObject));
         personObject.setRewards((ArrayList<Reward>) mapParce(mainObject, Fields.REWARDS));
         personObject.setInterests(interestsParce(mainObject));
+        personObject.setPersonLanguages(parceLanguages(mainObject.getJSONArray(Fields.LANGUAGES)));
         personObject.setSmokingPerson(mainObject.getString(Fields.SMOKING));
         personObject.setDrinkingPerson(mainObject.getString(Fields.DRINKING));
         personObject.setPersonRelationship(mainObject.getString(Fields.RELATIONSHIP));
@@ -1118,19 +1151,26 @@ public class Loader extends JSONLoader {
                 profileObject.getString(Fields.NAME),
                 Utils.getDateFromString(profileObject.getString(Fields.BIRTH_DAY)),
                 profileObject.getString(Fields.PASSWORD));
+
         personObject.setVipUntil(profileObject.getString(Fields.VIP_STATUS));
         personObject.setPersonId(profileObject.getInt(Fields.ID));
         personObject.setAboutPersonInfo(profileObject.getString(Fields.ABOUT));
-        personObject.setBodyType(profileObject.getInt(Fields.BODY_TYPE));
+
+       // personObject.setBodyType(profileObject.getInt(Fields.BODY_TYPE));
+
+        //personObject.setPersonKids(profileObject.getInt(Fields.KIDS));
+
+        //personObject.setBodyType(profileObject.getInt(Fields.BODY_TYPE));
 
 
-        personObject.setPersonKids(profileObject.getInt(Fields.KIDS));
+       // personObject.setPersonKids(profileObject.getInt(Fields.KIDS));
         personObject.setPersonCredits(profileObject.getInt(Fields.CREDITS));
         personObject.setPersonCurrLocation(profileObject.getString(Fields.CURRENT_LOCATION));
 //        personObject.setPersonSexuality(profileObject.getInt(Fields.SEXUALITY));
         personObject.setSearchAgeMin(profileObject.getInt(Fields.SEARCH_AGE_MIN));
         personObject.setSearchAgeMax(profileObject.getInt(Fields.SEARCH_AGE_MAX));
         personObject.setRating(profileObject.getInt(Fields.RATING));
+        personObject.setPersonalAppearance(parceAppearance(profileObject));
 
 
 
@@ -1141,8 +1181,36 @@ public class Loader extends JSONLoader {
         return personObject;
     }
 
+    private static ArrayList<Language> parceLanguages(JSONArray languagesJSONArray) throws JSONException {
+        ArrayList<Language> languages = new ArrayList<>();
+        for (int i = 0; i < languagesJSONArray.length(); i++) {
+            JSONArray languagesJSON = languagesJSONArray.getJSONArray(i);
+            Language language = new Language(languagesJSON.getInt(0), languagesJSON.getInt(1));
+            languages.add(language);
+        }
+        return languages;
+    }
+    private static PersonalAppearanceSettingsModel parceAppearance(JSONObject profileObject) throws JSONException {
+        PersonalAppearanceSettingsModel appearance = new PersonalAppearanceSettingsModel();
 
 
+
+
+        appearance.setHeight(profileObject.getInt(Fields.GROWTH));
+        appearance.setWeigt(profileObject.getInt(Fields.WEIGHT));
+        appearance.setAbout(profileObject.getString(Fields.ABOUT));
+        appearance.setRelationshipIndex(profileObject.getInt(Fields.RELATIONSHIP_INT));
+        appearance.setSexualityIndex(profileObject.getInt(Fields.ORIENTATION_INT));
+        appearance.setBodyTypeIndex(profileObject.getInt(Fields.BODY_TYPE));
+        appearance.setEyeColorIndex(profileObject.getInt(Fields.EYE_COLOR));
+        appearance.setHairColorIndex(profileObject.getInt(Fields.HAIR_COLOR));
+        appearance.setLivingWithIndex(profileObject.getInt(Fields.LIVING_WITH_INT));
+        appearance.setKidsIndex(profileObject.getInt(Fields.KIDS));
+        appearance.setSmokingIndex(profileObject.getInt(Fields.SMOKING_INT));
+        appearance.setAlcoholIndex(profileObject.getInt(Fields.DRINKING_INT));
+
+        return appearance;
+    }
     private static ArrayList<Interests> interestsParce(JSONObject mainObject) throws JSONException {
         JSONArray interests = mainObject.getJSONArray(Fields.INTERESTS);
         ArrayList<Interests> preparedInterests = new ArrayList<>();
@@ -1338,6 +1406,10 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
                 url = constructStartURL() + G_SET_AVATAR;
                 break;
 
+            case GET_ALL_LANGUAGES:
+                url = constructStartURL() + G_GET_ALL_LANGUAGES;
+                break;
+
         }
         return url;
     }
@@ -1419,6 +1491,7 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
         GET_PHOTO_BY_ID,
         GET_PHOTO_TEMPLATES,
         GET_ALL_GIFTS,
+        GET_ALL_LANGUAGES,
         BUY_GIFT,
         SET_AVATAR,
         SET_NOTIFICATION_TOKEN

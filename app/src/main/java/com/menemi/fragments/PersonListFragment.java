@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.menemi.PersonPage;
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.rest.PictureLoader;
@@ -381,6 +382,7 @@ public class PersonListFragment extends Fragment {
             }
         }
         Log.d("PersonListItemFragment", "created");
+        PersonPage.finishProgressDialog();
         return photoView;
     }
 

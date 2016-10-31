@@ -156,11 +156,6 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
                         Log.i("paymentExample", paymentDetails);
                         finish();
 
-                      /*  //Starting a new activity for the payment details and also putting the payment details with intent
-                        startActivity(new Intent(this, ConfirmationActivity.class)
-                                .putExtra("PaymentDetails", paymentDetails)
-                                .putExtra("PaymentAmount", paymentAmount));
-*/
                     } catch (JSONException e) {
                         Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
                     }

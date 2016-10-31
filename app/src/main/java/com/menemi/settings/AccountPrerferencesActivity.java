@@ -51,7 +51,7 @@ public class AccountPrerferencesActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout networkButton = (LinearLayout)findViewById(R.id.networkButton);
+        /*LinearLayout networkButton = (LinearLayout)findViewById(R.id.networkButton);
         networkButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -61,7 +61,7 @@ public class AccountPrerferencesActivity extends AppCompatActivity {
                 startActivity(networkActivity);
             }
         });
-
+*/
         LinearLayout verificationsButton = (LinearLayout)findViewById(R.id.verificationsButton);
         verificationsButton.setOnClickListener(new View.OnClickListener()
         {
@@ -83,7 +83,7 @@ public class AccountPrerferencesActivity extends AppCompatActivity {
                 startActivity(invisibleActivity);
             }
         });
-
+/*
         LinearLayout paymentSettingsButton = (LinearLayout)findViewById(R.id.paymentSettingsButton);
        paymentSettingsButton.setOnClickListener(new View.OnClickListener()
         {
@@ -93,7 +93,7 @@ public class AccountPrerferencesActivity extends AppCompatActivity {
                 Intent invisibleActivity = new Intent(AccountPrerferencesActivity.this, PaymentSettingsActivity.class);
                 startActivity(invisibleActivity);
             }
-        });
+        });*/
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

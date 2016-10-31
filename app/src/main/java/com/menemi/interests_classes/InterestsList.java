@@ -160,12 +160,7 @@ public class InterestsList extends Fragment
         toolbarContainer.addView(View.inflate(getActivity(),R.layout.ab_buy_coins,null));
 
         ImageView menuButton = (ImageView) toolbarContainer.findViewById(R.id.menuButton);
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().popBackStack();
-            }
-        });
+        menuButton.setOnClickListener(view -> getFragmentManager().popBackStack());
 
         TextView title = (TextView) toolbarContainer.findViewById(R.id.screenTitle);
         title.setText(getString(R.string.set_interests));

@@ -111,6 +111,7 @@ public class PhotoSettingsFragment extends Fragment {
         rotateButton.setOnClickListener(new OnRotateListener(photoSetting));
 
         final Switch privateSwitch = (Switch) rootView.findViewById(R.id.privateSwitch);
+        privateSwitch.setChecked(photoSetting.isPrivate());
         privateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean showPrivate) {

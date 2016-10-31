@@ -4,12 +4,15 @@ import android.util.Log;
 
 import com.menemi.dbfactory.Fields;
 import com.menemi.dbfactory.messages.SendableMessage;
+import com.menemi.edit_personal_Info.PersonalAppearanceSettingsModel;
 import com.menemi.filter.FilterObject;
 import com.menemi.personobject.Configurations;
 import com.menemi.personobject.CreditsInfo;
+import com.menemi.personobject.LanguagesSet;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
 import com.menemi.personobject.PostField;
+import com.menemi.social_network.SocialProfile;
 
 import java.util.ArrayList;
 
@@ -44,7 +47,19 @@ public class DBRest {
         new Sender(Sender.RestCommands.REGISTER, personObject).execute();
 
     }*/
-
+public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecieveListener onDataRecieveListener ){
+    new Sender(Sender.RestCommands.SET_PERSON_APPEARANCE, apperance, new Sender.OnUploadListener() {
+        @Override
+        public void onUploadFinish(String s) {
+            Log.v("DBRest", "on upload finish listener");
+            if(s.equals("{\"result\":\"success\"}")) {
+                onDataRecieveListener.onFinish(true);
+            } else {
+                onDataRecieveListener.onFinish(false);
+            }
+        }
+    }).execute();
+}
     public void authorise(PersonObject personObject, final OnDataRecieveListener onDataRecieveListener) {
 
         new Sender(Sender.RestCommands.AUTHORISE, personObject, new Sender.OnUploadListener() {
@@ -69,7 +84,20 @@ public class DBRest {
             }
         }).execute();
     }
+    public void setLanguages(LanguagesSet languages, final OnDataRecieveListener onDataRecieveListener) {
 
+        new Sender(Sender.RestCommands.SET_LANGUAGES, languages, new Sender.OnUploadListener() {
+            @Override
+            public void onUploadFinish(String s) {
+                Log.v("DBRest", "on upload finish listener");
+                if(s.equals("{\"result\":\"success\"}")) {
+                    onDataRecieveListener.onFinish(true);
+                } else {
+                    onDataRecieveListener.onFinish(false);
+                }
+            }
+        }).execute();
+    }
     public void addCredits(String token, int amount, final OnDataRecieveListener onDataRecieveListener) {
 
         new Sender(Sender.RestCommands.ADD_CREDITS, new CreditsInfo(token,amount), new Sender.OnUploadListener() {
@@ -265,6 +293,15 @@ public class DBRest {
             }
         }).execute();
     }
+    public void registerFacebook(SocialProfile socialProfile, final OnDataRecieveListener onDataRecieveListener) {
+        new Sender(Sender.RestCommands.REGISTER_FACEBOOK, socialProfile, new Sender.OnUploadListener() {
+            @Override
+            public void onUploadFinish(String s) {
+                Loader.parcing(Loader.RestCommands.GET_MY_PROFILE, s, onDataRecieveListener);
+            }
+        }).execute();
+    }
+
     public void getPayPlans(int id, OnDataRecieveListener onDataRecieveListener) {
         new Loader(Loader.RestCommands.GET_PAY_PLANS, id, onDataRecieveListener).execute();
     }
@@ -298,6 +335,10 @@ public class DBRest {
     public void getPhotoUrls(int id, String isThumbnail, int isPrivate, int ownerID, OnDataRecieveListener onDataRecieveListener){
         new Loader(Loader.RestCommands.GET_PICTURES_URLS,id,isThumbnail, isPrivate, ownerID, onDataRecieveListener ).execute() ;
     }
+    public void getAllLanguages(OnDataRecieveListener onDataRecieveListener){
+        new Loader(Loader.RestCommands.GET_ALL_LANGUAGES,1, onDataRecieveListener ).execute() ;
+    }
+
     public void setAvatar(int personId, int pictureId, OnDataRecieveListener onDataRecieveListener){
         new Loader(Loader.RestCommands.SET_AVATAR, pictureId, personId,onDataRecieveListener ).execute() ;
     }

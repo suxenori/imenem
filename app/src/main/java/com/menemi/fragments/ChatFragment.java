@@ -202,7 +202,14 @@ public class ChatFragment extends Fragment {
 
 
         ImageView menuButton = (ImageView) toolbarContainer.findViewById(R.id.menuButton);
-        menuButton.setOnClickListener(PersonPage.getMenuListener());
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getFragmentManager()!=null) {
+                    getFragmentManager().popBackStack();
+                }
+            }
+        });
 
 
     }

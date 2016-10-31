@@ -14,7 +14,8 @@ public class FilterObject
     private int personId;
     private int isOnline;
     private PlaceModel placeModel;
-    public FilterObject(int iWantValue, int iAmHereTo, int minAge, int maxAge, int personId, int isOnline, PlaceModel placeModel)
+
+    public FilterObject(int iWantValue, int iAmHereTo, int isOnline, int minAge, int maxAge, int personId,  PlaceModel placeModel)
     {
         this.iWantValue = iWantValue;
         this.iAmHereTo = iAmHereTo;
@@ -24,27 +25,6 @@ public class FilterObject
         this.placeModel = placeModel;
         this.isOnline = isOnline;
     }
-
-    public FilterObject(int iWantValue, int iAmHereTo, int minAge, int maxAge, int personId, int isOnline)
-    {
-        this.iWantValue = iWantValue;
-        this.iAmHereTo = iAmHereTo;
-        this.minAge = minAge;
-        this.maxAge = maxAge;
-        this.personId = personId;
-        this.isOnline = isOnline;
-    }
-    public FilterObject(FilterObject oldFilterObject)
-    {
-        this.iWantValue = oldFilterObject.iWantValue;
-        this.iAmHereTo = oldFilterObject.iAmHereTo;
-        this.minAge = oldFilterObject.minAge;
-        this.maxAge = oldFilterObject.maxAge;
-        this.personId = oldFilterObject.personId;
-        this.placeModel = oldFilterObject.placeModel;
-        this.isOnline = oldFilterObject.isOnline;
-    }
-
     public FilterObject(){
 
     }
@@ -122,6 +102,6 @@ public class FilterObject
     @Override
     public String toString()
     {
-        return "iWantValue = " + iWantValue + ", iAmHereTo = " + iAmHereTo + ", minAge = " + minAge + ", maxAge = " + maxAge + ", personId = " + personId;
+        return "iWantValue = " + iWantValue + ", iAmHereTo = " + iAmHereTo + ", minAge = " + minAge + ", maxAge = " + maxAge + ", personId = " + personId + ", isOnline = " + isOnline;
     }
 }

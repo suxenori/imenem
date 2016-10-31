@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
              android:orientation="vertical"
              android:layout_width="match_parent"
-             android:layout_height="match_parent">
+             android:layout_height="match_parent"
+    android:id="@+id/scrollContainer">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -54,6 +55,7 @@
                     </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -81,6 +83,10 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:background="@color/toolbar">
+                               <RadioGroup
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:id="@+id/relationshipRadioGroup">
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -92,7 +98,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Не заполнено"
+                                            android:text="@string/not_set"
                                             android:textColor="@color/text_second"
                                             android:background="@null"
                                             android:paddingLeft="@dimen/_5sdp"
@@ -103,6 +109,8 @@
                                             android:layout_height="wrap_content"
                                             android:layout_alignParentEnd="true"
                                             android:layout_centerInParent="true"
+                                            android:clickable="true"
+                                            android:id="@+id/empty"
                                             android:layout_alignParentRight="true"/>
                                     </RelativeLayout>
                                     <ImageView
@@ -122,7 +130,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Свободен"
+                                            android:text="@string/alone"
                                             android:textColor="@color/black"
                                             android:paddingLeft="@dimen/_5sdp"
                                             android:paddingRight="@dimen/_5sdp"
@@ -132,6 +140,8 @@
                                             android:layout_height="wrap_content"
                                             android:layout_centerInParent="true"
                                             android:layout_alignParentEnd="true"
+                                            android:id="@+id/alone"
+                                            android:clickable="true"
                                             android:layout_alignParentRight="true"/>
                                     </RelativeLayout>
                                     <ImageView
@@ -151,7 +161,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Занят"
+                                            android:text="@string/in_relationship"
                                             android:textColor="@color/black"
                                             android:paddingLeft="@dimen/_5sdp"
                                             android:paddingRight="@dimen/_5sdp"
@@ -161,6 +171,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_centerInParent="true"
                                             android:layout_alignParentEnd="true"
+                                            android:id="@+id/in_relationship"
                                             android:layout_alignParentRight="true"/>
                                     </RelativeLayout>
                                     <ImageView
@@ -180,7 +191,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="В свободных отношениях"
+                                            android:text="@string/in_free_relationship"
                                             android:textColor="@color/black"
                                             android:paddingLeft="@dimen/_5sdp"
                                             android:paddingRight="@dimen/_5sdp"
@@ -190,6 +201,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_alignParentEnd="true"
                                             android:layout_centerInParent="true"
+                                            android:id="@+id/in_free_relationship"
                                             android:layout_alignParentRight="true"/>
                                     </RelativeLayout>
                                     <ImageView
@@ -198,6 +210,7 @@
                                         android:scaleType="fitXY"
                                         android:src="@drawable/border"/>
                                 </LinearLayout>
+                               </RadioGroup>
                             </LinearLayout>
                         </LinearLayout>
 
@@ -206,7 +219,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:id="@+id/orientationLinearLayout">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -225,6 +239,10 @@
                         android:paddingRight="3dp"
                         android:paddingTop="2dp"
                         android:gravity="center">
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/orientationRadioGroup">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -241,7 +259,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Не заполнено"
+                                            android:text="@string/no_value"
                                             android:textColor="@color/text_second"
                                             android:background="@null"
                                             android:paddingLeft="@dimen/_5sdp"
@@ -249,6 +267,38 @@
                                             android:layout_centerVertical="true"/>
                                         <RadioButton
                                             android:layout_width="wrap_content"
+                                            android:id="@+id/emptyOrientationRB"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_centerInParent="true"
+                                            android:layout_alignParentRight="true"/>
+                                    </RelativeLayout>
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/border"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/height_row_container_in_edit_info"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/gay_orientation"
+                                            android:textColor="@color/black"
+                                            android:paddingLeft="@dimen/_5sdp"
+                                            android:paddingRight="@dimen/_5sdp"
+                                            android:layout_centerVertical="true"/>
+                                        <RadioButton
+                                            android:layout_width="wrap_content"
+                                            android:id="@+id/gayOrientedRB"
                                             android:layout_height="wrap_content"
                                             android:layout_alignParentEnd="true"
                                             android:layout_centerInParent="true"
@@ -271,7 +321,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Гей"
+                                            android:text="@string/OPEN_MINDED"
                                             android:textColor="@color/black"
                                             android:paddingLeft="@dimen/_5sdp"
                                             android:paddingRight="@dimen/_5sdp"
@@ -279,6 +329,7 @@
                                         <RadioButton
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:id="@+id/freeOrientedRB"
                                             android:layout_alignParentEnd="true"
                                             android:layout_centerInParent="true"
                                             android:layout_alignParentRight="true"/>
@@ -300,7 +351,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Без предубеждений"
+                                            android:text="@string/getero_relationship"
                                             android:textColor="@color/black"
                                             android:paddingLeft="@dimen/_5sdp"
                                             android:paddingRight="@dimen/_5sdp"
@@ -308,6 +359,7 @@
                                         <RadioButton
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:id="@+id/geteroOrientedRB"
                                             android:layout_alignParentEnd="true"
                                             android:layout_centerInParent="true"
                                             android:layout_alignParentRight="true"/>
@@ -329,7 +381,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Гетеро"
+                                            android:text="@string/bi_relationship"
                                             android:textColor="@color/black"
                                             android:paddingLeft="@dimen/_5sdp"
                                             android:paddingRight="@dimen/_5sdp"
@@ -337,41 +389,14 @@
                                         <RadioButton
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_alignParentEnd="true"
-                                            android:layout_centerInParent="true"
-                                            android:layout_alignParentRight="true"/>
-                                    </RelativeLayout>
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="@dimen/_1sdp"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/border"/>
-                                </LinearLayout>
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="@dimen/height_row_container_in_edit_info"
-                                        android:orientation="horizontal">
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Би"
-                                            android:textColor="@color/black"
-                                            android:paddingLeft="@dimen/_5sdp"
-                                            android:paddingRight="@dimen/_5sdp"
-                                            android:layout_centerVertical="true"/>
-                                        <RadioButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
+                                            android:id="@+id/biOrientedRB"
                                             android:layout_alignParentEnd="true"
                                             android:layout_centerInParent="true"
                                             android:layout_alignParentRight="true"/>
                                     </RelativeLayout>
                                 </LinearLayout>
                             </LinearLayout>
+                        </RadioGroup>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -412,15 +437,6 @@
                                     android:orientation="horizontal"
                                     android:id="@+id/height"
                                     android:clickable="true">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Не заполнено"
-                                        android:textColor="@color/text_second"
-                                        android:background="@null"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:layout_centerVertical="true"/>
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -431,6 +447,19 @@
                                         android:paddingRight ="@dimen/_1sdp"
                                         android:paddingEnd ="@dimen/_1sdp"
                                         android:paddingBottom="@dimen/_1sdp"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:hint="@string/no_value"
+                                        android:textColor="@color/black"
+                                        android:background="@null"
+                                        android:paddingLeft="@dimen/_5sdp"
+                                        android:id="@+id/heightTextView"
+                                        android:paddingRight="@dimen/_5sdp"
+                                        android:layout_centerVertical="true"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_alignParentStart="true"/>
                                 </RelativeLayout>
                             </LinearLayout>
                             <LinearLayout
@@ -499,12 +528,14 @@
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="@dimen/height_row_container_in_edit_info"
+                                    android:id="@+id/weight"
                                     android:orientation="horizontal">
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Не заполнено"
-                                        android:textColor="@color/text_second"
+                                        android:hint="@string/no_value"
+                                        android:textColor="@color/black"
+                                        android:id="@+id/weightTextView"
                                         android:background="@null"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -592,8 +623,9 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Не заполнено"
-                                        android:textColor="@color/text_second"
+                                        android:hint="@string/no_value"
+                                        android:textColor="@color/black"
+                                        android:id="@+id/bodyTypeTextView"
                                         android:background="@null"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -681,8 +713,9 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Не заполнено"
-                                        android:textColor="@color/text_second"
+                                       android:hint="@string/no_value"
+                                        android:textColor="@color/black"
+                                        android:id="@+id/eyeColorTextView"
                                         android:background="@null"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -741,6 +774,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
+
                         android:paddingLeft="3dp"
                         android:text="Цвет волос"/>
                     <LinearLayout
@@ -762,6 +796,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
+
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="@dimen/height_row_container_in_edit_info"
@@ -770,9 +805,10 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Не заполнено"
-                                        android:textColor="@color/text_second"
+                                        android:hint="@string/no_value"
+                                        android:textColor="@color/black"
                                         android:background="@null"
+                                        android:id="@+id/hair_colorTextview"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
                                         android:layout_centerVertical="true"/>
@@ -859,8 +895,9 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Не заполнено"
-                                        android:textColor="@color/text_second"
+                                        android:hint="@string/no_value"
+                                        android:textColor="@color/black"
+                                        android:id="@+id/livigWithTextView"
                                         android:background="@null"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -932,11 +969,16 @@
                         android:paddingRight="3dp"
                         android:paddingTop="2dp"
                         android:gravity="center">
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/kidsRadioGroup">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:background="@color/toolbar">
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -948,15 +990,49 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Не заполнено"
+                                        android:text="@string/no_value"
                                         android:textColor="@color/text_second"
                                         android:background="@null"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
+                                        android:layout_centerVertical="true"
+                                        android:id="@+id/textView"/>
+
+                                    <RadioButton
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignBaseline="@+id/textView"
+                                        android:layout_alignBottom="@+id/textView"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:id="@+id/emptyChildRB"/>
+                                </RelativeLayout>
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_1sdp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/border"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/height_row_container_in_edit_info"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/NEVER_MAKE_KIDS"
+                                        android:textColor="@color/black"
+                                        android:paddingLeft="@dimen/_5sdp"
+                                        android:paddingRight="@dimen/_5sdp"
                                         android:layout_centerVertical="true"/>
                                     <RadioButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:id="@+id/neverChildRB"
                                         android:layout_alignParentEnd="true"
                                         android:layout_centerInParent="true"
                                         android:layout_alignParentRight="true"/>
@@ -978,7 +1054,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Нет, никогда"
+                                        android:text="@string/SOMETIME_MAKE_KIDS"
                                         android:textColor="@color/black"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -986,6 +1062,7 @@
                                     <RadioButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:id="@+id/nextTimeRB"
                                         android:layout_alignParentEnd="true"
                                         android:layout_centerInParent="true"
                                         android:layout_alignParentRight="true"/>
@@ -1007,7 +1084,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Когда нибудь"
+                                        android:text="@string/already_have"
                                         android:textColor="@color/black"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -1015,6 +1092,7 @@
                                     <RadioButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:id="@+id/alredyHaveRB"
                                         android:layout_alignParentEnd="true"
                                         android:layout_centerInParent="true"
                                         android:layout_alignParentRight="true"/>
@@ -1036,7 +1114,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Уже есть"
+                                        android:text="@string/ADULT_KIDS"
                                         android:textColor="@color/black"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -1044,35 +1122,7 @@
                                     <RadioButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_centerInParent="true"
-                                        android:layout_alignParentRight="true"/>
-                                </RelativeLayout>
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/_1sdp"
-                                    android:scaleType="fitXY"
-                                    android:src="@drawable/border"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/height_row_container_in_edit_info"
-                                    android:orientation="horizontal">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Уже взрослые"
-                                        android:textColor="@color/black"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:layout_centerVertical="true"/>
-                                    <RadioButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:id="@+id/oldChildRB"
                                         android:layout_alignParentEnd="true"
                                         android:layout_centerInParent="true"
                                         android:layout_alignParentRight="true"/>
@@ -1080,6 +1130,7 @@
                             </LinearLayout>
 
                         </LinearLayout>
+                        </RadioGroup>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -1125,9 +1176,10 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Не заполнено"
-                                android:textColor="@color/text_second"
+                                android:hint="@string/no_value"
+                                android:textColor="@color/black"
                                 android:background="@null"
+                                android:id="@+id/smokingTextView"
                                 android:paddingLeft="@dimen/_5sdp"
                                 android:paddingRight="@dimen/_5sdp"
                                 android:layout_centerVertical="true"/>
@@ -1199,7 +1251,13 @@
                         android:paddingRight="3dp"
                         android:paddingTop="2dp"
                         android:gravity="center">
-                        <LinearLayout
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/alcoRadioGroup">
+
+
+                          <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -1215,7 +1273,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Не заполнено"
+                                        android:text="@string/no_value"
                                         android:textColor="@color/text_second"
                                         android:background="@null"
                                         android:paddingLeft="@dimen/_5sdp"
@@ -1224,6 +1282,7 @@
                                     <RadioButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:id="@+id/emptyAlco"
                                         android:layout_centerInParent="true"
                                         android:layout_alignParentEnd="true"
                                         android:layout_alignParentRight="true"/>
@@ -1245,7 +1304,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Нет"
+                                        android:text="@string/NO_DRINKING_PERSON"
                                         android:textColor="@color/black"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -1255,6 +1314,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerInParent="true"
                                         android:layout_alignParentEnd="true"
+                                        android:id="@+id/noAlcoRB"
                                         android:layout_alignParentRight="true"/>
                                 </RelativeLayout>
                                 <ImageView
@@ -1274,7 +1334,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Ни в коем случае"
+                                        android:text="@string/no_case"
                                         android:textColor="@color/black"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -1283,6 +1343,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_centerInParent="true"
+                                        android:id="@+id/neverAlcoRB"
                                         android:layout_alignParentEnd="true"
                                         android:layout_alignParentRight="true"/>
                                 </RelativeLayout>
@@ -1300,20 +1361,27 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Да, конечно!"
-                                        android:textColor="@color/black"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:layout_centerVertical="true"/>
+
                                     <RadioButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:id="@+id/readyToAlcoRB"
                                         android:layout_alignParentEnd="true"
                                         android:layout_centerInParent="true"
                                         android:layout_alignParentRight="true"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/drinking_person"
+                                        android:textColor="@color/black"
+                                        android:paddingLeft="@dimen/_5sdp"
+                                        android:paddingRight="@dimen/_5sdp"
+                                        android:layout_alignBaseline="@+id/readyToAlcoRB"
+                                        android:layout_alignBottom="@+id/readyToAlcoRB"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_alignParentStart="true"
+                                        android:id="@+id/textView2" />
                                 </RelativeLayout>
                                 <ImageView
                                     android:layout_width="match_parent"
@@ -1332,7 +1400,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="В компании"
+                                        android:text="@string/in_company"
                                         android:textColor="@color/black"
                                         android:paddingLeft="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_5sdp"
@@ -1340,13 +1408,15 @@
                                     <RadioButton
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:id="@+id/inCompanyAlco"
                                         android:layout_alignParentEnd="true"
                                         android:layout_centerInParent="true"
                                         android:layout_alignParentRight="true"/>
                                 </RelativeLayout>
                             </LinearLayout>
 
-                        </LinearLayout>
+                         </LinearLayout>
+                        </RadioGroup>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -1372,160 +1442,39 @@
                         android:paddingLeft="3dp"
                         android:paddingRight="3dp"
                         android:paddingTop="2dp"
+                        android:orientation="vertical"
                         android:gravity="center">
-                        <LinearLayout
+                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
+                            android:id="@+id/languagesContainer"
                             android:background="@color/toolbar">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/height_row_container_in_edit_info"
-                                    android:orientation="horizontal">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Немецкий"
-                                        android:textColor="@color/black"
-                                        android:background="@null"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:layout_centerVertical="true"/>
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerInParent="true"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_alignParentRight="true"/>
-                                </RelativeLayout>
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/_1sdp"
-                                    android:scaleType="fitXY"
-                                    android:src="@drawable/border"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/height_row_container_in_edit_info"
-                                    android:orientation="horizontal">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Шведский"
-                                        android:textColor="@color/black"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:layout_centerVertical="true"/>
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerInParent="true"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_alignParentRight="true"/>
-                                </RelativeLayout>
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/_1sdp"
-                                    android:scaleType="fitXY"
-                                    android:src="@drawable/border"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/height_row_container_in_edit_info"
-                                    android:orientation="horizontal">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Финский"
-                                        android:textColor="@color/black"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:layout_centerVertical="true"/>
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_centerInParent="true"
-                                        android:layout_alignParentRight="true"/>
-                                </RelativeLayout>
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/_1sdp"
-                                    android:scaleType="fitXY"
-                                    android:src="@drawable/border"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/height_row_container_in_edit_info"
-                                    android:orientation="horizontal">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Английский"
-                                        android:textColor="@color/black"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:layout_centerVertical="true"/>
-                                    <CheckBox
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_centerInParent="true"
-                                        android:layout_alignParentRight="true"/>
-                                </RelativeLayout>
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/_1sdp"
-                                    android:scaleType="fitXY"
-                                    android:src="@drawable/border"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/height_row_container_in_edit_info"
-                                    android:orientation="horizontal">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Показать другие языки..."
-                                        android:textColor="@color/text_second"
-                                        android:paddingLeft="@dimen/_5sdp"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:layout_centerInParent="true"/>
-                                </RelativeLayout>
-                            </LinearLayout>
 
+                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/otherLanguagesButton"
+                            android:background="@color/toolbar"
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_row_container_in_edit_info"
+                                >
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Показать другие языки..."
+                                    android:textColor="@color/text_second"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp"
+                                    android:layout_centerInParent="true"/>
+                            </RelativeLayout>
                         </LinearLayout>
-
                     </LinearLayout>
+
                 </LinearLayout>
-
-
-
-
-
         </LinearLayout>
         </RelativeLayout>
-
-
-
 </ScrollView>

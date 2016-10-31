@@ -49,7 +49,7 @@ public class PersonInterestsFragment extends Fragment
                 ArrayList<Integer> customInterestIdArray = new ArrayList<Integer>();
                 customInterestIdArray.add(interests.getInterestId());
                 // add interests to person object
-                DBHandler.getInstance().getMyProfile().setInterests(DBHandler.getInstance().getProfileInterests());
+                //DBHandler.getInstance().getMyProfile().setInterests(DBHandler.getInstance().getProfileInterests());
                 //send interests to REST
                 DBHandler.getInstance().addInterests(DBHandler.getInstance().getUserId(),customInterestIdArray, new DBHandler.ResultListener()
                 {

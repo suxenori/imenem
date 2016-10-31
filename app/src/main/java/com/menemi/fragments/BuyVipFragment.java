@@ -43,7 +43,7 @@ public class BuyVipFragment extends Fragment {
                     }
                     fragmentTransaction.commitAllowingStateLoss();
 
-
+        PersonPage.finishProgressDialog();
         return rootView;
     }
 

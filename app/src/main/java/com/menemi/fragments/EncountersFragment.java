@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.menemi.PersonPage;
 import com.menemi.PhotoSwipeFragment;
 import com.menemi.R;
 import com.menemi.personobject.PersonObject;
@@ -51,6 +52,7 @@ public class EncountersFragment extends Fragment
             photoSwipeFragment.setPageNumber(0);
             fragmentTransaction.replace(R.id.personPhotoImageView, photoSwipeFragment);
             fragmentTransaction.commitAllowingStateLoss();
+            PersonPage.finishProgressDialog();
         }
         return rootView;
 

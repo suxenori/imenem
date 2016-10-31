@@ -11,9 +11,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.menemi.EditPersonalInfo;
 import com.menemi.R;
+import com.menemi.edit_personal_Info.EditPersonalInfo;
+import com.menemi.edit_personal_Info.PersonalAppearanceDataSource;
+import com.menemi.edit_personal_Info.PersonalAppearanceSettingsModel;
 import com.menemi.personobject.PersonObject;
+
+import java.util.Arrays;
 
 /**
  * Created by Ui-Developer on 07.07.2016.
@@ -54,6 +58,7 @@ public class AboutFragment extends Fragment{
             public void onClick(View view)
             {
                 Intent openChangeInfo = new Intent(getActivity(), EditPersonalInfo.class);
+                openChangeInfo.putExtra(EditPersonalInfo.SCROLL_DOWN_TAG, false);
                 startActivity(openChangeInfo);
             }
         });
@@ -87,12 +92,18 @@ public class AboutFragment extends Fragment{
 
     private String[] prepareData(){
         String[] data = new String[6];
-        data[0] = personObject.getAboutPersonInfo();
-        data[1] = personObject.getPersonRelationship();
-        data[2] = personObject.getPersonSexuality() ;
-        data[3] = personObject.getAppearance();
-        data[4] = personObject.getSmokingPerson();
-        data[5] = personObject.getDrinkingPerson();
+        PersonalAppearanceDataSource appearanceDataSource = new PersonalAppearanceDataSource(getActivity());
+
+        PersonalAppearanceSettingsModel appearance = personObject.getPersonalAppearance();
+        appearanceDataSource.getBodyType(appearance.getBodyTypeIndex());
+        ;
+        String appearanceString = (appearance.getHairColorIndex() != 0 ? appearanceDataSource.getHairColor(appearance.getHairColorIndex())  + ", " : "") + (appearance.getEyeColorIndex() != 0 ? appearanceDataSource.getEyeColor(appearance.getEyeColorIndex())  + ", " : "") + (appearance.getBodyTypeIndex() != 0 ? appearanceDataSource.getBodyType(appearance.getBodyTypeIndex())  + ", " : "") + (appearance.getHeight() != 0? getString(R.string.sm, "" + appearance.getHeight())+", " : "") + (appearance.getWeigt() != 0?   getString(R.string.kg, ""+appearance.getWeigt())+", " : "");
+        data[0] = appearance.getAbout();
+        data[1] = Arrays.asList(getResources().getStringArray(R.array.relationship)).get(appearance.getRelationshipIndex());
+        data[2] =  Arrays.asList(getResources().getStringArray(R.array.orientation)).get(appearance.getSexualityIndex());
+        data[3] = appearanceString;
+        data[4] = appearanceDataSource.getSmoking(appearance.getSmokingIndex());
+        data[5] = Arrays.asList(getResources().getStringArray(R.array.alco)).get(appearance.getAlcoholIndex());
         return data;
     }
     private TextView[] prepareLabels(){

@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.menemi.PersonPage;
 import com.menemi.R;
-import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.PersonObject;
 
 /**
@@ -53,15 +53,10 @@ public class FragmentWithInfoAboutPerson extends Fragment {
             ShareFavoriteFragment shareFavoriteFragment = new ShareFavoriteFragment();
             shareFavoriteFragment.setTargetObject(personObject);
 
-            final InterestsFragment interestsFragment = new InterestsFragment();
+            InterestsFragment interestsFragment = new InterestsFragment();
             interestsFragment.setInterests(personObject.getInterests());
             interestsFragment.setPurpose(puropose);
-            DBHandler.getInstance().getMyProfile(new DBHandler.ResultListener() {
-                @Override
-                public void onFinish(Object object) {
-                    interestsFragment.setOwnerProfile((PersonObject) object); // WARNING: MAY CAUSE NULL POINTER IN RUNTIME
-                }
-            });
+
             interestsFragment.setOwnerFragment(this);
 
             PhotoListFragment photoListFragment = new PhotoListFragment();
@@ -95,13 +90,13 @@ public class FragmentWithInfoAboutPerson extends Fragment {
             cryFragment.setId(personObject.getPersonId());
 
 
-            if(personObject.getPersonFriends() != null && personObject.getPersonFriends().size() > 0) {
+            if (personObject.getPersonFriends() != null && personObject.getPersonFriends().size() > 0) {
                 Log.d("LOG", "replaced");
                 fragmentTransaction.replace(R.id.friendsPlaceHolder, friendsFragment);
             }
 
 
-                fragmentTransaction.replace(R.id.interestsPlaceHolder, interestsFragment);
+            fragmentTransaction.replace(R.id.interestsPlaceHolder, interestsFragment);
 
 
             fragmentTransaction.replace(R.id.photoPlaceHolder, photoListFragment);
@@ -109,7 +104,7 @@ public class FragmentWithInfoAboutPerson extends Fragment {
             if (puropose != PersonDataFragment.Purpose.MY_PROFILE) {
                 fragmentTransaction.replace(R.id.shareFavoritePlaceHolder, shareFavoriteFragment);
                 fragmentTransaction.replace(R.id.mapPlaceHolder, mapProfileFragment);
-                fragmentTransaction.replace(R.id.cryPlaceHolder, cryFragment);
+                //  fragmentTransaction.replace(R.id.cryPlaceHolder, cryFragment);
             }
 
             fragmentTransaction.replace(R.id.aboutInfoPlaceHolder, aboutFragment);
@@ -117,34 +112,37 @@ public class FragmentWithInfoAboutPerson extends Fragment {
             if (personObject.getRewards().size() != 0) {
                 fragmentTransaction.replace(R.id.awardsPlaceHolder, awardsFragment);
             }
+            if(puropose != PersonDataFragment.Purpose.MY_PROFILE){
+                fragmentTransaction.replace(R.id.giftsPlaceHolder, giftsFragment);
+            } else{
+                if (personObject.getGifts() != null && personObject.getGifts().size() > 0){
+                    fragmentTransaction.replace(R.id.giftsPlaceHolder, giftsFragment);
+                }
+            }
 
-            fragmentTransaction.replace(R.id.giftsPlaceHolder, giftsFragment);
             fragmentTransaction.replace(R.id.verificationPlaceHolder, verificationFragment);
 
 
             fragmentTransaction.commitAllowingStateLoss();
 
-
+            PersonPage.finishProgressDialog();
         }
 
         return rootView;
     }
-public void refreshInterests(){
-    FragmentManager fragmentManager = getFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    final InterestsFragment interestsFragment = new InterestsFragment();
-    interestsFragment.setInterests(personObject.getInterests());
-    interestsFragment.setPurpose(puropose);
-    interestsFragment.setOwnerFragment(this);
-    DBHandler.getInstance().getMyProfile(new DBHandler.ResultListener() {
-        @Override
-        public void onFinish(Object object) {
-            interestsFragment.setOwnerProfile((PersonObject) object); // WARNING: MAY CAUSE NULL POINTER IN RUNTIME
-        }
-    });
-    fragmentTransaction.replace(R.id.interestsPlaceHolder, interestsFragment);
-    fragmentTransaction.commitAllowingStateLoss();
-}
+
+    public void refreshInterests() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final InterestsFragment interestsFragment = new InterestsFragment();
+        interestsFragment.setInterests(personObject.getInterests());
+        interestsFragment.setPurpose(puropose);
+        interestsFragment.setOwnerFragment(this);
+
+        fragmentTransaction.replace(R.id.interestsPlaceHolder, interestsFragment);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
     public void setPuropose(PersonDataFragment.Purpose puropose) {
         this.puropose = puropose;
     }

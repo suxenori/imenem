@@ -19,6 +19,14 @@ public class IntPickerDialog extends DialogFragment
 {
     private View rootView;
     private NumberPicker picker;
+    private int pickerValue;
+    private int minValue;
+    private  int maxValue;
+    private int currentValue;
+    private String unit;
+    private EditDialogListener editDialogListener;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -27,24 +35,69 @@ public class IntPickerDialog extends DialogFragment
         rootView = inflater.inflate(R.layout.int_picker_dialog,container,false);
         picker = (NumberPicker)rootView.findViewById(R.id.number_picker);
         ArrayList<String> s = new ArrayList<>();
-        for (int i = 139; i <= 220 ; i++)
+
+        for (int i = minValue; i <= maxValue ; i++)
         {
-            if (i == 139){
-                s.add("меньше" + " " + i + " см");
-            } else if (i == 220){
-                s.add(i + " см");
-                s.add("больше" + " " + i + " см");
+            if (i == minValue){
+                s.add("меньше" + " " + i + " " + unit);
+            } else if (i == maxValue){
+                s.add(i + " " + unit);
+                s.add("больше" + " " + i + " " + unit);
                 break;
             }
-            s.add(i + " см");
+            s.add(i + " " + unit);
         }
         String[] v = s.toArray(new String[s.size()]);
-        picker.setMaxValue(222);
-        picker.setMinValue(139);
+        picker.setMaxValue(maxValue);
+        picker.setMinValue(minValue);
         picker.setDisplayedValues(v);
-        picker.setVerticalScrollbarPosition(180);
+       // picker.setVerticalScrollbarPosition(180);
         picker.setWrapSelectorWheel(false);
-        picker.setValue(180);
+        picker.setValue(currentValue + 1);
+        picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener()
+        {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal)
+            {
+                if (newVal == 0){
+                    pickerValue = oldVal;
+                } else {
+                    pickerValue = newVal - 1;
+                }
+
+                editDialogListener.updateResult(pickerValue + "");
+            }
+        });
         return rootView;
+    }
+
+    public interface EditDialogListener {
+        void updateResult(String inputText);
+    }
+
+
+    public void setMinValue(int minValue)
+    {
+        this.minValue = minValue;
+    }
+
+    public void setMaxValue(int maxValue)
+    {
+        this.maxValue = maxValue;
+    }
+
+    public void setCurrentValue(int currentValue)
+    {
+        this.currentValue = currentValue;
+    }
+
+    public void setUnit(String unit)
+    {
+        this.unit = unit;
+    }
+
+    public void setEditDialogListener(EditDialogListener editDialogListener)
+    {
+        this.editDialogListener = editDialogListener;
     }
 }

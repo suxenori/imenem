@@ -124,7 +124,6 @@
             android:name="ru.ok.android.sdk.OkAuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -145,7 +144,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".EditPersonalInfo"
+            android:name=".edit_personal_Info.EditPersonalInfo"
             android:label="@string/title_activity_person_page"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>

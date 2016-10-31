@@ -82,8 +82,8 @@ public class UploadPhotoDialogFragments extends android.app.DialogFragment
         });
 
         ImageButton uploadFromInsta = (ImageButton) dialogView.findViewById(R.id.uploadFromInsta);
-        final InstagramApp instaObj = new InstagramApp(getActivity(), SocialNetworkHandler.CLIENT_ID,
-                SocialNetworkHandler.CLIENT_SECRET, SocialNetworkHandler.CALLBACK_URL);
+        final InstagramApp instaObj = new InstagramApp(getActivity(), SocialNetworkHandler.getInstance().CLIENT_ID,
+                SocialNetworkHandler.getInstance().CLIENT_SECRET, SocialNetworkHandler.getInstance().CALLBACK_URL);
         uploadFromInsta.setOnClickListener(view -> {
 
             Intent i = new Intent(getActivity(), SocialGridView.class);

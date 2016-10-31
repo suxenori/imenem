@@ -183,7 +183,7 @@ public class StreamTunnel {
      * Called when a socket has completed reading the requested data into memory. Not called if there is an error.
      */
     private void afterRead(String data) {
-        Log.v("StreamTunnel", "SOCKET RCVD: %@ DATA: |%ld|%@| from " + ipAdress);
+      //  Log.v("StreamTunnel", "SOCKET RCVD: %@ DATA: |%ld|%@| from " + ipAdress);
 
         if (receivedData == null) {
             receivedData = "";

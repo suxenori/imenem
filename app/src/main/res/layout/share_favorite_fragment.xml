@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="@dimen/profile_elements_logo_size"
         android:layout_height="@dimen/profile_elements_logo_size"
-        android:src="@drawable/share"
+
         android:id="@+id/share"/>
 
     <ImageView

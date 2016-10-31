@@ -16,6 +16,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -42,6 +43,7 @@ import com.menemi.personobject.PayPlan;
 import com.menemi.personobject.PersonObject;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -68,7 +70,9 @@ public class Utils {
     public static final String PICTURE_QUALITY_THUMBNAIL = "thumb";
     public static final String PICTURE_QUALITY_MEDIUM = "medium";
     public static final String PICTURE_QUALITY_LARGE = "large";
-    public enum UNITS{METRIC, IMPERIAL}
+
+    public enum UNITS {METRIC, IMPERIAL}
+
     private static final Pattern emailPattern = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
 
     public static String strSeparator = "_,_";
@@ -116,21 +120,21 @@ public class Utils {
         Date date = null;
 
         try {
-            if(dateString != null) {
+            if (dateString != null) {
                 date = format.parse(dateString);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
         java.sql.Date sqlDate = null;
-        if(date != null) {
-        sqlDate = new java.sql.Date(date.getTime());
+        if (date != null) {
+            sqlDate = new java.sql.Date(date.getTime());
         }
         return sqlDate;
     }
 
     public static String getStringFromDate(Date date) {
-        if(date == null){
+        if (date == null) {
             return "";
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -138,17 +142,16 @@ public class Utils {
     }
 
 
-
-
     public static String getStringTimeFromDate(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         return format.format(date);
     }
 
-    public static String getStringDateForDB(Date date){
+    public static String getStringDateForDB(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
         return format.format(date);
     }
+
     public static java.sql.Date getDateFromServer2(String dateString) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
         format.setTimeZone(TimeZone.getTimeZone("GMT"));  // 2016-08-12T16:44:24.640+00:00"
@@ -184,7 +187,7 @@ public class Utils {
     }
 
     public static Bitmap getBitmapFromStringBase64(String bitmapString) {
-        if(bitmapString == null){
+        if (bitmapString == null) {
             return null;
         }
         byte[] decodedString = Base64.decode(bitmapString, Base64.DEFAULT);
@@ -264,15 +267,25 @@ public class Utils {
         }
 
     }
-public static ProgressDialog startLodingProgress(Context ctx, String title, DialogInterface.OnDismissListener cancelListener){
-    ProgressDialog progress = new ProgressDialog(ctx);
-    progress.setMessage(title);
-    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    progress.setIndeterminate(true);
-    progress.show();
-    progress.setOnDismissListener(cancelListener);
-    return progress;
-}
+
+    public static ProgressDialog startLodingProgress(Context ctx, String title, @Nullable DialogInterface.OnDismissListener cancelListener) {
+        ProgressDialog progress = new ProgressDialog(ctx);
+        progress.show();
+        if (title != null && !title.equals("")) {
+            progress.setMessage(title);
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.setIndeterminate(true);
+        } else{
+            progress.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            progress.setContentView(R.layout.progressdialog);
+
+        }
+
+
+        progress.setOnDismissListener(cancelListener);
+        return progress;
+    }
+
     public static int dpToPx(Context context, int dp) {
         int px = Math.round(dp * getPixelScaleFactor(context));
         return px;
@@ -309,7 +322,7 @@ public static ProgressDialog startLodingProgress(Context ctx, String title, Dial
         if (ctx == null) {
             return image;
         }
-        Bitmap result =blur(ctx, blur(ctx, blur(ctx, blur(ctx, image, 25), 25), 25), 25) ;
+        Bitmap result = blur(ctx, blur(ctx, blur(ctx, blur(ctx, image, 25), 25), 25), 25);
 
         return result;
     }
@@ -324,7 +337,7 @@ public static ProgressDialog startLodingProgress(Context ctx, String title, Dial
         Bitmap outputBitmap = null;
         try {
             System.gc();
-            outputBitmap = image.copy(image.getConfig(),true);//Bitmap.createScaledBitmap(src, dstWidth, dstHeight, filter);Bitmap.createBitmap(image);
+            outputBitmap = image.copy(image.getConfig(), true);//Bitmap.createScaledBitmap(src, dstWidth, dstHeight, filter);Bitmap.createBitmap(image);
             RenderScript renderScript = RenderScript.create(ctx);
             Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
             Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);
@@ -521,34 +534,29 @@ public static ProgressDialog startLodingProgress(Context ctx, String title, Dial
 
     }
 
-    public static void buildLocationSettingsRequest( final Activity activity)
-        {
+    public static void buildLocationSettingsRequest(final Activity activity) {
 
 
-            final LocationManager manager = (LocationManager) activity.getSystemService( Context.LOCATION_SERVICE );
+        final LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 
-            if ( manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-                return;
-            }
-            final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
-            final String title = "GPS is disabled";
-            final String message = "Enable either GPS or any other location"
-                    + " service to find current location.  Click OK to go to"
-                    + " location services settings to let you do so.";
-           OCDialog dialog = new OCDialog(activity, title, message, R.drawable.map, ()->{
-
-                activity.startActivity(new Intent(action));
-            }, ()->{
-
-                activity.getFragmentManager().popBackStack();
-            });
-
-
-
-
-
-
+        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            return;
         }
+        final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+        final String title = "GPS is disabled";
+        final String message = "Enable either GPS or any other location"
+                + " service to find current location.  Click OK to go to"
+                + " location services settings to let you do so.";
+        OCDialog dialog = new OCDialog(activity, title, message, R.drawable.map, () -> {
+
+            activity.startActivity(new Intent(action));
+        }, () -> {
+
+            activity.getFragmentManager().popBackStack();
+        });
+
+
+    }
 
     public static Bitmap rotateImage(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
@@ -581,15 +589,13 @@ public static ProgressDialog startLodingProgress(Context ctx, String title, Dial
     }
 
 
-
-    public static Bitmap stringToBitmap(String source){
+    public static Bitmap stringToBitmap(String source) {
         byte[] decodedString = Base64.decode(source, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return decodedByte;
     }
 
-    public static Bitmap getImageFromURL(String targetUrl) throws IOException
-    {
+    public static Bitmap getImageFromURL(String targetUrl) throws IOException {
 
         URL url = new URL(targetUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -625,60 +631,72 @@ public static ProgressDialog startLodingProgress(Context ctx, String title, Dial
         // The directory is now empty so delete it
         return dir.delete();
     }
+
     public static String constructStartURL() {
         return Fields.URL_FOR_SERVER + "/" + Fields.PREFIX;
     }
 
-    public static String convertArrayToString(String[] array){
+    public static int getFacebookGender(String facebookGender) {
+        return facebookGender.equals("male") ? 1 : 0;
+    }
+
+    public static String convertArrayToString(String[] array) {
         String str = "";
-        for (int i = 0;i<array.length; i++) {
-            str = str+array[i];
+        for (int i = 0; i < array.length; i++) {
+            str = str + array[i];
             // Do not append comma at the end of last element
-            if(i<array.length-1){
-                str = str+strSeparator;
+            if (i < array.length - 1) {
+                str = str + strSeparator;
             }
         }
         return str;
     }
-    public static String convertArrayToString(int[] array){
+
+    public static String convertArrayToString(int[] array) {
         String str = "";
-        for (int i = 0;i<array.length; i++) {
-            str = str+array[i];
+        for (int i = 0; i < array.length; i++) {
+            str = str + array[i];
             // Do not append comma at the end of last element
-            if(i<array.length-1){
-                str = str+strSeparator;
+            if (i < array.length - 1) {
+                str = str + strSeparator;
             }
         }
         return str;
     }
-    public static int[] convertStringToIntArray(String str){
+
+    public static int[] convertStringToIntArray(String str) {
         String[] arr = str.split(strSeparator);
         int[] result = new int[arr.length];
-         for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length; i++) {
             result[i] = Integer.parseInt(arr[i]);
         }
         return result;
     }
-    public static boolean isEmailValid(String email){
+
+    public static boolean isEmailValid(String email) {
         return emailPattern.matcher(email).matches();
     }
-    public static boolean isNameValid(String name){
-        if(name == null || name.length() == 0) {
+
+    public static boolean isNameValid(String name) {
+        if (name == null || name.length() == 0) {
             return false;
         }
         return true;
     }
 
-    public static String[] convertStringToArray(String str){
+    public static String[] convertStringToArray(String str) {
         String[] arr = str.split(strSeparator);
         return arr;
     }
+
     public static UNITS getUnits() {
         String countryCode = Locale.getDefault().getCountry();
-        if ("US".equals(countryCode) || "LR".equals(countryCode) || "MM".equals(countryCode))
-        {return UNITS.IMPERIAL;} // burma
+        if ("US".equals(countryCode) || "LR".equals(countryCode) || "MM".equals(countryCode)) {
+            return UNITS.IMPERIAL;
+        } // burma
         return UNITS.METRIC;
     }
+
     public static String prepareShortUnts(double distance) {
         DecimalFormat df2 = new DecimalFormat("#.#");
         return df2.format(distance);

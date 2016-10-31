@@ -136,7 +136,9 @@ public class PersonDataFragment extends Fragment {
                                 units = getString(R.string.units_killometers);
                                 distance = personObject.getDistance() * 1.60934d;
                             }
-                            TextView range = (TextView) rootView.findViewById(R.id.range);
+                        ImageView mapPlacIcon = (ImageView) rootView.findViewById(R.id.mapPlacIcon);
+                        mapPlacIcon.setImageResource(R.drawable.map_place);
+                        TextView range = (TextView) rootView.findViewById(R.id.range);
                             range.setText(Utils.prepareShortUnts(distance) + " " + units);
 
                     }

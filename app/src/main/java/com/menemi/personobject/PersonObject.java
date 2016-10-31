@@ -2,10 +2,11 @@ package com.menemi.personobject;
 
 import android.graphics.Bitmap;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.edit_personal_Info.PersonalAppearanceSettingsModel;
 import com.menemi.filter.FilterObject;
 import com.menemi.utils.Utils;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ public class PersonObject {
     private String personSexuality;
     private String smokingPerson;
     private String drinkingPerson;
-    private PersonKids personKids = PersonKids.WITHOUT_KIDS_PERSON;
     private String personName;
     private int personAge;
     private UserStatus userStatus = UserStatus.ANY;
@@ -27,8 +27,6 @@ public class PersonObject {
     private boolean isPersonVIP;
     private ArrayList<Integer> personFriends;
     private String personCurrLocation;
-
-
     private int personScore;
     private boolean isMale;
     private String personLivingCity;
@@ -38,9 +36,7 @@ public class PersonObject {
     private Bitmap personAvatar = null;
     private String personRelationship;
     private String livingWith = "";
-    private HairColor hairColor = HairColor.BROWN_HAIR_COLOR;
-    private BodyType bodyType = BodyType.WITHOUT_BODY_TYPE;
-    private EyeColor eyeColor = EyeColor.WITHOUT_EYE_COLOR;
+    private PersonalAppearanceSettingsModel personalAppearance;
     private int growth;
     private int weight;
     private String aboutPersonInfo;
@@ -68,9 +64,74 @@ public class PersonObject {
     private ArrayList<PhotoSetting> pictureUrlsPrivate = new ArrayList<>();
     private ArrayList<PhotoSetting> pictureUrlsPublic = new ArrayList<>();
     private LikeStatus likeStatus = LikeStatus.none;
+    private String fbId;
+    private String instaId;
+    private String odnoklasnikiId;
+    private String vkId;
+    private String g_plusId;
     private int rating;
     private double distance;
     private boolean canChat;
+
+    public PersonalAppearanceSettingsModel getPersonalAppearance()
+    {
+        return personalAppearance;
+    }
+
+    public void setPersonalAppearance(PersonalAppearanceSettingsModel personalAppearance)
+    {
+        this.personalAppearance = personalAppearance;
+    }
+
+    public String getG_plusId()
+    {
+        return g_plusId;
+    }
+
+    public void setG_plusId(String g_plusId)
+    {
+        this.g_plusId = g_plusId;
+    }
+
+    public String getVkId()
+    {
+        return vkId;
+    }
+
+    public void setVkId(String vkId)
+    {
+        this.vkId = vkId;
+    }
+
+    public String getOdnoklasnikiId()
+    {
+        return odnoklasnikiId;
+    }
+
+    public void setOdnoklasnikiId(String odnoklasnikiId)
+    {
+        this.odnoklasnikiId = odnoklasnikiId;
+    }
+
+    public String getInstaId()
+    {
+        return instaId;
+    }
+
+    public void setInstaId(String instaId)
+    {
+        this.instaId = instaId;
+    }
+
+    public String getFbId()
+    {
+        return fbId;
+    }
+
+    public void setFbId(String fbId)
+    {
+        this.fbId = fbId;
+    }
 
     public PersonObject(String email, String password) {
         this.email = email;
@@ -92,7 +153,6 @@ public class PersonObject {
         this.personSexuality = personObject.personSexuality;
         this.smokingPerson = personObject.smokingPerson;
         this.drinkingPerson = personObject.drinkingPerson;
-        this.personKids = personObject.personKids;
         this.personName = personObject.personName;
         this.personAge = personObject.personAge;
         this.personWork = personObject.personWork;
@@ -100,7 +160,6 @@ public class PersonObject {
         this.isPersonVIP = personObject.isPersonVIP;
         this.personFriends = personObject.personFriends;
         this.personCurrLocation = personObject.personCurrLocation;
-
         this.personScore = personObject.personScore;
         this.isMale = personObject.isMale;
         this.personLivingCity = personObject.personLivingCity;
@@ -110,9 +169,6 @@ public class PersonObject {
         this.personAvatar = personObject.personAvatar;
         this.personRelationship = personObject.personRelationship;
         this.livingWith = personObject.livingWith;
-        this.hairColor = personObject.hairColor;
-        this.bodyType = personObject.bodyType;
-        this.eyeColor = personObject.eyeColor;
         this.growth = personObject.growth;
         this.weight = personObject.weight;
         this.aboutPersonInfo = personObject.aboutPersonInfo;
@@ -371,42 +427,6 @@ public class PersonObject {
         this.livingWith = livingWith;
     }
 
-    public HairColor getHairColor() {
-        return hairColor;
-    }
-
-    public void setHairColor(int value) {
-        this.hairColor = HairColor.values()[value];
-    }
-
-    public void setHairColor(HairColor hairColor) {
-        this.hairColor = hairColor;
-    }
-
-    public BodyType getBodyType() {
-        return bodyType;
-    }
-
-    public void setBodyType(int value) {
-        this.bodyType = BodyType.values()[value];
-    }
-
-    public void setBodyType(BodyType bodyType) {
-        this.bodyType = bodyType;
-    }
-
-    public EyeColor getEyeColor() {
-        return eyeColor;
-    }
-
-    public void setEyeColor(int value) {
-        this.eyeColor = EyeColor.values()[value];
-    }
-
-    public void setEyeColor(EyeColor eyeColor) {
-        this.eyeColor = eyeColor;
-    }
-
     public int getPersonId() {
         return personId;
     }
@@ -579,18 +599,6 @@ public class PersonObject {
         this.vipUntil = Utils.getDateFromServer(vipUntil);
     }
 
-    public PersonKids getPersonKids() {
-        return personKids;
-    }
-
-    public void setPersonKids(PersonKids personKids) {
-        this.personKids = personKids;
-    }
-
-    public void setPersonKids(int value) {
-        this.personKids = PersonKids.values()[value];
-    }
-
     public boolean isMale() {
         return isMale;
     }
@@ -713,6 +721,13 @@ public class PersonObject {
     public void setCanChat(boolean canChat) {
         this.canChat = canChat;
     }
+    /*   public enum PersonSexuality {
+        WITHOUT_INFO,
+        GAY,
+        OPEN_MINDED,
+        STRAIGHT,
+        BISEXUAL
+    }*/
 
     public int getRating() {
         return rating;
@@ -721,6 +736,8 @@ public class PersonObject {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+
     /*   public enum PersonSexuality {
         WITHOUT_INFO,
         GAY,
@@ -728,6 +745,32 @@ public class PersonObject {
         STRAIGHT,
         BISEXUAL
     }*/
+
+    /*public enum SmokingPerson {
+        WITHOUT_INFO_ABOUT_SMOKING,
+        IS_SMOKING_PERSON,
+        IS_NO_SMOKING_PERSON,
+        ANTI_SMOKING_PERSON,
+        SMOKING_IN_COMPANY_PERSON,
+        SMOKE_ONE_AFTER_THE_OTHER_PERSON
+    }*/
+
+   /* public enum DrinkingPerson {
+        WITHOUT_INFO_ABOUT_DRINKING,
+        DRINKING_PERSON,
+        NO_DRINKING_PERSON,
+        IN_COMPANY_DRINKING_PERSON,
+        HIGHLY_DRINKING_PERSON
+    }
+*/
+    public enum PersonKids {
+        WITHOUT_KIDS_PERSON,
+        NEVER_MAKE_KIDS,
+        SOMETIME_MAKE_KIDS,
+        ALREADY_MADE_KIDS,
+        ADULT_KIDS
+    }
+
 
     /*public enum SmokingPerson {
         WITHOUT_INFO_ABOUT_SMOKING,
@@ -746,13 +789,13 @@ public class PersonObject {
          HIGHLY_DRINKING_PERSON
      }
  */
-    public enum PersonKids {
+   /* public enum PersonKids {
         WITHOUT_KIDS_PERSON,
         NEVER_MAKE_KIDS,
         SOMETIME_MAKE_KIDS,
         ALREADY_MADE_KIDS,
         ADULT_KIDS
-    }
+    }*/
 
     public enum IamHereTo {
         MAKE_NEW_FRIEND,
@@ -761,59 +804,9 @@ public class PersonObject {
 
     }
 
-    public enum EyeColor {
-        WITHOUT_EYE_COLOR,
-        BROWN_EYE_COLOR,
-        GRAY_EYE_COLOR,
-        GREEN_EYE_COLOR,
-        BLUE_EYE_COLOR,
-        LIGHT_BROWN_EYE_COLOR
-    }
-
-    public enum BodyType {
-        WITHOUT_BODY_TYPE,
-        AVERAGE_BODY_TYPE,
-        FEW_EXTRA_KG,
-        ATHLETIC_BODY_TYPE,
-        STRONG_BODY_TYPE,
-        SLIM_BODY_TYPE,
-        OBESITY_BODY_TYPE
-
-
-    }
-
-    public enum HairColor {
-        WITHOUT_HAIR_COLOR,
-        BROWN_HAIR_COLOR,
-        RED_HAIR_COLOR,
-        LIGHT_HAIR_COLOR,
-        FEW_GRAY_HAIR_COLOR,
-        GRIZZLE_HAIR_COLOR,
-        SHAVE_HAIR,
-        PAINTED_HAIR,
-        HAIRLESS
-
-    }
-
-    public enum LivingWith {
-        WITHOUT_LIVING_WITH_INFO,
-        LIVING_WITH_PARENTS,
-        LIVING_WITH_NEIGHBORS,
-        LIVING_IN_DORMITORY,
-        LIVING_WITH_SECOND_HALF,
-        LIVING_ALONE
-    }
-
-    public enum PersonRelationship {
-        WITHOUT_RELATIONSHIP_INFO,
-        ALONE_RELATIONSHIP,
-        BUSY_RELATIONSHIP,
-        IN_FREE_RELATION
-    }
-
     public static enum InterestGender {
-        WOMAN,
         MAN,
+        WOMAN,
         ANY_GENDER
     }
 

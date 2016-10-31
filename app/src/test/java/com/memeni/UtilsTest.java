@@ -1,8 +1,9 @@
-package com.menemi;
+package com.memeni;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import com.menemi.BuildConfig;
 import com.menemi.personobject.PayPlan;
 import com.menemi.utils.Utils;
 
@@ -12,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
-
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -55,6 +55,7 @@ public class UtilsTest {
 
     }
 
+
     @Test
     public void bimapNull() throws Exception {
         try {
@@ -78,11 +79,8 @@ public class UtilsTest {
     }
     @Test
     public void initialBitmapSmallSize() throws Exception {
-
-
         assertEquals(bmpSmall.getWidth(), 800);
         assertEquals(bmpSmall.getHeight(), 600);
-
     }
 
     @Test
@@ -156,6 +154,31 @@ public class UtilsTest {
         Utils.sortPlans(plans);
 
         sortPlansTestBase(plans);
+    }
+    @Test
+    public void testEmails() throws Exception {
+        String[] valid = {"me@example.com",
+
+        "a.nonymous@example.com",
+        "name+tag@example.com",
+        "name\\@tag@example.com", // – this is a valid email address containing two @ symbols.
+                "spaces\\ are\\ allowed@example.com",
+        "\"spaces may be quoted\"@example.com",
+        "!#$%&'+-/=.?^`{|}~@[1.0.0.127]",
+        "!#$%&'+-/=.?^`{|}~@[IPv6:0123:4567:89AB:CDEF:0123:4567:89AB:CDEF]",
+        "me(this is a comment)@example.com"};// – comments are discouraged but not prohibited by RFC2822.
+
+
+
+
+        String[] invalid = {"me@", "@example.com","me.@example.com",
+                ".me@example.com",
+                "me@example..com",
+        "me.example@com",
+        "me\\@example.com"};
+
+
+        assertTrue( Utils.isEmailValid(valid[2]));
     }
     @Test
     public void sortPlansTest2() throws Exception {

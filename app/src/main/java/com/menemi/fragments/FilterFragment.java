@@ -29,15 +29,6 @@ import com.menemi.utils.RangeSeekBar;
 public class FilterFragment extends Fragment {
     private int minAge;
     private int maxAge;
-    private final int MALE_VAR = 1;
-    private final int FEMALE_VAR = 0;
-    private final int ANY_GENDER_VAR = 2;
-    private final int FIND_FRIENDS = 0;
-    private final int CHAT = 1;
-    private final int ONLINE = 1;
-    private final int OFLINE = 2;
-    private final int ANY = 0;
-    private final int SEX = 2;
     private PersonObject personObject = null;
     private CheckBox chatCB;
     private CheckBox sexCB;
@@ -47,6 +38,10 @@ public class FilterFragment extends Fragment {
     private PersonObject.InterestGender genderSelected;
     private PersonObject.UserStatus statusSelected;
     private TextView choisedPlaceTextView;
+    private boolean isDraggedRangeBar = false;
+    private ImageView onlineRadioButton;
+    private ImageView offlineRadioButton;
+    private ImageView anyNetworkStatusRadioButton;
 
 
 
@@ -73,6 +68,10 @@ public class FilterFragment extends Fragment {
         Log.d("FilterFragment", "FilterFragment");
         Button submitButton = (Button) rootView.findViewById(R.id.submitButton);
         Button cancelButton = (Button) rootView.findViewById(R.id.cancelButtonFilter);
+
+        onlineRadioButton = (ImageView) rootView.findViewById(R.id.onlineRadioButton);
+        offlineRadioButton = (ImageView) rootView.findViewById(R.id.offlineRadioButton);
+        anyNetworkStatusRadioButton = (ImageView) rootView.findViewById(R.id.anyStatusRadioButton);
 
 
         ImageView manRadioButton = (ImageView) rootView.findViewById(R.id.maleRadioButton);
@@ -108,48 +107,38 @@ public class FilterFragment extends Fragment {
         sexCB = (CheckBox) rootView.findViewById(R.id.sexCheckBox);
         choisedPlaceTextView = (TextView) rootView.findViewById(R.id.choisedPlace);
 
+        if (personObject.getFilterObject().getPlaceModel()== null){
+            choisedPlaceTextView.setText(R.string.nearby);
+        } else {
+            choisedPlaceTextView.setText(personObject.getFilterObject().getPlaceModel().getCityName());
+        }
+
+
         RelativeLayout textViewContainer = (RelativeLayout) rootView.findViewById(R.id.spinnerContainer);
-        textViewContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchCity.setChoiseListener(new SearchCity.ChoiceListener() {
-                    @Override
-                    public void changePlace(PlaceModel placeModel, PlaceModel detailPlaceModel) {
-                        choisedPlaceTextView.setText(placeModel.getCityName());
-                        city = detailPlaceModel;
-
-
-                    }
-                });
-                Intent openSearchCity = new Intent(getActivity(), SearchCity.class);
-                startActivity(openSearchCity);
-            }
+        textViewContainer.setOnClickListener(view -> {
+            SearchCity.setChoiseListener((placeModel, detailPlaceModel) -> {
+                choisedPlaceTextView.setText(placeModel.getCityName());
+                city = detailPlaceModel;
+            });
+            Intent openSearchCity = new Intent(getActivity(), SearchCity.class);
+            startActivity(openSearchCity);
         });
-        findFriendsCB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sexCB.setChecked(false);
-                chatCB.setChecked(false);
-                findFriendsCB.setChecked(true);
-            }
+        findFriendsCB.setOnClickListener(view -> {
+            sexCB.setChecked(false);
+            chatCB.setChecked(false);
+            findFriendsCB.setChecked(true);
         });
 
-        chatCB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findFriendsCB.setChecked(false);
-                sexCB.setChecked(false);
-                chatCB.setChecked(true);
-            }
+        chatCB.setOnClickListener(view -> {
+            findFriendsCB.setChecked(false);
+            sexCB.setChecked(false);
+            chatCB.setChecked(true);
         });
 
-        sexCB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chatCB.setChecked(false);
-                findFriendsCB.setChecked(false);
-                sexCB.setChecked(true);
-            }
+        sexCB.setOnClickListener(view -> {
+            chatCB.setChecked(false);
+            findFriendsCB.setChecked(false);
+            sexCB.setChecked(true);
         });
         Log.d("FilterFragment", "personObject " + personObject.getInterestGender());
         Log.d("FilterFragment", "personObject " + personObject.getUserStatus());
@@ -182,50 +171,40 @@ public class FilterFragment extends Fragment {
 
         seekBar.setOnRangeSeekBarChangeListener(new SeekBarListener());
         RelativeLayout shadow = (RelativeLayout) rootView.findViewById(R.id.layoutShadow);
-        shadow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PersonPage.isFilterVisible = false;
-                ViewGroup parent = (ViewGroup) rootView.getParent();
-                parent.removeView(rootView);
-                parent.removeAllViews();
-            }
+        shadow.setOnClickListener(v -> {
+            PersonPage.isFilterVisible = false;
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            parent.removeView(rootView);
+            parent.removeAllViews();
         });
         seekBar.setRangeValues(0, 100);
 
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ///(:locale_handle)/settings/savefilterinfo/(:i_want_val)/(:im_interested_val)/(:min_age)/(:max_age)/(:online)/(:center_coord)/(:/edge_coord)/(:requesting_profile_id)
-                PersonPage.isFilterVisible = false;
-                filterObject = new FilterObject(genderSelected.ordinal(), getIAmHereTo().ordinal(), minAge, maxAge, DBHandler.getInstance().getUserId(), statusSelected.ordinal(), city);
-                personObject.setFilterObject(filterObject);
-
-                DBHandler.getInstance().uploadFilterSettings(filterObject, new DBHandler.ResultListener()
-
-                {
-                    @Override
-                    public void onFinish(Object object) {
-
-                    }
-                });
-
-                ViewGroup parent = (ViewGroup) rootView.getParent();
-                parent.removeView(rootView);
-                parent.removeAllViews();
-
+        submitButton.setOnClickListener(view -> {
+         // /(:locale_handle)/settings/savefilterinfo/(:i_want_val)/(:im_interested_val)/(:im_interested_status_val)/(:min_age)/(:max_age)/(:center_coord)/(:edge_coord)/(:requesting_profile_id)
+            PersonPage.isFilterVisible = false;
+            if (!isDraggedRangeBar){
+                minAge = personObject.getSearchAgeMin();
+                maxAge = personObject.getSearchAgeMax();
             }
+            filterObject = new FilterObject(genderSelected.ordinal(), getIAmHereTo().ordinal(), statusSelected.ordinal(), minAge, maxAge, DBHandler.getInstance().getUserId(),city);
+            personObject.setFilterObject(filterObject);
+
+            DBHandler.getInstance().uploadFilterSettings(filterObject, object -> {
+
+            });
+
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            parent.removeView(rootView);
+            parent.removeAllViews();
+
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PersonPage.isFilterVisible = false;
-                ViewGroup parent = (ViewGroup) rootView.getParent();
-                parent.removeView(rootView);
-                parent.removeAllViews();
-            }
+        cancelButton.setOnClickListener(view -> {
+            PersonPage.isFilterVisible = false;
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            parent.removeView(rootView);
+            parent.removeAllViews();
         });
 
 
@@ -253,9 +232,7 @@ public class FilterFragment extends Fragment {
     }
 
     private void setUserStatus(PersonObject.UserStatus pos) {
-        ImageView onlineRadioButton = (ImageView) rootView.findViewById(R.id.onlineRadioButton);
-        ImageView offlineRadioButton = (ImageView) rootView.findViewById(R.id.offlineRadioButton);
-        ImageView anyNetworkStatusRadioButton = (ImageView) rootView.findViewById(R.id.anyStatusRadioButton);
+
         statusSelected = pos;
         if (pos == PersonObject.UserStatus.ONLINE) {
             onlineRadioButton.setImageResource(R.drawable.all_on);
@@ -290,6 +267,7 @@ public class FilterFragment extends Fragment {
         public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Number minValue, Number maxValue) {
             TextView minValueText = (TextView) rootView.findViewById(R.id.minValue);
             TextView maxValueText = (TextView) rootView.findViewById(R.id.maxValue);
+            isDraggedRangeBar = true;
             maxAge = getMaxValue(maxValue);
             minAge = getMinValue(minValue);
             minValueText.setText("" + getMinValue(minValue));

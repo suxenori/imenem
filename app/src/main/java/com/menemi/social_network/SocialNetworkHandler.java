@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,10 +36,12 @@ import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 import ru.ok.android.sdk.Odnoklassniki;
 import ru.ok.android.sdk.util.OkAuthType;
 import ru.ok.android.sdk.util.OkScope;
@@ -58,7 +61,7 @@ import ru.ok.android.sdk.util.OkScope;
 /**
  * Created by tester03
  */
-public class SocialNetworkHandler extends FragmentActivity
+public class SocialNetworkHandler extends AppCompatActivity
 {
     public String VK_SOCIAL = "VK";
     public String OK_SOCIAL = "OK";
@@ -146,9 +149,9 @@ public class SocialNetworkHandler extends FragmentActivity
         this.fbPhotoAlbumId = fbAlbumId;
     }
 
-    public static final String CLIENT_ID = "139c9a2739ae458696cb03defadbf186";
-    public static final String CLIENT_SECRET = "a74568ce2bad488b85709d9522680a1f";
-    public static final String CALLBACK_URL = "http://localhost";
+    public final String CLIENT_ID = "139c9a2739ae458696cb03defadbf186";
+    public final String CLIENT_SECRET = "d2f22dd0c6004e2dab3ea4a42a97de72";
+    public final String CALLBACK_URL = "https://localhost:3000/auth/instagram/callback";
 
     public String APPLICATION_OK_ID = "1248077568";
     public String PUBLICK_APPLICATION_OK_KEY = "CBAICFGLEBABABABA";
@@ -310,42 +313,7 @@ public class SocialNetworkHandler extends FragmentActivity
 
         return jsonObject[0];
     }
-/*
-    public void getImageG_plus(){
-        Log.d("getImage","called!!!!!!!!!!!!");
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    getImageUrlG_plus = "https://picasaweb.google.com/data/feed/api/user/103986297589201622409?alt=json";
-                    URL url = new URL(getImageUrlG_plus);
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("GET");
-                    urlConnection.setDoInput(true);
-                    urlConnection.setDoOutput(true);
-                    urlConnection.connect();
-                    Stream stream = (Stream) urlConnection.getInputStream();
-                    String response = streamToString((InputStream) stream);
-                    try
-                    {
-                        JSONObject jsonObj = (JSONObject) new JSONTokener(response)
-                                .nextValue();
-                        Log.d("G_plus", jsonObj + "");
-                        Log.d("G_plus","called");
-                    } catch (JSONException e)
-                    {
-                        e.printStackTrace();
-                    }
-                } catch (java.io.IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }*/
+
 
     public void authFb(Activity activity)
     {
@@ -375,6 +343,103 @@ public class SocialNetworkHandler extends FragmentActivity
             }
         });
     }
+
+    public void getMutualAppUsers()
+    {
+
+        GraphRequest request = GraphRequest.newGraphPathRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + Profile.getCurrentProfile().getId() + "/friends",
+                new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse response) {
+                      Log.d("",response +  "");
+                      Log.d("",response +  "");
+                    }
+                });
+
+        request.executeAsync();
+       /* //final SocialProfile[] socialProfile = new SocialProfile[1];
+        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("email", "user_photos", "public_profile", "user_about_me", "user_birthday","user_friends"));
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>()
+        {
+            @Override
+            public void onSuccess(final LoginResult loginResult)
+            {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        AccessToken.getCurrentAccessToken(),
+                        (object, response) -> {
+                            try
+                            {
+                                String name = object.getString("name");
+                                String gender = object.getString("gender");
+                                String id = object.getString("id");
+                                DBHandler.getInstance().registerFacebook(new SocialProfile(id,name,gender), object1 -> {
+                                    Log.d("","");
+                                   // SocialNetworkHandler.getInstance().getProfileAlbumId(this,AccessToken.getCurrentAccessToken());
+                                     SocialNetworkHandler.getInstance().setCurrentFbUserToSQLite();
+                                        Intent personPage = new Intent(activity, PersonPage.class);
+                                        startActivity(personPage);
+                                        personPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        Log.i("register", "register is successful");
+
+                                });
+                            } catch (JSONException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,gender");
+                request.setParameters(parameters);
+                request.executeAsync();
+                //fetchCurrentFbUser();
+
+            }
+
+            @Override
+            public void onCancel()
+            {
+
+            }
+
+            @Override
+            public void onError(FacebookException error)
+            {
+
+            }
+        });
+        *//*return socialProfile[0];*/
+    }
+
+
+ /*   public  void fetchCurrentFbUser() {
+        final SocialProfile[] socialProfile = new SocialProfile[1];
+        GraphRequest request = GraphRequest.newMeRequest(
+               AccessToken.getCurrentAccessToken(),
+                (object, response) -> {
+                    socialProfile[0] = new SocialProfile();
+                    Log.d("", response + "");
+                    Log.d("", response + "");
+                    DBHandler.getInstance().registerFacebook(socialProfile[0], new DBHandler.ResultListener()
+                    {
+                        @Override
+                        public void onFinish(Object object)
+                        {
+
+                        }
+                    });
+
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,gender");
+        request.setParameters(parameters);
+        request.executeAsync();
+       // return socialProfile[0];
+    }
+*/
 
     public void getPhotoFromFb(Context context, final AccessToken accessToken)
     {

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.menemi.filter.FilterObject;
 import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.Gift;
+import com.menemi.personobject.Language;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
 import com.menemi.personobject.PhotoTemplate;
@@ -81,7 +82,6 @@ class DBSQLite {
             personObject.setMale(cursor.getInt(cursor.getColumnIndex(Fields.IS_MALE)));
             personObject.setPersonCredits(cursor.getInt(cursor.getColumnIndex(Fields.CREDITS)));//PersonCredits());
             personObject.setPersonEducation(cursor.getString(cursor.getColumnIndex(Fields.EDUCATION)));//PersonEducation());
-            personObject.setPersonKids(cursor.getInt(cursor.getColumnIndex(Fields.KIDS)));//PersonKids().ordinal());
             personObject.setPersonLivingCity(cursor.getString(cursor.getColumnIndex(Fields.LIVING_CITY)));//PersonLivingCity());
             personObject.setPersonCurrLocation(cursor.getString(cursor.getColumnIndex(Fields.CURRENT_LOCATION)));//PersonCurrLocation());
             personObject.setPersonPopularity(cursor.getInt(cursor.getColumnIndex(Fields.POPULARITY)));//PersonPopularity());
@@ -101,9 +101,6 @@ class DBSQLite {
             personObject.setSearchAgeMin(cursor.getInt(cursor.getColumnIndex(Fields.SEARCH_AGE_MIN)));
             personObject.setWeight(cursor.getInt(cursor.getColumnIndex(Fields.WEIGHT)));
             personObject.setGrowth(cursor.getInt(cursor.getColumnIndex(Fields.GROWTH)));
-            personObject.setEyeColor(cursor.getInt(cursor.getColumnIndex(Fields.EYE_COLOR)));
-            personObject.setBodyType(cursor.getInt(cursor.getColumnIndex(Fields.BODY_TYPE)));
-            personObject.setHairColor(cursor.getInt(cursor.getColumnIndex(Fields.HAIR_COLOR)));
             personObject.setDrinkingPerson(cursor.getString(cursor.getColumnIndex(Fields.DRINKING)));
             personObject.setSmokingPerson(cursor.getString(cursor.getColumnIndex(Fields.SMOKING)));
             //  personObject.setPersonSexuality(cursor.getInt(cursor.getColumnIndex(Fields.SEXUALITY)));
@@ -162,7 +159,51 @@ class DBSQLite {
         }
 
     }
+    public void setLanguage(Language language) {
 
+        ContentValues values = new ContentValues();
+
+        values.put(Fields.ID, language.getLanguagesId());
+        values.put(Fields.NAME, language.getLanguageName());
+
+
+        if (isFirstTime(SQLiteEngine.TABLE_LANGUAGES)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_LANGUAGES, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_LANGUAGES, null, Fields.ID + "=?",
+                    new String[]{"" + language.getLanguagesId()}, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst() == true) {
+                if(!cursor.getString(cursor.getColumnIndex(Fields.NAME)).equals(language.getLanguageName())){
+
+
+                sqliteDB.update(SQLiteEngine.TABLE_LANGUAGES, values,
+                        Fields.ID + "=?", new String[]{"" + language.getLanguagesId()});
+                }
+            } else {
+                sqliteDB.insert(SQLiteEngine.TABLE_LANGUAGES, null, values);
+            }
+
+        }
+
+    }
+    public ArrayList<Language> getLanguages() {
+
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_LANGUAGES, null, null, null, null, null, null);
+        ArrayList<Language> languages = new ArrayList<>();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                Language language = new Language(cursor.getString(cursor.getColumnIndex(Fields.NAME)),
+                        cursor.getInt(cursor.getColumnIndex(Fields.ID)));
+                languages.add(language);
+                cursor.moveToNext();
+            }
+
+        }
+        return languages;
+
+    }
 public void saveFilter(FilterObject filterObject){
         ContentValues values = new ContentValues();
         values.put(Fields.SEARCH_AGE_MIN, filterObject.getMinAge());
@@ -471,8 +512,9 @@ public void saveFilter(FilterObject filterObject){
     }
 
     public String getFireBaseToken() {
-
-        return getStringFromDB(SQLiteEngine.TABLE_FIRE_BASE, Fields.FIRE_BASE_TOKEN);
+if(!isFirstTime(SQLiteEngine.TABLE_FIRE_BASE)) {
+    return getStringFromDB(SQLiteEngine.TABLE_FIRE_BASE, Fields.FIRE_BASE_TOKEN);
+} else return "";
     }
 
     public String getPassword(int userID) {
@@ -518,7 +560,6 @@ public void saveFilter(FilterObject filterObject){
         values.put(Fields.IS_MALE, Utils.boolToInt(personObject.isMale()));
         values.put(Fields.CREDITS, personObject.getPersonCredits());
         values.put(Fields.EDUCATION, personObject.getPersonEducation());
-        values.put(Fields.KIDS, personObject.getPersonKids().ordinal());
         values.put(Fields.LIVING_CITY, personObject.getPersonLivingCity());
         values.put(Fields.CURRENT_LOCATION, personObject.getPersonCurrLocation());
         values.put(Fields.POPULARITY, personObject.getPersonPopularity());
@@ -542,9 +583,6 @@ public void saveFilter(FilterObject filterObject){
         values.put(Fields.SEARCH_AGE_MIN, personObject.getSearchAgeMin());
         values.put(Fields.WEIGHT, personObject.getWeight());
         values.put(Fields.GROWTH, personObject.getGrowth());
-        values.put(Fields.EYE_COLOR, personObject.getEyeColor().ordinal());
-        values.put(Fields.BODY_TYPE, personObject.getBodyType().ordinal());
-        values.put(Fields.HAIR_COLOR, personObject.getHairColor().ordinal());
         values.put(Fields.DRINKING, personObject.getDrinkingPerson());
         values.put(Fields.SMOKING, personObject.getSmokingPerson());
         // values.put(Fields.SEXUALITY,personObject.getPersonSexuality().ordinal());

@@ -15,12 +15,15 @@ import com.menemi.dbfactory.stream.messages.DialogSendMessage;
 import com.menemi.dbfactory.stream.messages.PictureMessage;
 import com.menemi.dbfactory.stream.messages.ReadMessage;
 import com.menemi.dbfactory.stream.messages.TypingMessage;
+import com.menemi.edit_personal_Info.PersonalAppearanceSettingsModel;
 import com.menemi.filter.FilterObject;
 import com.menemi.interests_classes.InterestsGroup;
 import com.menemi.personobject.Configurations;
 import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.Interests;
+import com.menemi.personobject.Language;
+import com.menemi.personobject.LanguagesSet;
 import com.menemi.personobject.NotificationSettings;
 import com.menemi.personobject.PersonFavorite;
 import com.menemi.personobject.PersonObject;
@@ -43,21 +46,21 @@ public class DBHandler {
     InternetConnectionListener internetConnectionListener = new InternetConnectionListener() {
         @Override
         public void internetON() {
-            if(!wasAvailableLastTime) {
+            if (!wasAvailableLastTime) {
                 for (int i = 0; i < restSubscribers.size(); i++) {
                     restSubscribers.get(i).internetON();
                 }
-                wasAvailableLastTime=true;
+                wasAvailableLastTime = true;
             }
         }
 
         @Override
         public void internetOFF() {
-            if(wasAvailableLastTime) {
+            if (wasAvailableLastTime) {
                 for (int i = 0; i < restSubscribers.size(); i++) {
                     restSubscribers.get(i).internetOFF();
                 }
-                wasAvailableLastTime=false;
+                wasAvailableLastTime = false;
             }
         }
     };
@@ -70,11 +73,9 @@ public class DBHandler {
     public ArrayList<InterestsGroup> interestsGroupArray = new ArrayList<>();
     private ArrayList<Interests> profileInterests;
     private ArrayList<Gift> gifts;
+    private ArrayList<Language> allLanguages;
     private Configurations configurations;
     private NotificationSettings notificationSettings;
-
-
-
 
 
     public ArrayList<Interests> getProfileInterests() {
@@ -86,9 +87,6 @@ public class DBHandler {
     public PersonObject getMyProfile() {
         return myProfile;
     }
-
-
-
 
 
     protected DBHandler() {
@@ -108,9 +106,6 @@ public class DBHandler {
     public void lunchStreams() {
         stream = new StreamController(getUserId(), internetConnectionListener);
     }
-
-
-
 
 
     public static
@@ -171,9 +166,9 @@ public class DBHandler {
             new DBRest().checkIsRestAvailable(new ResultListener() {
                 @Override
                 public void onFinish(Object object) {
-                    if((boolean)object) {
+                    if ((boolean) object) {
                         internetConnectionListener.internetON();
-                    } else{
+                    } else {
                         internetConnectionListener.internetOFF();
                     }
                     resultListener.onFinish(object);
@@ -192,48 +187,60 @@ public class DBHandler {
         authorise(personObject, resultListener);
 
     }
+
     /**
-     * @param personObject with filled email and password
+     * @param personObject   with filled email and password
      * @param resultListener
      */
 
     public void authorise(final PersonObject personObject, final ResultListener resultListener) {
+        if (dbRest == null || dbSQLite == null) {
+            prepareDB();
+        }
+        if (photoTemplates == null || gifts == null || allLanguages == null) {
+            prepareSettings(() -> {
+                auth(personObject, resultListener);
+            });
 
+            }  else {
+                auth(personObject,resultListener);
+
+            }
+    }
+
+    private void auth(PersonObject personObject, ResultListener resultListener) {
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
                 if ((boolean) object == true) {
-                    if (dbRest == null || dbSQLite == null) {
-                        prepareDB();
-                    }
-                   /* int id = 1;
-                    if (personObject.getEmail() == "2") {
-                        id = 2;
-                    } else if (personObject.getEmail() == "3") {
-                        id = 3;
-                    } else if (personObject.getEmail() == "4") {
-                        id = 4;
-                    }*/
+
+
                     Log.v("DBHandler", "authorise rest" + dbRest);
-                      dbRest.authorise(personObject, new DBRest.OnDataRecieveListener() {
+                    dbRest.authorise(personObject, new DBRest.OnDataRecieveListener() {
                         //  dbRest.getProfile(id, new ResultListener() {
 
-                              @Override
+                        @Override
                         public void onFinish(Object object) {
-                                  configureProfile(object,resultListener);
+                            configureProfile(object, resultListener);
 
 
                         }
 
 
-                      });
+                    });
                 } else {
                     subscribeToRest(new InternetConnectionListener() {
                         @Override
                         public void internetON() {
-                            authorise(personObject, (Object obj)->{});
+                            authorise(personObject, (Object obj) -> {
+                            });
 
-                        }@Override public void internetOFF() {}});
+                        }
+
+                        @Override
+                        public void internetOFF() {
+                        }
+                    });
 
                     if (dbSQLite.getIdOnLoginData(personObject) != -1) {
                         Log.v("DBHandler", "id != -1");
@@ -246,41 +253,45 @@ public class DBHandler {
                 }
             }
         });
-
-
     }
-
     private void configureProfile(Object object, ResultListener resultListener) {
-        if (object != null) {
 
-            myProfile = (PersonObject) object;
-            dbSQLite.setPersonalInfo(myProfile);
-            dbSQLite.saveLastId(myProfile.getPersonId());
-            prepareSettingsForProfile();
-        }
-        if(photoTemplates == null || gifts == null){
-            prepareSettings(() -> {
+
+                if (object != null) {
+
+                    myProfile = (PersonObject) object;
+                    dbSQLite.setPersonalInfo(myProfile);
+                    dbSQLite.saveLastId(myProfile.getPersonId());
+                    DBHandler.
+                            getInstance().
+                            downloadFilterSettings(myProfile.getPersonId(), obj -> myProfile.setFilterObject((FilterObject) obj));
+                    prepareSettingsForProfile();
+                }
                 resultListener.onFinish(object);
-            });
-        } else {
-            resultListener.onFinish(object);
-        }
+
     }
-public void prepareSettings(Runnable runnable){
-    preparePhotoTemplates((Object obj) ->{
-        prepareGifts((Object object) ->{
-            runnable.run();
+
+    public void prepareSettings(Runnable runnable) {
+        preparePhotoTemplates((Object obj) -> {
+            prepareGifts((Object object) -> {
+                prepareAllLanguages(new ResultListener() {
+                    @Override
+                    public void onFinish(Object object) {
+                        runnable.run();
+                    }
+                });
+
+            });
         });
-    });
 
 
-}
+    }
 
-    public void setInfo(PersonObject personObject, ResultListener resultListener){
+    public void setInfo(PersonObject personObject, ResultListener resultListener) {
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
-                if((boolean)object){
+                if ((boolean) object) {
                     dbRest.setInfo(personObject, resultListener);
                 } else {
                     resultListener.onFinish(false);
@@ -291,18 +302,18 @@ public void prepareSettings(Runnable runnable){
     }
 
 
-    public void addCredits(String token, int amount, ResultListener resultListener){
+    public void addCredits(String token, int amount, ResultListener resultListener) {
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
-                if((boolean)object){
-                    dbRest.addCredits(token, amount, (isSucceed)->{
-                        if((boolean)isSucceed) {
+                if ((boolean) object) {
+                    dbRest.addCredits(token, amount, (isSucceed) -> {
+                        if ((boolean) isSucceed) {
 
                             resultListener.onFinish(true);
                             myProfile.setPersonCredits(myProfile.getPersonCredits() + amount);
 
-                        } else{
+                        } else {
                             resultListener.onFinish(false);
                         }
                     });
@@ -313,18 +324,66 @@ public void prepareSettings(Runnable runnable){
         });
 
     }
-    public void setName(String name, ResultListener resultListener){
+
+    public void setAppearance(PersonalAppearanceSettingsModel appearance, ResultListener resultListener) {
+        appearance.setId(getUserId());
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
-                if((boolean)object){
-                    dbRest.setField(Fields.NAME, name, (isSucceed)->{
-                        if((boolean)isSucceed) {
+                if ((boolean) object) {
+                    dbRest.setAppearance(appearance, (isSucceed) -> {
+                        if ((boolean) isSucceed) {
+
+                            resultListener.onFinish(true);
+                            myProfile.setPersonalAppearance(appearance);
+
+                        } else {
+                            resultListener.onFinish(false);
+                        }
+                    });
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
+
+    }
+    public void setLanguages(ArrayList<Language> languages, ResultListener resultListener) {
+        LanguagesSet languagesSet = new LanguagesSet(languages);
+        languagesSet.setId(getUserId());
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if ((boolean) object) {
+                    dbRest.setLanguages(languagesSet, (isSucceed) -> {
+                        if ((boolean) isSucceed) {
+
+                            resultListener.onFinish(true);
+                            myProfile.setPersonLanguages(languages);
+
+                        } else {
+                            resultListener.onFinish(false);
+                        }
+                    });
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
+
+    }
+    public void setName(String name, ResultListener resultListener) {
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if ((boolean) object) {
+                    dbRest.setField(Fields.NAME, name, (isSucceed) -> {
+                        if ((boolean) isSucceed) {
 
                             resultListener.onFinish(true);
                             myProfile.setPersonName(name);
 
-                        } else{
+                        } else {
                             resultListener.onFinish(false);
                         }
                     });
@@ -335,18 +394,19 @@ public void prepareSettings(Runnable runnable){
         });
 
     }
-    public void setBirthday(Date birthday, ResultListener resultListener){
+
+    public void setBirthday(Date birthday, ResultListener resultListener) {
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
-                if((boolean)object){
-                    dbRest.setField(Fields.BIRTH_DAY, Utils.getStringFromDate(birthday), (isSucceed)->{
-                        if((boolean)isSucceed) {
+                if ((boolean) object) {
+                    dbRest.setField(Fields.BIRTH_DAY, Utils.getStringFromDate(birthday), (isSucceed) -> {
+                        if ((boolean) isSucceed) {
 
                             resultListener.onFinish(true);
                             myProfile.setBirthday(birthday);
 
-                        } else{
+                        } else {
                             resultListener.onFinish(false);
                         }
                     });
@@ -357,18 +417,19 @@ public void prepareSettings(Runnable runnable){
         });
 
     }
-    public void setMyGender(boolean isMale, ResultListener resultListener){
+
+    public void setMyGender(boolean isMale, ResultListener resultListener) {
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
-                if((boolean)object){
-                    dbRest.setField(Fields.IS_MALE, ""+Utils.boolToInt(isMale), (isSucceed)->{
-                        if((boolean)isSucceed) {
+                if ((boolean) object) {
+                    dbRest.setField(Fields.IS_MALE, "" + Utils.boolToInt(isMale), (isSucceed) -> {
+                        if ((boolean) isSucceed) {
 
                             resultListener.onFinish(true);
                             myProfile.setMale(isMale);
 
-                        } else{
+                        } else {
                             resultListener.onFinish(false);
                         }
                     });
@@ -379,7 +440,8 @@ public void prepareSettings(Runnable runnable){
         });
 
     }
-    private void prepareSettingsForProfile(){
+
+    private void prepareSettingsForProfile() {
         prepareConfigurations(myProfile.getPersonId());
         getMyFavorites(new ResultListener() {
             @Override
@@ -388,6 +450,7 @@ public void prepareSettings(Runnable runnable){
             }
         });
     }
+
     public void addPhoto(final PhotoSetting photoSetting, final ResultListener resultListener) {
         subscribeToRest(new InternetConnectionListener() {
             @Override
@@ -405,8 +468,10 @@ public void prepareSettings(Runnable runnable){
             public void onFinish(Object object) {
                 if ((boolean) object == true) {
                     dbRest.addPhoto(photoSetting, resultListener);
-                   // myProfile.setPhotoCount(photoSetting.isPrivate(), myProfile.getPhotoCount(photoSetting.isPrivate()) + 1);
-                } else {resultListener.onFinish(false);}
+                    // myProfile.setPhotoCount(photoSetting.isPrivate(), myProfile.getPhotoCount(photoSetting.isPrivate()) + 1);
+                } else {
+                    resultListener.onFinish(false);
+                }
             }
         });
     }
@@ -418,7 +483,7 @@ public void prepareSettings(Runnable runnable){
             public void onFinish(Object object) {
                 if ((boolean) object == true) {
                     dbRest.deletePhoto(photoSetting.getPhotoId(), personId, resultListener);
-                   myProfile.deletePhoto(photoSetting);
+                    myProfile.deletePhoto(photoSetting);
                     //TODO delete photo from db
                 }
             }
@@ -493,7 +558,7 @@ public void prepareSettings(Runnable runnable){
     }
 
     public NotificationSettings getNotifications() {
-       return notificationSettings;
+        return notificationSettings;
     }
 
     public void downloadFilterSettings(final int personId, final ResultListener resultListener) {
@@ -509,7 +574,6 @@ public void prepareSettings(Runnable runnable){
     }
 
 
-
     private void startRestMonitor() {
 
         new Thread(new Runnable() {
@@ -521,19 +585,18 @@ public void prepareSettings(Runnable runnable){
                 while (true) {
 
 
+                    if (wasAvailableLastTime != isRestAvailable) {
+                        isRestAvailable = wasAvailableLastTime;
 
-                            if (wasAvailableLastTime != isRestAvailable) {
-                                isRestAvailable = wasAvailableLastTime;
-
-                                for (int i = 0; i < restSubscribers.size(); i++) {
-                                    if (isRestAvailable) {
-                                        restSubscribers.get(i).internetON();
-                                    } else{
-                                        restSubscribers.get(i).internetOFF();
-                                    }
-                                }
-
+                        for (int i = 0; i < restSubscribers.size(); i++) {
+                            if (isRestAvailable) {
+                                restSubscribers.get(i).internetON();
+                            } else {
+                                restSubscribers.get(i).internetOFF();
                             }
+                        }
+
+                    }
 
 
                     try {
@@ -542,8 +605,8 @@ public void prepareSettings(Runnable runnable){
                         e.printStackTrace();
                     }
                 }
-                }
             }
+        }
         ).start();
     }
 
@@ -556,7 +619,7 @@ public void prepareSettings(Runnable runnable){
         restSubscribers.add(connectionListener);
     }
 
-    public void unsubscribeFromRest(InternetConnectionListener connectionListener){
+    public void unsubscribeFromRest(InternetConnectionListener connectionListener) {
         restSubscribers.remove(connectionListener);
     }
 
@@ -566,10 +629,25 @@ public void prepareSettings(Runnable runnable){
         dbRest = new DBRest();
         dbSQLite = new DBSQLite(ctx);
 
-        getInstance().prepareSettings(() -> {});
+        getInstance().prepareSettings(() -> {
+        });
         instance.startRestMonitor();
 
 
+    }
+
+    public String getLanguageName(int languageId) {
+
+        for (int i = 0; i < allLanguages.size(); i++) {
+            if (allLanguages.get(i).getLanguagesId() == languageId) {
+                return allLanguages.get(i).getLanguageName();
+            }
+        }
+        return "";
+    }
+
+    public ArrayList<Language> getAllLanguages() {
+        return allLanguages;
     }
 
     /**
@@ -587,15 +665,15 @@ public void prepareSettings(Runnable runnable){
                         public void onFinish(Object object) {
                             String url = (String) object;
                             dbSQLite.saveAvatarURL(personId, url);
-                            new PictureLoader(url, (Bitmap picture) ->{
+                            new PictureLoader(url, (Bitmap picture) -> {
                                 resultListener.onFinish(picture);
                             });
                         }
                     });
                 } else {
                     String avatarUrl = dbSQLite.getAvatarURL(personId);
-                    if(avatarUrl != null){
-                        new PictureLoader(avatarUrl, (Bitmap picture) ->{
+                    if (avatarUrl != null) {
+                        new PictureLoader(avatarUrl, (Bitmap picture) -> {
                             resultListener.onFinish(picture);
                         });
                     } else {
@@ -611,46 +689,48 @@ public void prepareSettings(Runnable runnable){
     }
 
     /**
-     *
      * @param id
      * @param isThumbnail
      * @param isPrivate
-     * @param resultListener  ArrayList<PhotoSetting> pictures = (ArrayList<PhotoSetting>)object;
+     * @param resultListener ArrayList<PhotoSetting> pictures = (ArrayList<PhotoSetting>)object;
      */
     public void getPhotoUrls(int id, String isThumbnail, boolean isPrivate, final ResultListener resultListener) {
 
-        isRESTAvailable( (Object object) -> {
-                if ((boolean) object == true) {
-                    dbRest.getPhotoUrls(id, isThumbnail, Utils.boolToInt(isPrivate), getUserId(), (Object obj) ->{
-                        ArrayList<PhotoSetting> pictures = (ArrayList<PhotoSetting>)obj;
-                        for (int i = 0; i < pictures.size(); i++) {
-                        dbSQLite.savePicture(id, isThumbnail,pictures.get(i));
-                        }
-                        resultListener.onFinish(pictures);
-                    });
+        isRESTAvailable((Object object) -> {
+            if ((boolean) object == true) {
+                dbRest.getPhotoUrls(id, isThumbnail, Utils.boolToInt(isPrivate), getUserId(), (Object obj) -> {
+                    ArrayList<PhotoSetting> pictures = (ArrayList<PhotoSetting>) obj;
+                    for (int i = 0; i < pictures.size(); i++) {
+                        dbSQLite.savePicture(id, isThumbnail, pictures.get(i));
+                    }
+                    resultListener.onFinish(pictures);
+                });
 
-                } else {
+            } else {
 
-                    resultListener.onFinish(dbSQLite.getPhotoUrls(id, isThumbnail, isPrivate)); // instead of null should be dbSQLite.getPhoto(personId)
-                }
+                resultListener.onFinish(dbSQLite.getPhotoUrls(id, isThumbnail, isPrivate)); // instead of null should be dbSQLite.getPhoto(personId)
+            }
 
         });
 
     }
-    public Bitmap getBitmapFromDB(String url){
+
+    public Bitmap getBitmapFromDB(String url) {
         return dbSQLite.getBitmap(url);
     }
+
     public void saveBitmapToDB(String url, Bitmap photo) {
         dbSQLite.saveBitmap(url, photo);
     }
+
     public void logout(Context ctx) {
-Log.d("logout", "logout1");
+        Log.d("logout", "logout1");
         restSubscribers = new LinkedList<>();
         myProfile = null;
         wasAvailableLastTime = false;
 
         stream.disconnect();
-        stream=null;
+        stream = null;
         instance = new DBHandler();
         instance.setUP(ctx);
         instance.prepareDB();
@@ -674,13 +754,15 @@ Log.d("logout", "logout1");
     public void getMutualLikes(ResultListener resultListener) {
         dbRest.getMutualLikes(getUserId(), resultListener);
     }
-//private String notification
-    public void setFireBaseToken(String token){
+
+    //private String notification
+    public void setFireBaseToken(String token) {
         dbSQLite.setFireBaseToken(token);
     }
+
     public void sendFirebaseTokentToServer() {
-        String firebaseToken =  dbSQLite.getFireBaseToken();
-        dbRest.setNotificationToken(getUserId(),firebaseToken, new ResultListener() {
+        String firebaseToken = dbSQLite.getFireBaseToken();
+        dbRest.setNotificationToken(getUserId(), firebaseToken, new ResultListener() {
             @Override
             public void onFinish(Object object) {
 
@@ -721,9 +803,10 @@ Log.d("logout", "logout1");
                 configurations = (Configurations) object;
             }
         });
-        dbRest.getNotifications(id, (Object object)->{
-            notificationSettings = (NotificationSettings)object;
+        dbRest.getNotifications(id, (Object object) -> {
+            notificationSettings = (NotificationSettings) object;
         });
+
 
     }
 
@@ -775,7 +858,32 @@ Log.d("logout", "logout1");
                             Log.v("DBHandler", "register rest finish listener");
                             Log.v("DBHandler", "reg " + object);
 
-                            configureProfile(object,resultListener);
+                            configureProfile(object, resultListener);
+                        }
+                    });
+
+                }
+            }
+        });
+
+
+    }
+    public void registerFacebook(final SocialProfile socialProfile, final ResultListener resultListener) {
+
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if ((boolean) object == true) {
+                    if (dbRest == null || dbSQLite == null) {
+                        prepareDB();
+                    }
+                    dbRest.registerFacebook(socialProfile, new DBRest.OnDataRecieveListener() {
+                        @Override
+                        public void onFinish(Object object) {
+                            Log.v("DBHandler", "register rest finish listener");
+                            Log.v("DBHandler", "reg " + object);
+
+                            configureProfile(object, resultListener);
                         }
                     });
 
@@ -805,6 +913,31 @@ Log.d("logout", "logout1");
         dbRest.getMyFavorites(getUserId(), resultListener);
     }
 
+    public void prepareAllLanguages(ResultListener resultListener) {
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if ((boolean) object) {
+                    dbRest.getAllLanguages((obj) -> {
+                        ArrayList<Language> languages = (ArrayList<Language>) obj;
+                        allLanguages = languages;
+                        for (int i = 0; i < languages.size(); i++) {
+                            dbSQLite.setLanguage(languages.get(i));
+                        }
+                        resultListener.onFinish(true);
+
+                    });
+                } else {
+                    allLanguages = dbSQLite.getLanguages();
+                    resultListener.onFinish(true);
+
+                }
+            }
+        });
+
+
+    }
+
 
     /**
      * @param resultListener returns ArrayList<PersonVisitor> visitors
@@ -814,8 +947,6 @@ Log.d("logout", "logout1");
     }
 
 
-
-
     public SocialProfile getSocialProfile(String socNetwork) {
         return dbSQLite.getSocial(socNetwork);
     }
@@ -823,7 +954,6 @@ Log.d("logout", "logout1");
     public boolean isEmtyTable(String tableName) {
         return dbSQLite.isEmtyTable(tableName);
     }
-
 
 
     public int getIdOnLoginData(PersonObject personObject) {
@@ -842,7 +972,6 @@ Log.d("logout", "logout1");
     public void setSocialVK(SocialProfile profile, String socNetwork) {
         dbSQLite.setSocialVK(profile, socNetwork);
     }
-
 
 
     public void setSocialOK(SocialProfile profile, String socNetwork) {
@@ -876,14 +1005,12 @@ Log.d("logout", "logout1");
     }
 
 
-
-     /**
-      *
-      * @param count
-      * @param offset
-      * @param requestedId
-      * @param resultListener   ArrayList<DialogMessage> dialogMessages = (ArrayList<DialogMessage>) object;
-      */
+    /**
+     * @param count
+     * @param offset
+     * @param requestedId
+     * @param resultListener ArrayList<DialogMessage> dialogMessages = (ArrayList<DialogMessage>) object;
+     */
     public void getMessagesList(int count, int offset, int requestedId, ResultListener resultListener) {
         dbRest.getMessagesList(requestedId, count, offset, getUserId(), resultListener);
     }
@@ -897,8 +1024,6 @@ Log.d("logout", "logout1");
     }
 
 
-
-
     /**
      * @param quality
      * @param photosRequested
@@ -909,7 +1034,7 @@ Log.d("logout", "logout1");
     }
 
     public void unlockPhoto(PhotoSetting photoSetting, ResultListener resultListener) {
-        dbRest.unlockPhoto(photoSetting.getPhotoId(), getUserId(), (Object obj)->{
+        dbRest.unlockPhoto(photoSetting.getPhotoId(), getUserId(), (Object obj) -> {
             photoSetting.setUnlocked(true);
             resultListener.onFinish(photoSetting);
         });
@@ -945,10 +1070,6 @@ Log.d("logout", "logout1");
     }
 
 
-
-
-
-
     public void setInterestsGroupArray(ArrayList<InterestsGroup> interestsGroupArray) {
         this.interestsGroupArray = interestsGroupArray;
     }
@@ -966,11 +1087,11 @@ Log.d("logout", "logout1");
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
-                if((boolean) object) {
+                if ((boolean) object) {
                     dbRest.getDialogsList(getUserId(), new ResultListener() {
                         @Override
                         public void onFinish(Object object) {
-                            ArrayList<DialogInfo> dialogInfos = (ArrayList<DialogInfo>)object;
+                            ArrayList<DialogInfo> dialogInfos = (ArrayList<DialogInfo>) object;
                             resultListener.onFinish(dialogInfos);
                             for (int i = 0; i < dialogInfos.size(); i++) {
                                 dbSQLite.setDialog(dialogInfos.get(i));
@@ -978,7 +1099,7 @@ Log.d("logout", "logout1");
 
                         }
                     });
-                } else{
+                } else {
                     resultListener.onFinish(dbSQLite.getDialogs());
 
                 }
@@ -1020,18 +1141,18 @@ Log.d("logout", "logout1");
 
 
     public ArrayList<PhotoTemplate> getPhotoTemplates() {
-        if(photoTemplates== null)
-        {
+        if (photoTemplates == null) {
             return null;
         }
-            ArrayList<PhotoTemplate> templates = (ArrayList<PhotoTemplate>) photoTemplates.clone();
+        ArrayList<PhotoTemplate> templates = (ArrayList<PhotoTemplate>) photoTemplates.clone();
 
         return templates;
     }
-    public Bitmap getPhotoTemplatePictureById(int id){
+
+    public Bitmap getPhotoTemplatePictureById(int id) {
         for (int i = 0; i < photoTemplates.size(); i++) {
-            if(photoTemplates.get(i).getTemplateID() == id){
-                return  photoTemplates.get(i).getTemplatePicture();
+            if (photoTemplates.get(i).getTemplateID() == id) {
+                return photoTemplates.get(i).getTemplatePicture();
             }
         }
         return null;
@@ -1043,30 +1164,31 @@ Log.d("logout", "logout1");
         return gifts.size();
     }
 
-    public Bitmap getGiftById(int id){
+    public Bitmap getGiftById(int id) {
         for (int i = 0; i < gifts.size(); i++) {
-            if(gifts.get(i).getGiftId() == id){
-                return  gifts.get(i).getImage();
+            if (gifts.get(i).getGiftId() == id) {
+                return gifts.get(i).getImage();
             }
         }
         return null;
     }
+
     private void preparePhotoTemplates(ResultListener resultListener) {
 
-           isRESTAvailable((Object isAvailable) ->{
-            if((boolean)isAvailable){
-                dbRest.getPhotoTemplates(1, (Object object) ->{
+        isRESTAvailable((Object isAvailable) -> {
+            if ((boolean) isAvailable) {
+                dbRest.getPhotoTemplates(1, (Object object) -> {
                     photoTemplates = (ArrayList<PhotoTemplate>) object;
 
                     resultListener.onFinish(null);
                 });
-            } else{
+            } else {
                 photoTemplates = dbSQLite.getTemplates();
-                if(photoTemplates.size() == 0){
+                if (photoTemplates.size() == 0) {
                     subscribeToRest(new InternetConnectionListener() {
                         @Override
                         public void internetON() {
-                            dbRest.getPhotoTemplates(1, (Object object) ->{
+                            dbRest.getPhotoTemplates(1, (Object object) -> {
                                 photoTemplates = (ArrayList<PhotoTemplate>) object;
                             });
                         }
@@ -1081,31 +1203,32 @@ Log.d("logout", "logout1");
             }
 
 
-
         });
     }
 
     public void setGiftToDB(Gift gift) {
-       dbSQLite.setGift(gift);
+        dbSQLite.setGift(gift);
     }
+
     public void setTemplateToDB(PhotoTemplate template) {
         dbSQLite.setTemplate(template);
     }
+
     private void prepareGifts(ResultListener resultListener) {
-        isRESTAvailable((Object isAvailable) ->{
-            if((boolean)isAvailable){
-                dbRest.prepareGifts(1, (Object object) ->{
+        isRESTAvailable((Object isAvailable) -> {
+            if ((boolean) isAvailable) {
+                dbRest.prepareGifts(1, (Object object) -> {
                     gifts = (ArrayList<Gift>) object;
 
                     resultListener.onFinish(null);
                 });
-            } else{
+            } else {
                 gifts = dbSQLite.getGifts();
-                if(gifts.size() == 0){
+                if (gifts.size() == 0) {
                     subscribeToRest(new InternetConnectionListener() {
                         @Override
                         public void internetON() {
-                            dbRest.prepareGifts(1, (Object object) ->{
+                            dbRest.prepareGifts(1, (Object object) -> {
                                 gifts = (ArrayList<Gift>) object;
 
                             });
@@ -1121,7 +1244,6 @@ Log.d("logout", "logout1");
             }
 
 
-
         });
 
     }
@@ -1134,7 +1256,7 @@ Log.d("logout", "logout1");
         dbSQLite.saveFilter(filterObject);
     }
 
-    public void setAvatar(PhotoSetting photoSetting, ResultListener resultListener){
+    public void setAvatar(PhotoSetting photoSetting, ResultListener resultListener) {
         dbRest.setAvatar(dbSQLite.getUserId(), photoSetting.getPhotoId(), resultListener);
     }
 

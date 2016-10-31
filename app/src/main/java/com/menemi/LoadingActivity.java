@@ -13,10 +13,7 @@ import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.MyFirebaseInstanceIDService;
 import com.menemi.dbfactory.MyFirebaseMessagingService;
 import com.menemi.dbfactory.rest.PictureLoader;
-import com.menemi.filter.FilterObject;
-import com.menemi.interests_classes.InterestsGroup;
 import com.menemi.personobject.Interests;
-import com.menemi.personobject.PersonObject;
 import com.menemi.social_network.SocialNetworkHandler;
 import com.menemi.social_network.instagram.InstagramApp;
 import com.menemi.utils.Utils;
@@ -35,7 +32,7 @@ import ru.ok.android.sdk.OkListener;
  */
 public class LoadingActivity extends AppCompatActivity {
     private static final String TAG = "LoadingActivity";
-    private PersonObject personObject = null;
+
 
 
     @Override
@@ -53,8 +50,8 @@ public class LoadingActivity extends AppCompatActivity {
 
         final Odnoklassniki odnoklassniki = Odnoklassniki.createInstance(this,
                 SocialNetworkHandler.getInstance().APPLICATION_OK_ID, SocialNetworkHandler.getInstance().PUBLICK_APPLICATION_OK_KEY);
-        InstagramApp instaObj = new InstagramApp(this, SocialNetworkHandler.CLIENT_ID,
-                SocialNetworkHandler.CLIENT_SECRET, SocialNetworkHandler.CALLBACK_URL);
+        InstagramApp instaObj = new InstagramApp(this, SocialNetworkHandler.getInstance().CLIENT_ID,
+                SocialNetworkHandler.getInstance().CLIENT_SECRET, SocialNetworkHandler.getInstance().CALLBACK_URL);
         Intent firebaseMessagingService = new Intent(LoadingActivity.this, MyFirebaseMessagingService.class);
         startService(firebaseMessagingService);
 
@@ -71,9 +68,6 @@ public class LoadingActivity extends AppCompatActivity {
 
         if (userId != -1) {
             DBHandler.getInstance().authorise(userId, object -> {
-                personObject = (PersonObject) object;
-                DBHandler.getInstance().downloadFilterSettings(personObject.getPersonId(), obj -> personObject.setFilterObject((FilterObject) obj));
-
 
 
                     finish();
@@ -85,21 +79,15 @@ public class LoadingActivity extends AppCompatActivity {
             });
 
             DBHandler.getInstance().getInterestsGroup(DBHandler.getInstance().getUserId(), object -> {
-                InterestsGroup interestGroup;
-                ArrayList<InterestsGroup> interestsGroupArray;
-                ArrayList groups;
-                interestsGroupArray = new ArrayList<>();
-                groups = (ArrayList) object;
-                for (int i = 0; i < groups.size(); i++) {
-                    interestGroup = (InterestsGroup) groups.get(i);
-                    interestsGroupArray.add(interestGroup);
-                    Log.i("groups", interestGroup.getNameGroup());
-                }
-                DBHandler.getInstance().setInterestsGroupArray(interestsGroupArray);
+                ArrayList groups = (ArrayList) object;
+                DBHandler.getInstance().setInterestsGroupArray(groups);
             });
             if (SocialNetworkHandler.getInstance().isAuthFb()) {
                 SocialNetworkHandler.getInstance().getProfileAlbumId(getApplicationContext(),AccessToken.getCurrentAccessToken());
             }
+
+            SocialNetworkHandler.getInstance().getImageG_plus();
+
             if (VKSdk.isLoggedIn()) {
                 SocialNetworkHandler.getInstance().getUserPhotoFromVk(String.valueOf(0), String.valueOf(200));
             }

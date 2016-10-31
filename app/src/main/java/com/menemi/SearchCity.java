@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -86,29 +85,19 @@ public class SearchCity extends AppCompatActivity
             }
         });
 
-        placesListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        placesListView.setOnItemClickListener((adapterView, view, pos, id) -> {
+
+            choicedPlace = new PlaceModel(preparedPlaces.get(pos).getCityName(), preparedPlaces.get(pos).getPlaceId());
+
+            DBHandler.getInstance().getUsersPlaceInfo(preparedPlaces.get(pos).getPlaceId(), object -> {
+                PlaceModel detailChoicedPlace = (PlaceModel) object;
+                choicedPlace.getCityName();
+                choiseListener.changePlace(choicedPlace,detailChoicedPlace);
+
+            });
+            finish();
 
 
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id)
-            {
-
-                choicedPlace = new PlaceModel(preparedPlaces.get(pos).getCityName(), preparedPlaces.get(pos).getPlaceId());
-                DBHandler.getInstance().getUsersPlaceInfo(preparedPlaces.get(pos).getPlaceId(), new DBHandler.ResultListener()
-                {
-                    @Override
-                    public void onFinish(Object object)
-                    {
-                        PlaceModel detailChoicedPlace = (PlaceModel) object;
-                        choiseListener.changePlace(choicedPlace,detailChoicedPlace);
-
-                    }
-                });
-                finish();
-
-
-            }
         });
 
     }
@@ -121,14 +110,7 @@ public class SearchCity extends AppCompatActivity
         toolbarContainer.removeAllViews();
         toolbarContainer.addView(View.inflate(this, com.menemi.R.layout.searccity_toolbar, null));
         ImageView menuButton = (ImageView) toolbarContainer.findViewById(com.menemi.R.id.menuButton);
-        menuButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                finish();
-            }
-        });
+        menuButton.setOnClickListener(view -> finish());
 
         TextView title = (TextView) toolbarContainer.findViewById(com.menemi.R.id.screenTitle);
         title.setText(getString(com.menemi.R.string.search_text));
@@ -138,36 +120,24 @@ public class SearchCity extends AppCompatActivity
     {
 
         Log.d("city_name", "Method is called");
-        DBHandler.getInstance().getPlacesList(value, new DBHandler.ResultListener()
-        {
-            @Override
-            public void onFinish(Object object)
+        DBHandler.getInstance().getPlacesList(value, object -> {
+            placeArrayList = (ArrayList) object;
+            preparedPlaces = new ArrayList<>();
+            Log.d("Response", placeArrayList.size() + "");
+            //placesNames.add("Люди рядом");
+            for (int i = 0; i < placeArrayList.size(); i++)
             {
-                placeArrayList = (ArrayList) object;
-                preparedPlaces = new ArrayList<>();
-                // preparedPlaces.add(new PlaceModel("людей рядом","людей рядом"));
-                Log.d("Response", placeArrayList.size() + "");
-                for (int i = 0; i < placeArrayList.size(); i++)
-                {
-                    place = (PlaceModel) placeArrayList.get(i);
-                    preparedPlaces.add(new PlaceModel(place.getCityName(), place.getPlaceId()));
-                    placesNames.add(place.getCityName());
-                }
-                adapter = new ArrayAdapter<String>(getApplicationContext(), com.menemi.R.layout.custom_list_item, placesNames);
-                placesListView.setAdapter(adapter);
-
+                place = (PlaceModel) placeArrayList.get(i);
+                preparedPlaces.add(new PlaceModel(place.getCityName(), place.getPlaceId()));
+                placesNames.add(place.getCityName());
             }
+            adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_list_item, placesNames);
+            placesListView.setAdapter(adapter);
+
         });
     }
 
-    private static ChoiceListener choiseListener = new ChoiceListener()
-    {
-        @Override
-        public void changePlace(PlaceModel placeModel, PlaceModel detailPlaceModel)
-        {
-            Log.d("ChoiseListener", "ChoiseListener is called but not set");
-        }
-    };
+    private static ChoiceListener choiseListener = (placeModel, detailPlaceModel) -> Log.d("ChoiseListener", "ChoiseListener is called but not set");
 
     public static void setChoiseListener(ChoiceListener choiseListener)
     {
@@ -179,7 +149,7 @@ public class SearchCity extends AppCompatActivity
         void changePlace(PlaceModel shortPlaceModel, PlaceModel detailPlaceModel);
     }
     public void startProgressBar() {
-        ProgressBar loading = (ProgressBar) findViewById(com.menemi.R.id.loadingPlaces);
+        ProgressBar loading = (ProgressBar) findViewById(R.id.loadingPlaces);
         loading.setVisibility(View.VISIBLE);
     }
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/profile_container"
+    android:layout_height="@dimen/height_row_container_in_edit_info"
+    android:gravity="center_vertical">
+    <RelativeLayout
+        android:id="@+id/photosContainer"
+    android:layout_width="match_parent"
+        android:layout_height="@dimen/height_row_container_in_edit_info"
+        android:layout_alignBottom="@+id/languageCheckBox"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:layout_toLeftOf="@+id/languageCheckBox"
+        android:layout_toStartOf="@+id/languageCheckBox">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/languageLevel"
+                android:layout_toStartOf="@+id/languageLevel"
+                android:text=""
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/text_main"
+                android:maxLines="1"
+                android:id="@+id/languageName"
+                />
+            <TextView
+                style="@style/about_text_style_data"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/text_second"
+                android:minEms="6"
+                android:text=""
+                android:maxLines="1"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/languageLevel"/>
+
+
+    </RelativeLayout>
+<CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:id="@+id/languageCheckBox"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"/>
+</RelativeLayout>

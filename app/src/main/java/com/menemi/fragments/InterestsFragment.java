@@ -20,7 +20,6 @@ import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.interests_classes.InterestContainer;
 import com.menemi.interests_classes.PersonInterestsFragment;
 import com.menemi.personobject.Interests;
-import com.menemi.personobject.PersonObject;
 
 import java.util.ArrayList;
 
@@ -33,11 +32,7 @@ public class InterestsFragment extends Fragment {
     ArrayList<Interests> interests;
     View[] items = null;
     boolean isLayoutSet = false;
-    PersonObject ownerProfile = null;
 
-    public void setOwnerProfile(PersonObject ownerProfile) {
-        this.ownerProfile = ownerProfile;
-    }
 
     @Nullable
     @Override
@@ -67,9 +62,10 @@ public class InterestsFragment extends Fragment {
                         @Override
                         public void changeInterests(ArrayList<Interests> arrayList)
                         {
-                            ownerProfile.setInterests(arrayList);
-                            setInterests(arrayList);
-                            ownerFragment.refreshInterests();
+                            //DBHandler.getInstance().getMyProfile().setInterests(arrayList);
+                            //setInterests(arrayList);
+
+                            //ownerFragment.refreshInterests();
                         }
 
 

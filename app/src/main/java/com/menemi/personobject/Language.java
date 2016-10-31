@@ -1,10 +1,24 @@
 package com.menemi.personobject;
-public class Language
+
+import com.menemi.dbfactory.DBHandler;
+
+public class Language implements Cloneable
 {
+    private int id;
+    private LanguageLevel languageLevel = LanguageLevel.WITHOUT_LEVEL;
+    private int LanguagesId;
+    private String languageName;
+
+    public Language(String languageName, int languagesId) {
+        this.languageName = languageName;
+        this.LanguagesId = languagesId;
+    }
+
     public Language(int languageID, int languageLevel)
     {
         this.LanguagesId = languageID;
-        this.languageLevel = LanguageLevel.values()[languageID];
+        this.languageLevel = LanguageLevel.values()[languageLevel];
+        this.languageName = DBHandler.getInstance().getLanguageName(languageID);
     }
 
 
@@ -17,8 +31,7 @@ public class Language
         NATIVE
     }
 
-    private LanguageLevel languageLevel;
-    private int LanguagesId;
+
 
     public int  getLanguageLevel()
     {
@@ -30,6 +43,26 @@ public class Language
         this.languageLevel = LanguageLevel.values()[languageLevel];
     }
 
+    public void setLanguageLevel(LanguageLevel languageLevel) {
+        this.languageLevel = languageLevel;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getLanguageName() {
+        return languageName;
+    }
+
+    public void setLanguageName(String languageName) {
+        this.languageName = languageName;
+    }
+
     public int getLanguagesId()
     {
         return LanguagesId;
@@ -38,6 +71,13 @@ public class Language
     public void setLanguagesId(int languagesId)
     {
         LanguagesId = languagesId;
+    }
+
+    @Override
+    public Language clone() throws CloneNotSupportedException {
+        Language clone = new Language(languageName, LanguagesId);
+        clone.setLanguageLevel(languageLevel);
+        return clone;
     }
 }
 

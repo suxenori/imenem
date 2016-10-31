@@ -48,7 +48,7 @@ public class InstagramApp {
     private static int WHAT_FINALIZE = 0;
     private static int WHAT_ERROR = 1;
     private static int WHAT_FETCH_INFO = 2;
-    public static String mCallbackUrl = "";
+    public static String mCallbackUrl = "https://localhost:3000/auth/instagram/callback";
     private static final String AUTH_URL = "https://api.instagram.com/oauth/authorize/";
     private static final String TOKEN_URL = "https://api.instagram.com/oauth/access_token";
     private static final String API_URL = "https://api.instagram.com/v1";
@@ -93,7 +93,7 @@ public class InstagramApp {
     }
 
     private void getAccessToken(final String code) {
-        mProgress.setMessage("Getting access token ...");
+        mProgress.setMessage("Getting access token...");
         mProgress.show();
 
         new Thread() {

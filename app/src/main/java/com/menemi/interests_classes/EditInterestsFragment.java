@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -54,55 +53,34 @@ public class EditInterestsFragment extends Fragment
         if (!checkedItemsList.isEmpty()){
             checkedItemsList.clear();
         }
-        personInterestsList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
-            {
-                    CheckBox checkBox = (CheckBox)view.findViewById(R.id.checkBox1);
-                if (checkBox.isChecked()){
-                    checkBox.setChecked(false);
-                    view.setBackgroundColor(getResources().getColor(R.color.activity_back));
-                    removeCheckItem(personInterestsArray.get(position));
-                } else {
-                    checkBox.setChecked(true);
-                    view.setBackgroundColor(getResources().getColor(R.color.blue));
-                    checkedItemsList.add(personInterestsArray.get(position));
-                }
-                if (checkedItemsList.size() != 0){
-
-                    removeInterestsButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    removeInterestsButton.setClickable(true);
-                } else {
-                    removeInterestsButton.setBackgroundResource(android.R.drawable.btn_default);
-                    removeInterestsButton.setClickable(false);
-                }
-                choicedInterestCounter(checkedItemsList);
+        personInterestsList.setOnItemClickListener((adapterView, view, position, l) -> {
+                CheckBox checkBox = (CheckBox)view.findViewById(R.id.checkBox1);
+            if (checkBox.isChecked()){
+                checkBox.setChecked(false);
+                view.setBackgroundColor(getResources().getColor(R.color.activity_back));
+                removeCheckItem(personInterestsArray.get(position));
+            } else {
+                checkBox.setChecked(true);
+                view.setBackgroundColor(getResources().getColor(R.color.blue));
+                checkedItemsList.add(personInterestsArray.get(position));
             }
+            if (checkedItemsList.size() != 0){
+
+                removeInterestsButton.setBackgroundColor(getResources().getColor(R.color.red));
+                removeInterestsButton.setClickable(true);
+            } else {
+                removeInterestsButton.setBackgroundResource(android.R.drawable.btn_default);
+                removeInterestsButton.setClickable(false);
+            }
+            choicedInterestCounter(checkedItemsList);
         });
 
-        removeInterestsButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
+        removeInterestsButton.setOnClickListener(view -> DBHandler.getInstance().deleteInterest(DBHandler.getInstance().getUserId(), getInterestsId(checkedItemsList), object -> {
+            DBHandler.getInstance().setProfileInterests(checkArray(DBHandler.getInstance().getProfileInterests(),checkedItemsList));
+            Toast.makeText(getActivity().getApplicationContext(),"Выбранные интересы успешно удалены",Toast.LENGTH_SHORT).show();
+            getFragmentManager().popBackStack();
 
-
-                DBHandler.getInstance().deleteInterest(DBHandler.getInstance().getUserId(), getInterestsId(checkedItemsList), new DBHandler.ResultListener()
-                {
-                    @Override
-                    public void onFinish(Object object)
-                    {
-                        DBHandler.getInstance().setProfileInterests(checkArray(DBHandler.getInstance().getProfileInterests(),checkedItemsList));
-                        Toast.makeText(getActivity().getApplicationContext(),"Выбранные интересы успешно удалены",Toast.LENGTH_SHORT).show();
-                        getFragmentManager().popBackStack();
-
-                    }
-                });
-
-
-            }
-        });
+        }));
         removeInterestsButton.setClickable(false);
         return rootView;
     }
@@ -131,21 +109,9 @@ public class EditInterestsFragment extends Fragment
         ImageView menuButton = (ImageView) toolbarContainer.findViewById(R.id.menuButton);
         title = (TextView) toolbarContainer.findViewById(R.id.screenTitle);
         title.setText(getString(R.string.interests_conf));
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().popBackStack();
-            }
-        });
+        menuButton.setOnClickListener(view -> getFragmentManager().popBackStack());
         ImageButton editButton = (ImageButton)toolbarContainer.findViewById(R.id.editButton);
-        editButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-               getFragmentManager().popBackStack();
-            }
-        });
+        editButton.setOnClickListener(view -> getFragmentManager().popBackStack());
     }
     public void choicedInterestCounter(ArrayList arrayList){
         if (arrayList.size() == 0){

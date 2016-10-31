@@ -26,7 +26,6 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public static final String TABLE_SOCIAL_VK = "social_vk";
     public static final String TABLE_SOCIAL_INSTA = "social_insta";
     public static final String TABLE_AWARDS = "personAwards";
-    public static final String TABLE_LANGUAGES = "person_languages";
     public static final String TABLE_FIRE_BASE = "fire_base";
     public static final String TABLE_GIFTS_BASE = "gifts_base";
     public static final String TABLE_TEMPLATES_BASE = "templates_base";
@@ -34,7 +33,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public static final String TABLE_AVATARS = "avatars";
     public static final String TABLE_DIALOGS = "dialogs_base";
     public static final String TABLE_FILTER = "filter";
-
+    public static final String TABLE_LANGUAGES = "languages";
 
     private static final int DATABASE_VERSION = 1; // In case of any changes in database structure this variable should be incremented
     private static final String DATABASE_LAST_USER_CREATE_SCRIPT = "CREATE TABLE IF NOT EXISTS " +
@@ -206,12 +205,11 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             Fields.TEMPLATE_IDS + " text)";
 
 
-    private static final String CREATE_TABLE_LANGUAGE = "CREATE TABLE IF NOT EXISTS " +
+    private static final String CREATE_TABLE_LANGUAGES = "CREATE TABLE IF NOT EXISTS " +
             TABLE_LANGUAGES + " (" + BaseColumns._ID +
             " integer primary key autoincrement, " +
             Fields.ID + " integer, " +
-            Fields.LANGUAGES + " text, " +
-            Fields.LEVEL_LANGUAGES + " integer)";
+            Fields.NAME + " text)";
 
     public SQLiteEngine(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -236,6 +234,8 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             db.execSQL(CREATE_TABLE_AVATARS);
             db.execSQL(CREATE_TABLE_DIALOGS);
             db.execSQL(CREATE_FILTER_TABLE);
+            db.execSQL(CREATE_TABLE_LANGUAGES);
+
 
 
             this.addDefaultId(db);

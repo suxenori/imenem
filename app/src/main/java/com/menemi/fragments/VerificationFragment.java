@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
@@ -27,6 +26,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.menemi.R;
+import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.PersonObject;
 import com.menemi.social_network.LogOutSocialDialog;
 import com.menemi.social_network.SocialNetworkHandler;
@@ -78,8 +78,8 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
         AppEventsLogger.activateApp(getActivity());
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity()).addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions).addOnConnectionFailedListener(this).build();
-        instaObj = new InstagramApp(getActivity(), SocialNetworkHandler.CLIENT_ID,
-                SocialNetworkHandler.CLIENT_SECRET, SocialNetworkHandler.CALLBACK_URL);
+        instaObj = new InstagramApp(getActivity(), SocialNetworkHandler.getInstance().CLIENT_ID,
+                SocialNetworkHandler.getInstance().CLIENT_SECRET, SocialNetworkHandler.getInstance().CALLBACK_URL);
 
         if (rootView == null) {
             if(isForSettings){
@@ -209,6 +209,7 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
                                 Log.e("Userid", instaObj.getId());
                                 Log.e("Name", instaObj.getName());
                                 Log.e("UserName", instaObj.getUserName());
+                                DBHandler.getInstance().getMyProfile().setInstaId(instaObj.getId());
                                 dialog.setInstagramApp(instaObj);
                                 instaImage.setImageResource(R.drawable.add_insta);
                                 instaState.setText("(подтвержден)");

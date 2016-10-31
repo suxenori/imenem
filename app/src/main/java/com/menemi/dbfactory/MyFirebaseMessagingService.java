@@ -54,8 +54,9 @@ public  class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            JSONObject data = new JSONObject(remoteMessage.getData());
+
             try {
+                JSONObject data = new JSONObject(remoteMessage.getData());
                 if(data.getString(ACTION).equals(ACTION_GIFT)){
                     Log.d(TAG, "gift recieved");
                     PersonalGift personalGift = Loader.parceGift(data);
@@ -104,5 +105,13 @@ public  class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        //{"action":"profile_viewed","gift_id":"2","from_avatar_url":"http:\/\/minemi.ironexus.com\/system\/profile_pictures\/pictures\/000\/000\/058\/thumb\/file.png?1476471371","from_profile_id":"1","name":"a"}
+        //{"action":"profile_added_to_favorite","profile_id":"1", "name":"ivan","avatar_url":"http:\"}
+        //{"action":"profile_message_sent","dialog_id":"1", "profile_id":"2","last_message":"bla bla","last_message_date":"30.30.30","unread_msgs_count":"1","name":"Ivan","status":"online"}
+        //{"action":"profile_message_sent","dialog_id":"1", "profile_id":"2","last_message":"bla bla","last_message_date":"30.30.30","unread_msgs_count":"1","name":"Ivan","status":"online"}
+        //{"action":"profile_out_of_credits"}
+        //{"action":"profile_reward_received", "reward_url":"http:"}
+        ///
     }
+
 }

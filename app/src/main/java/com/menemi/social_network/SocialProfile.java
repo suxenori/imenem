@@ -11,8 +11,40 @@ public class SocialProfile
     private String firstName;
     private String lastName;
     private String middleName;
+    private String fullName;
     private Bitmap image;
+    private String gender;
     private String photoUrl;
+
+    public SocialProfile (String id, String fullName, String gender){
+        this.id = id;
+        this.fullName = fullName;
+        this.gender = gender;
+    }
+
+    public SocialProfile (){
+
+    }
+
+    public String getFullName()
+    {
+        return fullName;
+    }
+
+    public void setFullName(String fullName)
+    {
+        this.fullName = fullName;
+    }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender(String gender)
+    {
+        this.gender = gender;
+    }
 
     public String getId()
     {

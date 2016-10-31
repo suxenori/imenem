@@ -39,7 +39,7 @@
             <TextView
                 style="@style/profile_languages"
                 android:text="@string/test_languages"
-                android:id="@+id/mainText0"
+                android:id="@+id/languageList"
                 />
 
 

@@ -47,9 +47,11 @@ public class AccountActivity extends AppCompatActivity
                 });
             }
         });
+
         EditText textEmailAddress = (EditText) findViewById(R.id.editEmailInAccountView);
         textEmailAddress.setText("" + DBHandler.getInstance().getMyProfile().getEmail());
         textEmailAddress.setKeyListener(null);
+
         Button logoutButton = (Button) findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override

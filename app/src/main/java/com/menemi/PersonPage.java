@@ -3,6 +3,7 @@ package com.menemi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -92,7 +92,7 @@ public class PersonPage extends AppCompatActivity {
     public static final int SELECTED_PICTURES_FROM_GIZMO = 1;
     public static final int SELECTED_PICTURES_FROM_CAMERA = 2;
     private long back_pressed;
-    private PersonObject personObject = null;
+
     private static View header;
     private static ImageView ownerAvatar = null;
     private static ImageView ownerCircleAvatar = null;
@@ -112,7 +112,18 @@ public class PersonPage extends AppCompatActivity {
 
         }
     };
-
+    private static ProgressDialog progressDialog;
+    public static void finishProgressDialog(){
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+    }
+    public static void startProgressDialog(Context ctx){
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+        progressDialog = Utils.startLodingProgress(ctx, null, null);
+    }
     public static Toolbar getToolbar() {
         return toolbar;
     }
@@ -176,7 +187,7 @@ public class PersonPage extends AppCompatActivity {
 
 
         final int userId = DBHandler.getInstance().getUserId();
-                personObject = DBHandler.getInstance().getMyProfile();
+        PersonObject personObject = DBHandler.getInstance().getMyProfile();
                 if( personObject.isPersonVIP()) {
                     vipStatus.setImageResource(com.menemi.R.drawable.vip_on);
                     vipStatus.setOnClickListener(new OnVipClickListener(true));
@@ -206,12 +217,12 @@ public class PersonPage extends AppCompatActivity {
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.favorite, com.menemi.R.string.favorites));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.guests, com.menemi.R.string.visitors));
         listSliding.add(new ItemSlideMenu(R.drawable.menu_like, com.menemi.R.string.liked_you));
-        listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.invite_fr, com.menemi.R.string.invite_friends));
+       // listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.invite_fr, com.menemi.R.string.invite_friends));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.setting, com.menemi.R.string.settings));
         LinearLayout container = (LinearLayout) listViewSliding.findViewById(com.menemi.R.id.sliding_menu_container);
         container.addView(header);
         setMenu(container, listSliding);
-        container.addView(footer);
+        //container.addView(footer);
         setTitle("");
         drawerLayout.closeDrawer(listViewSliding);
 
@@ -286,7 +297,7 @@ public class PersonPage extends AppCompatActivity {
 
 
         ownerName.setText(DBHandler.getInstance().getMyProfile().getPersonName());
-        balanceValue.setText(""+DBHandler.getInstance().getMyProfile().getPersonCredits());
+        balanceValue.setText(" " + DBHandler.getInstance().getMyProfile().getPersonCredits());
 
     }
     public static void prepareNavigationalHeader() {
@@ -347,7 +358,7 @@ public class PersonPage extends AppCompatActivity {
         if(getFragmentManager() == null) {
             return;
         }
-
+        startProgressDialog(this);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(com.menemi.R.id.content, fragment);
         transaction.addToBackStack(transaction.getClass().getName());
@@ -364,8 +375,9 @@ public class PersonPage extends AppCompatActivity {
     }
 
 
-
+    int lastPos = -1;
     private void replaceFragment(int pos) {
+        lastPos = pos;
         if(pos == ENCOUNTERS){
             PersonDataFragment personDataFragment = new PersonDataFragment();
             personDataFragment.setPurpose(PersonDataFragment.Purpose.LIKE);
@@ -461,13 +473,14 @@ public class PersonPage extends AppCompatActivity {
 */
         }
 
-        CallbackManager.Factory.create().onActivityResult(requestCode, resultCode, data);
 
         if (SocialNetworkHandler.getInstance().isAuthFb()){
+            Log.d("",data + "");
+            Log.d("",data + "");
             ImageView imageView = (ImageView)findViewById(R.id.fbSrc);
             imageView.setImageResource(R.drawable.fb_icon);
             TextView textView = (TextView)findViewById(R.id.fbState);
-            textView.setText("(подтвержден)");
+            textView.setText(R.string.confirmed);
 
             SocialNetworkHandler.getInstance().getProfileAlbumId(getApplicationContext(),AccessToken.getCurrentAccessToken());
         }
@@ -501,7 +514,7 @@ public class PersonPage extends AppCompatActivity {
                     ImageView imageView = (ImageView)findViewById(R.id.okImage);
                     imageView.setImageResource(R.drawable.ok_logo);
                     TextView textView = (TextView)findViewById(R.id.okState);
-                    textView.setText("(подтвержден)");
+                    textView.setText(getString(R.string.verified));
                 }
 
                 @Override
@@ -660,7 +673,19 @@ class OnVipClickListener implements View.OnClickListener{
             finish();
 
         }
+
         super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(lastPos == MY_PROFILE){
+
+            DBHandler.getInstance().authorise(DBHandler.getInstance().getMyProfile(), (object) ->{
+                replaceFragment(MY_PROFILE);
+            });
+        }
     }
 
     @Override

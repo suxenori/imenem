@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     >
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
-        android:src="@drawable/burger_menu"
+        android:src="@drawable/arrow_back"
 
         android:id="@+id/menuButton"/>
 
@@ -19,8 +19,9 @@
             android:id="@+id/screenTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/people_nearby"
-            style="@style/textViewSize" />
+            android:textColor="@color/text_main"
+            android:text="@string/chat"
+            android:textSize="@dimen/app_font_size" />
     </LinearLayout>
 
 </RelativeLayout>
