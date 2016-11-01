@@ -946,11 +946,6 @@ public class DBHandler {
         dbRest.getVisitors(getUserId(), resultListener);
     }
 
-
-    public SocialProfile getSocialProfile(String socNetwork) {
-        return dbSQLite.getSocial(socNetwork);
-    }
-
     public boolean isEmtyTable(String tableName) {
         return dbSQLite.isEmtyTable(tableName);
     }
@@ -965,28 +960,13 @@ public class DBHandler {
         dbSQLite.saveLastId(userID);
     }
 
-    public void clearTable(String s) {
-        dbSQLite.clearTable(s);
+    public void saveSocialProfile(SocialProfile profile, Fields.SOCIAL_NETWORKS socialNetwork){
+        dbSQLite.saveSocialProfile(socialNetwork, profile);
     }
 
-    public void setSocialVK(SocialProfile profile, String socNetwork) {
-        dbSQLite.setSocialVK(profile, socNetwork);
+    public SocialProfile getSocialProfile(Fields.SOCIAL_NETWORKS socialNetwork){
+        return  dbSQLite.getSocialProfile(socialNetwork);
     }
-
-
-    public void setSocialOK(SocialProfile profile, String socNetwork) {
-        dbSQLite.setSocialOK(profile, socNetwork);
-    }
-
-
-    public void setSocialINSTA(SocialProfile profile, String socNetwork) {
-        dbSQLite.setSocialINSTA(profile, socNetwork);
-    }
-
-    public void setSocialFB(SocialProfile profile, String socNetwork) {
-        dbSQLite.setSocialFB(profile, socNetwork);
-    }
-
 
     public int loadLastId() {
         return dbSQLite.loadLastId();
@@ -1165,10 +1145,12 @@ public class DBHandler {
     }
 
     public Bitmap getGiftById(int id) {
+        if(gifts != null){
         for (int i = 0; i < gifts.size(); i++) {
             if (gifts.get(i).getGiftId() == id) {
                 return gifts.get(i).getImage();
             }
+        }
         }
         return null;
     }

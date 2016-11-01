@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
-import com.menemi.dbfactory.SQLiteEngine;
+import com.menemi.dbfactory.Fields;
 import com.menemi.social_network.instagram.InstagramApp;
 import com.menemi.utils.Utils;
 import com.vk.sdk.VKSdk;
@@ -30,7 +30,6 @@ public class LogOutSocialDialog extends DialogFragment
     private String social;
     private View rootView;
     private InstagramApp instagramApp;
-    private SocialProfile socialProfile;
 
     public void setInstagramApp(InstagramApp instagramApp)
     {
@@ -52,25 +51,25 @@ public class LogOutSocialDialog extends DialogFragment
         final ImageView image = (ImageView) rootView.findViewById(R.id.photo);
         if (social.equals(SocialNetworkHandler.getInstance().FB_SOCIAL))
         {
-            socialProfile = DBHandler.getInstance().getSocialProfile("FB");
+            SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.FACEBOOK);
             name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
             image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
 
         } else if (social.equals(SocialNetworkHandler.getInstance().VK_SOCIAL))
         {
-            socialProfile = DBHandler.getInstance().getSocialProfile("VK");
+            SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.VKONTAKTE);
             name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
             image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
 
         } else if (social.equals(SocialNetworkHandler.getInstance().OK_SOCIAL))
         {
-            socialProfile = DBHandler.getInstance().getSocialProfile("OK");
+            SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.ODNOKLASNIKI);
             name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
             image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
 
         } else if (social.equals(SocialNetworkHandler.getInstance().INSTA_SOCIAL))
         {
-            socialProfile = DBHandler.getInstance().getSocialProfile("INSTA");
+            SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.INSTAGRAM);
             name.setText(instagramApp.getName());
             image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
         }
@@ -86,7 +85,6 @@ public class LogOutSocialDialog extends DialogFragment
                 imageView.setImageResource(R.drawable.fb_off);
                 TextView textView = (TextView) getActivity().findViewById(R.id.fbState);
                 textView.setText("(привязать)");
-                DBHandler.getInstance().clearTable(SQLiteEngine.TABLE_SOCIAL_FB);
                 dismiss();
             } else if (social.equals(SocialNetworkHandler.getInstance().VK_SOCIAL))
             {
@@ -94,7 +92,6 @@ public class LogOutSocialDialog extends DialogFragment
                 VKSdk.logout();
                 ImageView imageView = (ImageView) getActivity().findViewById(R.id.vkSrc);
                 imageView.setImageResource(R.drawable.vk_off);
-                DBHandler.getInstance().clearTable(SQLiteEngine.TABLE_SOCIAL_VK);
                 dismiss();
             } else if (social.equals(SocialNetworkHandler.getInstance().OK_SOCIAL))
             {
@@ -104,7 +101,6 @@ public class LogOutSocialDialog extends DialogFragment
                 imageView.setImageResource(R.drawable.ok_off);
                 TextView textView = (TextView) getActivity().findViewById(R.id.okState);
                 textView.setText("(привязать)");
-                DBHandler.getInstance().clearTable(SQLiteEngine.TABLE_SOCIAL_OK);
                 dismiss();
             } else if (social.equals(SocialNetworkHandler.getInstance().INSTA_SOCIAL))
             {
@@ -114,7 +110,6 @@ public class LogOutSocialDialog extends DialogFragment
                 TextView textView = (TextView) getActivity().findViewById(R.id.instaState);
                 textView.setText("(привязать)");
                 instagramApp.resetAccessToken();
-                DBHandler.getInstance().clearTable(SQLiteEngine.TABLE_SOCIAL_INSTA);
                 dismiss();
             } else if (social.equals(SocialNetworkHandler.getInstance().G_SOCIAL))
             {

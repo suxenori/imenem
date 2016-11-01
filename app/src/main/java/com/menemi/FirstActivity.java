@@ -21,7 +21,6 @@ import com.facebook.GraphRequest;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.menemi.dbfactory.AndroidDatabaseManager;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.PersonObject;
 import com.menemi.social_network.SocialNetworkHandler;
@@ -39,7 +38,7 @@ public class FirstActivity extends Activity
 
     private static final String TAG = "MainActivity";
     private Button signIn;
-    private ImageButton button;
+    private ImageButton fbButton;
     private PersonObject personObject = null;
     private CallbackManager callbackManager;
     private void formatViews()
@@ -69,8 +68,8 @@ public class FirstActivity extends Activity
         callbackManager = CallbackManager.Factory.create();
         AppEventsLogger.activateApp(this);
         setContentView(com.menemi.R.layout.activity_first);
-        button = (ImageButton) findViewById(com.menemi.R.id.fbButton);
-        button.setOnClickListener(view -> {
+        fbButton = (ImageButton) findViewById(com.menemi.R.id.fbButton);
+        fbButton.setOnClickListener(view -> {
             LoginManager.getInstance().logInWithReadPermissions(FirstActivity.this, Arrays.asList("email", "user_photos", "public_profile", "user_about_me", "user_birthday","user_friends"));
             LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>()
             {
@@ -87,8 +86,7 @@ public class FirstActivity extends Activity
                                     String id = object.getString("id");
                                     DBHandler.getInstance().registerFacebook(new SocialProfile(id,name,gender), object1 -> {
                                         Log.d("","");
-                                        // SocialNetworkHandler.getInstance().getProfileAlbumId(this,AccessToken.getCurrentAccessToken());
-                                        SocialNetworkHandler.getInstance().setCurrentFbUserToSQLite();
+                                        SocialNetworkHandler.getInstance().getProfileAlbumId(getApplicationContext(),AccessToken.getCurrentAccessToken());
                                         Intent personPage = new Intent(FirstActivity.this, PersonPage.class);
                                         startActivity(personPage);
                                         personPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -124,23 +122,23 @@ public class FirstActivity extends Activity
            // SocialNetworkHandler.getInstance().regWithFb(FirstActivity.this,callbackManager);
             Log.d("test_fb","authFb is called");
         });
-        ImageButton gplusButton = (ImageButton)findViewById(com.menemi.R.id.gpButton);
+        /*ImageButton gplusButton = (ImageButton)findViewById(com.menemi.R.id.gpButton);
         gplusButton.setOnClickListener(v -> {
             Intent i = new Intent(FirstActivity.this, AndroidDatabaseManager.class);
             startActivity(i);
-        });
+        });*/
 
-        ImageButton vkButton = (ImageButton)findViewById(com.menemi.R.id.vkButton);
+     /*  ImageButton vkButton = (ImageButton)findViewById(com.menemi.R.id.vkButton);
         vkButton.setOnClickListener(view -> {
 
-        });
+        });*/
 
         TextView register = (TextView)findViewById(com.menemi.R.id.register);
         register.setOnClickListener(v -> {
             Fragment fragment = new SelectSexPage();
             replaceFragment(getFragmentManager().beginTransaction(),fragment);
         });
-        ImageButton fbook_button = (ImageButton)findViewById(com.menemi.R.id.faceBookButton);
+       // ImageButton fbook_button = (ImageButton)findViewById(com.menemi.R.id.faceBookButton);
         signIn = (Button) findViewById(com.menemi.R.id.signIn);
         signIn.setOnClickListener(v -> {
             finish();

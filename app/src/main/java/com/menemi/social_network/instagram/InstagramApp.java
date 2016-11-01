@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.dbfactory.Fields;
 import com.menemi.social_network.SocialNetworkHandler;
 import com.menemi.social_network.SocialProfile;
 import com.menemi.utils.Utils;
@@ -217,7 +218,7 @@ public class InstagramApp {
         final SocialProfile profile = new SocialProfile();
         profile.setFirstName(getName());
         profile.setImage(image);
-        DBHandler.getInstance().setSocialINSTA(profile,"INSTA");
+        DBHandler.getInstance().saveSocialProfile(profile, Fields.SOCIAL_NETWORKS.INSTAGRAM);
     }
 
     public void setListener(OAuthAuthenticationListener listener) {

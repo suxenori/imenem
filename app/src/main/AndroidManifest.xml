@@ -6,6 +6,9 @@
 
     <uses-sdk
         android:maxSdkVersion="23" />
+    <permission
+        android:name="com.menemi.fileprovider.READ"
+       />
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_C"/>
@@ -19,7 +22,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
     <application
 
 
@@ -167,7 +171,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.android.fileprovider"
+            android:authorities="com.menemi.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

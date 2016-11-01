@@ -159,6 +159,7 @@ class DBSQLite {
         }
 
     }
+
     public void setLanguage(Language language) {
 
         ContentValues values = new ContentValues();
@@ -173,11 +174,11 @@ class DBSQLite {
             Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_LANGUAGES, null, Fields.ID + "=?",
                     new String[]{"" + language.getLanguagesId()}, null, null, null, null);
             if (cursor != null && cursor.moveToFirst() == true) {
-                if(!cursor.getString(cursor.getColumnIndex(Fields.NAME)).equals(language.getLanguageName())){
+                if (!cursor.getString(cursor.getColumnIndex(Fields.NAME)).equals(language.getLanguageName())) {
 
 
-                sqliteDB.update(SQLiteEngine.TABLE_LANGUAGES, values,
-                        Fields.ID + "=?", new String[]{"" + language.getLanguagesId()});
+                    sqliteDB.update(SQLiteEngine.TABLE_LANGUAGES, values,
+                            Fields.ID + "=?", new String[]{"" + language.getLanguagesId()});
                 }
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_LANGUAGES, null, values);
@@ -186,6 +187,7 @@ class DBSQLite {
         }
 
     }
+
     public ArrayList<Language> getLanguages() {
 
 
@@ -204,7 +206,8 @@ class DBSQLite {
         return languages;
 
     }
-public void saveFilter(FilterObject filterObject){
+
+    public void saveFilter(FilterObject filterObject) {
         ContentValues values = new ContentValues();
         values.put(Fields.SEARCH_AGE_MIN, filterObject.getMinAge());
         values.put(Fields.SEARCH_AGE_MAX, filterObject.getMaxAge());
@@ -217,7 +220,7 @@ public void saveFilter(FilterObject filterObject){
             Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_FILTER, null, null,
                     null, null, null, null, null);
             if (cursor != null && cursor.moveToFirst() == true) {
-                sqliteDB.update(SQLiteEngine.TABLE_GIFTS_BASE, values, null,null);
+                sqliteDB.update(SQLiteEngine.TABLE_GIFTS_BASE, values, null, null);
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
             }
@@ -225,7 +228,7 @@ public void saveFilter(FilterObject filterObject){
         }
     }
 
-    public FilterObject getFilter(){
+    public FilterObject getFilter() {
         FilterObject filterObject = null;
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_FILTER, null, null, null, null, null, null, null);
         if (cursor != null && cursor.moveToFirst() == true) {
@@ -238,6 +241,7 @@ public void saveFilter(FilterObject filterObject){
         }
         return filterObject;
     }
+
     public ArrayList<PhotoTemplate> getTemplates() {
 
 
@@ -323,6 +327,47 @@ public void saveFilter(FilterObject filterObject){
         }
     }
 
+    public void saveSocialProfile(Fields.SOCIAL_NETWORKS socialNetwork, SocialProfile profile) {
+        ContentValues values = new ContentValues();
+        values.put(Fields.SOCIAL_ID, profile.getId());
+        values.put(Fields.SOCIAL_PROFILE_IMAGE, Utils.getBitmapToBase64String(profile.getImage()));
+        values.put(Fields.SOCIAL_PROFILE_FIRST_NAME, profile.getFirstName());
+        values.put(Fields.SOCIAL_PROFILE_MIDDLE_NAME, profile.getMiddleName());
+        values.put(Fields.SOCIAL_PROFILE_LAST_NAME, profile.getLastName());
+        values.put(Fields.SOCIAL_NETWORK, socialNetwork.name());
+
+
+        if (isFirstTime(SQLiteEngine.TABLE_SOCIAL)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL, null, Fields.SOCIAL_NETWORK + "=?",
+                    new String[]{"" + socialNetwork}, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                sqliteDB.update(SQLiteEngine.TABLE_SOCIAL, values,
+                        Fields.SOCIAL_NETWORK + "=?", new String[]{"" + socialNetwork});
+            } else {
+                sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL, null, values);
+            }
+        }
+    }
+
+    public SocialProfile getSocialProfile(Fields.SOCIAL_NETWORKS socialNetwork) {
+
+        SocialProfile profile = new SocialProfile();
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL, null, Fields.SOCIAL_NETWORK + "=?", new String[]{socialNetwork.name()}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            profile.setFirstName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_FIRST_NAME)));
+            profile.setMiddleName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_MIDDLE_NAME)));
+            profile.setLastName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_LAST_NAME)));
+            profile.setId(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_ID)));
+            profile.setImage(Utils.getBitmapFromStringBase64(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_IMAGE))));
+        }
+        return profile;
+
+    }
+
     /**
      * @param userID
      * @return null if nothig found
@@ -393,6 +438,7 @@ public void saveFilter(FilterObject filterObject){
 
 
     }
+
     public ArrayList<DialogInfo> getDialogs() {
 
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_DIALOGS, null, null, null, null, null, null);
@@ -409,7 +455,6 @@ public void saveFilter(FilterObject filterObject){
                 dialogInfo.setContactName(cursor.getString(cursor.getColumnIndex(Fields.NAME)));
 
 
-
                 dialogs.add(dialogInfo);
                 cursor.moveToNext();
             }
@@ -418,6 +463,7 @@ public void saveFilter(FilterObject filterObject){
         return dialogs;
 
     }
+
     public void setDialog(DialogInfo dialog) {
         ContentValues values = new ContentValues();
         values.put(Fields.DIALOG_ID, dialog.getDialogID());
@@ -512,9 +558,9 @@ public void saveFilter(FilterObject filterObject){
     }
 
     public String getFireBaseToken() {
-if(!isFirstTime(SQLiteEngine.TABLE_FIRE_BASE)) {
-    return getStringFromDB(SQLiteEngine.TABLE_FIRE_BASE, Fields.FIRE_BASE_TOKEN);
-} else return "";
+        if (!isFirstTime(SQLiteEngine.TABLE_FIRE_BASE)) {
+            return getStringFromDB(SQLiteEngine.TABLE_FIRE_BASE, Fields.FIRE_BASE_TOKEN);
+        } else return "";
     }
 
     public String getPassword(int userID) {

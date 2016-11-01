@@ -97,7 +97,7 @@ public class EditPersonalInfo extends AppCompatActivity
 
 
         relationshipRadioGroup = new GRadioGroup(findViewById(R.id.relationshipRadioGroup),R.id.empty,R.id.alone,R.id.in_relationship,R.id.in_free_relationship);
-        orientationRadioGroup = new GRadioGroup(findViewById(R.id.orientationRadioGroup),R.id.emptyOrientationRB,R.id.freeOrientedRB,R.id.biOrientedRB,R.id.geteroOrientedRB,R.id.gayOrientedRB);
+        orientationRadioGroup = new GRadioGroup(findViewById(R.id.orientationRadioGroup),R.id.emptyOrientationRB,R.id.gayOrientedRB,R.id.freeOrientedRB,R.id.geteroOrientedRB,R.id.biOrientedRB);
         childRadioGroup = new GRadioGroup(findViewById(R.id.kidsRadioGroup),R.id.emptyChildRB,R.id.neverChildRB,R.id.oldChildRB,R.id.alredyHaveRB,R.id.nextTimeRB);
         alcoRadioGraoup = new GRadioGroup(findViewById(R.id.alcoRadioGroup),R.id.emptyAlco,R.id.neverAlcoRB,R.id.readyToAlcoRB,R.id.noAlcoRB,R.id.inCompanyAlco);
 
@@ -306,7 +306,7 @@ public class EditPersonalInfo extends AppCompatActivity
         eyeColorTextView.setText(personalAppearanceDataSource.getEyeColor(personalAppearanceSettingsModel.getEyeColorIndex()));
         hairColorTextView.setText(personalAppearanceDataSource.getHairColor(personalAppearanceSettingsModel.getHairColorIndex()));
         livigWithTextView.setText(personalAppearanceDataSource.getLivingWith(personalAppearanceSettingsModel.getLivingWithIndex()));
-        smokingTextView.setText(personalAppearanceDataSource.getSmoking(personalAppearanceSettingsModel.getLivingWithIndex()));
+        smokingTextView.setText(personalAppearanceDataSource.getSmoking(personalAppearanceSettingsModel.getSmokingIndex()));
     }
     private void configureToolbar()
     {

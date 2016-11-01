@@ -32,6 +32,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -79,9 +84,10 @@ public class PersonPage extends AppCompatActivity {
     private static final int FAVORITES = 3;
     private static final int VISITORS = 4;
     private static final int MY_LIKES = 5;
-    private static final int INVITE_FRIENDS = 6;
-    private static final int SETTINGS = 7;
+    private static final int INVITE_FRIENDS = 7;
+    private static final int SETTINGS = 6;
     public static boolean isFilterVisible = false;
+    private CallbackManager authCallbackManager;
 
     private ArrayList<ItemSlideMenu> listSliding = new ArrayList<>();
 
@@ -145,7 +151,39 @@ public class PersonPage extends AppCompatActivity {
         setContentView(com.menemi.R.layout.activity_person_page);
 
         DBHandler.setUP(this);
-       DBHandler.getInstance().sendFirebaseTokentToServer();
+        DBHandler.getInstance().sendFirebaseTokentToServer();
+        authCallbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(authCallbackManager, new FacebookCallback<LoginResult>()
+        {
+            @Override
+            public void onSuccess(final LoginResult loginResult)
+            {
+                Log.d("test_fb", "Success");
+                Log.d("fbProfileId", loginResult + "");
+             /*   Log.d("",data + "");
+                Log.d("",data + "");*/
+                ImageView imageView = (ImageView)findViewById(R.id.fbSrc);
+                imageView.setImageResource(R.drawable.fb_icon);
+                TextView textView = (TextView)findViewById(R.id.fbState);
+                textView.setText(R.string.confirmed);
+               // SocialNetworkHandler.getInstance().setCurrentFbUserToSQLite();
+
+            }
+
+            @Override
+            public void onCancel()
+            {
+
+            }
+
+            @Override
+            public void onError(FacebookException error)
+            {
+
+            }
+        });
+
+
         toolbar = (Toolbar) findViewById(com.menemi.R.id.toolbar_with_checkBox);
         //FirebaseMessaging.getInstance().subscribeToTopic("news");
 
@@ -281,7 +319,7 @@ public class PersonPage extends AppCompatActivity {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
             TextView versionTV = (TextView)findViewById(R.id.version);
-            versionTV.setText(version);
+            //versionTV.setText(version);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -463,6 +501,9 @@ public class PersonPage extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        authCallbackManager.onActivityResult(requestCode,resultCode,data);
+
+
 
         if (requestCode == 22222) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -472,15 +513,8 @@ public class PersonPage extends AppCompatActivity {
             }
 */
         }
-
-
         if (SocialNetworkHandler.getInstance().isAuthFb()){
-            Log.d("",data + "");
-            Log.d("",data + "");
-            ImageView imageView = (ImageView)findViewById(R.id.fbSrc);
-            imageView.setImageResource(R.drawable.fb_icon);
-            TextView textView = (TextView)findViewById(R.id.fbState);
-            textView.setText(R.string.confirmed);
+
 
             SocialNetworkHandler.getInstance().getProfileAlbumId(getApplicationContext(),AccessToken.getCurrentAccessToken());
         }
@@ -538,11 +572,12 @@ public class PersonPage extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             bitmap = BitmapFactory.decodeFile(picturePath);
             Log.d("Bitmap from SD", "method is called");
-
+            lastPos = -100;
             cursor.close();
             PhotoSettingsFragment photoSettingsFragment = new PhotoSettingsFragment();
             photoSettingsFragment.setPhotoSetting(new PhotoSetting(bitmap));
             openFragment(photoSettingsFragment);
+            finishProgressDialog();
             Log.d("onActivityResult", "camera" + data);
 
         } else if (requestCode == SELECTED_PICTURES_FROM_CAMERA && resultCode == RESULT_OK) {
@@ -560,13 +595,16 @@ public class PersonPage extends AppCompatActivity {
 
             PhotoSettingsFragment photoSettingsFragment = new PhotoSettingsFragment();
             photoSettingsFragment.setPhotoSetting(new PhotoSetting(bitmap));
+            lastPos = -100;
             openFragment(photoSettingsFragment);
+            finishProgressDialog();
             Log.d("onActivityResult", "camera" + data);
         }
         }
 
 
     }
+
     @Override
     public void onBackPressed() {
         if (back_pressed + 2000 > System.currentTimeMillis()){

@@ -15,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.menemi.PersonPage;
 import com.menemi.R;
 import com.menemi.dbfactory.rest.Loader;
+import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.personobject.PersonalGift;
 
 import org.json.JSONException;
@@ -57,13 +58,15 @@ public  class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             try {
                 JSONObject data = new JSONObject(remoteMessage.getData());
+                if(data.getString(ACTION).equals(ACTION_GIFT)) {
+                    Log.d(TAG, "gift recieved");
+                    PersonalGift personalGift = Loader.parceGift(data);
+
+                }
                 if(data.getString(ACTION).equals(ACTION_GIFT)){
                     Log.d(TAG, "gift recieved");
                     PersonalGift personalGift = Loader.parceGift(data);
-                    Intent intent = new Intent(INTENT_FILTER);
-                    intent.putExtra(ACTION, ACTION_GIFT);
-                    intent.putExtra(DATA, personalGift);
-                    sendBroadcast(intent);
+                    sendNotification(personalGift);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -86,25 +89,39 @@ public  class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, PersonPage.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+    private void sendNotification(PersonalGift personalGift) {
+    /*    Intent intent = new Intent(this, PersonPage.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);*/
+
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_action_wrap_text)
-                .setContentTitle("FCM Message")
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+        new PictureLoader(personalGift.getAvatarUrl(), (bitmap)->{
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            Intent intent = new Intent(INTENT_FILTER);
+            intent.putExtra(ACTION, ACTION_GIFT);
+            intent.putExtra(DATA, personalGift);
+            sendBroadcast(intent);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+                    NotificationCompat.Builder notificationBuilder =  new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.mipmap.icon)
+                            .setContentTitle(getString(R.string.new_gift_notification))
+                            .setContentText(getString(R.string.who_sended, personalGift.getPersonName()))
+                            .setLargeIcon(bitmap)
+                            .setAutoCancel(true)
+                            .setContentIntent(pendingIntent);
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        });
+
+
+
+
+
+
         //{"action":"profile_viewed","gift_id":"2","from_avatar_url":"http:\/\/minemi.ironexus.com\/system\/profile_pictures\/pictures\/000\/000\/058\/thumb\/file.png?1476471371","from_profile_id":"1","name":"a"}
         //{"action":"profile_added_to_favorite","profile_id":"1", "name":"ivan","avatar_url":"http:\"}
         //{"action":"profile_message_sent","dialog_id":"1", "profile_id":"2","last_message":"bla bla","last_message_date":"30.30.30","unread_msgs_count":"1","name":"Ivan","status":"online"}

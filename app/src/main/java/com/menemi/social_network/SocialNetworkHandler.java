@@ -14,20 +14,18 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.framework.media.ImagePicker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.menemi.dbfactory.DBHandler;
-import com.menemi.dbfactory.SQLiteEngine;
+import com.menemi.dbfactory.Fields;
+import com.menemi.dbfactory.rest.PictureLoader;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
@@ -219,11 +217,6 @@ public class SocialNetworkHandler extends AppCompatActivity
         new GetCurrentUserTask().execute("photos.getPhotos");
     }
 
-    public void getUserAvatar(String request)
-    {
-
-        new downloadImage().execute(request);
-    }
     public void getImageG_plus()
     {
         final InputStream[] inputStream = new InputStream[1];
@@ -314,132 +307,13 @@ public class SocialNetworkHandler extends AppCompatActivity
         return jsonObject[0];
     }
 
-
     public void authFb(Activity activity)
     {
-        callbackManager = CallbackManager.Factory.create();
+
         LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("email", "user_photos", "public_profile", "user_about_me", "user_birthday","user_friends"));
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>()
-        {
-            @Override
-            public void onSuccess(final LoginResult loginResult)
-            {
-                Log.d("test_fb", "Success");
-                Log.d("fbProfileId", loginResult + "");
-                setCurrentFbUserToSQLite();
 
-            }
-
-            @Override
-            public void onCancel()
-            {
-
-            }
-
-            @Override
-            public void onError(FacebookException error)
-            {
-
-            }
-        });
     }
 
-    public void getMutualAppUsers()
-    {
-
-        GraphRequest request = GraphRequest.newGraphPathRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/" + Profile.getCurrentProfile().getId() + "/friends",
-                new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse response) {
-                      Log.d("",response +  "");
-                      Log.d("",response +  "");
-                    }
-                });
-
-        request.executeAsync();
-       /* //final SocialProfile[] socialProfile = new SocialProfile[1];
-        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("email", "user_photos", "public_profile", "user_about_me", "user_birthday","user_friends"));
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>()
-        {
-            @Override
-            public void onSuccess(final LoginResult loginResult)
-            {
-                GraphRequest request = GraphRequest.newMeRequest(
-                        AccessToken.getCurrentAccessToken(),
-                        (object, response) -> {
-                            try
-                            {
-                                String name = object.getString("name");
-                                String gender = object.getString("gender");
-                                String id = object.getString("id");
-                                DBHandler.getInstance().registerFacebook(new SocialProfile(id,name,gender), object1 -> {
-                                    Log.d("","");
-                                   // SocialNetworkHandler.getInstance().getProfileAlbumId(this,AccessToken.getCurrentAccessToken());
-                                     SocialNetworkHandler.getInstance().setCurrentFbUserToSQLite();
-                                        Intent personPage = new Intent(activity, PersonPage.class);
-                                        startActivity(personPage);
-                                        personPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        Log.i("register", "register is successful");
-
-                                });
-                            } catch (JSONException e)
-                            {
-                                e.printStackTrace();
-                            }
-                        });
-
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,gender");
-                request.setParameters(parameters);
-                request.executeAsync();
-                //fetchCurrentFbUser();
-
-            }
-
-            @Override
-            public void onCancel()
-            {
-
-            }
-
-            @Override
-            public void onError(FacebookException error)
-            {
-
-            }
-        });
-        *//*return socialProfile[0];*/
-    }
-
-
- /*   public  void fetchCurrentFbUser() {
-        final SocialProfile[] socialProfile = new SocialProfile[1];
-        GraphRequest request = GraphRequest.newMeRequest(
-               AccessToken.getCurrentAccessToken(),
-                (object, response) -> {
-                    socialProfile[0] = new SocialProfile();
-                    Log.d("", response + "");
-                    Log.d("", response + "");
-                    DBHandler.getInstance().registerFacebook(socialProfile[0], new DBHandler.ResultListener()
-                    {
-                        @Override
-                        public void onFinish(Object object)
-                        {
-
-                        }
-                    });
-
-                });
-
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,gender");
-        request.setParameters(parameters);
-        request.executeAsync();
-       // return socialProfile[0];
-    }
-*/
 
     public void getPhotoFromFb(Context context, final AccessToken accessToken)
     {
@@ -497,60 +371,41 @@ public class SocialNetworkHandler extends AppCompatActivity
 
 
     public void setCurrentFbUserToSQLite (){
-        final SocialProfile profile = new SocialProfile();
-        profile.setFirstName(Profile.getCurrentProfile().getFirstName());
-        profile.setMiddleName(Profile.getCurrentProfile().getMiddleName());
-        profile.setLastName(Profile.getCurrentProfile().getLastName());
-        if (!photoArray.isEmpty()){
-            photoArray.clear();
-        }
-        new downloadImage().execute(String.valueOf(Profile.getCurrentProfile().getProfilePictureUri(100,100)));
-        SocialNetworkHandler.setChangeArray(new SocialNetworkHandler.ChangePhotoArray()
-        {
-            @Override
-            public void changeArray(ArrayList<Bitmap> photoArray)
-            {
-                profile.setImage(photoArray.get(0));
-                if (DBHandler.getInstance().isEmtyTable(SQLiteEngine.TABLE_SOCIAL_FB)){
-                    DBHandler.getInstance().setSocialFB(profile,"FB");
-                }
-
-                Log.d("method","method is called");
-            }
+        new PictureLoader(String.valueOf(Profile.getCurrentProfile().getProfilePictureUri(100, 100)), picture -> {
+            SocialProfile profile = new SocialProfile();
+            profile.setFirstName(Profile.getCurrentProfile().getFirstName());
+            profile.setMiddleName(Profile.getCurrentProfile().getMiddleName());
+            profile.setLastName(Profile.getCurrentProfile().getLastName());
+            profile.setImage(picture);
+            DBHandler.getInstance().saveSocialProfile(profile, Fields.SOCIAL_NETWORKS.FACEBOOK);
         });
-
     }
 
     public void getProfileAlbumId(final Context context, AccessToken accessToken)
     {
         final GraphRequest request = GraphRequest.newMeRequest(
                 accessToken,
-                new GraphRequest.GraphJSONObjectCallback()
-                {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response)
+                (object, response) -> {
+                    JSONObject jsonObject;
+                    try
                     {
-                        JSONObject jsonObject;
-                        try
-                        {
-                            Log.d("response", response + "");
-                            jsonObject = new JSONObject(String.valueOf(object)).getJSONObject("albums");
-                            JSONArray array = jsonObject.getJSONArray("data");
-                            JSONObject result = array.getJSONObject(0);
-                            String id = result.getString("id");
-                            setFbAlbumId(id);
-                            String photoCount = result.getString("photo_count");
-                            setPhotoFbCount(photoCount);
-                            Log.d("photoCount", photoCount + " - from Fb");
-                            Log.d("AlbumIdFb", id + " - album id from Fb");
-                        } catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
-                            setCurrentFbUserToSQLite();
-                            getPhotoFromFb(context,AccessToken.getCurrentAccessToken());
-
+                        Log.d("response", response + "");
+                        jsonObject = new JSONObject(String.valueOf(object)).getJSONObject("albums");
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        JSONObject result = array.getJSONObject(0);
+                        String id = result.getString("id");
+                        setFbAlbumId(id);
+                        String photoCount = result.getString("photo_count");
+                        setPhotoFbCount(photoCount);
+                        Log.d("photoCount", photoCount + " - from Fb");
+                        Log.d("AlbumIdFb", id + " - album id from Fb");
+                    } catch (JSONException e)
+                    {
+                        e.printStackTrace();
                     }
+                        setCurrentFbUserToSQLite();
+                        getPhotoFromFb(context,AccessToken.getCurrentAccessToken());
+
                 });
 
         Bundle parameters = new Bundle();
@@ -589,29 +444,11 @@ public class SocialNetworkHandler extends AppCompatActivity
                         vkUserProfile.setFirstName((object.getString("first_name")));
                         vkUserProfile.setLastName((object.getString("last_name")));
                         vkUserProfile.setId((object.getString("id")));
-                        Log.d("idvk", vkUserProfile.getId());
-                        Log.d("idvk", vkUserProfile.getFirstName());
-                        Log.d("idvk", vkUserProfile.getLastName());
-                        Log.d("idvk", object.getString("photo_100"));
                         vkUserProfile.setPhotoUrl((object.getString("photo_100")));
-                        if (!photoArray.isEmpty()){
-                            photoArray.clear();
-                        }
-                        new downloadImage().execute((object.getString("photo_100")));
-                        setChangeArray(new ChangePhotoArray()
-                        {
-                            @Override
-                            public void changeArray(ArrayList<Bitmap> photoArray)
-                            {
-
-                                vkUserProfile.setImage(photoArray.get(0));
-                                DBHandler.getInstance().setSocialVK(vkUserProfile,"VK");
-                                Log.d("photo_array",photoArray.size() + "");
-                            }
+                        new PictureLoader((object.getString("photo_100")), picture -> {
+                            vkUserProfile.setImage(picture);
+                            DBHandler.getInstance().saveSocialProfile(vkUserProfile, Fields.SOCIAL_NETWORKS.VKONTAKTE);
                         });
-
-                        Log.d("idvk", vkUserProfile.getPhotoUrl());
-
                     }
 
 
@@ -723,10 +560,7 @@ public class SocialNetworkHandler extends AppCompatActivity
 
         protected void onPostExecute(Bitmap b)
         {
-            if (!photoArray.isEmpty())
-            {
-                photoArray.clear();
-            }
+            photoArray.clear();
             photoArray.add(b);
 
             changeArrayListener.changeArray(photoArray);
@@ -783,15 +617,10 @@ public class SocialNetworkHandler extends AppCompatActivity
                         Log.d("ok_user",(object.getString("first_name") + " " + object.getString("last_name")));
                         okUserProfile.setLastName(object.getString("last_name"));
                         okUserProfile.setPhotoUrl(object.getString("pic_2"));
-                        new downloadImage().execute(object.getString("pic_2"));
-                        setChangeArray(new ChangePhotoArray()
-                        {
-                            @Override
-                            public void changeArray(ArrayList<Bitmap> photoArray)
-                            {
-                                okUserProfile.setImage(photoArray.get(0));
-                                DBHandler.getInstance().setSocialOK(okUserProfile,"OK");
-                            }
+                       // new downloadImage().execute(object.getString("pic_2"));
+                        new PictureLoader(object.getString("pic_2"), picture -> {
+                            okUserProfile.setImage(picture);
+                            DBHandler.getInstance().saveSocialProfile(okUserProfile, Fields.SOCIAL_NETWORKS.ODNOKLASNIKI);
                         });
                     } catch (JSONException e)
                     {

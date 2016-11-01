@@ -122,6 +122,7 @@ public  class Fields {
     public static final String N_EMAIL = "email";
     public static final String N_PUSH = "push";
     public static final String N_INAPP = "inapp";
+    public static final String SOCIAL_NETWORK = "social_network";
 
     public static String PREFIX;
 
@@ -147,4 +148,12 @@ public  class Fields {
     public static final String LAST_MESSAGE = "last_message";
     public static final String LAST_MESSAGE_AT = "last_message_date";
     public static final String UNREAD_COUNT = "unread_msgs_count";
+    public enum SOCIAL_NETWORKS{
+        FACEBOOK,
+        VKONTAKTE,
+        INSTAGRAM,
+        ODNOKLASNIKI,
+        GOOGLE_PLUS
+
+    }
 }

@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -59,6 +59,7 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
     private OptionalPendingResult<GoogleSignInResult> opr;
     private InstagramApp instaObj;
     private boolean isForSettings = false;
+    //public static CallbackManager authCallbackManager;
 
 
 
@@ -74,6 +75,7 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
     @Override
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         FacebookSdk.sdkInitialize(getActivity());
         AppEventsLogger.activateApp(getActivity());
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -173,7 +175,7 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
             fbButton.setOnClickListener(view -> {
                 if (SocialNetworkHandler.getInstance().isAuthFb()){
                     dialog.setSocial(SocialNetworkHandler.getInstance().FB_SOCIAL);
-                    SocialNetworkHandler.getInstance().getUserAvatar((Profile.getCurrentProfile().getProfilePictureUri(100,100)).toString());
+                   // SocialNetworkHandler.getInstance().getUserAvatar((Profile.getCurrentProfile().getProfilePictureUri(100,100)).toString());
                     dialog.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomDialog);
                     dialog.show(getFragmentManager(),"fb");
 

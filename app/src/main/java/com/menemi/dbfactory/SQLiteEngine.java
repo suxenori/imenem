@@ -21,6 +21,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public static final String TABLE_OWNER = "profiles";
     public static final String TABLE_LAST_ID = "last_id";
     public static final String TABLE_INTEREST = "personInterests";
+    public static final String TABLE_SOCIAL = "social";
     public static final String TABLE_SOCIAL_OK = "social_ok";
     public static final String TABLE_SOCIAL_FB = "social_fb";
     public static final String TABLE_SOCIAL_VK = "social_vk";
@@ -140,11 +141,23 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             TABLE_SOCIAL_FB + " (" + BaseColumns._ID +
             " integer primary key autoincrement, " +
             Fields.SOCIAL_ID + " text, " +
+
             Fields.SOCIAL_PROFILE_IMAGE + " text, " +
             Fields.SOCIAL_PROFILE_FIRST_NAME + " text, " +
             Fields.SOCIAL_PROFILE_MIDDLE_NAME + " text, " +
             Fields.SOCIAL_PROFILE_LAST_NAME + " text, " +
             Fields.ID + " text)";
+
+    private static final String CREATE_TABLE_SOCIAL = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_SOCIAL + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.SOCIAL_ID + " text, " +
+            Fields.SOCIAL_PROFILE_IMAGE + " text, " +
+            Fields.SOCIAL_NETWORK + " text, " +
+            Fields.SOCIAL_PROFILE_FIRST_NAME + " text, " +
+            Fields.SOCIAL_PROFILE_MIDDLE_NAME+ " text, " +
+            Fields.SOCIAL_PROFILE_LAST_NAME  + " text)";
+
     private static final String CREATE_TABLE_SOCIAL_VK = "CREATE TABLE IF NOT EXISTS " +
             TABLE_SOCIAL_VK + " (" + BaseColumns._ID +
             " integer primary key autoincrement, " +
@@ -235,6 +248,7 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             db.execSQL(CREATE_TABLE_DIALOGS);
             db.execSQL(CREATE_FILTER_TABLE);
             db.execSQL(CREATE_TABLE_LANGUAGES);
+            db.execSQL(CREATE_TABLE_SOCIAL);
 
 
 
@@ -255,8 +269,16 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
 
         Log.w("SQLite", "Update from version " + oldVersion + " to version " + newVersion);
 
-
-        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFILES);
+/*if(newVersion > oldVersion){
+    db.execSQL("DROP TABLE IF EXISTS " + DATABASE_CREATE_SCRIPT);
+    db.execSQL("DROP TABLE IF EXISTS " + DATABASE_LAST_USER_CREATE_SCRIPT);
+    db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SOCIAL_OK);
+    db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SOCIAL_VK);
+    db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SOCIAL_FB);
+    db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SOCIAL_INSTA);
+    //db.execSQL("DROP TABLE IF EXISTS " + DATABASE_FIREBASE_TOKEN_CREATE_SCRIPT);
+}*/
+        //
 
         //TODO: Copy data to new table code
 

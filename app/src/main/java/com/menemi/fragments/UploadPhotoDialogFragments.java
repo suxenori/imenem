@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.FileProvider;
@@ -152,9 +151,7 @@ public class UploadPhotoDialogFragments extends android.app.DialogFragment
             // Continue only if the File was successfully created
             if (photoFile != null) {
 
-                Uri photoURI = FileProvider.getUriForFile(getActivity(),
-                        "com.example.android.fileprovider",
-                        photoFile);
+                Uri photoURI = FileProvider.getUriForFile(getActivity().getApplicationContext(), "com.menemi.fileprovider", photoFile);
 
                 List<ResolveInfo> resInfoList = getActivity().getApplicationContext().getPackageManager().queryIntentActivities(getFromCamera, PackageManager.MATCH_DEFAULT_ONLY);
                 for (ResolveInfo resolveInfo : resInfoList) {
@@ -170,9 +167,10 @@ public class UploadPhotoDialogFragments extends android.app.DialogFragment
     private File createImageFile() throws IOException {
 
         // Create an image file name
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = getActivity().getCacheDir();
+        //new File(getActivity().getApplicationContext().getCacheDir(),"");
         File image = File.createTempFile(
-                "HUI",  /* prefix */
+                "photo",  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
