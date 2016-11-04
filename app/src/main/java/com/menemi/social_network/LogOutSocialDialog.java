@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.Fields;
+import com.menemi.fragments.VerificationFragment;
 import com.menemi.social_network.instagram.InstagramApp;
 import com.menemi.utils.Utils;
 import com.vk.sdk.VKSdk;
@@ -30,6 +32,7 @@ public class LogOutSocialDialog extends DialogFragment
     private String social;
     private View rootView;
     private InstagramApp instagramApp;
+    private GoogleApiClient googleApiClient;
 
     public void setInstagramApp(InstagramApp instagramApp)
     {
@@ -52,26 +55,41 @@ public class LogOutSocialDialog extends DialogFragment
         if (social.equals(SocialNetworkHandler.getInstance().FB_SOCIAL))
         {
             SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.FACEBOOK);
-            name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
-            image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            if(socialProfile != null) {
+                name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
+                image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            }
 
         } else if (social.equals(SocialNetworkHandler.getInstance().VK_SOCIAL))
         {
             SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.VKONTAKTE);
-            name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
-            image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            if(socialProfile != null) {
+                name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
+                image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            }
 
         } else if (social.equals(SocialNetworkHandler.getInstance().OK_SOCIAL))
         {
             SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.ODNOKLASNIKI);
-            name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
-            image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            if(socialProfile != null) {
+                name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
+                image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            }
 
         } else if (social.equals(SocialNetworkHandler.getInstance().INSTA_SOCIAL))
         {
             SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.INSTAGRAM);
-            name.setText(instagramApp.getName());
-            image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            if(socialProfile != null) {
+                name.setText(instagramApp.getName());
+                image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            }
+
+        } else if (social.equals(SocialNetworkHandler.getInstance().G_SOCIAL)){
+            SocialProfile socialProfile = DBHandler.getInstance().getSocialProfile(Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+            if(socialProfile != null) {
+                name.setText(socialProfile.getFirstName() + " " + socialProfile.getLastName());
+                image.setImageBitmap(Utils.getCroppedBitmap(socialProfile.getImage()));
+            }
         }
         Button close = (Button) rootView.findViewById(R.id.cancelButton);
         close.setOnClickListener(view -> dismiss());
@@ -114,9 +132,12 @@ public class LogOutSocialDialog extends DialogFragment
             } else if (social.equals(SocialNetworkHandler.getInstance().G_SOCIAL))
             {
                 SocialNetworkHandler.getInstance().getPhotoUrlG_plus().clear();
+                SocialNetworkHandler.getInstance().signOut(googleApiClient);
+                VerificationFragment.isLogInG = false;
                 ImageView imageView = (ImageView) getActivity().findViewById(R.id.g_Src);
                 imageView.setImageResource(R.drawable.gplus_ic_off);
                 TextView textView = (TextView) getActivity().findViewById(R.id.gState);
+               // GoogleAuthUtil.removeAccount(getActivity(), VerificationFragment.acct);
                 textView.setText("(привязать)");
 
                 dismiss();
@@ -132,4 +153,8 @@ public class LogOutSocialDialog extends DialogFragment
         this.social = social;
     }
 
+    public void setGoogleApiClient(GoogleApiClient googleApiClient)
+    {
+        this.googleApiClient = googleApiClient;
+    }
 }

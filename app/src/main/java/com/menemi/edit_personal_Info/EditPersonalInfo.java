@@ -120,7 +120,7 @@ public class EditPersonalInfo extends AppCompatActivity
             bodyTypeDialog.setEditDialogListener(new EditDialogBodyType());
             bodyTypeDialog.setItems(personalAppearanceDataSource.getBodyType());
             bodyTypeDialog.setSelectedRadioButton(personalAppearanceSettingsModelFromStorage.getBodyTypeIndex());
-            bodyTypeDialog.setTitle("Телосложение");
+            bodyTypeDialog.setTitle(getString(R.string.body_type));
             bodyTypeDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
             bodyTypeDialog.show(getSupportFragmentManager(),"bt");
         });
@@ -155,7 +155,7 @@ public class EditPersonalInfo extends AppCompatActivity
             eyeColorDialog.setEditDialogListener(new EditDialogEyeColor());
             eyeColorDialog.setItems(personalAppearanceDataSource.getEyeColor());
             eyeColorDialog.setSelectedRadioButton(personalAppearanceSettingsModelFromStorage.getEyeColorIndex());
-            eyeColorDialog.setTitle("Цвет глаз");
+            eyeColorDialog.setTitle(getString(R.string.eye_color));
             eyeColorDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
             eyeColorDialog.show(getSupportFragmentManager(),"eye color");
         });
@@ -178,7 +178,7 @@ public class EditPersonalInfo extends AppCompatActivity
             liveWithDialog.setEditDialogListener(new EditDialogLivingWith());
             liveWithDialog.setItems(personalAppearanceDataSource.getLivingWith());
             liveWithDialog.setSelectedRadioButton(personalAppearanceSettingsModelFromStorage.getLivingWithIndex());
-            liveWithDialog.setTitle("Я живу");
+            liveWithDialog.setTitle(getString(R.string.living_with));
             liveWithDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
             liveWithDialog.show(getSupportFragmentManager(),"living_with");
         });
@@ -187,7 +187,7 @@ public class EditPersonalInfo extends AppCompatActivity
             smokingDialog.setEditDialogListener(new EditDialogSmoking());
             smokingDialog.setItems(personalAppearanceDataSource.getSmoking());
             smokingDialog.setSelectedRadioButton(personalAppearanceSettingsModelFromStorage.getSmokingIndex());
-            smokingDialog.setTitle("Курение");
+            smokingDialog.setTitle(getString(R.string.smoking));
             smokingDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
             smokingDialog.show(getSupportFragmentManager(),"living_with");
         });

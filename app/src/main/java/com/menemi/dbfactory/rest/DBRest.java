@@ -112,7 +112,7 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
             }
         }).execute();
     }
-    public void addPhoto(PhotoSetting photoSetting,final OnDataRecieveListener onDataRecieveListener){
+    public void addPhoto(PhotoSetting photoSetting, UploadProgressListener progressListener, final OnDataRecieveListener onDataRecieveListener){
         new Sender(Sender.RestCommands.ADD_PHOTO,photoSetting, new Sender.OnUploadListener()
         {
             @Override
@@ -122,7 +122,7 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
                     onDataRecieveListener.onFinish(true);
                 } else{onDataRecieveListener.onFinish(false);}
             }
-        }).execute();
+        }).setUploadProgressListener(progressListener).execute();
     }
     public void setInfo(PersonObject personObject, final OnDataRecieveListener onDataRecieveListener){
         new Sender(Sender.RestCommands.SET_INFO, personObject, new Sender.OnUploadListener()
@@ -184,7 +184,11 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
     }
 
     public void setNotificationToken(int id, String token, OnDataRecieveListener onDataRecieveListener) {
-        new Loader(Loader.RestCommands.SET_NOTIFICATION_TOKEN, token, id, onDataRecieveListener).execute();
+        if(token != "") {
+            new Loader(Loader.RestCommands.SET_NOTIFICATION_TOKEN, token, id, onDataRecieveListener).execute();
+        } else {
+            onDataRecieveListener.onFinish(null);
+        }
     }
 
     /**
@@ -343,6 +347,8 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
         new Loader(Loader.RestCommands.SET_AVATAR, pictureId, personId,onDataRecieveListener ).execute() ;
     }
     public interface OnDataRecieveListener extends JSONLoader.OnLoadFinishListener {
+    }
+    public interface UploadProgressListener extends JSONSender.UploadProgressListener {
     }
 
 }

@@ -35,16 +35,18 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.dbfactory.Fields;
 import com.menemi.dbfactory.InternetConnectionListener;
 import com.menemi.dbfactory.MyFirebaseMessagingService;
 import com.menemi.dbfactory.SQLiteEngine;
 import com.menemi.dbfactory.rest.Loader;
+import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.fragments.BuyCoinsFragment;
 import com.menemi.fragments.BuyVipFragment;
 import com.menemi.fragments.DialogsList;
@@ -54,11 +56,13 @@ import com.menemi.fragments.IConnectionInformerFragment;
 import com.menemi.fragments.PersonDataFragment;
 import com.menemi.fragments.PhotoSettingsFragment;
 import com.menemi.fragments.ShowPeopleCompositeFragment;
+import com.menemi.fragments.VerificationFragment;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PersonalGift;
 import com.menemi.personobject.PhotoSetting;
 import com.menemi.settings.SettingsActivity;
 import com.menemi.social_network.SocialNetworkHandler;
+import com.menemi.social_network.SocialProfile;
 import com.menemi.utils.Utils;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -73,6 +77,8 @@ import java.util.ArrayList;
 
 import ru.ok.android.sdk.Odnoklassniki;
 import ru.ok.android.sdk.OkListener;
+
+import static com.menemi.fragments.VerificationFragment.acct;
 
 
 public class PersonPage extends AppCompatActivity {
@@ -108,7 +114,7 @@ public class PersonPage extends AppCompatActivity {
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            Log.e("BroadcastReceiver", "BroadcastReceiverABCDEFG");
          if(intent.getStringExtra(MyFirebaseMessagingService.ACTION) != null && intent.getStringExtra(MyFirebaseMessagingService.ACTION).equals(MyFirebaseMessagingService.ACTION_GIFT)) {
              GiftInfoDialogFragment giftInfoDialogFragment = new GiftInfoDialogFragment();
              giftInfoDialogFragment.setGift((PersonalGift) intent.getSerializableExtra(MyFirebaseMessagingService.DATA));
@@ -149,8 +155,10 @@ public class PersonPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.menemi.R.layout.activity_person_page);
-
+        FacebookSdk.sdkInitialize(this);
         DBHandler.setUP(this);
+
+
         DBHandler.getInstance().sendFirebaseTokentToServer();
         authCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(authCallbackManager, new FacebookCallback<LoginResult>()
@@ -502,16 +510,15 @@ public class PersonPage extends AppCompatActivity {
     {
         super.onActivityResult(requestCode, resultCode, data);
         authCallbackManager.onActivityResult(requestCode,resultCode,data);
-
-
-
-        if (requestCode == 22222) {
+        if (requestCode == 666) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-           /* if (result != null){
-                //SocialNetworkHandler.getInstance().getImageG_plus();
+            //handleSignInResult(result);
+
+            if (result != null){
+
+                handleSignInResult(result);
             }
-*/
+
         }
         if (SocialNetworkHandler.getInstance().isAuthFb()){
 
@@ -733,16 +740,39 @@ class OnVipClickListener implements View.OnClickListener{
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        if (result.isSuccess()) {
+        acct = result.getSignInAccount();
+
             // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            String s = acct.getId();
-            String s1 = acct.getDisplayName();
-            /*Toast.makeText(this,acct.getFamilyName() + "",Toast.LENGTH_SHORT).show();*/
+            if (result.isSuccess()) {
+                // Signed in successfully, show authenticated UI.
+                if (acct != null){
+                    SocialProfile socialProfile = new SocialProfile();
+                    socialProfile.setId(acct.getId());
+                    socialProfile.setFullName(acct.getDisplayName());
+                    socialProfile.setLastName(acct.getFamilyName());
+                    socialProfile.setFirstName(acct.getGivenName());
+                    if(acct.getPhotoUrl() == null){
+                        socialProfile.setImage(Utils.getBitmapFromResource(this, R.drawable.no_photo));
+                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+
+                    } else{
+                    new PictureLoader(acct.getPhotoUrl().toString(), picture -> {
+                        socialProfile.setImage(picture);
+                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+                    });
+                    }
+                    SocialNetworkHandler.getInstance().getImageG_plus(acct.getId());
+                    ImageView imageView = (ImageView)findViewById(R.id.g_Src);
+                    imageView.setImageResource(R.drawable.gplus_ic);
+                    TextView textView = (TextView)findViewById(R.id.gState);
+                    textView.setText(getString(R.string.verified));
+                    VerificationFragment.isLogInG = true;
+                }
+
+
+            }
 
         }
     }
-
-}
 
 

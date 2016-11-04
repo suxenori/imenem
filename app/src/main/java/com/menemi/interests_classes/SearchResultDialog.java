@@ -43,7 +43,7 @@ public class SearchResultDialog extends DialogFragment
             }
         } else {
             listSliding.add(new ItemSlideMenu(BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
-                    R.drawable.add_int),interestsFromTextField,"как новый интерес"));
+                    R.drawable.add_int),interestsFromTextField,getString(R.string.new_interest)));
         }
 
         setList(interestsContainer,listSliding);
@@ -117,27 +117,22 @@ public class SearchResultDialog extends DialogFragment
         @Override
         public void onClick(View view)
         {
-            view.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    Interests interests;
-                    if (interestsArray != null){
+            view.setOnClickListener(view1 -> {
+                Interests interests;
+                if (interestsArray != null){
 
-                        interests = (Interests) interestsArray.get(id);
-                        choiseListener.addCustomInterest(interests);
-                        dismiss();
-                        Log.d("interests", interests.getInterest());
-                    } else {
-                        interests = new Interests(interestsFromTextField,2,11);
-                        Log.d("interests", interests.getInterest());
-                        choiseListener.addCustomInterest(interests);
-                        dismiss();
-                    }
-
-
+                    interests = (Interests) interestsArray.get(id);
+                    choiseListener.addCustomInterest(interests);
+                    dismiss();
+                    Log.d("interests", interests.getInterest());
+                } else {
+                    interests = new Interests(interestsFromTextField,2,11);
+                    Log.d("interests", interests.getInterest());
+                    choiseListener.addCustomInterest(interests);
+                    dismiss();
                 }
+
+
             });
         }
     }

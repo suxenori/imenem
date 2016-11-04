@@ -22,11 +22,11 @@
         <item name="android:windowBackground">@null</item>-->
     </style>
     <style name="settings_theme">
-        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_marginStart">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
-        <item name="android:background">@drawable/click_button</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:background">@drawable/click_menu</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -406,5 +406,12 @@
         <item name="android:layout_marginLeft">@dimen/_18sdp</item>
         <item name="android:layout_marginStart">@dimen/_18sdp</item>
     </style>
+    <style name="mutual_photo">
 
+        <item name="android:background">@drawable/click_menu</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_width">@dimen/_100sdp</item>
+        <item name="android:layout_height">@dimen/_100sdp</item>
+
+    </style>
 </resources>

@@ -20,6 +20,8 @@ import com.menemi.utils.Utils;
 
 import java.util.ArrayList;
 
+import static com.menemi.dbfactory.SQLiteEngine.TABLE_LANGUAGES;
+
 class DBSQLite {
     SQLiteEngine sqliteInstance;
     SQLiteDatabase sqliteDB;
@@ -168,22 +170,21 @@ class DBSQLite {
         values.put(Fields.NAME, language.getLanguageName());
 
 
-        if (isFirstTime(SQLiteEngine.TABLE_LANGUAGES)) {
-            sqliteDB.insert(SQLiteEngine.TABLE_LANGUAGES, null, values);
+        if (isFirstTime(TABLE_LANGUAGES)) {
+            sqliteDB.insert(TABLE_LANGUAGES, null, values);
         } else {
-            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_LANGUAGES, null, Fields.ID + "=?",
+            Cursor cursor = sqliteDB.query(TABLE_LANGUAGES, null, Fields.ID + "=?",
                     new String[]{"" + language.getLanguagesId()}, null, null, null, null);
             if (cursor != null && cursor.moveToFirst() == true) {
                 if (!cursor.getString(cursor.getColumnIndex(Fields.NAME)).equals(language.getLanguageName())) {
 
 
-                    sqliteDB.update(SQLiteEngine.TABLE_LANGUAGES, values,
+                    sqliteDB.update(TABLE_LANGUAGES, values,
                             Fields.ID + "=?", new String[]{"" + language.getLanguagesId()});
                 }
             } else {
-                sqliteDB.insert(SQLiteEngine.TABLE_LANGUAGES, null, values);
+                sqliteDB.insert(TABLE_LANGUAGES, null, values);
             }
-
         }
 
     }
@@ -191,7 +192,7 @@ class DBSQLite {
     public ArrayList<Language> getLanguages() {
 
 
-        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_LANGUAGES, null, null, null, null, null, null);
+        Cursor cursor = sqliteDB.query(TABLE_LANGUAGES, null, null, null, null, null, null);
         ArrayList<Language> languages = new ArrayList<>();
         if (cursor != null) {
             cursor.moveToFirst();
@@ -206,7 +207,12 @@ class DBSQLite {
         return languages;
 
     }
+    public void deleteLanguages() {
 
+            sqliteDB.delete(TABLE_LANGUAGES, null, null);
+
+
+    }
     public void saveFilter(FilterObject filterObject) {
         ContentValues values = new ContentValues();
         values.put(Fields.SEARCH_AGE_MIN, filterObject.getMinAge());
@@ -353,11 +359,11 @@ class DBSQLite {
 
     public SocialProfile getSocialProfile(Fields.SOCIAL_NETWORKS socialNetwork) {
 
-        SocialProfile profile = new SocialProfile();
+        SocialProfile profile = null;
 
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL, null, Fields.SOCIAL_NETWORK + "=?", new String[]{socialNetwork.name()}, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null &&  cursor.moveToFirst()) {
+            profile = new SocialProfile();
             profile.setFirstName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_FIRST_NAME)));
             profile.setMiddleName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_MIDDLE_NAME)));
             profile.setLastName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_LAST_NAME)));
@@ -672,6 +678,7 @@ class DBSQLite {
 
     public void clearDataBase() {
         sqliteDB.execSQL("delete from " + SQLiteEngine.TABLE_OWNER);
+        //sqliteDB.execSQL("delete from " + SQLiteEngine.TABLE_OWNER);
     }
 
 

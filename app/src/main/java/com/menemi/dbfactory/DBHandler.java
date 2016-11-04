@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.menemi.dbfactory.rest.DBRest;
 import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.dbfactory.stream.StreamController;
@@ -262,8 +263,7 @@ public class DBHandler {
                     myProfile = (PersonObject) object;
                     dbSQLite.setPersonalInfo(myProfile);
                     dbSQLite.saveLastId(myProfile.getPersonId());
-                    DBHandler.
-                            getInstance().
+                    DBHandler.getInstance().
                             downloadFilterSettings(myProfile.getPersonId(), obj -> myProfile.setFilterObject((FilterObject) obj));
                     prepareSettingsForProfile();
                 }
@@ -451,7 +451,7 @@ public class DBHandler {
         });
     }
 
-    public void addPhoto(final PhotoSetting photoSetting, final ResultListener resultListener) {
+    public void addPhoto(final PhotoSetting photoSetting, ProgressListener progressListener, final ResultListener resultListener) {
         subscribeToRest(new InternetConnectionListener() {
             @Override
             public void internetON() {
@@ -467,7 +467,7 @@ public class DBHandler {
             @Override
             public void onFinish(Object object) {
                 if ((boolean) object == true) {
-                    dbRest.addPhoto(photoSetting, resultListener);
+                    dbRest.addPhoto(photoSetting, progressListener, resultListener);
                     // myProfile.setPhotoCount(photoSetting.isPrivate(), myProfile.getPhotoCount(photoSetting.isPrivate()) + 1);
                 } else {
                     resultListener.onFinish(false);
@@ -762,6 +762,11 @@ public class DBHandler {
 
     public void sendFirebaseTokentToServer() {
         String firebaseToken = dbSQLite.getFireBaseToken();
+        if(firebaseToken.equals("")){
+            firebaseToken = FirebaseInstanceId.getInstance().getToken();
+            setFireBaseToken(firebaseToken);
+        }
+
         dbRest.setNotificationToken(getUserId(), firebaseToken, new ResultListener() {
             @Override
             public void onFinish(Object object) {
@@ -921,9 +926,11 @@ public class DBHandler {
                     dbRest.getAllLanguages((obj) -> {
                         ArrayList<Language> languages = (ArrayList<Language>) obj;
                         allLanguages = languages;
+                        dbSQLite.deleteLanguages();
                         for (int i = 0; i < languages.size(); i++) {
                             dbSQLite.setLanguage(languages.get(i));
                         }
+
                         resultListener.onFinish(true);
 
                     });
@@ -1253,7 +1260,9 @@ public class DBHandler {
     public interface ResultListener extends DBRest.OnDataRecieveListener {
 
     }
+    public interface ProgressListener extends DBRest.UploadProgressListener {
 
+    }
     static class ContextNotSetException extends Exception {
         @Override
         public String getMessage() {

@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="@dimen/font_size"
-            android:text="Забыли пароль?" />
+            android:text="@string/forgot_pass" />
 
     </LinearLayout>
 

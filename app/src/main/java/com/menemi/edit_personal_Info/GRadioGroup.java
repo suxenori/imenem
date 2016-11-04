@@ -14,16 +14,15 @@ import java.util.List;
 
 public class GRadioGroup {
 
-    private List<RadioButton> radios = new ArrayList<RadioButton>();
+    private List<RadioButton> radios = new ArrayList<>();
 
-   private int index;
+    private int index;
 
     /**
      * Constructor, which allows you to pass number of RadioButton instances,
      * making a group.
      *
-     * @param radios
-     *            One RadioButton or more.
+     * @param radios One RadioButton or more.
      */
     public GRadioGroup(RadioButton... radios) {
         super();
@@ -38,17 +37,15 @@ public class GRadioGroup {
      * Constructor, which allows you to pass number of RadioButtons
      * represented by resource IDs, making a group.
      *
-     * @param activity
-     *            Current View (or Activity) to which those RadioButtons
-     *            belong.
-     * @param radiosIDs
-     *            One RadioButton or more.
+     * @param activity  Current View (or Activity) to which those RadioButtons
+     *                  belong.
+     * @param radiosIDs One RadioButton or more.
      */
     public GRadioGroup(View activity, int... radiosIDs) {
         super();
 
         for (int radioButtonID : radiosIDs) {
-            RadioButton rb = (RadioButton)activity.findViewById(radioButtonID);
+            RadioButton rb = (RadioButton) activity.findViewById(radioButtonID);
             if (rb != null) {
                 this.radios.add(rb);
                 rb.setOnClickListener(onClick);
@@ -82,25 +79,37 @@ public class GRadioGroup {
             }
 
             // now let's select currently clicked RadioButton
-                RadioButton rb = (RadioButton) v;
-                rb.setChecked(true);
-                selectedIndex(radios,rb);
-
+            RadioButton rb = (RadioButton) v;
+            rb.setChecked(true);
+            int index = selectedIndex(radios, rb);
+            if (onCheckChange != null) {
+                onCheckChange.OnChange(index);
             }
+        }
     };
 
-    public int selectedIndex(List<RadioButton> buttons, RadioButton rb){
-       index = buttons.indexOf(rb);
+
+    public int selectedIndex(List<RadioButton> buttons, RadioButton rb) {
+        index = buttons.indexOf(rb);
         return index;
     }
 
-    public int getIndex()
-    {
+    public int getIndex() {
         return index;
     }
 
-    public void setCheckedRadioButton(int index){
+    public void setCheckedRadioButton(int index) {
         radios.get(index).setChecked(true);
         this.index = index;
+    }
+
+    public void setOnCheckChange(OnCheckChange onCheckChange) {
+        this.onCheckChange = onCheckChange;
+    }
+
+    private OnCheckChange onCheckChange = null;
+
+    public interface OnCheckChange {
+        void OnChange(int checkedIndex);
     }
 }

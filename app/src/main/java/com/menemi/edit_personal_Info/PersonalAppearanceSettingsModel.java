@@ -6,8 +6,8 @@ package com.menemi.edit_personal_Info;
 
 public class PersonalAppearanceSettingsModel
 {
-    private int height;
-    private int weigt;
+    private int height = -1;
+    private int weigt = -1;
     private String about;
     private int relationshipIndex;
     private int sexualityIndex;

@@ -2,7 +2,6 @@ package com.menemi.fragments;
 
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,10 +26,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.dbfactory.Fields;
+import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.personobject.PersonObject;
 import com.menemi.social_network.LogOutSocialDialog;
 import com.menemi.social_network.SocialNetworkHandler;
+import com.menemi.social_network.SocialProfile;
 import com.menemi.social_network.instagram.InstagramApp;
+import com.menemi.utils.Utils;
 import com.vk.sdk.VKSdk;
 
 import org.json.JSONObject;
@@ -59,6 +62,9 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
     private OptionalPendingResult<GoogleSignInResult> opr;
     private InstagramApp instaObj;
     private boolean isForSettings = false;
+    public static GoogleSignInAccount acct;
+    public static boolean isLogInG = false;
+
     //public static CallbackManager authCallbackManager;
 
 
@@ -138,7 +144,7 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
                 }
             });
             final LogOutSocialDialog dialog = new LogOutSocialDialog();
-            if (true){                                                                   //<--- change this loop, when generate correct SH1
+            if (isLogInG){
                 gImage.setImageDrawable(getResources().getDrawable(R.drawable.gplus_ic));
                 gState.setText("(подтвержден)");
             } else {
@@ -168,14 +174,22 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
             }
             gButton.setOnClickListener(view -> {
 
-                signIn();
+                    if (isLogInG){
+                        dialog.setGoogleApiClient(mGoogleApiClient);
+                        dialog.setSocial(SocialNetworkHandler.getInstance().G_SOCIAL);
+                        dialog.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomDialog);
+                        dialog.show(getFragmentManager(),"g");
+                    } else {
+                        SocialNetworkHandler.getInstance().signIn(getActivity(),mGoogleApiClient);
+                    }
+
+
                 Log.d("g_button", " button is pressed");
             });
 
             fbButton.setOnClickListener(view -> {
                 if (SocialNetworkHandler.getInstance().isAuthFb()){
                     dialog.setSocial(SocialNetworkHandler.getInstance().FB_SOCIAL);
-                   // SocialNetworkHandler.getInstance().getUserAvatar((Profile.getCurrentProfile().getProfilePictureUri(100,100)).toString());
                     dialog.setStyle(DialogFragment.STYLE_NORMAL,R.style.CustomDialog);
                     dialog.show(getFragmentManager(),"fb");
 
@@ -271,7 +285,28 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
+            if (acct != null){
+                isLogInG = true;
+                SocialProfile socialProfile = new SocialProfile();
+                socialProfile.setId(acct.getId());
+                socialProfile.setFullName(acct.getDisplayName());
+                socialProfile.setLastName(acct.getFamilyName());
+                socialProfile.setFirstName(acct.getGivenName());
+                if(acct.getPhotoUrl() == null){
+                    socialProfile.setImage(Utils.getBitmapFromResource(getActivity(), R.drawable.no_photo));
+                    DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+
+                } else{
+                    new PictureLoader(acct.getPhotoUrl().toString(), picture -> {
+                        socialProfile.setImage(picture);
+                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+                    });
+                }
+              //  SocialNetworkHandler.getInstance().getImageG_plus(acct.getId());
+
+
+            }
+
 
         }
     }
@@ -282,10 +317,6 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
         if (mGoogleApiClient != null){
             mGoogleApiClient.disconnect();
         }
-    }
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        getActivity().startActivityForResult(signInIntent, 22222);
     }
 
     @Override

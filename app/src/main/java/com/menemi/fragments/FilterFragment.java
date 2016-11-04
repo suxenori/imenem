@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +18,7 @@ import com.menemi.PersonPage;
 import com.menemi.R;
 import com.menemi.SearchCity;
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.edit_personal_Info.GRadioGroup;
 import com.menemi.filter.FilterObject;
 import com.menemi.models.PlaceModel;
 import com.menemi.personobject.PersonObject;
@@ -39,9 +40,10 @@ public class FilterFragment extends Fragment {
     private PersonObject.UserStatus statusSelected;
     private TextView choisedPlaceTextView;
     private boolean isDraggedRangeBar = false;
-    private ImageView onlineRadioButton;
-    private ImageView offlineRadioButton;
-    private ImageView anyNetworkStatusRadioButton;
+    private RadioButton onlineRadioButton;
+    private RadioButton offlineRadioButton;
+    private RadioButton anyNetworkStatusRadioButton;
+
 
 
 
@@ -69,25 +71,34 @@ public class FilterFragment extends Fragment {
         Button submitButton = (Button) rootView.findViewById(R.id.submitButton);
         Button cancelButton = (Button) rootView.findViewById(R.id.cancelButtonFilter);
 
-        onlineRadioButton = (ImageView) rootView.findViewById(R.id.onlineRadioButton);
-        offlineRadioButton = (ImageView) rootView.findViewById(R.id.offlineRadioButton);
-        anyNetworkStatusRadioButton = (ImageView) rootView.findViewById(R.id.anyStatusRadioButton);
+        RadioButton onlineRadioButton = (RadioButton) rootView.findViewById(R.id.onlineRadioButton);
+        RadioButton offlineRadioButton = (RadioButton) rootView.findViewById(R.id.offlineRadioButton);
+        RadioButton anyNetworkStatusRadioButton = (RadioButton) rootView.findViewById(R.id.anyStatusRadioButton);
 
-
-        ImageView manRadioButton = (ImageView) rootView.findViewById(R.id.maleRadioButton);
-        manRadioButton.setOnClickListener((v) -> {
-            setCheckedGender(PersonObject.InterestGender.MAN);
+        GRadioGroup statusRadioGroup = new GRadioGroup(onlineRadioButton, offlineRadioButton,anyNetworkStatusRadioButton);
+        statusRadioGroup.setCheckedRadioButton(personObject.getUserStatus().ordinal());
+        statusSelected = personObject.getUserStatus();
+        statusRadioGroup.setOnCheckChange((index)->{
+            statusSelected = PersonObject.UserStatus.values()[index];
         });
 
-        ImageView womanRadioButton = (ImageView) rootView.findViewById(R.id.femaleRadioButton);
-        womanRadioButton.setOnClickListener((v) -> {
-            setCheckedGender(PersonObject.InterestGender.WOMAN);
+
+        RadioButton manRadioButton = (RadioButton) rootView.findViewById(R.id.maleRadioButton);
+
+
+        RadioButton womanRadioButton = (RadioButton) rootView.findViewById(R.id.femaleRadioButton);
+
+        RadioButton anyGenderRadioButton = (RadioButton) rootView.findViewById(R.id.anyGenderRadioButton);
+
+
+        GRadioGroup genderRadioGroup = new GRadioGroup(manRadioButton, womanRadioButton,anyGenderRadioButton);
+        genderRadioGroup.setCheckedRadioButton(personObject.getInterestGender().ordinal());
+        statusSelected = personObject.getUserStatus();
+        genderRadioGroup.setOnCheckChange((index)->{
+            genderSelected = PersonObject.InterestGender.values()[index];
         });
-        ImageView anyGenderRadioButton = (ImageView) rootView.findViewById(R.id.anyGenderRadioButton);
-        anyGenderRadioButton.setOnClickListener((v) -> {
-            setCheckedGender(PersonObject.InterestGender.ANY_GENDER);
-        });
-        ImageView onlineRadioButton = (ImageView) rootView.findViewById(R.id.onlineRadioButton);
+
+       /* ImageView onlineRadioButton = (ImageView) rootView.findViewById(R.id.onlineRadioButton);
         onlineRadioButton.setOnClickListener((v) -> {
             setUserStatus(PersonObject.UserStatus.ONLINE);
         });
@@ -99,7 +110,7 @@ public class FilterFragment extends Fragment {
         anyNetworkStatusRadioButton.setOnClickListener((v) -> {
             setUserStatus(PersonObject.UserStatus.ANY);
         });
-
+*/
 
         RangeSeekBar seekBar = (RangeSeekBar) rootView.findViewById(R.id.rangeSeekBarTextColorWithCode);
         findFriendsCB = (CheckBox) rootView.findViewById(R.id.findFriendsCheckBox);
@@ -154,8 +165,8 @@ public class FilterFragment extends Fragment {
             findFriendsCB.setChecked(true);
         }
 
-        setCheckedGender(personObject.getInterestGender());
-        setUserStatus(personObject.getUserStatus());
+      //setCheckedGender();
+//        setUserStatus();
 
         Log.d("FilterFragment", "personObject.getSearchAgeMin" + personObject.getSearchAgeMin());
         Log.d("FilterFragment", "personObject.getSearchAgeMax" + personObject.getSearchAgeMax());
@@ -211,7 +222,7 @@ public class FilterFragment extends Fragment {
         return rootView;
     }
 
-    private void setCheckedGender(PersonObject.InterestGender pos) {
+  /*  private void setCheckedGender(PersonObject.InterestGender pos) {
         ImageView manRadioButton = (ImageView) rootView.findViewById(R.id.maleRadioButton);
         ImageView womanRadioButton = (ImageView) rootView.findViewById(R.id.femaleRadioButton);
         ImageView anyGenderRadioButton = (ImageView) rootView.findViewById(R.id.anyGenderRadioButton);
@@ -229,9 +240,9 @@ public class FilterFragment extends Fragment {
             womanRadioButton.setImageResource(R.drawable.all_of);
             anyGenderRadioButton.setImageResource(R.drawable.all_on);
         }
-    }
+    }*/
 
-    private void setUserStatus(PersonObject.UserStatus pos) {
+  /*  private void setUserStatus(PersonObject.UserStatus pos) {
 
         statusSelected = pos;
         if (pos == PersonObject.UserStatus.ONLINE) {
@@ -247,7 +258,7 @@ public class FilterFragment extends Fragment {
             offlineRadioButton.setImageResource(R.drawable.all_of);
             anyNetworkStatusRadioButton.setImageResource(R.drawable.all_on);
         }
-    }
+    }*/
 
 
     private PersonObject.IamHereTo getIAmHereTo() {

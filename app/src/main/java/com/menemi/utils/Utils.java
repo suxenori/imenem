@@ -116,7 +116,7 @@ public class Utils {
 
     public static java.sql.Date getDateFromServer(String dateString) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));////2016-07-07T00:00:00.000Z
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));////2016-07-07T00:00:00.000Z 2013-04-11T4:11:34:687Z"
         Date date = null;
 
         try {

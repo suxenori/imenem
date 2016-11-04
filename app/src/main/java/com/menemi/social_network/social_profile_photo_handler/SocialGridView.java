@@ -2,6 +2,7 @@ package com.menemi.social_network.social_profile_photo_handler;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.GridView;
 
 import com.menemi.R;
@@ -18,15 +19,25 @@ public class SocialGridView extends AppCompatActivity
 {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gridview_activity);
-         ArrayList<String> urls = new ArrayList<>();
-        Collections.addAll(urls, prepareUrlArray(getIntent().getStringExtra(SocialNetworkHandler.getInstance().TARGET_SOCIAL_CONST)));
-        Collections.shuffle(urls);
+        if (prepareUrlArray(getIntent().getStringExtra(SocialNetworkHandler.getInstance().TARGET_SOCIAL_CONST)).length == 0){
+            setContentView(R.layout.no_photos_in_images);
+            Button backButton = (Button)findViewById(R.id.back_button);
+            backButton.setOnClickListener(v -> {
+                finish();
+            });
+        } else {
+            setContentView(R.layout.gridview_activity);
+            ArrayList<String> urls = new ArrayList<>();
+            Collections.addAll(urls, prepareUrlArray(getIntent().getStringExtra(SocialNetworkHandler.getInstance().TARGET_SOCIAL_CONST)));
+            Collections.shuffle(urls);
 
-        GridView gv = (GridView) findViewById(R.id.grid_view);
-        gv.setAdapter(new GridViewAdapter(this,urls));
-        gv.setOnScrollListener(new ScrollViewListener(this));
-        gv.invalidateViews();
+            GridView gv = (GridView) findViewById(R.id.grid_view);
+            gv.setAdapter(new GridViewAdapter(this,urls));
+            gv.setOnScrollListener(new ScrollViewListener(this));
+            gv.invalidateViews();
+        }
+
+
 
     }
     private String[] prepareUrlArray(String social){

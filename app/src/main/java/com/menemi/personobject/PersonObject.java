@@ -804,7 +804,7 @@ public class PersonObject {
 
     }
 
-    public static enum InterestGender {
+    public enum InterestGender {
         MAN,
         WOMAN,
         ANY_GENDER

@@ -48,7 +48,7 @@ public class GridViewAdapter extends BaseAdapter
         Picasso.with(context) //
                 .load(url) //
                 .placeholder(R.drawable.empty_photo) //
-                .error(R.drawable.empty_photo) //
+                .error(R.drawable.no_photo) //
                 .tag(context) //
         /*requestCreator*/.into(squaredImageView);
 

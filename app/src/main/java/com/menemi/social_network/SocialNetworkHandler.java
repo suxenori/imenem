@@ -2,6 +2,7 @@ package com.menemi.social_network;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -13,16 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.framework.media.ImagePicker;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.Fields;
 import com.menemi.dbfactory.rest.PictureLoader;
@@ -67,7 +69,6 @@ public class SocialNetworkHandler extends AppCompatActivity
     public String G_SOCIAL = "G_PLUS";
     public String FB_SOCIAL = "FB";
     public String TARGET_SOCIAL_CONST = "target_social";
-    private CallbackManager callbackManager;
     public static SocialNetworkHandler instance = null;
     private Context context;
     private String fbProfileId;
@@ -216,15 +217,20 @@ public class SocialNetworkHandler extends AppCompatActivity
 
         new GetCurrentUserTask().execute("photos.getPhotos");
     }
+    public void signIn(Activity activity,GoogleApiClient mGoogleApiClient) {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        activity.startActivityForResult(signInIntent, 666);
+    }
 
-    public void getImageG_plus()
+    public void getImageG_plus(String id)
     {
+        photoUrlG_plus.clear();
         final InputStream[] inputStream = new InputStream[1];
         new Thread(() -> {
                 URL url = null;
             try
             {
-                url = new URL("https://picasaweb.google.com/data/feed/api/user/103986297589201622409?alt=json");
+                url = new URL("https://picasaweb.google.com/data/feed/api/user/" + id + "?alt=json");
                 inputStream[0] = url.openConnection().getInputStream();
             } catch (MalformedURLException e)
             {
@@ -321,35 +327,32 @@ public class SocialNetworkHandler extends AppCompatActivity
 
         FacebookSdk.sdkInitialize(context);
         AppEventsLogger.activateApp(context);
-        if (Integer.parseInt(photoFbCount) != photoUrlFb.size() && Integer.parseInt(photoFbCount) > photoUrlFb.size())
-        {
+
+        if (photoFbCount != null){
+            if (Integer.parseInt(photoFbCount) != photoUrlFb.size() && Integer.parseInt(photoFbCount) > photoUrlFb.size())
+            {
 
                 final GraphRequest request = GraphRequest.newGraphPathRequest(accessToken, "/" + getFbAlbumId() + "/photos",
-                        new GraphRequest.Callback()
-                        {
-                            @Override
-                            public void onCompleted(GraphResponse response)
+                        response -> {
+                            String next_value;
+                            Log.d("next_value", response + " - response");
+                            try
                             {
-                                String next_value;
-                                Log.d("next_value", response + " - response");
-                                try
+                                JSONArray result = response.getJSONObject().getJSONArray("data");
+                                for (int i = 0; i < result.length(); i++)
                                 {
-                                    JSONArray result = response.getJSONObject().getJSONArray("data");
-                                    for (int i = 0; i < result.length(); i++)
-                                    {
-                                        photoUrlFb.add(result.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("source"));
-                                        Log.d("http_image1", result.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("source"));
-                                    }
-                                    Log.d("next_value", photoUrlFb.size() + " - size of array");
-                                    JSONObject pagingObj = response.getJSONObject().getJSONObject("paging");
-                                    next_value = pagingObj.getString("next");
-                                    Log.d("next_value", next_value + " - next path");
-
-
-                                } catch (JSONException e)
-                                {
-                                    e.printStackTrace();
+                                    photoUrlFb.add(result.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("source"));
+                                    Log.d("http_image1", result.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("source"));
                                 }
+                                Log.d("next_value", photoUrlFb.size() + " - size of array");
+                                JSONObject pagingObj = response.getJSONObject().getJSONObject("paging");
+                                next_value = pagingObj.getString("next");
+                                Log.d("next_value", next_value + " - next path");
+
+
+                            } catch (JSONException e)
+                            {
+                                e.printStackTrace();
                             }
                         });
 
@@ -359,7 +362,10 @@ public class SocialNetworkHandler extends AppCompatActivity
                 request.setParameters(param);
                 request.executeAsync();
 
+            }
         }
+
+
     }
 
     //https://www.googleapis.com/plus/v1/people/103986297589201622409?fields=image&key=AIzaSyA6TYMX3_c33BUyqwyeqpBRZtbu86-ASI0
@@ -380,6 +386,29 @@ public class SocialNetworkHandler extends AppCompatActivity
             DBHandler.getInstance().saveSocialProfile(profile, Fields.SOCIAL_NETWORKS.FACEBOOK);
         });
     }
+
+   /* private void handleSignInResult(GoogleSignInResult result, GoogleSignInAccount acct) {
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            acct = result.getSignInAccount();
+            if (acct != null){
+                SocialProfile socialProfile = new SocialProfile();
+                socialProfile.setId(acct.getId());
+                socialProfile.setFullName(acct.getDisplayName());
+                socialProfile.setLastName(acct.getFamilyName());
+                socialProfile.setFirstName(acct.getGivenName());
+
+                new PictureLoader(acct.getPhotoUrl().toString(), picture -> {
+                    socialProfile.setImage(picture);
+                    DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+                });
+
+                SocialNetworkHandler.getInstance().getImageG_plus(acct.getId());
+            }
+
+
+        }
+    }*/
 
     public void getProfileAlbumId(final Context context, AccessToken accessToken)
     {
@@ -566,6 +595,27 @@ public class SocialNetworkHandler extends AppCompatActivity
             changeArrayListener.changeArray(photoArray);
         }
     }
+
+   public void signOut(GoogleApiClient mGoogleApiClient) {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+
+                    }
+                });
+    }
+
+    public void revokeAccess(GoogleApiClient mGoogleApiClient) {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // ...
+                    }
+                });
+    }
+
 
     protected final class GetCurrentUserTask extends AsyncTask<String, Void, String>
     {

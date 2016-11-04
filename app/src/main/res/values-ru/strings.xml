@@ -319,7 +319,7 @@
 
     <string name="phone_number">Номер телефона</string>
 
-    <string name="facebook">Фейсбук</string>
+    <string name="facebook">Facebook</string>
 
     <string name="g_plus">G+</string>
 
@@ -604,6 +604,7 @@
     <string name="ADULT_KIDS">Уже взрослые</string>
 
     <string-array name="alco">
+        <item>@string/no_value</item>
         <item>@string/NO_DRINKING_PERSON</item>
         <item>@string/no_case</item>
         <item>@string/drinking_person</item>
@@ -635,5 +636,29 @@
     <string name="confirmed">(Подтверждено)</string>
     <string name="new_gift_notification">У вас новый подарок</string>
     <string name="who_sended"> %1$s, подарил вам подарок</string>
+    <string name="body_type">Телосложение</string>
+    <string name="eye_color">Цвет глаз</string>
+    <string name="about_me">О себе</string>
+    <string name="relationships">Отношения</string>
+    <string name="orientation">Ориентация</string>
+    <string name="height">Рост</string>
+    <string name="Weight">Вес</string>
+    <string name="hair_color">Цвет волос</string>
+    <string name="living_with">Я живу</string>
+    <string name="kids">Дети</string>
+    <string name="smoking">Курение</string>
+    <string name="alcohol">Акоголь</string>
+    <string name="languages">Языки</string>
+    <string name="show_other_languages">Показать другие языки...</string>
+    <string name="new_interest">как новый интерес</string>
+    <string name="canceled">Отменено</string>
+
+    <string name="back">Назад</string>
+    <string name="no_photo">У вас нет фотографий.  \n Вернитесь назад и выберите другой способ.</string>
+    <string name="its_mutual">Это взаимно!</string>
+    <string name="bind_soc_failed">Не удалось привязать социальную сеть...</string>
+    <string name="mutual_text">Вы и %1$s понравились друг другу</string>
+    <string name="send_message">Написать сообщение</string>
+    <string name="continue_playing">Продлжить игру</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

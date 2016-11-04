@@ -28,7 +28,7 @@
                             android:paddingLeft="3dp"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold"
-                            android:text="О себе"/>
+                            android:text="@string/about_me"/>
                         <LinearLayout
                                   android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                            android:textSize="@dimen/_10sdp"
                            android:textStyle="bold"
                            android:paddingLeft="3dp"
-                           android:text="Отношения"/>
+                           android:text="@string/relationships"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Ориентация"/>
+                        android:text="@string/orientation"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -411,7 +411,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Рост"/>
+                        android:text="@string/height"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -505,7 +505,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Вес"/>
+                        android:text="@string/Weight"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -595,7 +595,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Телосложение"/>
+                        android:text="@string/body_type"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -685,7 +685,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Цвет глаз"/>
+                        android:text="@string/eye_color"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -776,7 +776,7 @@
                         android:textStyle="bold"
 
                         android:paddingLeft="3dp"
-                        android:text="Цвет волос"/>
+                        android:text="@string/hair_color"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -867,7 +867,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Я живу"/>
+                        android:text="@string/living_with"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -958,7 +958,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Дети"/>
+                        android:text="@string/kids"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1148,7 +1148,7 @@
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="bold"
                 android:paddingLeft="3dp"
-                android:text="Курение"/>
+                android:text="@string/smoking"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1240,7 +1240,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Акоголь"/>
+                        android:text="@string/alcohol"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1432,7 +1432,7 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold"
                         android:paddingLeft="3dp"
-                        android:text="Языки"/>
+                        android:text="@string/languages"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1465,7 +1465,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Показать другие языки..."
+                                    android:text="@string/show_other_languages"
                                     android:textColor="@color/text_second"
                                     android:paddingLeft="@dimen/_5sdp"
                                     android:paddingRight="@dimen/_5sdp"

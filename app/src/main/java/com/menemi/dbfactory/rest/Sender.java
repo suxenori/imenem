@@ -168,7 +168,7 @@ public class Sender extends JSONSender {
                 obj.put(Fields.GROWTH, apperanceModel.getHeight());
                 obj.put(Fields.WEIGHT, apperanceModel.getWeigt());
                 obj.put(Fields.ABOUT, apperanceModel.getAbout());
-                obj.put(Fields.RELATIONSHIP, apperanceModel.getRelationshipIndex());
+                obj.put(Fields.RELATIONSHIP_INT, apperanceModel.getRelationshipIndex());
                 obj.put(Fields.ORIENTATION_INT, apperanceModel.getSexualityIndex());
                 obj.put(Fields.BODY_TYPE, apperanceModel.getBodyTypeIndex());
                 obj.put(Fields.EYE_COLOR, apperanceModel.getEyeColorIndex());

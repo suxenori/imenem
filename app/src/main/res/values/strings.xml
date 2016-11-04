@@ -36,7 +36,7 @@
     <string name="brown">Brown</string>
     <string name="gray">Grey</string>
     <string name="green">Green</string>
-    <string name="blue">Blue Sky</string>
+    <string name="blue">Blue</string>
     <string name="light_blue">Light-grey</string>
 
     <string-array
@@ -92,8 +92,8 @@
     <string name="IS_SMOKING_PERSON">Smoking</string>
     <string name="IS_NO_SMOKING_PERSON">No smoking</string>
     <string name="ANTI_SMOKING_PERSON">Smoking hater</string>
-    <string name="SMOKING_IN_COMPANY_PERSON">Smoking when drinking</string>
-    <string name="SMOKE_ONE_AFTER_THE_OTHER_PERSON">Smoke one after one. And now too</string>
+    <string name="SMOKING_IN_COMPANY_PERSON">Socialy smoking</string>
+    <string name="SMOKE_ONE_AFTER_THE_OTHER_PERSON">Chain smoker</string>
 
 
 
@@ -157,6 +157,7 @@
     <string name="ADULT_KIDS">Adult kids</string>
 
     <string-array name="alco">
+        <item>@string/no_value</item>
         <item>@string/NO_DRINKING_PERSON</item>
         <item>@string/no_case</item>
         <item>@string/drinking_person</item>
@@ -434,20 +435,24 @@
     <string name="account_double">Make sure your email address is correct so we can send you your password. You will then be able to sign out. If you don\'t see your email, please check your spam folder.</string>
 
 
-    <string name="forgot_pass">Forgot password</string>
+
     <string name="terms_and_conditions_summary">Terms and Conditions summary</string>
 
     <string name="terms_and_conditions">Terms and Conditions</string>
 
     <string name="privacy_in_about">Privacy</string>
 
-    <string name="about_badoo">About Badoo</string>
+    <string name="about_badoo">About Menemi</string>
 
     <string name="MeetNewPeople">Meet new people</string>
 
     <string name="slogan">Menemi - it is the perfect place to search \n new friends, interesting connections \n and communication</string>
 
     <string name="signIn">Sign in</string>
+
+
+    <string name="no_photo">You have no photos. \n Return and try another method.</string>
+    <string name="back">Back</string>
 
     <string name="friendsCountEnd5_">friends</string>
 
@@ -637,4 +642,31 @@
     <integer name="com_vk_sdk_AppId">5610489</integer>
     <string name="new_gift_notification">You have a new gift</string>
     <string name="who_sended"> %1$s, send you a gift</string>
+
+    <string name="forgot_pass">Forgot password?</string>
+    <string name="body_type">Body type</string>
+    <string name="eye_color">Eye color</string>
+    <string name="about_me">About me</string>
+    <string name="relationships">Relationships</string>
+    <string name="orientation">Orientation</string>
+    <string name="height">Height</string>
+    <string name="Weight">Weight</string>
+    <string name="hair_color">Hair color</string>
+    <string name="living_with">Living with</string>
+    <string name="kids">Kids</string>
+    <string name="smoking">Smoking</string>
+    <string name="alcohol">Alcohol</string>
+    <string name="languages">Languages</string>
+    <string name="show_other_languages">Show other languages</string>
+
+
+    <string name="new_interest">As new interest</string>
+    <string name="canceled">Canceled</string>
+
+    <string name="bind_soc_failed">Failed to bind social network...</string>
+    <string name="its_mutual">It\'s mutual!</string>
+    <string name="mutual_text">You and %1$s liked each other</string>
+    <string name="send_message">Send message</string>
+    <string name="continue_playing">Continue playing</string>
+
 </resources>

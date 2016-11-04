@@ -40,8 +40,9 @@
                 android:text="@string/man"
                 android:layout_gravity="center"
                 android:textColor="@color/black"/>
-            <ImageView
-                style="@style/filter_radio_button"
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/all_gender_selector"
                 android:scaleType="centerInside"
                 android:textSize="@dimen/_11sdp"
@@ -57,8 +58,9 @@
                 android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
                 android:layout_marginStart="@dimen/filter_radio_drawable_padding"
                 />
-            <ImageView
-                style="@style/filter_radio_button"
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:src="@drawable/all_gender_selector"
                 android:textSize="@dimen/_11sdp"
@@ -75,8 +77,9 @@
                 android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
                 android:layout_marginStart="@dimen/filter_radio_drawable_padding"
                 />
-            <ImageView
-                style="@style/filter_radio_button"
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/all_gender_selector"
                 android:textSize="@dimen/_11sdp"
                 android:layout_marginLeft="@dimen/_4sdp"
@@ -113,8 +116,9 @@
                     android:layout_gravity="center"
                     android:text="@string/online_status_filter"
                     android:textColor="@color/black"/>
-                <ImageView
-                    style="@style/filter_radio_button"
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/all_gender_selector"
                     android:textSize="@dimen/_11sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
@@ -129,8 +133,9 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
                     android:layout_marginStart="@dimen/filter_radio_drawable_padding"/>
-                <ImageView
-                    style="@style/filter_radio_button"
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:src="@drawable/all_gender_selector"
                     android:textSize="@dimen/_11sdp"
@@ -147,8 +152,9 @@
                     android:layout_marginLeft="@dimen/filter_radio_drawable_padding"
                     android:layout_marginStart="@dimen/filter_radio_drawable_padding"
                     />
-                <ImageView
-                    style="@style/filter_radio_button"
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/all_gender_selector"
                     android:scaleType="centerInside"
                     android:layout_marginLeft="@dimen/_5sdp"

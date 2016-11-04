@@ -44,92 +44,81 @@ public class LoginActivity extends ActionBarActivity {
         ImageButton arrowBack = (ImageButton) findViewById(com.menemi.R.id.arrowBackButtonInLoginPage);
         Button loginButton = (Button) findViewById(com.menemi.R.id.loginButton);
 
-        arrowBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, FirstActivity.class);
-                startActivity(i);
-            }
+        arrowBack.setOnClickListener(view -> {
+            Intent i = new Intent(LoginActivity.this, FirstActivity.class);
+            startActivity(i);
         });
-        loginButton.setOnClickListener(new View.OnClickListener() {
-                                           @Override
-                                           public void onClick(View v) {
 
-                                               DBHandler.getInstance().isRESTAvailable((online)->{
-                                                   if((boolean)online == true){
+        loginButton.setOnClickListener(v -> DBHandler.getInstance().isRESTAvailable((online)->{
+            if((boolean)online == true){
 
 
-                                               PersonObject personObject = new PersonObject(setLoginPhoneOrEmail.getText().toString().toLowerCase(), setLoginPassword.getText().toString());
-                                               Log.i("PersonObject created", personObject + "");
-                                               Log.i("PersonObject created", personObject.getPassword() + "");
-                                               Log.i("Login data", setLoginPhoneOrEmail.getText().toString());
-                                               Log.i("Login data", setLoginPassword.getText().toString());
+        PersonObject personObject = new PersonObject(setLoginPhoneOrEmail.getText().toString().toLowerCase(), setLoginPassword.getText().toString());
+        Log.i("PersonObject created", personObject + "");
+        Log.i("PersonObject created", personObject.getPassword() + "");
+        Log.i("Login data", setLoginPhoneOrEmail.getText().toString());
+        Log.i("Login data", setLoginPassword.getText().toString());
+
+if(!setLoginPhoneOrEmail.getText().toString().equals("")) {
+    DBHandler.getInstance().authorise(personObject, object -> {
+        PersonObject personObject1 = (PersonObject) object;
+        Log.i("PersonObject created", personObject1 + "");
+        if (personObject1 != null) {
 
 
-                                               DBHandler.getInstance().authorise(personObject, new DBHandler.ResultListener() {
-                                                   @Override
-                                                   public void onFinish(Object object) {
-                                                       PersonObject personObject = (PersonObject) object;
-                                                       Log.i("PersonObject created", personObject + "");
-                                                       if (personObject != null) {
+            DBHandler.getInstance().saveLastId(DBHandler.getInstance().getIdOnLoginData(personObject1));
+
+            Intent personPage = new Intent(LoginActivity.this, PersonPage.class);
 
 
-                                                           DBHandler.getInstance().saveLastId(DBHandler.getInstance().getIdOnLoginData(personObject));
+            DBHandler.getInstance().getInterestProfile(DBHandler.getInstance().getUserId(),
+                    DBHandler.getInstance().getUserId(), object12 -> {
+                        ArrayList<Interests> profileInterests;
+                        profileInterests = (ArrayList<Interests>) object12;
+                        DBHandler.getInstance().setProfileInterests(profileInterests);
+                    });
 
-                                                           Intent personPage = new Intent(LoginActivity.this, PersonPage.class);
-
-
-                                                           DBHandler.getInstance().getInterestProfile(DBHandler.getInstance().getUserId(),
-                                                                   DBHandler.getInstance().getUserId(), new DBHandler.ResultListener() {
-                                                                       @Override
-                                                                       public void onFinish(Object object) {
-                                                                           ArrayList<Interests> profileInterests;
-                                                                           profileInterests = (ArrayList<Interests>) object;
-                                                                           DBHandler.getInstance().setProfileInterests(profileInterests);
-                                                                       }
-                                                                   });
-
-                                                           DBHandler.getInstance().getInterestsGroup(DBHandler.getInstance().getUserId(), new DBHandler.ResultListener() {
-                                                               @Override
-                                                               public void onFinish(Object object) {
-                                                                   InterestsGroup interestGroup;
-                                                                   ArrayList<InterestsGroup> interestsGroupArray;
-                                                                   ArrayList groups;
-                                                                   interestsGroupArray = new ArrayList<InterestsGroup>();
-                                                                   groups = (ArrayList) object;
-                                                                   for (int i = 0; i < groups.size(); i++) {
-                                                                       interestGroup = (InterestsGroup) groups.get(i);
-                                                                       interestsGroupArray.add(interestGroup);
-                                                                       Log.i("groups", interestGroup.getNameGroup());
-                                                                   }
-                                                                   DBHandler.getInstance().setInterestsGroupArray(interestsGroupArray);
-                                                               }
-                                                           });
+            DBHandler.getInstance().getInterestsGroup(DBHandler.getInstance().getUserId(), object1 -> {
+                InterestsGroup interestGroup;
+                ArrayList<InterestsGroup> interestsGroupArray;
+                ArrayList groups;
+                interestsGroupArray = new ArrayList<InterestsGroup>();
+                groups = (ArrayList) object1;
+                for (int i = 0; i < groups.size(); i++) {
+                    interestGroup = (InterestsGroup) groups.get(i);
+                    interestsGroupArray.add(interestGroup);
+                    Log.i("groups", interestGroup.getNameGroup());
+                }
+                DBHandler.getInstance().setInterestsGroupArray(interestsGroupArray);
+            });
 
 
-                                                           startActivity(personPage);
+            startActivity(personPage);
 
-                                                           finish();
-                                                       } else {
-                                                           setLoginPhoneOrEmail.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
-                                                           setLoginPassword.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
-                                                           wrongLogPassNotification.setText(R.string.wrong_password_or_email);
-                                                           wrongLogPassNotification.setVisibility(View.VISIBLE);
+            finish();
+        } else {
+            setLoginPhoneOrEmail.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
+            setLoginPassword.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
+            wrongLogPassNotification.setText(R.string.wrong_password_or_email);
+            wrongLogPassNotification.setVisibility(View.VISIBLE);
 
-                                                           //TODO SHOW ERROR
-                                                       }
+            //TODO SHOW ERROR
+        }
 
-                                                   }
-                                               });
-                                                   } else{
-                                                       setLoginPhoneOrEmail.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
-                                                       setLoginPassword.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
-                                                        wrongLogPassNotification.setText(R.string.no_internet_message);
-                                                       wrongLogPassNotification.setVisibility(View.VISIBLE);
-                                                   }
-                                               });
-                                           }
-                                       }
+    });
+} else{
+    setLoginPhoneOrEmail.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
+    setLoginPassword.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
+    wrongLogPassNotification.setText(R.string.wrong_password_or_email);
+    wrongLogPassNotification.setVisibility(View.VISIBLE);
+}
+            } else{
+                setLoginPhoneOrEmail.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
+                setLoginPassword.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);
+                 wrongLogPassNotification.setText(R.string.no_internet_message);
+                wrongLogPassNotification.setVisibility(View.VISIBLE);
+            }
+        })
         );
     }
 class TypingListener implements TextWatcher {

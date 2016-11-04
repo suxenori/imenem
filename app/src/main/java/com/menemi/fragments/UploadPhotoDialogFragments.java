@@ -14,8 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.menemi.PersonPage;
 import com.menemi.R;
 import com.menemi.social_network.SocialNetworkHandler;
@@ -85,10 +89,10 @@ public class UploadPhotoDialogFragments extends android.app.DialogFragment
                 SocialNetworkHandler.getInstance().CLIENT_SECRET, SocialNetworkHandler.getInstance().CALLBACK_URL);
         uploadFromInsta.setOnClickListener(view -> {
 
-            Intent i = new Intent(getActivity(), SocialGridView.class);
-            i.putExtra(SocialNetworkHandler.getInstance().TARGET_SOCIAL_CONST,SocialNetworkHandler.getInstance().INSTA_SOCIAL);
-            startActivity(i);
             if (instaObj.isLogged()){
+                Intent i = new Intent(getActivity(), SocialGridView.class);
+                i.putExtra(SocialNetworkHandler.getInstance().TARGET_SOCIAL_CONST,SocialNetworkHandler.getInstance().INSTA_SOCIAL);
+                startActivity(i);
             } else {
                 instaObj.authorize();
                 instaObj.setListener(new InstagramApp.OAuthAuthenticationListener()
@@ -110,9 +114,18 @@ public class UploadPhotoDialogFragments extends android.app.DialogFragment
 
         ImageButton uploadFromG = (ImageButton)dialogView.findViewById(R.id.uploadFromGoogle);
         uploadFromG.setOnClickListener(v -> {
-            Intent i = new Intent(getActivity(), SocialGridView.class);
-            i.putExtra(SocialNetworkHandler.getInstance().TARGET_SOCIAL_CONST,SocialNetworkHandler.getInstance().G_SOCIAL);
-            startActivity(i);
+            if (VerificationFragment.isLogInG){
+                Intent i = new Intent(getActivity(), SocialGridView.class);
+                i.putExtra(SocialNetworkHandler.getInstance().TARGET_SOCIAL_CONST,SocialNetworkHandler.getInstance().G_SOCIAL);
+                startActivity(i);
+            } else {
+
+                GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+                GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getActivity()).addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions).addOnConnectionFailedListener
+                        (connectionResult -> Toast.makeText(getActivity(), R.string.bind_soc_failed,Toast.LENGTH_SHORT).show()).build();
+                SocialNetworkHandler.getInstance().signIn(getActivity(),mGoogleApiClient);
+            }
+
 
         });
 

@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.menemi.PersonPage;
 import com.menemi.R;
@@ -127,14 +129,35 @@ public class PhotoSettingsFragment extends Fragment {
             public void onClick(View view) {
                 final ProgressDialog progress = new ProgressDialog(getActivity());
                 progress.setMessage(getString(R.string.photo_upload));
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.setIndeterminate(true);
+                progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progress.setIndeterminate(false);
+                progress.setMax(100);
+                progress.setCancelable(false);
+                progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+              //  progress.setProgressDrawable(Utils.getDrawableRes(getActivity(), R.drawable.orange_cornered_button));
                 progress.show();
 
                 photoSetting.setProfileId(DBHandler.getInstance().getUserId());
                 photoSetting.setTemplateIds(photoTemplates);
 
-                DBHandler.getInstance().addPhoto(photoSetting, new DBHandler.ResultListener() {
+                DBHandler.getInstance().addPhoto(photoSetting, new DBHandler.ProgressListener() {
+                    @Override
+                    public boolean onUploadProgressChange(int progressPercentage) {
+                        if(progress.isShowing()) {
+                            progress.setProgress(progressPercentage);
+                            return false;
+                        }else {
+                            Toast.makeText(getActivity(), getString(R.string.canceled), Toast.LENGTH_SHORT);
+                            return true;
+                        }
+
+                    }
+                }, new DBHandler.ResultListener() {
                     @Override
                     public void onFinish(Object object) {
                         progress.dismiss();

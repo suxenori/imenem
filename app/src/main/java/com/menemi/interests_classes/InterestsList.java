@@ -35,6 +35,7 @@ public class InterestsList extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
+        SearchResultDialog resultDialog = new SearchResultDialog();
         View rootView = inflater.inflate(R.layout.interests_list_fragment,container,false);
         final LinearLayout interestsContainer = (LinearLayout)rootView.findViewById(R.id.interestsContainer);
         final EditText searchField = (EditText) rootView.findViewById(R.id.search_field);
@@ -68,24 +69,18 @@ public class InterestsList extends Fragment
                         {
                             Log.d("result_fom_tf", searchField.getText().toString());
 
-                            DBHandler.getInstance().findInterests(URLEncoder.encode(searchField.getText().toString()), DBHandler.getInstance().getUserId(), new DBHandler.ResultListener()
-                            {
-                                @Override
-                                public void onFinish(Object object)
-                                {
-                                    ArrayList<Interests> interestsArray = (ArrayList) object;
-                                    SearchResultDialog resultDialog = new SearchResultDialog();
-                                    if (interestsArray.size() != 0){
-                                        resultDialog.setInterestsArray(interestsArray);
-                                        resultDialog.show(getFragmentManager(),"f");
-                                    } else {
-                                        resultDialog.setInterestsFromTextField(searchField.getText().toString());
-                                        resultDialog.show(getFragmentManager(),"f");
-                                    }
+                            DBHandler.getInstance().findInterests(URLEncoder.encode(searchField.getText().toString()), DBHandler.getInstance().getUserId(), object -> {
+                                ArrayList<Interests> interestsArray = (ArrayList) object;
+                                if (interestsArray.size() != 0){
+                                    resultDialog.setInterestsArray(interestsArray);
+                                    resultDialog.show(getFragmentManager(),"f");
+                                } else {
+                                    resultDialog.setInterestsFromTextField(searchField.getText().toString());
+                                    resultDialog.show(getFragmentManager(),"f");
                                 }
                             });
                         }
-                    },500);
+                    },1000);
                 }
             }
             @Override

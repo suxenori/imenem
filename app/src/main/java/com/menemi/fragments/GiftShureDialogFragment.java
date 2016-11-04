@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.menemi.PersonPage;
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.Gift;
@@ -134,6 +135,7 @@ public class GiftShureDialogFragment extends android.app.DialogFragment {
                 fragmentTransaction.commitAllowingStateLoss();
                 dismiss();
             }
+            PersonPage.prepareNavigationalHeader();
     }
 }
    /* class OpenProfileListener implements View.OnClickListener {

@@ -6,11 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.menemi.AboutActivity;
 import com.menemi.AccountActivity;
 import com.menemi.R;
+import com.menemi.dbfactory.AndroidDatabaseManager;
 import com.menemi.dbfactory.DBHandler;
 
 
@@ -60,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity{
         });
         TextView email = (TextView) findViewById(R.id.email);
         email.setText("" + DBHandler.getInstance().getMyProfile().getEmail());
-       /* LinearLayout aboutButton = (LinearLayout)findViewById(R.id.aboutButton);
+       LinearLayout aboutButton = (LinearLayout)findViewById(R.id.aboutButton);
         aboutButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -92,7 +95,7 @@ public class SettingsActivity extends AppCompatActivity{
                 Intent i = new Intent(SettingsActivity.this, AndroidDatabaseManager.class);
                 startActivity(i);
             }
-        });*/
+        });
 
 
     }

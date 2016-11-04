@@ -220,7 +220,7 @@ public class InterestsFragment extends Fragment {
             ArrayList<ArrayList<Integer>> preparedPositions = preparePositions(interestsLayout.getWidth(), sizes);
 
             LinearLayout[] layoutInUse = new LinearLayout[preparedPositions.size()];
-            LinearLayout.LayoutParams layoutInUseParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutInUseParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             for (int i = 0; i < preparedPositions.size(); i++) {
                 Log.d("InterestsFragment", "add row");
 
@@ -230,10 +230,10 @@ public class InterestsFragment extends Fragment {
                 for (int j = 0; j < preparedPositions.get(i).size(); j++) {
                     LinearLayout.LayoutParams lp = null;
                     if (preparedPositions.get(i).size() == 1) {
-                        lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT , ViewGroup.LayoutParams.WRAP_CONTENT);
                     } else if (i < preparedPositions.get(i).size() - 1) {
                         lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        lp.weight = 1f;
+
                     } else {
                         lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     }

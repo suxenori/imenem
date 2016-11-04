@@ -86,8 +86,6 @@ public class LoadingActivity extends AppCompatActivity {
                 SocialNetworkHandler.getInstance().getProfileAlbumId(getApplicationContext(),AccessToken.getCurrentAccessToken());
             }
 
-            SocialNetworkHandler.getInstance().getImageG_plus();
-
             if (VKSdk.isLoggedIn()) {
                 SocialNetworkHandler.getInstance().getUserPhotoFromVk(String.valueOf(0), String.valueOf(200));
             }

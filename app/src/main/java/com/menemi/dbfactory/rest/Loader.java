@@ -1192,10 +1192,6 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
     }
     private static PersonalAppearanceSettingsModel parceAppearance(JSONObject profileObject) throws JSONException {
         PersonalAppearanceSettingsModel appearance = new PersonalAppearanceSettingsModel();
-
-
-
-
         appearance.setHeight(profileObject.getInt(Fields.GROWTH));
         appearance.setWeigt(profileObject.getInt(Fields.WEIGHT));
         appearance.setAbout(profileObject.getString(Fields.ABOUT));
