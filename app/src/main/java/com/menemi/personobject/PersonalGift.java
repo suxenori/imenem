@@ -13,7 +13,7 @@ public class PersonalGift implements Serializable{
     private String personName;
     private String giftName;
 
-    private String avatarUrl;
+    private String avatarUrl = "";
     private String sendDate = "30.04.1987";
 
 

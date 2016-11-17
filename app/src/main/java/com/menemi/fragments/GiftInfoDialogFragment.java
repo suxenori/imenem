@@ -76,7 +76,7 @@ public class GiftInfoDialogFragment extends android.app.DialogFragment {
         gift.setImageBitmap(DBHandler.getInstance().getGiftById(personalGift.getGiftId()));
 
         TextView nameAgeText = (TextView)dialogView.findViewById(R.id.nameAgeText);
-        nameAgeText.setText(""+ personalGift.getPersonName() +", ");
+        nameAgeText.setText(getString(R.string.who_sended, personalGift.getPersonName()));
 
         TextView sendDate = (TextView)dialogView.findViewById(R.id.sendDate);
         sendDate.setText("" + personalGift.getSendDate());
@@ -116,11 +116,11 @@ public class GiftInfoDialogFragment extends android.app.DialogFragment {
                 @Override
                 public void onFinish(Object object) {
 
+                    PersonObject profile = (PersonObject)object;
                     FragmentTransaction fragmentTransaction = ctx.getFragmentManager().beginTransaction();
                     PersonDataFragment personDataFragment = new PersonDataFragment();
                     personDataFragment.setPurpose(PersonDataFragment.Purpose.PROFILE);
-                    personDataFragment.setPersonObject((PersonObject)object);
-                    //Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
+                    personDataFragment.setPersonObject(profile);
                     fragmentTransaction.replace(R.id.content, personDataFragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commitAllowingStateLoss();

@@ -8,10 +8,11 @@ import com.menemi.edit_personal_Info.PersonalAppearanceSettingsModel;
 import com.menemi.filter.FilterObject;
 import com.menemi.utils.Utils;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class PersonObject {
+public class PersonObject implements Serializable {
 
     public static final double INCORRECT_LAT_LONG = 666;
     public static final String EMPTY = "";
@@ -33,7 +34,8 @@ public class PersonObject {
     private ArrayList<Language> personLanguages;
     private int personCredits;
     private int personPopularity;
-    private Bitmap personAvatar = null;
+    transient private Bitmap personAvatar = null;
+    private String personAvatarURL = null;
     private String personRelationship;
     private String livingWith = "";
     private PersonalAppearanceSettingsModel personalAppearance;
@@ -58,8 +60,9 @@ public class PersonObject {
     private double positionLatitude = INCORRECT_LAT_LONG;
     private double positionLongitude = INCORRECT_LAT_LONG;
     private boolean isOnline = false;
-    private ArrayList<PersonFavorite> favorites = new ArrayList<>();
-    private FilterObject filterObject = new FilterObject();
+    transient private ArrayList<PersonFavorite> favorites = new ArrayList<>();
+    transient private FilterObject filterObject = new FilterObject();
+
     private int searchAgeMax;
     private ArrayList<PhotoSetting> pictureUrlsPrivate = new ArrayList<>();
     private ArrayList<PhotoSetting> pictureUrlsPublic = new ArrayList<>();
@@ -167,6 +170,7 @@ public class PersonObject {
         this.personCredits = personObject.personCredits;
         this.personPopularity = personObject.personPopularity;
         this.personAvatar = personObject.personAvatar;
+        this.personAvatarURL = personObject.personAvatarURL;
         this.personRelationship = personObject.personRelationship;
         this.livingWith = personObject.livingWith;
         this.growth = personObject.growth;
@@ -445,6 +449,13 @@ public class PersonObject {
         this.personAvatar = personAvatar;
     }
 
+    public void setPersonAvatarURL(String personAvatarURL) {
+        this.personAvatarURL = personAvatarURL;
+    }
+
+    public String getPersonAvatarURL() {
+        return personAvatarURL;
+    }
 
     public int getPersonPopularity() {
         return personPopularity;

@@ -46,7 +46,12 @@ public class NotificationActivity extends AppCompatActivity {
         pushMessages.setOnClickListener((v)->{
             notifications.revertMessages(NotificationSettings.SETTINGTYPE.PUSH);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.MESSAGES, notifications.getMessages(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.MESSAGES, notifications.getMessages(), (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertMessages(NotificationSettings.SETTINGTYPE.PUSH);
+                    prepareData(notifications);
+                }
+            });
         });
 
         ImageView emailMessages = (ImageView) findViewById(R.id.emailMessages);
@@ -58,7 +63,12 @@ public class NotificationActivity extends AppCompatActivity {
         emailMessages.setOnClickListener((v)->{
             notifications.revertMessages(NotificationSettings.SETTINGTYPE.EMAIL);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.MESSAGES, notifications.getMessages(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.MESSAGES, notifications.getMessages(), (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertMessages(NotificationSettings.SETTINGTYPE.EMAIL);
+                    prepareData(notifications);
+                }
+            });
         });
 
 
@@ -74,7 +84,12 @@ public class NotificationActivity extends AppCompatActivity {
         pushVisitors.setOnClickListener((v)->{
             notifications.revertVisitors(NotificationSettings.SETTINGTYPE.PUSH);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.VISITORS, notifications.getVisitors(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.VISITORS, notifications.getVisitors(), (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertVisitors(NotificationSettings.SETTINGTYPE.PUSH);
+                    prepareData(notifications);
+                }
+            });
         });
 
 
@@ -91,7 +106,12 @@ public class NotificationActivity extends AppCompatActivity {
         emailVisitors.setOnClickListener((v)->{
             notifications.revertVisitors(NotificationSettings.SETTINGTYPE.EMAIL);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.VISITORS, notifications.getVisitors(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.VISITORS, notifications.getVisitors(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertVisitors(NotificationSettings.SETTINGTYPE.EMAIL);
+                    prepareData(notifications);
+                }
+            });
         });
 
 
@@ -105,7 +125,12 @@ public class NotificationActivity extends AppCompatActivity {
         pushbumped_into_n.setOnClickListener((v)->{
             notifications.revertNearby(NotificationSettings.SETTINGTYPE.PUSH);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.NEARBY, notifications.getNearby(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.NEARBY, notifications.getNearby(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertNearby(NotificationSettings.SETTINGTYPE.PUSH);
+                    prepareData(notifications);
+                }
+            });
         });
 
 
@@ -121,7 +146,12 @@ public class NotificationActivity extends AppCompatActivity {
         emailbumped_into_n.setOnClickListener((v)->{
             notifications.revertNearby(NotificationSettings.SETTINGTYPE.EMAIL);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.NEARBY, notifications.getNearby(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.NEARBY, notifications.getNearby(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertNearby(NotificationSettings.SETTINGTYPE.EMAIL);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -137,7 +167,12 @@ public class NotificationActivity extends AppCompatActivity {
         pushfavorited_you.setOnClickListener((v)->{
             notifications.revertFavorites(NotificationSettings.SETTINGTYPE.PUSH);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.FAVORITES, notifications.getFavorites(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.FAVORITES, notifications.getFavorites(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertFavorites(NotificationSettings.SETTINGTYPE.PUSH);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -153,7 +188,12 @@ public class NotificationActivity extends AppCompatActivity {
         emailfavorited_you.setOnClickListener((v)->{
             notifications.revertFavorites(NotificationSettings.SETTINGTYPE.EMAIL);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.FAVORITES, notifications.getFavorites(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.FAVORITES, notifications.getFavorites(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertFavorites(NotificationSettings.SETTINGTYPE.EMAIL);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -169,7 +209,12 @@ public class NotificationActivity extends AppCompatActivity {
         pushliked_you.setOnClickListener((v)->{
             notifications.revertTheir_likes(NotificationSettings.SETTINGTYPE.PUSH);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.THEIR_LIKES, notifications.getTheir_likes(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.THEIR_LIKES, notifications.getTheir_likes(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertTheir_likes(NotificationSettings.SETTINGTYPE.PUSH);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -184,7 +229,12 @@ public class NotificationActivity extends AppCompatActivity {
         emailliked_you.setOnClickListener((v)->{
             notifications.revertTheir_likes(NotificationSettings.SETTINGTYPE.EMAIL);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.THEIR_LIKES, notifications.getTheir_likes(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.THEIR_LIKES, notifications.getTheir_likes(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertTheir_likes(NotificationSettings.SETTINGTYPE.EMAIL);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -199,7 +249,12 @@ public class NotificationActivity extends AppCompatActivity {
         pushmatches.setOnClickListener((v)->{
             notifications.revertMutual_likes(NotificationSettings.SETTINGTYPE.PUSH);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.MUT_LIKES, notifications.getMutual_likes(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.MUT_LIKES, notifications.getMutual_likes(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertMutual_likes(NotificationSettings.SETTINGTYPE.PUSH);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -213,7 +268,12 @@ public class NotificationActivity extends AppCompatActivity {
         emailmatches.setOnClickListener((v)->{
             notifications.revertMutual_likes(NotificationSettings.SETTINGTYPE.EMAIL);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.MUT_LIKES, notifications.getMutual_likes(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.MUT_LIKES, notifications.getMutual_likes(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertMutual_likes(NotificationSettings.SETTINGTYPE.EMAIL);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -228,7 +288,12 @@ public class NotificationActivity extends AppCompatActivity {
         pushgifts.setOnClickListener((v)->{
             notifications.revertGifts(NotificationSettings.SETTINGTYPE.PUSH);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.GIFTS, notifications.getGifts(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.GIFTS, notifications.getGifts(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertGifts(NotificationSettings.SETTINGTYPE.PUSH);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -242,7 +307,12 @@ public class NotificationActivity extends AppCompatActivity {
         emailgifts.setOnClickListener((v)->{
             notifications.revertGifts(NotificationSettings.SETTINGTYPE.EMAIL);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.GIFTS, notifications.getGifts(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.GIFTS, notifications.getGifts(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertGifts(NotificationSettings.SETTINGTYPE.EMAIL);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -256,7 +326,12 @@ public class NotificationActivity extends AppCompatActivity {
         pushnews.setOnClickListener((v)->{
             notifications.revertOther(NotificationSettings.SETTINGTYPE.PUSH);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.OTHER, notifications.getOther(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.OTHER, notifications.getOther(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertOther(NotificationSettings.SETTINGTYPE.PUSH);
+                    prepareData(notifications);
+                }
+            });
 
         });
 
@@ -270,7 +345,12 @@ public class NotificationActivity extends AppCompatActivity {
         emailnews.setOnClickListener((v)->{
             notifications.revertOther(NotificationSettings.SETTINGTYPE.EMAIL);
             prepareData(notifications);
-            DBHandler.getInstance().setNotifications(Fields.OTHER, notifications.getOther(), (o)->{});
+            DBHandler.getInstance().setNotifications(Fields.OTHER, notifications.getOther(),  (isSucced)->{
+                if(!(boolean)isSucced){
+                    notifications.revertOther(NotificationSettings.SETTINGTYPE.EMAIL);
+                    prepareData(notifications);
+                }
+            });
 
         });
 

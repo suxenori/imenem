@@ -53,6 +53,12 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/text_main</item>
     </style>
+
+    <style name="settings_toolbar">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/text_main</item>
+    </style>
+
     <style name="secondary_text_for_button">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_second</item>
@@ -405,6 +411,13 @@
     <style name="menuLeftMargin" parent="margined">
         <item name="android:layout_marginLeft">@dimen/_18sdp</item>
         <item name="android:layout_marginStart">@dimen/_18sdp</item>
+    </style>
+
+    <style name="menuRightMargin">
+        <item name="android:layout_marginLeft">@dimen/_10sdp</item>
+        <item name="android:layout_marginStart">@dimen/_10sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
+        <item name="android:layout_marginRight">@dimen/_10sdp</item>
     </style>
     <style name="mutual_photo">
 

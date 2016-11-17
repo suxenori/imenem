@@ -22,11 +22,9 @@
             android:textSize="@dimen/app_font_size"
             android:text="@string/buy_coins"/>
     </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal" android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_height="wrap_content"
-        android:gravity="end">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/submButton"
             android:layout_width="wrap_content"
@@ -36,7 +34,10 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:background="@color/no_color"
             android:textSize="@dimen/app_font_size"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:text="@string/buy_coins"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

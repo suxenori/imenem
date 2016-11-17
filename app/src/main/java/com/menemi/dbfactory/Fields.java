@@ -1,11 +1,24 @@
 package com.menemi.dbfactory;
 
+import com.menemi.BuildConfig;
+
 /**
  * Created by irondev on 14.06.16.
  */
 public  class Fields {
-    public static final String URL_FOR_SERVER = "http://minemi.ironexus.com";
-    public static final String URL_FOR_MESSAGING = "minemi.ironexus.com";
+    public static String URL_FOR_SERVER ;
+    public static String URL_FOR_MESSAGING;
+    static{
+        if (BuildConfig.DEBUG) {
+            URL_FOR_SERVER = "http://menemidev.ironexus.com";
+            URL_FOR_MESSAGING = "menemidev.ironexus.com";
+        } else {
+            URL_FOR_SERVER = "http://minemi.ironexus.com";
+            URL_FOR_MESSAGING = "minemi.ironexus.com";
+        }
+    }
+
+
     public static final String PROFILE = "profile";
     public static final String SOCIAL_PROFILE_IMAGE = "profile";
     public static final String SOCIAL_PROFILE_FIRST_NAME = "f_name";
@@ -17,6 +30,8 @@ public  class Fields {
     public static final String SOCIAL_ID = "s_id";
     public static final String NAME = "name";
     public static final String AGE = "age";
+    public static final String NEWS = "news";
+
     public static final String EDUCATION = "education";
     public static final String VIP = "is_vip_on";
     public static final String CURRENT_LOCATION = "address";
@@ -43,6 +58,7 @@ public  class Fields {
     public static final String DRINKING_INT = "drinking";
     public static final String WORK = "work";
     public static final String FRIENDS = "friends";
+
     public static final String LIVING_CITY = "living_city";
     public static final String LIVING_WITH = "living_with_string";
     public static final String LIVING_WITH_INT = "living_with";
@@ -54,13 +70,13 @@ public  class Fields {
     public static final String WEIGHT = "wight";
     public static final String SEARCH_AGE_MAX = "search_age_max";
     public static final String SEARCH_AGE_MIN = "search_age_min";
-    public static final String Gplus_ACCOUNT = "gp_account";
-    public static final String VKONTAKTE_ACCOUNT = "vk_account";
-    public static final String FACEBOOK_ACCOUNT = "facebook_account";
-    public static final String ODNOCLASSNIKI_ACCOUNT = "ok_account";
+    public static final String Gplus_ACCOUNT = "gplusid";
+    public static final String VKONTAKTE_ACCOUNT = "vkid";
+    public static final String FACEBOOK_ACCOUNT = "fbid";
+    public static final String ODNOCLASSNIKI_ACCOUNT = "okid";
     public static final String LINKEDIN_ACCOUNT = "linkedin_account";
-    public static final String INSTAGRAM_ACCOUNT = "instagram_account";
     public static final String TWITTER_ACCOUNT = "twitter_account";
+    public static final String INSTAGRAM_ACCOUNT = "instagramid";
     public static final String INTEREST_GENDER = "interested_gender";
     public static final String BIRTH_DAY = "birth";
     public static final String EMAIL = "email";
@@ -76,7 +92,7 @@ public  class Fields {
     public static final String VIP_STATUS = "vip_until";// : "2016-09-30T15:06:12.000Z"
     public static final String INTEREST_ID = "interest_id";
     public static final String ICON_URL = "icon_url";
-
+    public static final String AVATAR_URL = "avatar_url";
     public static final String CREDITS_ADDED_AMOUNT = "added_amount";
     public static final String CREDITS_ADDED_TOKEN = "transaction_token";
     public static final String RATING = "profile_rating";

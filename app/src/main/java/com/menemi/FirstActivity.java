@@ -21,6 +21,7 @@ import com.facebook.GraphRequest;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.menemi.customviews.OneButtonDialog;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.PersonObject;
 import com.menemi.social_network.SocialNetworkHandler;
@@ -70,6 +71,10 @@ public class FirstActivity extends Activity
         setContentView(com.menemi.R.layout.activity_first);
         fbButton = (ImageButton) findViewById(com.menemi.R.id.fbButton);
         fbButton.setOnClickListener(view -> {
+            DBHandler.getInstance().isRESTAvailable((isOnline)->{
+                if((boolean)isOnline){
+
+
             LoginManager.getInstance().logInWithReadPermissions(FirstActivity.this, Arrays.asList("email", "user_photos", "public_profile", "user_about_me", "user_birthday","user_friends"));
             LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>()
             {
@@ -87,6 +92,7 @@ public class FirstActivity extends Activity
                                     DBHandler.getInstance().registerFacebook(new SocialProfile(id,name,gender), object1 -> {
                                         Log.d("","");
                                         SocialNetworkHandler.getInstance().getProfileAlbumId(getApplicationContext(),AccessToken.getCurrentAccessToken());
+                                        finish();
                                         Intent personPage = new Intent(FirstActivity.this, PersonPage.class);
                                         startActivity(personPage);
                                         personPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -121,17 +127,12 @@ public class FirstActivity extends Activity
             });
            // SocialNetworkHandler.getInstance().regWithFb(FirstActivity.this,callbackManager);
             Log.d("test_fb","authFb is called");
+                } else {
+                    OneButtonDialog dialog = new OneButtonDialog(this, getString(R.string.fb_fail), getString(R.string.connection_lost_n_please_check_your_internet_connection_n_and_try_again).replace("\n",""),OneButtonDialog.NO_ICON,()->{});
+                }
+            });
         });
-        /*ImageButton gplusButton = (ImageButton)findViewById(com.menemi.R.id.gpButton);
-        gplusButton.setOnClickListener(v -> {
-            Intent i = new Intent(FirstActivity.this, AndroidDatabaseManager.class);
-            startActivity(i);
-        });*/
 
-     /*  ImageButton vkButton = (ImageButton)findViewById(com.menemi.R.id.vkButton);
-        vkButton.setOnClickListener(view -> {
-
-        });*/
 
         TextView register = (TextView)findViewById(com.menemi.R.id.register);
         register.setOnClickListener(v -> {

@@ -14,7 +14,6 @@ import com.menemi.dbfactory.DBHandler;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class PictureLoader extends AsyncTask<Void, Void, String> {
@@ -47,16 +46,14 @@ public class PictureLoader extends AsyncTask<Void, Void, String> {
 
 
     public  PictureLoader(String dataURL, BitmapLoadListener onBitmapLoadListener) {
+
         if(cashedPictures.get(dataURL) != null){
             onBitmapLoadListener.onFinish(cashedPictures.get(dataURL));
 
-        } else {
+         } else {
             Bitmap picureFromDB = DBHandler.getInstance().getBitmapFromDB(dataURL);
             if (picureFromDB != null){
                 cashedPictures.put(dataURL,picureFromDB);
-                if(dataURL.equals("http://minemi.ironexus.com/system/profile_pictures/pictures/000/000/001/thumb/open-uri20161014-9573-gq2e4l?1476466426")){
-                    Log.d("stackTrace", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
-                }
                 onBitmapLoadListener.onFinish(picureFromDB);
             } else {
                 this.dataURL = dataURL;

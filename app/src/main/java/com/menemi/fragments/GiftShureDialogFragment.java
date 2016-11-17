@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.PersonObject;
+import com.menemi.utils.Utils;
 
 import java.util.LinkedList;
 
@@ -94,7 +96,7 @@ public class GiftShureDialogFragment extends android.app.DialogFragment {
     class SendGiftButtonListener implements View.OnClickListener{
         PersonObject personObject;
         Gift giftToPresent;
-
+boolean giftSended = false;
         public SendGiftButtonListener(PersonObject personObject, Gift giftToPresent) {
             this.personObject = personObject;
             this.giftToPresent = giftToPresent;
@@ -102,40 +104,56 @@ public class GiftShureDialogFragment extends android.app.DialogFragment {
 
         @Override
     public void onClick(View v) {
-            Log.d("GiftDialogTest", "my credits " + DBHandler.getInstance().getMyProfile().getPersonCredits() + " giftPrice " + giftToPresent.getPrice());
-            if(DBHandler.getInstance().getMyProfile().getPersonCredits() >= giftToPresent.getPrice()){
-                DBHandler.getInstance().buyGift(giftToPresent.getGiftId(), personObject.getPersonId(), (Object object) ->{
-                    //this line to keep cashed profile up to date
-                    DBHandler.getInstance().getMyProfile().setPersonCredits(DBHandler.getInstance().getMyProfile().getPersonCredits()- giftToPresent.getPrice());
+            ProgressDialog progress = Utils.startLodingProgress(getActivity(),getString(R.string.sending_gift), null);
+            if(!giftSended){
+                giftSended  = true;
+            DBHandler.getInstance().isRESTAvailable((isOnline)->{
+                if((boolean)isOnline){
 
-                    DBHandler.getInstance().getOtherProfile(personObject.getPersonId(), new DBHandler.ResultListener() {
-                        @Override
-                        public void onFinish(Object object) {
+                    Log.d("GiftDialogTest", "my credits " + DBHandler.getInstance().getMyProfile().getPersonCredits() + " giftPrice " + giftToPresent.getPrice());
+                    if(DBHandler.getInstance().getMyProfile().getPersonCredits() >= giftToPresent.getPrice()){
+                        DBHandler.getInstance().buyGift(giftToPresent.getGiftId(), personObject.getPersonId(), (Object object) ->{
+                            //this line to keep cashed profile up to date
 
-                            FragmentTransaction fragmentTransaction = ctx.getFragmentManager().beginTransaction();
-                            PersonDataFragment personDataFragment = new PersonDataFragment();
-                            personDataFragment.setPurpose(PersonDataFragment.Purpose.PROFILE);
-                            personDataFragment.setPersonObject((PersonObject)object);
-                            //Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
-                            fragmentTransaction.replace(R.id.content, personDataFragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commitAllowingStateLoss();
+                            DBHandler.getInstance().getMyProfile().setPersonCredits(DBHandler.getInstance().getMyProfile().getPersonCredits()- giftToPresent.getPrice());
+                            PersonPage.prepareNavigationalHeader();
+                            DBHandler.getInstance().getOtherProfile(personObject.getPersonId(), new DBHandler.ResultListener() {
+                                @Override
+                                public void onFinish(Object object) {
 
-                            dismiss();
+                                    FragmentTransaction fragmentTransaction = ctx.getFragmentManager().beginTransaction();
+                                    PersonDataFragment personDataFragment = new PersonDataFragment();
+                                    personDataFragment.setPurpose(PersonDataFragment.Purpose.PROFILE);
+                                    personDataFragment.setPersonObject((PersonObject)object);
+                                    //Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
+                                    fragmentTransaction.replace(R.id.content, personDataFragment);
+                                    fragmentTransaction.addToBackStack(null);
+                                    fragmentTransaction.commitAllowingStateLoss();
 
+                                    dismiss();
+                                    progress.dismiss();
 
-                        }});
-                });
-            } else {
+                                }});
+                        });
+                    } else {
 
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                BuyCoinsFragment buyCoinsFragment = new BuyCoinsFragment();
-                fragmentTransaction.replace(R.id.content, buyCoinsFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commitAllowingStateLoss();
-                dismiss();
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        BuyCoinsFragment buyCoinsFragment = new BuyCoinsFragment();
+                        fragmentTransaction.replace(R.id.content, buyCoinsFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commitAllowingStateLoss();
+                        giftSended = false;
+                        dismiss();
+                        progress.dismiss();
+                    }
+
+                } else {
+                    progress.dismiss();
+                    giftSended = false;
+                }
+
+            });
             }
-            PersonPage.prepareNavigationalHeader();
     }
 }
    /* class OpenProfileListener implements View.OnClickListener {

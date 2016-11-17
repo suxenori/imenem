@@ -45,18 +45,22 @@ import com.menemi.dbfactory.Fields;
 import com.menemi.dbfactory.InternetConnectionListener;
 import com.menemi.dbfactory.MyFirebaseMessagingService;
 import com.menemi.dbfactory.SQLiteEngine;
-import com.menemi.dbfactory.rest.Loader;
 import com.menemi.dbfactory.rest.PictureLoader;
+import com.menemi.dbfactory.stream.messages.BalanceUpdateMessage;
+import com.menemi.dbfactory.stream.messages.StreamMessage;
 import com.menemi.fragments.BuyCoinsFragment;
 import com.menemi.fragments.BuyVipFragment;
+import com.menemi.fragments.ChatFragment;
 import com.menemi.fragments.DialogsList;
 import com.menemi.fragments.FilterFragment;
 import com.menemi.fragments.GiftInfoDialogFragment;
 import com.menemi.fragments.IConnectionInformerFragment;
+import com.menemi.fragments.NewsListFragment;
 import com.menemi.fragments.PersonDataFragment;
 import com.menemi.fragments.PhotoSettingsFragment;
 import com.menemi.fragments.ShowPeopleCompositeFragment;
 import com.menemi.fragments.VerificationFragment;
+import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PersonalGift;
 import com.menemi.personobject.PhotoSetting;
@@ -90,8 +94,9 @@ public class PersonPage extends AppCompatActivity {
     private static final int FAVORITES = 3;
     private static final int VISITORS = 4;
     private static final int MY_LIKES = 5;
+    private static final int NEWS = 6;
     private static final int INVITE_FRIENDS = 7;
-    private static final int SETTINGS = 6;
+    private static final int SETTINGS = 8;
     public static boolean isFilterVisible = false;
     private CallbackManager authCallbackManager;
 
@@ -111,17 +116,43 @@ public class PersonPage extends AppCompatActivity {
     private static TextView ownerName = null;
     private static TextView balanceValue = null;
     private static ProgressBar ratingBar;
+
+public static boolean isActivityOn = false;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityOn = true;
+    }
+
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver", "BroadcastReceiverABCDEFG");
+
          if(intent.getStringExtra(MyFirebaseMessagingService.ACTION) != null && intent.getStringExtra(MyFirebaseMessagingService.ACTION).equals(MyFirebaseMessagingService.ACTION_GIFT)) {
              GiftInfoDialogFragment giftInfoDialogFragment = new GiftInfoDialogFragment();
              giftInfoDialogFragment.setGift((PersonalGift) intent.getSerializableExtra(MyFirebaseMessagingService.DATA));
 
              giftInfoDialogFragment.show(getFragmentManager(), "Dialog Fragment");
-         }
+         } else if(intent.getStringExtra(MyFirebaseMessagingService.ACTION) != null && intent.getStringExtra(MyFirebaseMessagingService.ACTION).equals(MyFirebaseMessagingService.ACTION_FAVORITE) ){
+             PersonObject person = (PersonObject) intent.getSerializableExtra(MyFirebaseMessagingService.DATA);
+             DBHandler.getInstance().getOtherProfile(person.getPersonId(), new DBHandler.ResultListener() {
+                 @Override
+                 public void onFinish(Object object) {
+                         PersonDataFragment personDataFragment = new PersonDataFragment();
+                         personDataFragment.setPurpose(PersonDataFragment.Purpose.PROFILE);
+                         personDataFragment.setPersonObject((PersonObject) object);
+                         openFragment(personDataFragment);
+                 }
+             });
+         } else if(intent.getStringExtra(MyFirebaseMessagingService.ACTION) != null && intent.getStringExtra(MyFirebaseMessagingService.ACTION).equals(MyFirebaseMessagingService.ACTION_MESSAGE) ){
 
+
+             ChatFragment chatFragment = new ChatFragment();
+             chatFragment.setDialogInfo((DialogInfo) intent.getSerializableExtra(MyFirebaseMessagingService.DATA));
+
+            openFragment(chatFragment);
+         }
         }
     };
     private static ProgressDialog progressDialog;
@@ -147,8 +178,8 @@ public class PersonPage extends AppCompatActivity {
         return header;
     }
 
-    public static View.OnClickListener getFilterButtonListener(FragmentManager fragmentManager) {
-        return new OnFilterClickListener(fragmentManager);
+    public static View.OnClickListener getFilterButtonListener(FragmentManager fragmentManager, FilterFragment.FilterType filterType ) {
+        return new OnFilterClickListener(fragmentManager, filterType);
     }
 
     @Override
@@ -263,7 +294,8 @@ public class PersonPage extends AppCompatActivity {
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.favorite, com.menemi.R.string.favorites));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.guests, com.menemi.R.string.visitors));
         listSliding.add(new ItemSlideMenu(R.drawable.menu_like, com.menemi.R.string.liked_you));
-       // listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.invite_fr, com.menemi.R.string.invite_friends));
+        listSliding.add(new ItemSlideMenu(R.drawable.news_feed, R.string.news_feed));
+        listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.invite_fr, com.menemi.R.string.invite_friends));
         listSliding.add(new ItemSlideMenu(com.menemi.R.drawable.setting, com.menemi.R.string.settings));
         LinearLayout container = (LinearLayout) listViewSliding.findViewById(com.menemi.R.id.sliding_menu_container);
         container.addView(header);
@@ -271,7 +303,12 @@ public class PersonPage extends AppCompatActivity {
         //container.addView(footer);
         setTitle("");
         drawerLayout.closeDrawer(listViewSliding);
-
+BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_BALANCE_UPDATED_NOTIFICATION, new StreamMessage.OnRecieveListener() {
+    @Override
+    public void onRecieve(StreamMessage message) {
+        prepareNavigationalHeader();
+    }
+});
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, com.menemi.R.string.drawer_opened, com.menemi.R.string.drawer_closed) {
             @Override
@@ -315,11 +352,8 @@ public class PersonPage extends AppCompatActivity {
             }
         } );
         if(getIntent() != null && getIntent().getExtras() != null){
-            Bundle oldExtras = getIntent().getExtras();
-            Intent content = new Intent();
-            content.putExtra(MyFirebaseMessagingService.ACTION, oldExtras.getString(MyFirebaseMessagingService.ACTION));
-            content.putExtra(MyFirebaseMessagingService.DATA, Loader.parceGift(oldExtras));
-            myReceiver.onReceive(this,content);
+
+            myReceiver.onReceive(this,getIntent());
         }
 
 
@@ -440,15 +474,22 @@ public class PersonPage extends AppCompatActivity {
             ShowPeopleCompositeFragment showPeopleCompositeFragment = new ShowPeopleCompositeFragment();
             showPeopleCompositeFragment.setPurpose(ShowPeopleCompositeFragment.Purpose.FAVORITES);
             openFragment(showPeopleCompositeFragment);
-        } else if( pos == VISITORS){
+        } else if( pos == VISITORS)
+        {
             ShowPeopleCompositeFragment showPeopleCompositeFragment = new ShowPeopleCompositeFragment();
             showPeopleCompositeFragment.setPurpose(ShowPeopleCompositeFragment.Purpose.VISITORS);
             openFragment(showPeopleCompositeFragment);
+        } else if (pos == NEWS){
+            NewsListFragment newsListFragment = new NewsListFragment();
+            openFragment(newsListFragment);
+
         } else if( pos == MY_LIKES){
             ShowPeopleCompositeFragment showPeopleCompositeFragment = new ShowPeopleCompositeFragment();
             showPeopleCompositeFragment.setPurpose(ShowPeopleCompositeFragment.Purpose.LIKES);
             openFragment(showPeopleCompositeFragment);
         } else if(pos == INVITE_FRIENDS){
+
+            SocialNetworkHandler.getInstance().inviteFriendsFromFb(this);
 
         } else if( pos == SETTINGS) {
             Intent settingsActivity = new Intent(this, SettingsActivity.class);
@@ -644,10 +685,13 @@ public class PersonPage extends AppCompatActivity {
         }
     }
     static class OnFilterClickListener implements View.OnClickListener {
+
+
+
         FilterFragment fragment;
         private static PersonObject owner;
         FragmentManager fm;
-
+        private FilterFragment.FilterType filterType;
 
         public static void setOwner(PersonObject owner)
         {
@@ -655,8 +699,9 @@ public class PersonPage extends AppCompatActivity {
         }
 
 
-        public OnFilterClickListener(FragmentManager fm ){
+        public OnFilterClickListener(FragmentManager fm, FilterFragment.FilterType filterType ){
             isFilterVisible = false;
+            this.filterType = filterType;
             this.fm = fm;
             Log.v("onClick", "FILTER");
 
@@ -683,6 +728,7 @@ public class PersonPage extends AppCompatActivity {
                             isFilterVisible = true;
                             fragment = new FilterFragment();
                             fragment.setPersonObject(owner);
+                            fragment.setFilterType(filterType);
                             FragmentTransaction transaction = fm.beginTransaction();
                             transaction.replace(com.menemi.R.id.messageFragmentPlaceHolder, fragment);
                             transaction.addToBackStack(null);
@@ -753,12 +799,30 @@ class OnVipClickListener implements View.OnClickListener{
                     socialProfile.setFirstName(acct.getGivenName());
                     if(acct.getPhotoUrl() == null){
                         socialProfile.setImage(Utils.getBitmapFromResource(this, R.drawable.no_photo));
-                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+
+                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS, new DBHandler.ResultListener()
+                        {
+                            @Override
+                            public void onFinish(Object object)
+                            {
+
+
+                            }
+                        });
 
                     } else{
                     new PictureLoader(acct.getPhotoUrl().toString(), picture -> {
                         socialProfile.setImage(picture);
-                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+
+                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS, new DBHandler.ResultListener()
+                        {
+                            @Override
+                            public void onFinish(Object object)
+                            {
+
+                            }
+                        });
+
                     });
                     }
                     SocialNetworkHandler.getInstance().getImageG_plus(acct.getId());

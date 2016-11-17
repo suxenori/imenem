@@ -8,7 +8,8 @@
 
     <com.nirhart.parallaxscroll.views.ParallaxScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="always">
 
         <RelativeLayout
             android:layout_width="match_parent"

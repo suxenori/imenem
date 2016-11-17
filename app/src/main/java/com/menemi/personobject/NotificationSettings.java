@@ -64,6 +64,19 @@ public class NotificationSettings {
     public void setMessages(String messages) {
         this.messages = prepareSettingFromString(messages);
     }
+/*
+    public String revert(String field){
+        if(field.equals(Fields.MESSAGES)){}
+        if(field.equals(Fields.MUT_LIKES)){}
+        if(field.equals(Fields.THEIR_LIKES)){}
+        if(field.equals(Fields.NEARBY)){}
+        if(field.equals(Fields.VISITORS)){}
+        if(field.equals(Fields.FAVORITES)){}
+        if(field.equals(Fields.GIFTS)){}
+        if(field.equals(Fields.OTHER)){}
+
+
+    }*/
     public void revertMessages(SETTINGTYPE settingtype) {
        messages.setValue(settingtype, !messages.getValueOf(settingtype));
     }

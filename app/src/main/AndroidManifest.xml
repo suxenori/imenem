@@ -24,6 +24,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
     <application
 
@@ -180,6 +181,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1125347950854684"
+                  android:name="com.facebook.FacebookContentProvider"
+                  android:exported="true">
+        </provider>
+
+
         <service
             android:name=".dbfactory.MyFirebaseMessagingService">
             <intent-filter>

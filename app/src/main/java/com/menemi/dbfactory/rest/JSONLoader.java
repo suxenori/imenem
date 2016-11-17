@@ -55,7 +55,7 @@ public abstract class JSONLoader extends AsyncTask<Void, Void, String> {
         StringBuffer buffer = new StringBuffer();
         try {
             System.gc();
-            InputStream inputStream = urlConnection.getInputStream();
+                InputStream inputStream = urlConnection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
             //reading JSON

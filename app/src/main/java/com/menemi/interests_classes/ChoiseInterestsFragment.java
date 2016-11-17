@@ -59,8 +59,11 @@ public class ChoiseInterestsFragment extends Fragment
                     rowInterestModels[i] = new RowModel(checkArray(interestsList,
                             personInterestsArray).get(i).getInterest(), checkArray(interestsList, personInterestsArray).get(i).getInterestId());
                 }
-                CustomAdapter adapter = new CustomAdapter(getActivity().getApplicationContext(), rowInterestModels);
-                listInterests.setAdapter(adapter);
+                if (getActivity() != null){
+                    CustomAdapter adapter = new CustomAdapter(getActivity(), rowInterestModels);
+                    listInterests.setAdapter(adapter);
+                }
+
             }
         });
         listInterests.setOnItemClickListener(new AdapterView.OnItemClickListener()

@@ -218,7 +218,16 @@ public class InstagramApp {
         final SocialProfile profile = new SocialProfile();
         profile.setFirstName(getName());
         profile.setImage(image);
-        DBHandler.getInstance().saveSocialProfile(profile, Fields.SOCIAL_NETWORKS.INSTAGRAM);
+
+        DBHandler.getInstance().saveSocialProfile(profile, Fields.SOCIAL_NETWORKS.INSTAGRAM, new DBHandler.ResultListener()
+        {
+            @Override
+            public void onFinish(Object object)
+            {
+
+            }
+        });
+
     }
 
     public void setListener(OAuthAuthenticationListener listener) {

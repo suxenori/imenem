@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.menemi.dbfactory.DBHandler;
-import com.menemi.interests_classes.InterestsGroup;
 import com.menemi.personobject.Interests;
 import com.menemi.personobject.PersonObject;
 
@@ -79,19 +78,9 @@ if(!setLoginPhoneOrEmail.getText().toString().equals("")) {
                     });
 
             DBHandler.getInstance().getInterestsGroup(DBHandler.getInstance().getUserId(), object1 -> {
-                InterestsGroup interestGroup;
-                ArrayList<InterestsGroup> interestsGroupArray;
-                ArrayList groups;
-                interestsGroupArray = new ArrayList<InterestsGroup>();
-                groups = (ArrayList) object1;
-                for (int i = 0; i < groups.size(); i++) {
-                    interestGroup = (InterestsGroup) groups.get(i);
-                    interestsGroupArray.add(interestGroup);
-                    Log.i("groups", interestGroup.getNameGroup());
-                }
-                DBHandler.getInstance().setInterestsGroupArray(interestsGroupArray);
-            });
-
+                        ArrayList groups = (ArrayList) object1;
+                        DBHandler.getInstance().setInterestsGroupArray(groups);
+                    });
 
             startActivity(personPage);
 

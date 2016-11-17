@@ -167,7 +167,7 @@ public class EditPersonalInfo extends AppCompatActivity
             hairColorDialog.setEditDialogListener(new EditDialogHairColor());
             hairColorDialog.setItems(personalAppearanceDataSource.getHairColor());
             hairColorDialog.setSelectedRadioButton(personalAppearanceSettingsModelFromStorage.getHairColorIndex());
-            hairColorDialog.setTitle("Цвет волос");
+            hairColorDialog.setTitle(getString(R.string.hair_color));
             hairColorDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
             hairColorDialog.show(getSupportFragmentManager(),"hair color");
         });
@@ -314,7 +314,7 @@ public class EditPersonalInfo extends AppCompatActivity
         LinearLayout toolbarContainer = (LinearLayout) toolbar.findViewById(com.menemi.R.id.toolbarContainer);
         toolbarContainer.removeAllViews();
         toolbarContainer.addView(View.inflate(this, com.menemi.R.layout.choice_interest_toolbar, null));
-       ImageButton submitButton = (ImageButton) toolbarContainer.findViewById(com.menemi.R.id.submButton);
+        ImageButton submitButton = (ImageButton) toolbarContainer.findViewById(com.menemi.R.id.submButton);
         submitButton.setImageResource(R.drawable.check_on);
         submitButton.setOnClickListener(view -> {
             ProgressDialog progressDialog =  Utils.startLodingProgress(this, getString(R.string.update_info), (dialog)-> {});

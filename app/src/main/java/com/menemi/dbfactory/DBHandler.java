@@ -12,6 +12,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.menemi.dbfactory.rest.DBRest;
 import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.dbfactory.stream.StreamController;
+import com.menemi.dbfactory.stream.messages.BalanceUpdateMessage;
 import com.menemi.dbfactory.stream.messages.DialogSendMessage;
 import com.menemi.dbfactory.stream.messages.PictureMessage;
 import com.menemi.dbfactory.stream.messages.ReadMessage;
@@ -86,7 +87,11 @@ public class DBHandler {
 
 
     public PersonObject getMyProfile() {
+        if(myProfile != null){
         return myProfile;
+        } else {
+           return myProfile = dbSQLite.getProfile(dbSQLite.getUserId());
+        }
     }
 
 
@@ -132,6 +137,15 @@ public class DBHandler {
         return instance;
     }
 
+    /**
+     *
+     * @param offset
+     * @param resultListener ArrayList<NewsInfo> news = (ArrayList<NewsInfo>)object;
+     */
+
+    public void getNews(int count, int offset, ResultListener resultListener){
+    dbRest.getNews(getUserId(), count, offset, resultListener);
+    }
     public DialogSendMessage sendTextMessage(int dialogId, int profileID, String messageBody) {
         DialogSendMessage dialogMessage = new DialogSendMessage(dialogId, profileID, messageBody);
         stream.sendMessage(dialogMessage);
@@ -348,6 +362,7 @@ public class DBHandler {
         });
 
     }
+
     public void setLanguages(ArrayList<Language> languages, ResultListener resultListener) {
         LanguagesSet languagesSet = new LanguagesSet(languages);
         languagesSet.setId(getUserId());
@@ -394,6 +409,29 @@ public class DBHandler {
         });
 
     }
+    public void setInterest(Interests interest, ResultListener resultListener) {
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if ((boolean) object) {
+                    dbRest.setInterest(interest, (isSucceed) -> {
+                        if(object.equals("{\"result\":\"success\"}")) {
+
+                            resultListener.onFinish(true);
+
+
+                        } else {
+                            resultListener.onFinish(false);
+                        }
+                    });
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
+
+    }
+
 
     public void setBirthday(Date birthday, ResultListener resultListener) {
         isRESTAvailable(new ResultListener() {
@@ -558,6 +596,9 @@ public class DBHandler {
     }
 
     public NotificationSettings getNotifications() {
+        if(notificationSettings == null){
+            return  notificationSettings = dbSQLite.getNotifications(getUserId());
+        }
         return notificationSettings;
     }
 
@@ -687,7 +728,35 @@ public class DBHandler {
 
 
     }
+    /**
+     * @param personId       id of picture owner
+     * @param resultListener will return Bitmap photo = (Bitmap)object;
+     */
+    public void getAvatarURL(final int personId, final ResultListener resultListener) {
 
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if ((boolean) object == true) {
+                    dbRest.getPicture(personId, Utils.PICTURE_QUALITY_THUMBNAIL, new ResultListener() {
+                        @Override
+                        public void onFinish(Object object) {
+                            String url = (String) object;
+                            dbSQLite.saveAvatarURL(personId, url);
+                            resultListener.onFinish(url);
+
+                        }
+                    });
+
+                }
+                else {
+                    resultListener.onFinish(null);
+                }
+            }
+        });
+
+
+    }
     /**
      * @param id
      * @param isThumbnail
@@ -798,25 +867,57 @@ public class DBHandler {
     }
 
     public Configurations getConfigurations() {
+        if(configurations == null){
+            return configurations = dbSQLite.getConfigurations(getUserId());
+        }
         return configurations;
     }
+
 
     public void prepareConfigurations(int id) {
         dbRest.getConfigurations(id, new ResultListener() {
             @Override
             public void onFinish(Object object) {
+
                 configurations = (Configurations) object;
+                dbSQLite.setConfigurations(configurations);
             }
         });
         dbRest.getNotifications(id, (Object object) -> {
             notificationSettings = (NotificationSettings) object;
+            dbSQLite.setNotifications(id, notificationSettings);
+        });
+    }
+    public void prepareConfigurations(ResultListener resultListener) {
+        dbRest.getConfigurations(getUserId(), new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                configurations = (Configurations) object;
+                dbSQLite.setConfigurations(configurations);
+                dbRest.getNotifications(getUserId(), (Object notifications) -> {
+                    notificationSettings = (NotificationSettings) notifications;
+                    dbSQLite.setNotifications(getUserId(), notificationSettings);
+                    resultListener.onFinish(true);
+                });
+            }
         });
 
-
     }
+    public void setConfigurations(final Configurations newConfigurations, ResultListener resultListener) {
+        dbRest.setConfigurations(newConfigurations, new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if(object.equals("{\"result\":\"success\"}")) {
+                    DBHandler.this.configurations = newConfigurations;
+                    dbSQLite.setConfigurations(newConfigurations);
+                    resultListener.onFinish(true);
+                } else {
+                    resultListener.onFinish(false);
+                }
 
-    public void setConfigurations(Configurations configurations, ResultListener resultListener) {
-        dbRest.setConfigurations(configurations, resultListener);
+            }
+        });
+
     }
 
     public void getMyProfile(final ResultListener resultListener) {
@@ -967,8 +1068,27 @@ public class DBHandler {
         dbSQLite.saveLastId(userID);
     }
 
-    public void saveSocialProfile(SocialProfile profile, Fields.SOCIAL_NETWORKS socialNetwork){
-        dbSQLite.saveSocialProfile(socialNetwork, profile);
+    public void saveSocialProfile(SocialProfile profile, Fields.SOCIAL_NETWORKS socialNetwork, ResultListener resultListener){
+
+        isRESTAvailable(new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                if ((boolean) object) {
+                    dbRest.setField(Utils.socialFieldConverter(socialNetwork), profile.getId(), (isSucceed) -> {
+                        if ((boolean) isSucceed) {
+                            dbSQLite.saveSocialProfile(socialNetwork, profile);
+                            resultListener.onFinish(true);
+
+
+                        } else {
+                            resultListener.onFinish(false);
+                        }
+                    });
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
+        });
     }
 
     public SocialProfile getSocialProfile(Fields.SOCIAL_NETWORKS socialNetwork){
@@ -1022,6 +1142,7 @@ public class DBHandler {
 
     public void unlockPhoto(PhotoSetting photoSetting, ResultListener resultListener) {
         dbRest.unlockPhoto(photoSetting.getPhotoId(), getUserId(), (Object obj) -> {
+            stream.sendMessage(new BalanceUpdateMessage());
             photoSetting.setUnlocked(true);
             resultListener.onFinish(photoSetting);
         });
@@ -1052,7 +1173,18 @@ public class DBHandler {
 
 
     public void setNotifications(String fieldName, String values, ResultListener resultListener) {
-        dbRest.setNotifications(getUserId(), fieldName, values, resultListener);
+        dbRest.setNotifications(getUserId(), fieldName, values, new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+if(!object.equals("{ \"result\" : \"failed\" }")){
+    dbSQLite.setNotifications(getUserId(), notificationSettings);
+    resultListener.onFinish(true);
+} else {
+    resultListener.onFinish(false);
+}
+}
+
+        });
 
     }
 
@@ -1173,21 +1305,8 @@ public class DBHandler {
                 });
             } else {
                 photoTemplates = dbSQLite.getTemplates();
-                if (photoTemplates.size() == 0) {
-                    subscribeToRest(new InternetConnectionListener() {
-                        @Override
-                        public void internetON() {
-                            dbRest.getPhotoTemplates(1, (Object object) -> {
-                                photoTemplates = (ArrayList<PhotoTemplate>) object;
-                            });
-                        }
 
-                        @Override
-                        public void internetOFF() {
-
-                        }
-                    });
-                }
+                resultListener.onFinish(null);
 
             }
 
@@ -1213,22 +1332,8 @@ public class DBHandler {
                 });
             } else {
                 gifts = dbSQLite.getGifts();
-                if (gifts.size() == 0) {
-                    subscribeToRest(new InternetConnectionListener() {
-                        @Override
-                        public void internetON() {
-                            dbRest.prepareGifts(1, (Object object) -> {
-                                gifts = (ArrayList<Gift>) object;
+                resultListener.onFinish(null);
 
-                            });
-                        }
-
-                        @Override
-                        public void internetOFF() {
-
-                        }
-                    });
-                }
 
             }
 
@@ -1254,7 +1359,13 @@ public class DBHandler {
     }
 
     public void buyGift(int giftID, int personID, ResultListener resultListener) {
-        dbRest.buyGift(getUserId(), personID, giftID, resultListener);
+        dbRest.buyGift(getUserId(), personID, giftID, new ResultListener() {
+            @Override
+            public void onFinish(Object object) {
+                stream.sendMessage(new BalanceUpdateMessage());
+                resultListener.onFinish(object);
+            }
+        });
     }
 
     public interface ResultListener extends DBRest.OnDataRecieveListener {

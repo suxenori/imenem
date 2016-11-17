@@ -2,10 +2,12 @@ package com.menemi.dbfactory.rest;
 
 import android.util.Log;
 
+import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.Fields;
 import com.menemi.edit_personal_Info.PersonalAppearanceSettingsModel;
 import com.menemi.personobject.Configurations;
 import com.menemi.personobject.CreditsInfo;
+import com.menemi.personobject.Interests;
 import com.menemi.personobject.LanguagesSet;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
@@ -28,15 +30,19 @@ public class Sender extends JSONSender {
     private static final String urlForAPIRegister = "/profile/register";
     private static final String urlForAPIAuthorise = "/profile/authorize";
     private static final String urlForAPIAddPhoto = "/profile/addphoto";
-    private static final String urlForAPISetConfigurations = "/settings/setconfigurations";//(:requesting_profile_id)
+    private static final String urlForAPISetConfigurations = "/settings/setconfigurations/";//(:requesting_profile_id)
     private static final String urlForAPISetINFO = "/settings/saveprofileinfo/";
     private static final String urlForAPISetLanguages = "/profile/setlanguages";
     private static final String urlForAPIAddCredits = "/profile/credits_added";
     private static final String urlFBRegister = "/profile/registerfb";
+    private static final String urlCreateInterest = "/settings/createinterest/";
 
 
 
     private static final String USER_ID = "requesting_profile_id";
+    private static final String SETTINGS = "settings";
+    private static final String VALUE = "val";
+
     private static HashMap<RestCommands, JSONParcer> messageTypesParcer;
 
     static {
@@ -114,25 +120,78 @@ public class Sender extends JSONSender {
             public String parce(Object object) throws JSONException
             {
                 Configurations configurations = (Configurations) object;
-                JSONObject obj = new JSONObject(Fields.CONFIGURATIONS);
-                obj.put(Fields.ID, configurations.getId());
-                obj.put(Fields.PROFILE_ID_2, configurations.getProfileId());
-                obj.put(Fields.SHOW_DISTANCE, configurations.isShowDistance());
-                obj.put(Fields.HIDE_ONLINE_STATUS, configurations.isHideOnlineStatus());
-                obj.put(Fields.PUBLIC_SEARCH, configurations.isPublicSearch());
-                obj.put(Fields.SHOW_NEARBY, configurations.isShowNearby());
-                obj.put(Fields.LIMIT_PROFILE, configurations.isLimitProfile());
-                obj.put(Fields.SHARE_PROFILE, configurations.isShareProfile());
-                obj.put(Fields.FIND_BY_EMAIL, configurations.isFindByEmail());
-                obj.put(Fields.HALF_INVISIBLE, configurations.isAlmostInvisible());
-                obj.put(Fields.INVISBLE_HEAT, configurations.isInvisibleCloacked());
-                obj.put(Fields.HIDE_VIP_STATUS, configurations.isHideVipStatus());
-                obj.put(Fields.LIMIT_MESSAGES, configurations.isLimitMessages());
-                obj.put(Fields.HIDE_MY_VERIFICATIONS, configurations.isHideMyVerifications());
-                obj.put(Fields.HIDE_PROFILE_AS_DELETED, configurations.isHideProfileAsDeleted());
+                JSONObject main = new JSONObject();
+                main.put(USER_ID, DBHandler.getInstance().getUserId());
+
+                JSONArray values = new JSONArray();
+                JSONObject value = new JSONObject();
+                value.put(Fields.NAME, Fields.SHOW_DISTANCE);
+                value.put(VALUE, Utils.boolToInt(configurations.isShowDistance()));
+                values.put(value);
 
 
-                return obj.toString();
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.HIDE_ONLINE_STATUS);
+                value.put(VALUE, Utils.boolToInt(configurations.isHideOnlineStatus()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.PUBLIC_SEARCH);
+                value.put(VALUE, Utils.boolToInt(configurations.isPublicSearch()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.SHOW_NEARBY);
+                value.put(VALUE, Utils.boolToInt(configurations.isShowNearby()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.LIMIT_PROFILE);
+                value.put(VALUE, Utils.boolToInt(configurations.isLimitProfile()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.SHARE_PROFILE);
+                value.put(VALUE, Utils.boolToInt(configurations.isShareProfile()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.FIND_BY_EMAIL);
+                value.put(VALUE, Utils.boolToInt(configurations.isFindByEmail()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.HALF_INVISIBLE);
+                value.put(VALUE, Utils.boolToInt(configurations.isAlmostInvisible()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.INVISBLE_HEAT);
+                value.put(VALUE, Utils.boolToInt(configurations.isInvisibleCloacked()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.HIDE_VIP_STATUS);
+                value.put(VALUE, Utils.boolToInt(configurations.isHideVipStatus()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.LIMIT_MESSAGES);
+                value.put(VALUE, Utils.boolToInt(configurations.isLimitMessages()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.HIDE_MY_VERIFICATIONS);
+                value.put(VALUE, Utils.boolToInt(configurations.isHideMyVerifications()));
+                values.put(value);
+
+                value = new JSONObject();
+                value.put(Fields.NAME, Fields.HIDE_PROFILE_AS_DELETED);
+                value.put(VALUE, Utils.boolToInt(configurations.isHideProfileAsDeleted()));
+                values.put(value);
+
+                main.put(SETTINGS,values);
+                return main.toString();
             }
         });
         messageTypesParcer.put(RestCommands.SET_INFO, new JSONParcer()
@@ -266,6 +325,24 @@ public class Sender extends JSONSender {
                 return dataJSON.toString().replace("\"[", "[").replace("]\"", "]");
             }
         });
+        messageTypesParcer.put(RestCommands.CREATE_INTEREST, new JSONParcer() {
+            @Override
+            public String parce(Object object) throws JSONException {
+
+                Interests interest = (Interests) object;
+
+                JSONObject dataJSON = new JSONObject();
+
+                dataJSON.put(Fields.NAME,interest.getInterest());
+                dataJSON.put(USER_ID, DBHandler.getInstance().getUserId());
+
+
+
+                Log.d("object", dataJSON.toString());
+
+                return dataJSON.toString();
+            }
+        });
 
         //TODO: add actions for all other types
     }
@@ -281,6 +358,13 @@ public class Sender extends JSONSender {
         this.object = obj;
     }
 
+    public Sender(RestCommands command, String socialId, String socialNetwork, OnUploadListener onUploadListener)
+    {
+        super(getURL(command),onUploadListener);
+        this.command = command;
+
+    }
+
     public static String getURL(RestCommands command) {
         String url = "";
         switch (command) {
@@ -294,7 +378,7 @@ public class Sender extends JSONSender {
                 url = Fields.URL_FOR_SERVER + "/"+ Fields.PREFIX + urlForAPIAddPhoto;
                 break;
             case SET_CONFIGURATIONS:
-                url = Fields.URL_FOR_SERVER + "/"+ Fields.PREFIX + urlForAPISetConfigurations;
+                url = Fields.URL_FOR_SERVER + "/"+ Fields.PREFIX + urlForAPISetConfigurations + DBHandler.getInstance().getUserId();
                 break;
             case SET_INFO:
                 url = Fields.URL_FOR_SERVER + "/"+ Fields.PREFIX + urlForAPISetINFO;
@@ -311,6 +395,9 @@ public class Sender extends JSONSender {
                 break;
             case REGISTER_FACEBOOK:
                 url = Fields.URL_FOR_SERVER + "/"+ Fields.PREFIX + urlFBRegister;
+                break;
+            case CREATE_INTEREST:
+                url = Fields.URL_FOR_SERVER + "/"+ Fields.PREFIX + urlCreateInterest;
                 break;
 
         }
@@ -333,7 +420,9 @@ public class Sender extends JSONSender {
         SET_PERSON_APPEARANCE,
         SET_FIELD,
         ADD_CREDITS,
-        REGISTER_FACEBOOK
+        REGISTER_FACEBOOK,
+        CREATE_INTEREST
+
     }
 
 

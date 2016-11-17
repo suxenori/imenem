@@ -86,6 +86,7 @@ public class PersonListFragment extends Fragment {
             title = getString(R.string.favorites);
             showFavorites();
         }
+
         TextView blockTitle = (TextView) rootView.findViewById(R.id.blockTitle);
         blockTitle.setText(title);
     }

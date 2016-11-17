@@ -184,8 +184,8 @@
             app:thumbPressed="@drawable/setting_age"
             app:thumbDisabled="@drawable/setting_age"
             app:barHeight="@dimen/_3sdp"
-            app:defaultColor="@color/orange"
-            app:activeColor="@color/text_second"
+            app:activeColor="@color/orange"
+            app:defaultColor="@color/text_second"
             app:showLabels="false"
             app:valuesAboveThumbs="false"
             app:activateOnDefaultValues="true"
@@ -263,7 +263,7 @@
                 android:text="@string/find_goals"
                 android:textColor="@color/filterShadow"
                 android:textSize="@dimen/text_in_filter_frag"
-                android:layout_marginTop="@dimen/_127sdp"
+                android:layout_marginTop="@dimen/_130sdp"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginStart="@dimen/_20sdp"/>
             <LinearLayout
@@ -274,7 +274,7 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:orientation="vertical"
-                android:layout_marginTop="@dimen/_145sdp">
+                android:layout_marginTop="@dimen/_150sdp">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_23sdp"
@@ -350,7 +350,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:textColor="@color/black"
-                    android:id="@+id/textView3"/>
+                    android:id="@+id/whereSearch"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_23sdp"

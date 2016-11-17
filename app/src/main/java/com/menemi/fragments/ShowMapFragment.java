@@ -6,7 +6,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -28,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -476,11 +476,19 @@ Bitmap icon;
         }
 
         public MarkerOptions getMarkerOptions() {
+            if(getActivity()==null) {
+            return this.markerOptions;
+            }
+            Bitmap avatar = Utils.getCroppedBitmap(icon);
 
+            Bitmap background = Utils.getBitmapFromResource(getActivity().getApplicationContext(), R.drawable.test_circle_shadow);
+
+            Bitmap fullPicture = Utils.overlay(avatar, background);
+            BitmapDescriptor descriptor = BitmapDescriptorFactory.fromBitmap(fullPicture);
             this.markerOptions = new MarkerOptions()
                     .position(new LatLng(personObject.getPositionLatitude(), personObject.getPositionLongitude()))
                     .title(personObject.getPersonName())
-                    .icon(BitmapDescriptorFactory.fromBitmap(Utils.overlay(Utils.getCroppedBitmap(icon), BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.test_circle_shadow))))
+                    .icon(descriptor)
                     .draggable(false)
                     .zIndex(0.5f);
             return markerOptions;
@@ -514,7 +522,7 @@ Bitmap icon;
         menuButton.setOnClickListener(PersonPage.getMenuListener());
 
         ImageView filterButton = (ImageView) toolbarContainer.findViewById(R.id.filterButton);
-        filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager()));
+        filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager(), FilterFragment.FilterType.FILTER_FROM_NEAR));
     }
 
     public enum POSITION {

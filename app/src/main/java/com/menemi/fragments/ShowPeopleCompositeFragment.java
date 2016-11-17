@@ -76,7 +76,6 @@ public class ShowPeopleCompositeFragment extends Fragment {
 
         if (purpose == Purpose.LIKES || purpose == Purpose.MUTUAL_LIKES) {
             personListFragment.setPurpose(Purpose.LIKES);
-
             PersonListFragment personListFragment2 = new PersonListFragment();
             personListFragment2.setPurpose(Purpose.MUTUAL_LIKES);
             fragmentTransaction.add(R.id.fragment1, personListFragment2);
@@ -91,7 +90,8 @@ public class ShowPeopleCompositeFragment extends Fragment {
         MUTUAL_LIKES,
         FRIENDS,
         FAVORITES,
-        NEAR
+        NEAR,
+        NEWS
     }
 
     private void configureToolbar(Purpose purpose) {
@@ -131,6 +131,8 @@ public class ShowPeopleCompositeFragment extends Fragment {
                         title.setText(R.string.favorites);
                     } else if (purpose == Purpose.LIKES) {
                         title.setText(R.string.liked_you);
+                    } else if (purpose == Purpose.NEWS){
+                        title.setText(getString(R.string.news_feed));
                     }
 
                 }
@@ -140,10 +142,6 @@ public class ShowPeopleCompositeFragment extends Fragment {
                 menuButton.setOnClickListener(PersonPage.getMenuListener());
 
                 ImageView filterButton = (ImageView) toolbarContainer.findViewById(R.id.filterButton);
-                filterButton.setOnClickListener(PersonPage.getFilterButtonListener(
-
-                getFragmentManager()
-
-                ));
+                filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager(), FilterFragment.FilterType.FILTER_FROM_NEAR));
             }
         }

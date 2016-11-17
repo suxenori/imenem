@@ -18,7 +18,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.menemi.PersonPage;
 import com.menemi.R;
@@ -31,6 +30,8 @@ import com.menemi.social_network.PhotoSettingsContainer;
 import com.menemi.utils.Utils;
 
 import java.util.ArrayList;
+
+import xdroid.toaster.Toaster;
 
 /**
  * Created by Ui-Developer on 20.07.2016.
@@ -152,7 +153,7 @@ public class PhotoSettingsFragment extends Fragment {
                             progress.setProgress(progressPercentage);
                             return false;
                         }else {
-                            Toast.makeText(getActivity(), getString(R.string.canceled), Toast.LENGTH_SHORT);
+                                    Toaster.toast(getString(R.string.canceled));
                             return true;
                         }
 
@@ -195,22 +196,25 @@ public class PhotoSettingsFragment extends Fragment {
     }
 
     private void showPrivate(boolean showPrivate) {
-        Switch privateSwitch = (Switch) rootView.findViewById(R.id.privateSwitch);
-        if (showPrivate) {
-            photoSetting.setPrivate(showPrivate);
-            PhotoPrivacySettings photoPrivacySettings = new PhotoPrivacySettings();
-            photoPrivacySettings.setPhotoSetting(photoSetting);
-            photoPrivacySettings.setPhotoTemplates(photoTemplates);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.privacyContainer, photoPrivacySettings);
-            transaction.commitAllowingStateLoss();
-            privateSwitch.setChecked(true);
+        if(getFragmentManager() != null) {
+            Switch privateSwitch = (Switch) rootView.findViewById(R.id.privateSwitch);
+            if (showPrivate) {
+                photoSetting.setPrivate(showPrivate);
+                PhotoPrivacySettings photoPrivacySettings = new PhotoPrivacySettings();
+                photoPrivacySettings.setPhotoSetting(photoSetting);
+                photoPrivacySettings.setPhotoTemplates(photoTemplates);
+                if(getFragmentManager() == null){return;}
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.privacyContainer, photoPrivacySettings);
+                transaction.commitAllowingStateLoss();
+                privateSwitch.setChecked(true);
 
-        } else {
-            photoSetting.setPrivate(showPrivate);
-            privateSwitch.setChecked(false);
-            LinearLayout privacyContainer = (LinearLayout) rootView.findViewById(R.id.privacyContainer);
-            privacyContainer.removeAllViews();
+            } else {
+                photoSetting.setPrivate(showPrivate);
+                privateSwitch.setChecked(false);
+                LinearLayout privacyContainer = (LinearLayout) rootView.findViewById(R.id.privacyContainer);
+                privacyContainer.removeAllViews();
+            }
         }
     }
 

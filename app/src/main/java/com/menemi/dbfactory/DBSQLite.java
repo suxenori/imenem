@@ -8,9 +8,11 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.menemi.filter.FilterObject;
+import com.menemi.personobject.Configurations;
 import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.Language;
+import com.menemi.personobject.NotificationSettings;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
 import com.menemi.personobject.PhotoTemplate;
@@ -92,13 +94,13 @@ class DBSQLite {
             personObject.setiAmHereTo(cursor.getInt(cursor.getColumnIndex(Fields.HERE_TO)));//iAmHereTo().toString());
             personObject.setLivingWith(cursor.getString(cursor.getColumnIndex(Fields.LIVING_WITH)));//LivingWith().ordinal());
             personObject.setBirthday(cursor.getString(cursor.getColumnIndex(Fields.BIRTH_DAY)));
-            personObject.setPersonTwitter(cursor.getString(cursor.getColumnIndex(Fields.TWITTER_ACCOUNT)));
+    /*        personObject.setPersonTwitter(cursor.getString(cursor.getColumnIndex(Fields.TWITTER_ACCOUNT)));
             personObject.setPersonLinkedin(cursor.getString(cursor.getColumnIndex(Fields.LINKEDIN_ACCOUNT)));
             personObject.setPersonInstagram(cursor.getString(cursor.getColumnIndex(Fields.INSTAGRAM_ACCOUNT)));
             personObject.setPersonOK(cursor.getString(cursor.getColumnIndex(Fields.ODNOCLASSNIKI_ACCOUNT)));
             personObject.setPersonFBook(cursor.getString(cursor.getColumnIndex(Fields.FACEBOOK_ACCOUNT)));
             personObject.setPersonVKontakte(cursor.getString(cursor.getColumnIndex(Fields.VKONTAKTE_ACCOUNT)));
-            personObject.setPersonGPlus(cursor.getString(cursor.getColumnIndex(Fields.Gplus_ACCOUNT)));
+            personObject.setPersonGPlus(cursor.getString(cursor.getColumnIndex(Fields.Gplus_ACCOUNT)));*/
             personObject.setSearchAgeMax(cursor.getInt(cursor.getColumnIndex(Fields.SEARCH_AGE_MAX)));
             personObject.setSearchAgeMin(cursor.getInt(cursor.getColumnIndex(Fields.SEARCH_AGE_MIN)));
             personObject.setWeight(cursor.getInt(cursor.getColumnIndex(Fields.WEIGHT)));
@@ -295,7 +297,9 @@ class DBSQLite {
     }
 
     public Bitmap getBitmap(String url) {
-
+if(url == null){
+    return null;
+}
 
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_PHOTOS, new String[]{Fields.PHOTO}, Fields.URLS + "=?", new String[]{url}, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -445,6 +449,123 @@ class DBSQLite {
 
     }
 
+    public void setNotifications(int userId, NotificationSettings notifications) {
+
+
+        ContentValues values = new ContentValues();
+
+        values.put(Fields.ID, userId);
+        values.put(Fields.MESSAGES, notifications.getMessages());
+        values.put(Fields.MUT_LIKES, notifications.getMutual_likes());
+        values.put(Fields.THEIR_LIKES, notifications.getTheir_likes());
+        values.put(Fields.NEARBY, notifications.getNearby());
+        values.put(Fields.VISITORS, notifications.getVisitors());
+        values.put(Fields.FAVORITES, notifications.getFavorites());
+        values.put(Fields.GIFTS, notifications.getGifts());
+        values.put(Fields.OTHER, notifications.getOther());
+
+
+
+        if (isFirstTime(SQLiteEngine.TABLE_NOTIFICATIONS)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_NOTIFICATIONS, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_NOTIFICATIONS, null, Fields.ID + "=?",
+                    new String[]{"" + userId}, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst() == true) {
+                sqliteDB.update(SQLiteEngine.TABLE_NOTIFICATIONS, values,
+                        Fields.ID + "=?", new String[]{"" + userId});
+            } else {
+                sqliteDB.insert(SQLiteEngine.TABLE_NOTIFICATIONS, null, values);
+            }
+
+        }
+
+    }
+    public NotificationSettings getNotifications(int userId) {
+
+        NotificationSettings notificationSettings = null;
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_CONFIGURATIONS, null, Fields.ID + "=?", new String[]{""+userId}, null, null, null);
+        if (cursor != null &&  cursor.moveToFirst()) {
+            notificationSettings = new NotificationSettings(userId, userId);
+
+            notificationSettings.setMessages(cursor.getString(cursor.getColumnIndex(Fields.MESSAGES)));
+            notificationSettings.setMutual_likes(cursor.getString(cursor.getColumnIndex(Fields.MUT_LIKES)));
+            notificationSettings.setTheir_likes(cursor.getString(cursor.getColumnIndex(Fields.THEIR_LIKES)));
+            notificationSettings.setNearby(cursor.getString(cursor.getColumnIndex(Fields.NEARBY)));
+            notificationSettings.setVisitors(cursor.getString(cursor.getColumnIndex(Fields.VISITORS)));
+            notificationSettings.setFavorites(cursor.getString(cursor.getColumnIndex(Fields.FAVORITES)));
+            notificationSettings.setGifts(cursor.getString(cursor.getColumnIndex(Fields.GIFTS)));
+            notificationSettings.setOther(cursor.getString(cursor.getColumnIndex(Fields.OTHER)));
+
+        }
+        return notificationSettings;
+
+    }
+    public void setConfigurations(Configurations configuration) {
+
+
+        ContentValues values = new ContentValues();
+
+        values.put(Fields.ID, configuration.getProfileId());
+        values.put(Fields.SHOW_DISTANCE, Utils.boolToInt(configuration.isShowDistance()));
+        values.put(Fields.HIDE_ONLINE_STATUS, Utils.boolToInt(configuration.isHideOnlineStatus()));
+        values.put(Fields.PUBLIC_SEARCH, Utils.boolToInt(configuration.isPublicSearch()));
+        values.put(Fields.LIMIT_PROFILE, Utils.boolToInt(configuration.isLimitProfile()));
+        values.put(Fields.SHARE_PROFILE, Utils.boolToInt(configuration.isShareProfile()));
+        values.put(Fields.FIND_BY_EMAIL, Utils.boolToInt(configuration.isFindByEmail()));
+        values.put(Fields.HALF_INVISIBLE, Utils.boolToInt(configuration.isAlmostInvisible()));
+        values.put(Fields.INVISBLE_HEAT, Utils.boolToInt(configuration.isInvisibleCloacked()));
+        values.put(Fields.HIDE_VIP_STATUS, Utils.boolToInt(configuration.isHideVipStatus()));
+        values.put(Fields.LIMIT_MESSAGES, Utils.boolToInt(configuration.isLimitMessages()));
+        values.put(Fields.SHOW_NEARBY, Utils.boolToInt(configuration.isShowNearby()));
+        values.put(Fields.HIDE_MY_VERIFICATIONS, Utils.boolToInt(configuration.isHideMyVerifications()));
+        values.put(Fields.HIDE_PROFILE_AS_DELETED, Utils.boolToInt(configuration.isHideProfileAsDeleted()));
+
+
+        if (isFirstTime(SQLiteEngine.TABLE_CONFIGURATIONS)) {
+            sqliteDB.insert(SQLiteEngine.TABLE_CONFIGURATIONS, null, values);
+        } else {
+            Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_CONFIGURATIONS, null, Fields.ID + "=?",
+                    new String[]{"" + configuration.getProfileId()}, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst() == true) {
+                sqliteDB.update(SQLiteEngine.TABLE_CONFIGURATIONS, values,
+                        Fields.ID + "=?", new String[]{"" + configuration.getProfileId()});
+            } else {
+                sqliteDB.insert(SQLiteEngine.TABLE_CONFIGURATIONS, null, values);
+            }
+
+        }
+
+    }
+    public Configurations getConfigurations(int userId) {
+
+        Configurations configurations = null;
+
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_CONFIGURATIONS, null, Fields.ID + "=?", new String[]{""+userId}, null, null, null);
+        if (cursor != null &&  cursor.moveToFirst()) {
+            configurations = new Configurations();
+            configurations.setId(cursor.getInt(cursor.getColumnIndex(Fields.ID)));
+            configurations.setProfileId(cursor.getInt(cursor.getColumnIndex(Fields.PROFILE_ID_2)));
+            configurations.setShowDistance(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.SHOW_DISTANCE))));
+            configurations.setHideOnlineStatus(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.HIDE_ONLINE_STATUS))));
+            configurations.setPublicSearch(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.PUBLIC_SEARCH))));
+            configurations.setLimitProfile(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.LIMIT_PROFILE))));
+            configurations.setShareProfile(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.SHARE_PROFILE))));
+            configurations.setFindByEmail(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.FIND_BY_EMAIL))));
+            configurations.setAlmostInvisible(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.HALF_INVISIBLE))));
+            configurations.setInvisibleCloacked(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.INVISBLE_HEAT))));
+            configurations.setHideVipStatus(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.HIDE_VIP_STATUS))));
+            configurations.setLimitMessages(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.LIMIT_MESSAGES))));
+            configurations.setShowNearby(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.SHOW_NEARBY))));
+
+            configurations.setHideMyVerifications(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.HIDE_MY_VERIFICATIONS))));
+            configurations.setHideProfileAsDeleted(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.HIDE_PROFILE_AS_DELETED))));
+
+        }
+        return configurations;
+
+    }
     public ArrayList<DialogInfo> getDialogs() {
 
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_DIALOGS, null, null, null, null, null, null);
@@ -586,7 +707,7 @@ class DBSQLite {
 
     private boolean isFirstTime(String table) {
 
-        Cursor cursor = sqliteDB.query(table, null,
+            Cursor cursor = sqliteDB.query(table, null,
                 null, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -624,13 +745,13 @@ class DBSQLite {
         values.put(Fields.EMAIL, personObject.getEmail());
         values.put(Fields.BIRTH_DAY, String.valueOf(personObject.getBirthday()));
         values.put(Fields.INTEREST_GENDER, personObject.getInterestGender().ordinal());
-        values.put(Fields.TWITTER_ACCOUNT, personObject.getPersonTwitter());
+/*        values.put(Fields.TWITTER_ACCOUNT, personObject.getPersonTwitter());
         values.put(Fields.LINKEDIN_ACCOUNT, personObject.getPersonLinkedin());
         values.put(Fields.INSTAGRAM_ACCOUNT, personObject.getPersonInstagram());
         values.put(Fields.ODNOCLASSNIKI_ACCOUNT, personObject.getPersonOK());
         values.put(Fields.FACEBOOK_ACCOUNT, personObject.getPersonFBook());
         values.put(Fields.VKONTAKTE_ACCOUNT, personObject.getPersonVKontakte());
-        values.put(Fields.Gplus_ACCOUNT, personObject.getPersonGPlus());
+        values.put(Fields.Gplus_ACCOUNT, personObject.getPersonGPlus());*/
         values.put(Fields.SEARCH_AGE_MAX, personObject.getSearchAgeMax());
         values.put(Fields.SEARCH_AGE_MIN, personObject.getSearchAgeMin());
         values.put(Fields.WEIGHT, personObject.getWeight());

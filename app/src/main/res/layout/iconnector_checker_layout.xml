@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="50dp"
+         android:layout_height="@dimen/_40sdp"
               android:id="@+id/checker"
 
               android:background="@color/connectorColor">
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="@color/text_main"
+        android:textColor="@color/actionbar_text"
         android:text="@string/no_internet_message"/>
 
 </LinearLayout>

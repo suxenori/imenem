@@ -50,19 +50,31 @@ public class PrivacyActivity extends AppCompatActivity
                 switherActivity.putExtra(SwitcherActivity.TITLE, getString(R.string.distance_switcher_text_title));
                 switherActivity.putExtra(SwitcherActivity.TEXT, getString(R.string.distance_switcher_text));
 
-                SwitcherActivity.setStateChangeListener((CompoundButton buttonView, boolean isChecked) ->{
+                SwitcherActivity.setStateChangeListener( new CompoundButton.OnCheckedChangeListener() {
+                    boolean isFailureLunch = false;
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(!isFailureLunch){
+                            configurations.setShowDistance(isChecked);
+                            DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                                if(!(boolean)isSucceed){
+                                    isFailureLunch = true;
+                                    buttonView.setChecked(!isChecked);
+                                }
+                            });
+                        } else {
+                            configurations.setShowDistance(isChecked);
+                            isFailureLunch = false;
+                        }
+                        if(isChecked){
+                            distanceOnOff.setText(getString(R.string.on));
+                        } else{
+                            distanceOnOff.setText(getString(R.string.off));
+                        }
 
-
-                        configurations.setShowDistance(isChecked);
-                        DBHandler.getInstance().setConfigurations(configurations, (object) ->{});
-                    if(isChecked){
-                        distanceOnOff.setText(getString(R.string.on));
-                    } else{
-                        distanceOnOff.setText(getString(R.string.off));
                     }
                 });
-
-                startActivity(switherActivity);
+            startActivity(switherActivity);
         });
 
         TextView statusOnOff = (TextView)findViewById(R.id.statusOnOff);
@@ -79,17 +91,32 @@ public class PrivacyActivity extends AppCompatActivity
                 switherActivity.putExtra(SwitcherActivity.TITLE, getString(R.string.show_online_status_title));
                 switherActivity.putExtra(SwitcherActivity.TEXT, getString(R.string.show_online_status));
 
-                SwitcherActivity.setStateChangeListener((CompoundButton buttonView, boolean isChecked) ->{
+                SwitcherActivity.setStateChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    boolean isFailureLunch = false;
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(!isFailureLunch){
+                            configurations.setHideOnlineStatus(isChecked);
+                            DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                                if(!(boolean)isSucceed){
+                                    isFailureLunch = true;
+                                    buttonView.setChecked(!isChecked);
+                                }
+                            });
+                        } else {
+                            configurations.setHideOnlineStatus(isChecked);
+                            isFailureLunch = false;
+                        }
+                        if(isChecked){
+                            statusOnOff.setText(getString(R.string.on));
+                        } else{
+                            statusOnOff.setText(getString(R.string.off));
+                        }
 
-                    configurations.setHideOnlineStatus(isChecked);
-                    DBHandler.getInstance().setConfigurations(configurations, (object) ->{});
-                    if(isChecked){
-                        statusOnOff.setText(getString(R.string.on));
-                    } else{
-                        statusOnOff.setText(getString(R.string.off));
                     }
-                });
-                startActivity(switherActivity);
+                }
+            );
+            startActivity(switherActivity);
         });
 
         TextView showSearchOnOff = (TextView)findViewById(R.id.showSearchOnOff);
@@ -106,16 +133,31 @@ public class PrivacyActivity extends AppCompatActivity
                 switherActivity.putExtra(SwitcherActivity.TITLE, getString(R.string.enable_public_search_title));
                 switherActivity.putExtra(SwitcherActivity.TEXT, getString(R.string.enable_public_search));
 
-                SwitcherActivity.setStateChangeListener((CompoundButton buttonView, boolean isChecked) ->{
+                SwitcherActivity.setStateChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                            boolean isFailureLunch = false;
+                                                            @Override
+                                                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                                if(!isFailureLunch){
+                                                                    configurations.setPublicSearch(isChecked);
+                                                                    DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                                                                        if(!(boolean)isSucceed){
+                                                                            isFailureLunch = true;
+                                                                            buttonView.setChecked(!isChecked);
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    configurations.setPublicSearch(isChecked);
+                                                                    isFailureLunch = false;
+                                                                }
+                                                                if(isChecked){
+                                                                    showSearchOnOff.setText(getString(R.string.on));
+                                                                } else{
+                                                                    showSearchOnOff.setText(getString(R.string.off));
+                                                                }
 
-                    configurations.setPublicSearch(isChecked);
-                    DBHandler.getInstance().setConfigurations(configurations, (object) ->{});
-                    if(isChecked){
-                        showSearchOnOff.setText(getString(R.string.on));
-                    } else{
-                        showSearchOnOff.setText(getString(R.string.off));
-                    }
-                });
+                                                            }
+                                                        }
+                );
 
                 startActivity(switherActivity);
                 /*Intent enablePublicSearchSwitcher = new Intent(PrivacyActivity.this, EnablePublicSearchSwitherActivity.class);
@@ -138,16 +180,32 @@ public class PrivacyActivity extends AppCompatActivity
             switherActivity.putExtra(SwitcherActivity.TITLE, getString(R.string.enable_bumped_into_title));
             switherActivity.putExtra(SwitcherActivity.TEXT, getString(R.string.enable_bumped_into));
 
-            SwitcherActivity.setStateChangeListener((CompoundButton buttonView, boolean isChecked) ->{
+            SwitcherActivity.setStateChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                        boolean isFailureLunch = false;
+                                                        @Override
+                                                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                            if(!isFailureLunch){
+                                                                configurations.setShowNearby(isChecked);
+                                                                DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                                                                    if(!(boolean)isSucceed){
+                                                                        isFailureLunch = true;
+                                                                        buttonView.setChecked(!isChecked);
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                configurations.setShowNearby(isChecked);
+                                                                isFailureLunch = false;
+                                                            }
+                                                            if(isChecked){
+                                                                bumpedIntoOnOff.setText(getString(R.string.on));
+                                                            } else{
+                                                                bumpedIntoOnOff.setText(getString(R.string.off));
+                                                            }
 
-                configurations.setShowNearby(isChecked);
-                DBHandler.getInstance().setConfigurations(configurations, (object) ->{});
-                if(isChecked){
-                    bumpedIntoOnOff.setText(getString(R.string.on));
-                } else{
-                    bumpedIntoOnOff.setText(getString(R.string.off));
-                }
-            });
+                                                        }
+                                                    }
+            );
+
 
             startActivity(switherActivity);
                 /*Intent bumpedInfo = new Intent(PrivacyActivity.this, EnableBumpedIntoActivity.class);
@@ -170,16 +228,31 @@ public class PrivacyActivity extends AppCompatActivity
                 switherActivity.putExtra(SwitcherActivity.TITLE, getString(R.string.allow_profile_sharing_title));
                 switherActivity.putExtra(SwitcherActivity.TEXT, getString(R.string.allow_profile_sharing));
 
-                SwitcherActivity.setStateChangeListener((CompoundButton buttonView, boolean isChecked) ->{
+                SwitcherActivity.setStateChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                            boolean isFailureLunch = false;
+                                                            @Override
+                                                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                                if(!isFailureLunch){
+                                                                    configurations.setShareProfile(isChecked);
+                                                                    DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                                                                        if(!(boolean)isSucceed){
+                                                                            isFailureLunch = true;
+                                                                            buttonView.setChecked(!isChecked);
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    configurations.setShareProfile(isChecked);
+                                                                    isFailureLunch = false;
+                                                                }
+                                                                if(isChecked){
+                                                                    profileSharingOnOff.setText(getString(R.string.on));
+                                                                } else{
+                                                                    profileSharingOnOff.setText(getString(R.string.off));
+                                                                }
 
-                    configurations.setShareProfile(isChecked);
-                    DBHandler.getInstance().setConfigurations(configurations, (object) ->{});
-                    if(isChecked){
-                        profileSharingOnOff.setText(getString(R.string.on));
-                    } else{
-                        profileSharingOnOff.setText(getString(R.string.off));
-                    }
-                });
+                                                            }
+                                                        }
+                );
 
                 startActivity(switherActivity);
                /* Intent allowSharing = new Intent(PrivacyActivity.this, AllowProfileSharing.class);

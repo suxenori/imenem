@@ -65,6 +65,11 @@ public abstract class StreamMessage {
                 Log.d("COMMAND", "RESPONSE ! " + data);
                 return new ResponceReadMessage(jsonObject);
             }
+            if(ConnectorCommands.valueOf(command) == ConnectorCommands.ZCMD_BALANCE_UPDATED_NOTIFICATION){
+                Log.d("COMMAND", "RESPONSE ! " + data);
+                return new BalanceUpdateMessage(jsonObject);
+            }
+
 
             //JSON -> JSONArray -> JSONArray.getString(«comand») -> connector_comands
 
@@ -156,6 +161,7 @@ public abstract class StreamMessage {
         ZCMD_CONTACT_VERSION_UPDATED,
         ZCMD_READ_MESSAGE,
         ZCMD_READ_MESSAGE_RESPONSE,
+        ZCMD_BALANCE_UPDATED_NOTIFICATION
 
     }
 

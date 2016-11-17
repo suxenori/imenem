@@ -160,8 +160,6 @@ public class InterestsList extends Fragment
         TextView title = (TextView) toolbarContainer.findViewById(R.id.screenTitle);
         title.setText(getString(R.string.set_interests));
 
-        /*TextView nameAgeText = (TextView) toolbarContainer.findViewById(R.id.nameAgeText);
-        nameAgeText.setText(personObject.getPersonName() +", " + personObject.getPersonAge());*/
     }
     public void setPersonInterestsArray(ArrayList<Interests> personInterestsArray)
     {

@@ -65,7 +65,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/_28sdp"/>
         <TextView
-            android:id="@+id/greeting2"
+            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_between_elements"

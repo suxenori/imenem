@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.menemi.PersonPage;
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.PersonObject;
@@ -80,6 +81,7 @@ public class PayForPhotoDialogFragment extends DialogFragment
         if(ownerProfile.getPersonCredits() >= pictureToOpen.getPrice()){
             DBHandler.getInstance().unlockPhoto(pictureToOpen, (Object object) ->{
                 DBHandler.getInstance().getMyProfile().setPersonCredits(ownerProfile.getPersonCredits() - pictureToOpen.getPrice());
+                PersonPage.prepareNavigationalHeader();
                 Log.v("PayForPhotoDialog", "photo is unlocked id = " + pictureToOpen.getPhotoId());
                 dismiss();
                 if(getActivity() == null || getFragmentManager() == null){

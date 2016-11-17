@@ -59,17 +59,16 @@
 
         android:id="@+id/messagingBoxContainer"
         android:layout_alignParentBottom="true"
-        android:paddingBottom="@dimen/_10sdp"
-        android:paddingTop="@dimen/_10sdp">
+        >
 
         <LinearLayout
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/dialog_message_box"
+            android:background="@drawable/white_cornered_bg"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_toLeftOf="@+id/send"
@@ -81,12 +80,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/click_attach"
                 android:id="@+id/attachPhotoButton"
                 />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:src="@drawable/click_smile" />
@@ -96,8 +97,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_minus12sdp"
-                android:layout_marginTop="@dimen/_minus14sdp"
+                android:layout_gravity="center_vertical"
+
                 android:id="@+id/messageText"
                 android:hint="@string/write"
                 />

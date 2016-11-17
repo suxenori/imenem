@@ -170,7 +170,7 @@
     <string name="in_company">Only with friends</string>
 
     <string name="nearby">Nearby</string>
-    <string name="find_goals">Find_goals:</string>
+    <string name="find_goals">Find goals:</string>
     <string name="find_new_friend">Find new friends</string>
     <string name="chat">Chat</string>
     <string name="sex">Sex</string>
@@ -361,6 +361,7 @@
     <string name="profile_visitors">Profile visitors</string>
 
     <string name="liked_you">Liked you</string>
+    <string name="news_feed">News</string>
     <string name="like_title">Likes</string>
 
     <string name="matches">Matches</string>
@@ -508,7 +509,7 @@
     <string name="open_for_money">Open for money</string>
     <string name="buy_money">Buy</string>
     <string name="cancel_in_pay_for_photo">Cancel</string>
-    <string name="coins_in_pay_photo_fragment">coins</string>
+    <string name="coins_in_pay_photo_fragment">credits</string>
     <string name="price_for_photo">Photo price:</string>
     <string name="your_balance">Your balance:</string>
     <string name="change">Change</string>
@@ -523,12 +524,12 @@
     <string name="show_more_photo">Show more</string>
     <string name="Balance">Balance:</string>
     <string name="Rate">Rate:</string>
-    <string name="test_balance">Balance: 250 coins</string>
-    <string name="text_in_pay_coins_fragment">More coins you buy, \ n the better!</string>
-    <string name="invite_friends_for_coins">Invite friends and get coins</string>
+    <string name="test_balance">Balance: 250 credits</string>
+    <string name="text_in_pay_coins_fragment">More credits you buy, \ n the better!</string>
+    <string name="invite_friends_for_coins">Invite friends and get credits</string>
     <string name="coins_for_friend">100</string>
-    <string name="invite_friends_for_coins_2">cois free</string>
-    <string name="obtain_free_coins">Get coins free</string>
+    <string name="invite_friends_for_coins_2">credits free</string>
+    <string name="obtain_free_coins">Get credits for free</string>
     <string name="invite_friend_text_in_button">Invite friends</string>
     <string name="text_in_bay_container">Popular</string>
     <string name="total">Total:</string>
@@ -567,7 +568,7 @@
     <string name="Balls">Balls</string>
     <string name="on">On</string>
     <string name="off">Off</string>
-    <string name="buy_coins">Buy coins</string>
+    <string name="buy_coins">Buy credits</string>
     <string name="buy_vip">Buy vip</string>
     <string name="buy_gift">Make a gift</string>
     <string name="write">Write...</string>
@@ -591,6 +592,7 @@
     <string name="interests_conf">Interests</string>
     <string name="set_interests">Add interests</string>
     <string name="edit_personal_info">Info</string>
+
     <string name="find_interests">Add interests</string>
     <string name="add_interests_text">Add ten interest to see common interests with other users</string>
     <string name="one_choiced">\u0020 selected</string>
@@ -620,7 +622,7 @@
     <string name="erase_imported_contacts">Erase Imported Contacts</string>
     <string name="erase_imported_contacts_message">This will permanently remove all of your friends. You will lose the network you have built.</string>
     <string name="retry">Retry</string>
-    <string name="connection_lost_n_please_check_your_internet_connection_n_and_try_again">Connection lost \n Please check your internet connection \n and try again</string>
+    <string name="connection_lost_n_please_check_your_internet_connection_n_and_try_again">Connection lost. \nPlease check your internet connection \nand try again</string>
     <string name="delete_account"><u>Delete account</u></string>
     <string name="rating">Rating:</string>
     <string name="wrong_email">Wrong email</string>
@@ -641,8 +643,10 @@
     <string name="not_set">Not set</string>
     <integer name="com_vk_sdk_AppId">5610489</integer>
     <string name="new_gift_notification">You have a new gift</string>
-    <string name="who_sended"> %1$s, send you a gift</string>
-
+    <string name="new_favorite_notification">You are favorite</string>
+    <string name="who_sended"><B>%1$s</B>, send you a gift</string>
+    <string name="who_favorited">%1$s, checked you as favorite</string>
+    <string name="new_message_notification">New message from %1$s</string>
     <string name="forgot_pass">Forgot password?</string>
     <string name="body_type">Body type</string>
     <string name="eye_color">Eye color</string>
@@ -662,11 +666,16 @@
 
     <string name="new_interest">As new interest</string>
     <string name="canceled">Canceled</string>
-
     <string name="bind_soc_failed">Failed to bind social network...</string>
     <string name="its_mutual">It\'s mutual!</string>
     <string name="mutual_text">You and %1$s liked each other</string>
     <string name="send_message">Send message</string>
     <string name="continue_playing">Continue playing</string>
+    <string name="add_interests">Add interests</string>
+    <string name="dont_confirm">(not confirmed)</string>
+    <string name="confirm">(Confirmed)</string>
+    <string name="choice_payment_system">Choose payment system</string>
+    <string name="sending_gift">Sending gift</string>
+    <string name="fb_fail">Facebook is not available</string>
 
 </resources>

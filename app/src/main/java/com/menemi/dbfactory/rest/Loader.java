@@ -20,6 +20,7 @@ import com.menemi.personobject.DialogMessage;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.Interests;
 import com.menemi.personobject.Language;
+import com.menemi.personobject.NewsInfo;
 import com.menemi.personobject.NotificationSettings;
 import com.menemi.personobject.PayPlan;
 import com.menemi.personobject.PersonFavorite;
@@ -92,6 +93,8 @@ public class Loader extends JSONLoader {
     static final String G_BUY_GIFT = "/profile/buygift/"; //(:gift_id)/(:to_profile_id)/(:requesting_profile_id)
     static final String G_SET_AVATAR = "/profile/setavatar/";//(:picture_id)/(:requesting_profile_id)
     static final String G_GET_ALL_LANGUAGES = "/profile/alllangueages/";//(:picture_id)/(:requesting_profile_id)
+    static final String G_GET_NEWS = "/profile/newsfeeds/";//(:count)/(:offset)/(:requesting_profile_id)
+
 
     //TODO: add friends add interests add gifts
 
@@ -122,6 +125,9 @@ public class Loader extends JSONLoader {
     private static final String IS_POPULAR = "is_popular";
     private static final String DIALOGS = "dialogs";
     private static final String LIKED = "liked";
+    private static final String ACTION = "action";
+    private static final String NEWS_TYPE = "news_type";
+    private static final String CREATED_AT = "created_at";
 
 
 
@@ -711,6 +717,7 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
 
                     JSONObject configsJSON = mainObject.getJSONObject(Fields.CONFIGURATIONS);
+
                     configurations.setId(configsJSON.getInt(Fields.ID));
                     configurations.setProfileId(configsJSON.getInt(Fields.PROFILE_ID_2));
                     configurations.setShowDistance(configsJSON.getBoolean(Fields.SHOW_DISTANCE));
@@ -805,7 +812,7 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
 
 
         });
-        messageTypesParcer.put(RestCommands.GET_PHOTO_PROFITS, (String jsonString) -> {
+      /*  messageTypesParcer.put(RestCommands.GET_PHOTO_PROFITS, (String jsonString) -> {
                 Log.v("loader", requestNumber + jsonString);
                 Configurations configurations = new Configurations();
 
@@ -828,7 +835,7 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
                 }
                 return configurations;
 
-        });
+        });*/
         messageTypesParcer.put(RestCommands.GET_CREATE_DIALOG,(String jsonString) -> {
                 Log.v("loader", requestNumber + jsonString);
                 JSONObject mainObject = new JSONObject(jsonString);
@@ -879,6 +886,31 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
                     }
                 }
                 return templates;
+
+        });
+        messageTypesParcer.put(RestCommands.GET_NEWS, (String jsonString) -> {
+            Log.v("loader", requestNumber + jsonString);
+
+
+
+            JSONObject mainObject = new JSONObject(jsonString);
+            ArrayList<NewsInfo> news = new ArrayList<>();
+            if (mainObject.getString(RESULT).equals(SUCCESS)) {
+
+
+                JSONArray newsJSON = mainObject.getJSONArray(Fields.NEWS);
+                //{"name":"Jim Morris","action":"added a photo","news_type":2,"created_at":"2016-10-28T19:39:29.000Z","profile_id":4}
+                for (int i = 0; i < newsJSON.length(); i++) {
+                    JSONObject newsJSONObject = newsJSON.getJSONObject(i);
+                    news.add(new NewsInfo(newsJSONObject.getString(Fields.NAME),
+                            newsJSONObject.getString(ACTION),
+                            newsJSONObject.getInt(NEWS_TYPE),
+                            newsJSONObject.optString(Fields.URLS, ""),
+                            Utils.getDateFromServer(newsJSONObject.getString(CREATED_AT)),
+                            newsJSONObject.getInt(Fields.PROFILE_ID_2)));
+                }
+            }
+            return news;
 
         });
         messageTypesParcer.put(RestCommands.GET_ALL_GIFTS, (String jsonString) -> {
@@ -1109,13 +1141,10 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
 
     private static PersonObject profileParceFull(JSONObject mainObject) throws JSONException {
         JSONObject profileObject = mainObject.getJSONObject(Fields.PROFILE);
-
         PersonObject personObject = profileParce(profileObject);
         personObject.setLivingWith(mainObject.getString(Fields.LIVING_WITH));
-
         personObject.setCanChat(mainObject.getBoolean(Fields.CAN_MESSAGE));
         personObject.setPersonVIP(Utils.intToBool(mainObject.getInt(Fields.VIP)));
-
         personObject.setOnline(mainObject.getString(Fields.STATUS));
         personObject.setPersonAge(mainObject.getInt(Fields.AGE));
         personObject.setPersonSexuality(mainObject.getString(Fields.ORIENTATION));
@@ -1170,6 +1199,12 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
         personObject.setSearchAgeMin(profileObject.getInt(Fields.SEARCH_AGE_MIN));
         personObject.setSearchAgeMax(profileObject.getInt(Fields.SEARCH_AGE_MAX));
         personObject.setRating(profileObject.getInt(Fields.RATING));
+        personObject.setFbId(profileObject.getString(Fields.FACEBOOK_ACCOUNT));
+        personObject.setVkId(profileObject.getString(Fields.VKONTAKTE_ACCOUNT));
+        personObject.setOdnoklasnikiId(profileObject.getString(Fields.ODNOCLASSNIKI_ACCOUNT));
+        personObject.setG_plusId(profileObject.getString(Fields.Gplus_ACCOUNT));
+        personObject.setInstaId(profileObject.getString(Fields.INSTAGRAM_ACCOUNT));
+
         personObject.setPersonalAppearance(parceAppearance(profileObject));
 
 
@@ -1247,6 +1282,7 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
 
     }
     public static PersonalGift parceGift(Bundle extras){
+
         String giftName = extras.getString(Fields.NAME);
         int profileId = extras.getInt("from_profile_id");
         int giftId = extras.getInt("gift_id");
@@ -1371,9 +1407,7 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
             case GET_MESSAGES:
                 url = constructStartURL() + G_GET_MESSAGES;
                 break;
-            case GET_PHOTO_PROFITS:
-                url = constructStartURL() + G_GET_PHOTO_PROFITS;
-                break;
+
             case GET_CREATE_DIALOG:
                 url = constructStartURL() + G_GET_CREATE_DIALOG;
                 break;
@@ -1405,7 +1439,9 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
             case GET_ALL_LANGUAGES:
                 url = constructStartURL() + G_GET_ALL_LANGUAGES;
                 break;
-
+            case GET_NEWS:
+                url = constructStartURL() + G_GET_NEWS;
+                break;
         }
         return url;
     }
@@ -1482,7 +1518,6 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
         GET_FIND_INTERESTS,
         GET_DIALOGS,
         GET_MESSAGES,
-        GET_PHOTO_PROFITS,
         GET_CREATE_DIALOG,
         GET_PHOTO_BY_ID,
         GET_PHOTO_TEMPLATES,
@@ -1490,7 +1525,8 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
         GET_ALL_LANGUAGES,
         BUY_GIFT,
         SET_AVATAR,
-        SET_NOTIFICATION_TOKEN
+        SET_NOTIFICATION_TOKEN,
+        GET_NEWS
     }
 
     interface JSONParcer {
@@ -1527,19 +1563,19 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
 
   ++match '/(:locale_handle)/profile/addinterest/(:requesting_profile_id)/(:interest_id)', to: 'profile#addinterest', via: [:get]
  ++ match '/(:locale_handle)/profile/removeinterest/(:requesting_profile_id)/(:interest_id)', to: 'profile#removeinterest', via: [:get]
-
+  ++   match '/(:locale_handle)/profile/newsfeeds/(:count)/(:offset)/(:requesting_profile_id)
 
   match '/(:locale_handle)/profile/rewardsandgiftsthumbs/(:gift_ids)/(:reward_ids)/(:requesting_profile_id)', to: 'profile#rewardsandgiftsthumbs', via: [:get]
-  match '/(:locale_handle)/profile/phototemplates/(:requesting_profile_id)', to: 'profile#phototemplates', via: [:get]
+ ++ match '/(:locale_handle)/profile/phototemplates/(:requesting_profile_id)', to: 'profile#phototemplates', via: [:get]
   ++match '/(:locale_handle)/profile/addphoto', to: 'profile#addphoto', via: [:post]
-    match '/(:locale_handle)/messages/dialogs/(:requesting_profile_id) via: [:get]
+  ++  match '/(:locale_handle)/messages/dialogs/(:requesting_profile_id) via: [:get]
   #TODO: you can expand the profile/info method to indicate what kind of info you need. simple pass additional parameter like 'all', 'general' or 'notification_settings' etc
 
-  match '/(:locale_handle)/settings/settings_interests/(:requesting_profile_id)', to: 'settings#settings_interests', via: [:get]
+ ++ match '/(:locale_handle)/settings/settings_interests/(:requesting_profile_id)', to: 'settings#settings_interests', via: [:get]
  ++ match '/(:locale_handle)/settings/savefilterinfo/(:i_want_val)/(:im_interested_val)/(:min_age)/(:max_age)/(:requesting_profile_id)', to: 'settings#savefilterinfo', via: [:get]
   match '/(:locale_handle)/settings/savegeneralinfo/(:requesting_profile_id)', to: 'settings#savegeneralinfo', via: [:post]
-  match '/(:locale_handle)/settings/getnotifications/(:requesting_profile_id)', to: 'settings#getnotifications', via: [:get]
-  match '/(:locale_handle)/settings/setnotifications/(:handle)/(:settings)/(:requesting_profile_id)', to: 'settings#setnotifications', via: [:get]
+ ++ match '/(:locale_handle)/settings/getnotifications/(:requesting_profile_id)', to: 'settings#getnotifications', via: [:get]
+ ++ match '/(:locale_handle)/settings/setnotifications/(:handle)/(:settings)/(:requesting_profile_id)', to: 'settings#setnotifications', via: [:get]
  ++ match '/(:locale_handle)/settings/getconfigurations/(:requesting_profile_id)', to: 'settings#getconfigurations', via: [:get]
  ++ match '/(:locale_handle)/settings/setconfigurations/(:requesting_profile_id)', to: 'settings#setconfigurations', via: [:post]
 

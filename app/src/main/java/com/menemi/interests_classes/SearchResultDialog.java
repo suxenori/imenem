@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
@@ -121,15 +122,24 @@ public class SearchResultDialog extends DialogFragment
                 Interests interests;
                 if (interestsArray != null){
 
-                    interests = (Interests) interestsArray.get(id);
+                    interests = interestsArray.get(id);
                     choiseListener.addCustomInterest(interests);
                     dismiss();
                     Log.d("interests", interests.getInterest());
                 } else {
-                    interests = new Interests(interestsFromTextField,2,11);
+                    interests = new Interests(interestsFromTextField);
+                    DBHandler.getInstance().setInterest(interests, new DBHandler.ResultListener()
+                    {
+                        @Override
+                        public void onFinish(Object object)
+                        {
+                            Toast.makeText(getActivity(),"Кастомный интерес отправлен на модерацию",Toast.LENGTH_LONG).show();
+                            dismiss();
+                        }
+                    });
                     Log.d("interests", interests.getInterest());
-                    choiseListener.addCustomInterest(interests);
-                    dismiss();
+                   // choiseListener.addCustomInterest(interests);
+
                 }
 
 

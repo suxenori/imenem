@@ -8,9 +8,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
@@ -39,11 +43,12 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
     private static String TAG = "Billing";
     private static String ITEM = "400";
     private String base64PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx3V/MToBF0HBZLD9n3CTJk3upHv/7qPXTXIDLhR86JPNwsBsfya2Zz71aNN8Hj3OyH9Y1JKH0h2iGpJ/DA4bKIjaoI646IZSm55Ff+XoV3+//JHe7blL/XLMXHquiGAn9U3GZ/eRNU8iCazhxgLyFnaZB4vQVUZ58169Zyc++Ex+hMkJvWE3r7xUSvAWzfUCQ2WPiTifIR8d0Y6S583s+8A6ul/kHM6QmylGCB2kdg9lZ+bz1aajd/vKPCc7qRQCLRB8CNWwgVero0noExIl+spqhRBSldbDx6SBlBC/d4ffMp5O1ILTxt3HAKKlVx2PcIRwgdkCJqihkQPkCf//bQIDAQAB" ;
-    IabHelper iabHelper;
+    private IabHelper iabHelper;
     private RelativeLayout payButton;
     private RelativeLayout payButtonInApp;
-    IInAppBillingService iInAppBillingService;
-    IabHelper.OnIabPurchaseFinishedListener onIabPurchaseFinishedListener;
+    private IInAppBillingService iInAppBillingService;
+    private static Toolbar toolbar;
+    private IabHelper.OnIabPurchaseFinishedListener onIabPurchaseFinishedListener;
 
     ServiceConnection serviceConnection = new ServiceConnection()
     {
@@ -71,6 +76,12 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pay_layout);
+        toolbar = (Toolbar) findViewById(com.menemi.R.id.toolbar_with_checkBox);
+        setSupportActionBar(toolbar);
+        configureToolbar();
+        TextView price = (TextView) findViewById(R.id.price);
+        ITEM = String.valueOf(getIntent().getExtras().get(PayPalConfig.PAYPAL_MONEY_COUNT));
+        price.setText(ITEM);
 
         //Paypal Configuration Object
         config = new PayPalConfiguration()
@@ -226,6 +237,22 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
         if (iInAppBillingService != null) {
             unbindService(serviceConnection);
         }
+    }
+    public static Toolbar getToolbar()
+    {
+        return toolbar;
+    }
+
+    private void configureToolbar()
+    {
+        Toolbar toolbar = PayActivity.getToolbar();
+        LinearLayout toolbarContainer = (LinearLayout) toolbar.findViewById(com.menemi.R.id.toolbarContainer);
+        toolbarContainer.removeAllViews();
+        toolbarContainer.addView(View.inflate(this, com.menemi.R.layout.choice_interest_toolbar, null));
+        ImageView menuButton = (ImageView) toolbarContainer.findViewById(com.menemi.R.id.menuButton);
+        menuButton.setOnClickListener(view -> finish());
+        TextView title = (TextView) toolbarContainer.findViewById(com.menemi.R.id.screenTitle);
+        title.setText(getString(R.string.choice_payment_system));
     }
 
     @Override

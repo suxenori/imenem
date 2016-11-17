@@ -6,14 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.menemi.AboutActivity;
 import com.menemi.AccountActivity;
 import com.menemi.R;
-import com.menemi.dbfactory.AndroidDatabaseManager;
 import com.menemi.dbfactory.DBHandler;
 
 
@@ -25,16 +22,29 @@ public class SettingsActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_top);
+        TextView title = (TextView)toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("Settings");
+        title.setText(getString(R.string.settings));
         if (getSupportActionBar() != null)
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+if(DBHandler.getInstance().getConfigurations() == null){
+    DBHandler.getInstance().prepareConfigurations((b)->{
+        prepareScreen();
+    });
+} else{
+    prepareScreen();
+}
 
-       LinearLayout basicInfo = (LinearLayout)findViewById(R.id.basicInfoButton);
+
+
+    }
+
+    private void prepareScreen() {
+        LinearLayout basicInfo = (LinearLayout)findViewById(R.id.basicInfoButton);
         basicInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +73,7 @@ public class SettingsActivity extends AppCompatActivity{
         });
         TextView email = (TextView) findViewById(R.id.email);
         email.setText("" + DBHandler.getInstance().getMyProfile().getEmail());
-       LinearLayout aboutButton = (LinearLayout)findViewById(R.id.aboutButton);
+       /* LinearLayout aboutButton = (LinearLayout)findViewById(R.id.aboutButton);
         aboutButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -73,9 +83,9 @@ public class SettingsActivity extends AppCompatActivity{
                 startActivity(aboutActivity);
             }
         });
+*/
 
-
-        LinearLayout helpCenterButton = (LinearLayout)findViewById(R.id.helpCenterButton);
+      /*  LinearLayout helpCenterButton = (LinearLayout)findViewById(R.id.helpCenterButton);
         helpCenterButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -95,10 +105,10 @@ public class SettingsActivity extends AppCompatActivity{
                 Intent i = new Intent(SettingsActivity.this, AndroidDatabaseManager.class);
                 startActivity(i);
             }
-        });
-
-
+        });*/
     }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

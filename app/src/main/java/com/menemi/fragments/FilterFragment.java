@@ -40,11 +40,7 @@ public class FilterFragment extends Fragment {
     private PersonObject.UserStatus statusSelected;
     private TextView choisedPlaceTextView;
     private boolean isDraggedRangeBar = false;
-    private RadioButton onlineRadioButton;
-    private RadioButton offlineRadioButton;
-    private RadioButton anyNetworkStatusRadioButton;
-
-
+    private FilterType filterType;
 
 
     public void setPersonObject(PersonObject personObject) {
@@ -85,7 +81,6 @@ public class FilterFragment extends Fragment {
 
         RadioButton manRadioButton = (RadioButton) rootView.findViewById(R.id.maleRadioButton);
 
-
         RadioButton womanRadioButton = (RadioButton) rootView.findViewById(R.id.femaleRadioButton);
 
         RadioButton anyGenderRadioButton = (RadioButton) rootView.findViewById(R.id.anyGenderRadioButton);
@@ -93,24 +88,10 @@ public class FilterFragment extends Fragment {
 
         GRadioGroup genderRadioGroup = new GRadioGroup(manRadioButton, womanRadioButton,anyGenderRadioButton);
         genderRadioGroup.setCheckedRadioButton(personObject.getInterestGender().ordinal());
-        statusSelected = personObject.getUserStatus();
+        genderSelected = personObject.getInterestGender();
         genderRadioGroup.setOnCheckChange((index)->{
             genderSelected = PersonObject.InterestGender.values()[index];
         });
-
-       /* ImageView onlineRadioButton = (ImageView) rootView.findViewById(R.id.onlineRadioButton);
-        onlineRadioButton.setOnClickListener((v) -> {
-            setUserStatus(PersonObject.UserStatus.ONLINE);
-        });
-        ImageView offlineRadioButton = (ImageView) rootView.findViewById(R.id.offlineRadioButton);
-        offlineRadioButton.setOnClickListener((v) -> {
-            setUserStatus(PersonObject.UserStatus.OFFLINE);
-        });
-        ImageView anyNetworkStatusRadioButton = (ImageView) rootView.findViewById(R.id.anyStatusRadioButton);
-        anyNetworkStatusRadioButton.setOnClickListener((v) -> {
-            setUserStatus(PersonObject.UserStatus.ANY);
-        });
-*/
 
         RangeSeekBar seekBar = (RangeSeekBar) rootView.findViewById(R.id.rangeSeekBarTextColorWithCode);
         findFriendsCB = (CheckBox) rootView.findViewById(R.id.findFriendsCheckBox);
@@ -123,9 +104,13 @@ public class FilterFragment extends Fragment {
         } else {
             choisedPlaceTextView.setText(personObject.getFilterObject().getPlaceModel().getCityName());
         }
-
-
         RelativeLayout textViewContainer = (RelativeLayout) rootView.findViewById(R.id.spinnerContainer);
+        TextView whereSearch = (TextView)rootView.findViewById(R.id.whereSearch);
+        if (filterType == FilterType.FILTER_FROM_ENCOUNTERS){
+            textViewContainer.setVisibility(View.INVISIBLE);
+            whereSearch.setVisibility(View.INVISIBLE);
+        }
+
         textViewContainer.setOnClickListener(view -> {
             SearchCity.setChoiseListener((placeModel, detailPlaceModel) -> {
                 choisedPlaceTextView.setText(placeModel.getCityName());
@@ -273,6 +258,11 @@ public class FilterFragment extends Fragment {
 
     }
 
+    public void setFilterType(FilterType filterType)
+    {
+        this.filterType = filterType;
+    }
+
     class SeekBarListener implements RangeSeekBar.OnRangeSeekBarChangeListener {
         @Override
         public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Number minValue, Number maxValue) {
@@ -294,6 +284,11 @@ public class FilterFragment extends Fragment {
 
     public int getMaxValue(Number maxValue) {
         return ((int) maxValue);
+    }
+
+    public static enum FilterType{
+        FILTER_FROM_ENCOUNTERS,
+        FILTER_FROM_NEAR
     }
 
 }

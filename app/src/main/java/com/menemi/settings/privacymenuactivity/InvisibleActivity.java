@@ -31,22 +31,69 @@ public class InvisibleActivity extends AppCompatActivity
         Configurations configurations = DBHandler.getInstance().getConfigurations();
         Switch almostSwitch = (Switch) findViewById(R.id.almostSwitch);
         almostSwitch.setChecked(configurations.isAlmostInvisible());
-        almostSwitch.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
-                configurations.setAlmostInvisible(isChecked);
-                DBHandler.getInstance().setConfigurations(configurations, (Object object) ->{});
-        });
+        almostSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    boolean isFailureLunch = false;
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(!isFailureLunch){
+                            configurations.setAlmostInvisible(isChecked);
+                            DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                                if(!(boolean)isSucceed){
+                                    isFailureLunch = true;
+                                    buttonView.setChecked(!isChecked);
+                                }
+                            });
+                        } else {
+                            configurations.setAlmostInvisible(isChecked);
+                            isFailureLunch = false;
+                        }
+
+                    }
+                }
+        );
 
         Switch cloakedSwitch = (Switch) findViewById(R.id.cloakedSwitch);
         cloakedSwitch.setChecked(configurations.isInvisibleCloacked());
-        cloakedSwitch.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
-            configurations.setInvisibleCloacked(isChecked);
-            DBHandler.getInstance().setConfigurations(configurations, (Object object) ->{});
-        });
+        cloakedSwitch.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+            boolean isFailureLunch = false;
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isFailureLunch){
+                    configurations.setInvisibleCloacked(isChecked);
+                    DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                        if(!(boolean)isSucceed){
+                            isFailureLunch = true;
+                            buttonView.setChecked(!isChecked);
+                        }
+                    });
+                } else {
+                    configurations.setInvisibleCloacked(isChecked);
+                    isFailureLunch = false;
+                }
+
+            }
+        }
+     );
         Switch vipStatusSwitch = (Switch) findViewById(R.id.vipStatusSwitch);
         vipStatusSwitch.setChecked(configurations.isHideVipStatus());
-        vipStatusSwitch.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
-            configurations.setHideVipStatus(isChecked);
-            DBHandler.getInstance().setConfigurations(configurations, (Object object) ->{});
+        vipStatusSwitch.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+            boolean isFailureLunch = false;
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isFailureLunch){
+                    configurations.setHideVipStatus(isChecked);
+                    DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                        if(!(boolean)isSucceed){
+                            isFailureLunch = true;
+                            buttonView.setChecked(!isChecked);
+                        }
+                    });
+                } else {
+                    configurations.setHideVipStatus(isChecked);
+                    isFailureLunch = false;
+                }
+
+            }
         });
 
 

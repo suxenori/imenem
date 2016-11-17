@@ -64,18 +64,18 @@ public class PersonInterestsFragment extends Fragment
         if (listSliding.size() != 0){
            listSliding.clear();
         }
-        listSliding.add(new ItemSlideMenu(BitmapFactory.decodeResource(getResources(),R.drawable.add_int), "Добавить интерес"));
+        listSliding.add(new ItemSlideMenu(BitmapFactory.decodeResource(getResources(),R.drawable.add_int), getString(R.string.add_interests)));
 
         editInterestsFragment.setPersonInterestsArray(personInterestsArray);
-        for (int i = 0; i < personInterestsArray.size(); i++)
-        {
-            listSliding.add(new ItemSlideMenu((DBHandler.getInstance()
-                    .getInterestsGroupArray().get(personInterestsArray.get(i).getGroupId() - 1).getCategoryIcon()), personInterestsArray.get(i).getInterest()));
+        if(personInterestsArray != null) {
+            for (int i = 0; i < personInterestsArray.size(); i++) {
+                listSliding.add(new ItemSlideMenu((DBHandler.getInstance()
+                        .getInterestsGroupArray().get(personInterestsArray.get(i).getGroupId() - 1).getCategoryIcon()), personInterestsArray.get(i).getInterest()));
 
+            }
+
+            setList(interestsContainer, listSliding);
         }
-
-        setList(interestsContainer,listSliding);
-
         return rootView;
     }
     private void setList(LinearLayout container, ArrayList<ItemSlideMenu> items){

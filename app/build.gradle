@@ -8,8 +8,8 @@ android {
         applicationId "com.menemi"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 8
-        versionName "0.5.677"
+        versionCode 12
+        versionName "0.5.681"
         multiDexEnabled true
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
@@ -71,6 +71,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support:support-v13:24.2.0'
     compile 'com.android.support:design:24.2.0'
+    compile 'com.shamanland:xdroid-toaster:0.0.5'
     compile 'com.paypal.sdk:paypal-android-sdk:2.14.6'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.12.1'

@@ -19,6 +19,8 @@ import com.facebook.GraphRequest;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
+import com.facebook.share.model.AppInviteContent;
+import com.facebook.share.widget.AppInviteDialog;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.framework.media.ImagePicker;
@@ -320,6 +322,20 @@ public class SocialNetworkHandler extends AppCompatActivity
 
     }
 
+    public void inviteFriendsFromFb(Activity activity){
+        String appLinkUrl, previewImageUrl;
+
+        appLinkUrl = "https://play.google.com/store/apps/details?id=com.menemi&ah=e9iTB5Cs8QqZagOTEhu1iquIlQM";
+        //previewImageUrl = "https://www.mydomain.com/my_invite_image.jpg";
+
+        if (AppInviteDialog.canShow()) {
+            AppInviteContent content = new AppInviteContent.Builder()
+                    .setApplinkUrl(appLinkUrl)
+                    .build();
+            AppInviteDialog.show(activity, content);
+        }
+    }
+
 
     public void getPhotoFromFb(Context context, final AccessToken accessToken)
     {
@@ -383,7 +399,16 @@ public class SocialNetworkHandler extends AppCompatActivity
             profile.setMiddleName(Profile.getCurrentProfile().getMiddleName());
             profile.setLastName(Profile.getCurrentProfile().getLastName());
             profile.setImage(picture);
-            DBHandler.getInstance().saveSocialProfile(profile, Fields.SOCIAL_NETWORKS.FACEBOOK);
+
+            DBHandler.getInstance().saveSocialProfile(profile, Fields.SOCIAL_NETWORKS.FACEBOOK, new DBHandler.ResultListener()
+            {
+                @Override
+                public void onFinish(Object object)
+                {
+
+                }
+            });
+
         });
     }
 
@@ -476,7 +501,16 @@ public class SocialNetworkHandler extends AppCompatActivity
                         vkUserProfile.setPhotoUrl((object.getString("photo_100")));
                         new PictureLoader((object.getString("photo_100")), picture -> {
                             vkUserProfile.setImage(picture);
-                            DBHandler.getInstance().saveSocialProfile(vkUserProfile, Fields.SOCIAL_NETWORKS.VKONTAKTE);
+
+                            DBHandler.getInstance().saveSocialProfile(vkUserProfile, Fields.SOCIAL_NETWORKS.VKONTAKTE, new DBHandler.ResultListener()
+                            {
+                                @Override
+                                public void onFinish(Object object)
+                                {
+
+                                }
+                            });
+
                         });
                     }
 
@@ -670,7 +704,16 @@ public class SocialNetworkHandler extends AppCompatActivity
                        // new downloadImage().execute(object.getString("pic_2"));
                         new PictureLoader(object.getString("pic_2"), picture -> {
                             okUserProfile.setImage(picture);
-                            DBHandler.getInstance().saveSocialProfile(okUserProfile, Fields.SOCIAL_NETWORKS.ODNOKLASNIKI);
+
+                            DBHandler.getInstance().saveSocialProfile(okUserProfile, Fields.SOCIAL_NETWORKS.ODNOKLASNIKI, new DBHandler.ResultListener()
+                            {
+                                @Override
+                                public void onFinish(Object object)
+                                {
+
+                                }
+                            });
+
                         });
                     } catch (JSONException e)
                     {

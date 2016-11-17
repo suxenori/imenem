@@ -34,7 +34,7 @@ public class BuyCoinsItemFragment extends Fragment{
         if (rootView == null) {
             if(plan.isPopular()){
                 rootView = inflater.inflate(R.layout.buy_coins_item_popular, container, false);
-            } else{
+            } else {
                 rootView = inflater.inflate(R.layout.buy_coins_item, container, false);
             }
 
@@ -51,16 +51,11 @@ public class BuyCoinsItemFragment extends Fragment{
         TextView price = (TextView)rootView.findViewById(R.id.price);
         price.setText("" + plan.getPrice());
         LinearLayout buyButton = (LinearLayout)rootView.findViewById(R.id.buyButton);
-        buyButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(getActivity(),PayActivity.class);
-                intent.putExtra(PayPalConfig.PAYPAL_MONEY_COUNT, plan.getPrice() + "");
-                Log.d("plan.getPrice",plan.getPrice() + "");
-                startActivity(intent);
-            }
+        buyButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(),PayActivity.class);
+            intent.putExtra(PayPalConfig.PAYPAL_MONEY_COUNT, plan.getPrice() + "");
+            Log.d("plan.getPrice",plan.getPrice() + "");
+            startActivity(intent);
         });
         return rootView;
 

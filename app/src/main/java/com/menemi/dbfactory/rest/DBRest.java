@@ -8,6 +8,7 @@ import com.menemi.edit_personal_Info.PersonalAppearanceSettingsModel;
 import com.menemi.filter.FilterObject;
 import com.menemi.personobject.Configurations;
 import com.menemi.personobject.CreditsInfo;
+import com.menemi.personobject.Interests;
 import com.menemi.personobject.LanguagesSet;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
@@ -47,19 +48,25 @@ public class DBRest {
         new Sender(Sender.RestCommands.REGISTER, personObject).execute();
 
     }*/
-public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecieveListener onDataRecieveListener ){
-    new Sender(Sender.RestCommands.SET_PERSON_APPEARANCE, apperance, new Sender.OnUploadListener() {
+public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecieveListener onDataRecieveListener )
+{
+    new Sender(Sender.RestCommands.SET_PERSON_APPEARANCE, apperance, new Sender.OnUploadListener()
+    {
         @Override
-        public void onUploadFinish(String s) {
+        public void onUploadFinish(String s)
+        {
             Log.v("DBRest", "on upload finish listener");
-            if(s.equals("{\"result\":\"success\"}")) {
+            if (s.equals("{\"result\":\"success\"}"))
+            {
                 onDataRecieveListener.onFinish(true);
-            } else {
+            } else
+            {
                 onDataRecieveListener.onFinish(false);
             }
         }
     }).execute();
 }
+
     public void authorise(PersonObject personObject, final OnDataRecieveListener onDataRecieveListener) {
 
         new Sender(Sender.RestCommands.AUTHORISE, personObject, new Sender.OnUploadListener() {
@@ -162,6 +169,9 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
 
     public void deleteInterest(int personId, ArrayList<Integer> interestId, OnDataRecieveListener onDataRecieveListener){
         new Loader(Loader.RestCommands.DELETE_INTEREST,personId,interestId,onDataRecieveListener).execute();
+    }
+    public void getNews(int personId,  int count, int offset, OnDataRecieveListener onDataRecieveListener){
+        new Loader(Loader.RestCommands.GET_NEWS,count,offset,personId, onDataRecieveListener).execute();
     }
 
     public void addInterest(int personId, ArrayList<Integer> interestId, OnDataRecieveListener onDataRecieveListener){
@@ -280,10 +290,22 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
         new Sender(Sender.RestCommands.SET_CONFIGURATIONS, configurations, new Sender.OnUploadListener() {
             @Override
             public void onUploadFinish(String s) {
-                Loader.parcing(Loader.RestCommands.GET_CONFIGURATION_SETTINGS, s, onDataRecieveListener);
+               onDataRecieveListener.onFinish(s);
             }
         }).execute();
     }
+    public void setInterest(Interests interests, final OnDataRecieveListener onDataRecieveListener) {
+        new Sender(Sender.RestCommands.CREATE_INTEREST, interests, new Sender.OnUploadListener() {
+            @Override
+            public void onUploadFinish(String s) {
+
+                onDataRecieveListener.onFinish(s);
+                Loader.parcing(Loader.RestCommands.GET_CONFIGURATION_SETTINGS, s, onDataRecieveListener);
+               onDataRecieveListener.onFinish(s);
+            }
+        }).execute();
+    }
+
 
   /*  public void getPayPlans(int id, OnDataRecieveListener onDataRecieveListener) {
         new Loader(Loader.RestCommands.GET_PAY_PLANS, id, onDataRecieveListener).execute();

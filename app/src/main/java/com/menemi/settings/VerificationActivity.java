@@ -61,17 +61,31 @@ public class VerificationActivity extends AppCompatActivity
             switcherActivity.putExtra(SwitcherActivity.TITLE, getString(R.string.limit_messages_title));
             switcherActivity.putExtra(SwitcherActivity.TEXT, getString(R.string.limit_messages_text));
 
-            SwitcherActivity.setStateChangeListener((CompoundButton buttonView, boolean isChecked) ->{
+            SwitcherActivity.setStateChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                        boolean isFailureLunch = false;
+                                                        @Override
+                                                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                            if(!isFailureLunch){
+                                                                configurations.setLimitMessages(isChecked);
+                                                                DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                                                                    if(!(boolean)isSucceed){
+                                                                        isFailureLunch = true;
+                                                                        buttonView.setChecked(!isChecked);
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                configurations.setLimitMessages(isChecked);
+                                                                isFailureLunch = false;
+                                                            }
+                                                            if(isChecked){
+                                                                limitMessagesOnOff.setText(getString(R.string.on));
+                                                            } else{
+                                                                limitMessagesOnOff.setText(getString(R.string.off));
+                                                            }
 
-
-                configurations.setLimitMessages(isChecked);
-                DBHandler.getInstance().setConfigurations(configurations, (object) ->{});
-                if(isChecked){
-                    limitMessagesOnOff.setText(getString(R.string.on));
-                } else{
-                    limitMessagesOnOff.setText(getString(R.string.off));
-                }
-            });
+                                                        }
+                                                    }
+            );
 
             startActivity(switcherActivity);
         });
@@ -90,17 +104,31 @@ public class VerificationActivity extends AppCompatActivity
             switcherActivity.putExtra(SwitcherActivity.TITLE, getString(R.string.hide_verification_details_title));
             switcherActivity.putExtra(SwitcherActivity.TEXT, getString(R.string.hide_verification_details_text));
 
-            SwitcherActivity.setStateChangeListener((CompoundButton buttonView, boolean isChecked) ->{
+            SwitcherActivity.setStateChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                        boolean isFailureLunch = false;
+                                                        @Override
+                                                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                            if(!isFailureLunch){
+                                                                configurations.setHideMyVerifications(isChecked);
+                                                                DBHandler.getInstance().setConfigurations(configurations, (isSucceed)->{
+                                                                    if(!(boolean)isSucceed){
+                                                                        isFailureLunch = true;
+                                                                        buttonView.setChecked(!isChecked);
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                configurations.setHideMyVerifications(isChecked);
+                                                                isFailureLunch = false;
+                                                            }
+                                                            if(isChecked){
+                                                                hideVerificationOnOff.setText(getString(R.string.on));
+                                                            } else{
+                                                                hideVerificationOnOff.setText(getString(R.string.off));
+                                                            }
 
-
-                configurations.setHideMyVerifications(isChecked);
-                DBHandler.getInstance().setConfigurations(configurations, (object) ->{});
-                if(isChecked){
-                    hideVerificationOnOff.setText(getString(R.string.on));
-                } else{
-                    hideVerificationOnOff.setText(getString(R.string.off));
-                }
-            });
+                                                        }
+                                                    }
+            );
 
             startActivity(switcherActivity);
         });

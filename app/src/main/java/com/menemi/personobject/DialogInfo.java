@@ -4,12 +4,13 @@ import android.graphics.Bitmap;
 
 import com.menemi.utils.Utils;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * Created by Ui-Developer on 11.08.2016.
  */
-public class DialogInfo {
+public class DialogInfo implements Serializable {
 
     private int profileId;
     private String lastMessage;// : "Everything is find for now, just thinking if we can meet each other closer by sitting at the caffe somewhere and speaking about us. We can also speak about autos and politics if you wish."
@@ -21,6 +22,12 @@ public class DialogInfo {
     private Bitmap conatactAvatar = null;
     private String avatarURL;
 
+    public DialogInfo(){}
+    public DialogInfo(PersonObject personObject){
+        setProfileId(personObject.getPersonId());
+        setContactName(personObject.getPersonName());
+       setOnline(personObject.isOnline());
+    }
     public int getDialogID() {
         return dialogID;
     }

@@ -51,7 +51,9 @@ public class PersonDataFragment extends Fragment {
                 parent.removeAllViews();
             }
         }
-
+        if(purpose == PersonDataFragment.Purpose.PROFILE && personObject.getPersonId() == DBHandler.getInstance().getUserId()){
+          purpose = PersonDataFragment.Purpose.MY_PROFILE;
+        }
 
         DBHandler.getInstance().isRESTAvailable(object -> {
                     if ((boolean) object == true) {
@@ -220,7 +222,15 @@ public class PersonDataFragment extends Fragment {
         menuButton.setOnClickListener(PersonPage.getMenuListener());
 
         ImageView filterButton = (ImageView) toolbarContainer.findViewById(R.id.filterButton);
-        filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager()));
+        FilterFragment.FilterType filterType;
+        if(purpose == Purpose.LIKE){
+            filterType = FilterFragment.FilterType.FILTER_FROM_ENCOUNTERS;
+        } else
+        {
+            filterType = FilterFragment.FilterType.FILTER_FROM_NEAR;
+        }
+
+        filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager(), filterType));
 
         TextView nameAgeText = (TextView) toolbarContainer.findViewById(R.id.nameAgeText);
         if (nameAgeText != null) {
@@ -314,6 +324,14 @@ public class PersonDataFragment extends Fragment {
                 personObject.setLikeStatus(PersonObject.LikeStatus.none);
             } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
                 personObject.setLikeStatus(PersonObject.LikeStatus.mutual_like);
+                configureLikePicture(likeButton);
+                MutualLikeFragment mutualLikeFragment = new MutualLikeFragment();
+                mutualLikeFragment.setLikedPerson(personObject);
+                mutualLikeFragment.setOnCancel(()->{if (purpose == Purpose.LIKE) {getNextPerson();}});
+                getFragmentManager().beginTransaction().replace(R.id.content, mutualLikeFragment).addToBackStack(null).commitAllowingStateLoss();
+
+                DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, (Object object)-> {});
+                return;
             } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
                 personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
             }

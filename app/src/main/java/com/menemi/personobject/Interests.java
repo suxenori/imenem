@@ -2,11 +2,18 @@ package com.menemi.personobject;
 
 public class Interests
 {
+
     public Interests(String interests, int interestId, int groupId)
     {
         this.interestId = interestId;
         this.interest = interests;
         this.groupId = groupId;
+
+    }
+
+    public Interests(String interests)
+    {
+        this.interest = interests;
 
     }
 
@@ -23,6 +30,8 @@ public class Interests
     private boolean selected = false;
     private String groupIconUrl;// : "http://minemi.ironexus.com/system/interest_groups/icon_mutuals/000/000/012/original/data?1477400224"
     private boolean isMutual;// : true
+
+
 
     public int getInterestId()
     {

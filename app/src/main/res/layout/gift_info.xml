@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:background="@color/no_color"
 >
 
@@ -10,7 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="vertical"
         android:background="@color/actionbar_text"
         style="@style/dialog_margined"
@@ -25,14 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/nameAgeText"
-            android:textStyle="bold"
             android:textColor="@color/text_main"
-            android:text="Александр, 25"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_main"
-            android:text=" отправил вам подарок"/>
+            android:text="@string/who_sended"/>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
-        layout="@layout/toolbar"
+        layout="@layout/settings_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <LinearLayout
@@ -72,7 +72,7 @@
 
     </LinearLayout>
     <ImageView style="@style/settings_divider" />
-
+<!--
   <LinearLayout
       android:orientation="vertical"
       android:id="@+id/helpCenterButton"
@@ -161,5 +161,5 @@
       android:text="data base manager (delete it before rollout)"
       android:id="@+id/sqlite"/>
 
-
+-->
 </LinearLayout>

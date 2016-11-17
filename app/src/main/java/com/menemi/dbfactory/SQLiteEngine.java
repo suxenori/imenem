@@ -29,14 +29,17 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public static final String TABLE_AWARDS = "personAwards";
     public static final String TABLE_FIRE_BASE = "fire_base";
     public static final String TABLE_GIFTS_BASE = "gifts_base";
+    public static final String TABLE_NOTIFICATIONS = "notifications";
     public static final String TABLE_TEMPLATES_BASE = "templates_base";
     public static final String TABLE_PHOTOS = "photos";
     public static final String TABLE_AVATARS = "avatars";
     public static final String TABLE_DIALOGS = "dialogs_base";
+    public static final String TABLE_MESSAGES = "messages";
     public static final String TABLE_FILTER = "filter";
+    public static final String TABLE_CONFIGURATIONS = "configurations";
     public static final String TABLE_LANGUAGES = "languages";
 
-    private static final int DATABASE_VERSION = 1; // In case of any changes in database structure this variable should be incremented
+    private static final int DATABASE_VERSION = 2; // In case of any changes in database structure this variable should be incremented
     private static final String DATABASE_LAST_USER_CREATE_SCRIPT = "CREATE TABLE IF NOT EXISTS " +
             TABLE_LAST_ID + " (" + Fields.ID + " integer)";
     private static final String DATABASE_FIREBASE_TOKEN_CREATE_SCRIPT = "CREATE TABLE IF NOT EXISTS " +
@@ -74,13 +77,13 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             Fields.SEARCH_AGE_MIN + " integer," +
             Fields.FRIENDS + " text, " +
             Fields.AWARDS + " text, " +
-            Fields.LINKEDIN_ACCOUNT + " text, " +
+     /*       Fields.LINKEDIN_ACCOUNT + " text, " +
             Fields.Gplus_ACCOUNT + " text, " +
             Fields.FACEBOOK_ACCOUNT + " text, " +
             Fields.VKONTAKTE_ACCOUNT + " text, " +
             Fields.TWITTER_ACCOUNT + " text, " +
             Fields.ODNOCLASSNIKI_ACCOUNT + " text, " +
-            Fields.INSTAGRAM_ACCOUNT + " text, " +
+            Fields.INSTAGRAM_ACCOUNT + " text, " +*/
             Fields.GROWTH + " integer, " +
             Fields.WEIGHT + " integer, " +
             Fields.INTEREST_GENDER + " integer, " +
@@ -122,6 +125,14 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             Fields.HERE_TO + " integer, " +
             Fields.STATUS + " integer, " +
             Fields.INTEREST_GENDER + " integer)";
+    private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_MESSAGES + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.MESSAGES + " text, " +
+            Fields.SEARCH_AGE_MAX + " integer, " +
+            Fields.HERE_TO + " integer, " +
+            Fields.STATUS + " integer, " +
+            Fields.INTEREST_GENDER + " integer)";
 
 
 
@@ -137,6 +148,37 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
 
 
 
+    private static final String CREATE_TABLE_NOTIFICATIONS = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_NOTIFICATIONS + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.ID + " integer, " +
+            Fields.MESSAGES + " text, " +
+            Fields.MUT_LIKES + " text, " +
+            Fields.THEIR_LIKES + " text, " +
+            Fields.NEARBY + " text, " +
+            Fields.VISITORS + " text, " +
+            Fields.FAVORITES + " text, " +
+            Fields.GIFTS + " text, " +
+            Fields.OTHER + " text)";
+
+    private static final String CREATE_TABLE_CONFIGURATIONS = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_CONFIGURATIONS + " (" + BaseColumns._ID +
+            " integer primary key autoincrement, " +
+            Fields.ID + " integer, " +
+            Fields.SHOW_DISTANCE + " integer, " +
+            Fields.HIDE_ONLINE_STATUS + " integer, " +
+            Fields.PUBLIC_SEARCH + " integer, " +
+            Fields.LIMIT_PROFILE + " integer, " +
+            Fields.SHARE_PROFILE + " integer, " +
+            Fields.FIND_BY_EMAIL + " integer, " +
+            Fields.HALF_INVISIBLE + " integer, " +
+            Fields.INVISBLE_HEAT + " integer, " +
+            Fields.HIDE_VIP_STATUS + " integer, " +
+            Fields.LIMIT_MESSAGES + " integer, " +
+            Fields.SHOW_NEARBY + " integer, " +
+            Fields.HIDE_MY_VERIFICATIONS + " integer, " +
+            Fields.HIDE_PROFILE_AS_DELETED + " integer)";
+
     private static final String CREATE_TABLE_SOCIAL_FB = "CREATE TABLE IF NOT EXISTS " +
             TABLE_SOCIAL_FB + " (" + BaseColumns._ID +
             " integer primary key autoincrement, " +
@@ -147,7 +189,6 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             Fields.SOCIAL_PROFILE_MIDDLE_NAME + " text, " +
             Fields.SOCIAL_PROFILE_LAST_NAME + " text, " +
             Fields.ID + " text)";
-
     private static final String CREATE_TABLE_SOCIAL = "CREATE TABLE IF NOT EXISTS " +
             TABLE_SOCIAL + " (" + BaseColumns._ID +
             " integer primary key autoincrement, " +
@@ -249,6 +290,9 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
             db.execSQL(CREATE_FILTER_TABLE);
             db.execSQL(CREATE_TABLE_LANGUAGES);
             db.execSQL(CREATE_TABLE_SOCIAL);
+            db.execSQL(CREATE_TABLE_CONFIGURATIONS);
+            db.execSQL(CREATE_TABLE_NOTIFICATIONS);
+            db.execSQL(CREATE_TABLE_MESSAGES);
 
 
 
@@ -268,7 +312,9 @@ public class SQLiteEngine extends SQLiteOpenHelper implements BaseColumns {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         Log.w("SQLite", "Update from version " + oldVersion + " to version " + newVersion);
-
+if(oldVersion == 1 && newVersion == 2){
+    db.execSQL(CREATE_TABLE_CONFIGURATIONS);
+}
 /*if(newVersion > oldVersion){
     db.execSQL("DROP TABLE IF EXISTS " + DATABASE_CREATE_SCRIPT);
     db.execSQL("DROP TABLE IF EXISTS " + DATABASE_LAST_USER_CREATE_SCRIPT);

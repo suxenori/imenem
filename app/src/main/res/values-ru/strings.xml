@@ -443,13 +443,13 @@
     <string name="upload_photo_fb">Facebook</string>
     <string name="upload_photo_instagram">Instagram</string>
     <string name="upload_photo_create_photo">Сделать снимок</string>
-    <string name="open_for_money">Открыть за монеты</string>
+    <string name="open_for_money">Открыть за кредиты</string>
     <string name="buy_money">Купить</string>
     <string name="cancel_in_pay_for_photo">Отмена</string>
-    <string name="coins_in_pay_photo_fragment">монет</string>
+    <string name="coins_in_pay_photo_fragment">кредитов</string>
     <string name="price_for_photo">Цена за фото:</string>
     <string name="your_balance">Ваш баланс:</string>
-
+    <string name="news_feed">Новости</string>
     <string name="change">Изменить</string>
     <string name="verification">Верификация</string>
     <string name="phone">Телефон</string>
@@ -462,12 +462,12 @@
     <string name="show_more_photo">загрузить еще</string>
     <string name="Balance">Баланс:</string>
     <string name="Rate">Рейтинг:</string>
-    <string name="test_balance">Баланс: 250 монет</string>
-    <string name="text_in_pay_coins_fragment">Чем больше монет Вы покупаете,\n тем выгоднее!</string>
+    <string name="test_balance">Баланс: 250 кредитов</string>
+    <string name="text_in_pay_coins_fragment">Чем больше кредитов Вы покупаете,\n тем выгоднее!</string>
     <string name="invite_friends_for_coins">Пригласи друга и получи</string>
     <string name="coins_for_friend">100</string>
-    <string name="invite_friends_for_coins_2">монет бесплатно</string>
-    <string name="obtain_free_coins">Получить монеты бесплатно</string>
+    <string name="invite_friends_for_coins_2">кредитов бесплатно</string>
+    <string name="obtain_free_coins">Получить кредиты бесплатно</string>
     <string name="invite_friend_text_in_button">Пригласить друга</string>
     <string name="text_in_bay_container">Популярное</string>
     <string name="total">Итого:</string>
@@ -555,7 +555,7 @@
     <string name="delete_account"><u>Удалить профиль</u></string>
     <string name="erase_imported_contacts">Удалить импортированные контакты</string>
     <string name="retry">Повторить попытку</string>
-    <string name="connection_lost_n_please_check_your_internet_connection_n_and_try_again">Нет подключения \n Пожалуйста, проверьте ваше подключение \n и попробуйте снова</string>
+    <string name="connection_lost_n_please_check_your_internet_connection_n_and_try_again">Нет подключения. \nПожалуйста, проверьте ваше подключение \nи попробуйте снова</string>
     <string name="erase_imported_contacts_message">Это удалит всех ваших друзей. Вы потеряете всю сеть которую вы построили.</string>
     <string name="rating">Рейтинг:</string>
     <string name="wrong_email">Неверный email</string>
@@ -635,7 +635,10 @@
     <string name="where_find">Где искать?</string>
     <string name="confirmed">(Подтверждено)</string>
     <string name="new_gift_notification">У вас новый подарок</string>
-    <string name="who_sended"> %1$s, подарил вам подарок</string>
+    <string name="new_favorite_notification">Вас добавили в избранные</string>
+    <string name="who_sended"><B>%1$s</B>, отправил вам подарок</string>
+    <string name="who_favorited">%1$s, добавил вас в избранные</string>
+    <string name="new_message_notification">Новое сообщение от %1$s</string>
     <string name="body_type">Телосложение</string>
     <string name="eye_color">Цвет глаз</string>
     <string name="about_me">О себе</string>
@@ -660,5 +663,11 @@
     <string name="mutual_text">Вы и %1$s понравились друг другу</string>
     <string name="send_message">Написать сообщение</string>
     <string name="continue_playing">Продлжить игру</string>
+    <string name="dont_confirm">(не подтвержден)</string>
+    <string name="confirm">(подтвержден)</string>
+    <string name="choice_payment_system">Выберите платежную систему</string>
+    <string name="sending_gift">Подарок отправляется</string>
+    <string name="fb_fail">Facebook недоступен</string>
+    <string name="add_interests">Добавить интерес</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

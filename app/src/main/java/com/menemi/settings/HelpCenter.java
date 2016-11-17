@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.menemi.R;
 
@@ -19,12 +19,13 @@ public class HelpCenter extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help_center_layout);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_top);
+        TextView title = (TextView)toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("Help Center");
-        Toast.makeText(getApplication(), "Internet connection is available", Toast.LENGTH_LONG).show();
-        if (getSupportActionBar() != null){
+        title.setText(getString(R.string.basic_info));
+        if (getSupportActionBar() != null)
+        {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }

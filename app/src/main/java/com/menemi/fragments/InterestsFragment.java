@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class InterestsFragment extends Fragment {
     private View rootView = null;
 
-    ArrayList<Interests> interests;
+    ArrayList<Interests> interests = new ArrayList<>();
     View[] items = null;
     boolean isLayoutSet = false;
 
@@ -37,7 +37,7 @@ public class InterestsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        if(purpose != PersonDataFragment.Purpose.MY_PROFILE && interests.size() == 0){
+        if(purpose != PersonDataFragment.Purpose.MY_PROFILE && (interests == null || interests.size() == 0 ) ){
             return null;
         }
         if (rootView == null) {

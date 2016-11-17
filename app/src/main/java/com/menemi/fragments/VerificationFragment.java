@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -83,7 +82,6 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         FacebookSdk.sdkInitialize(getActivity());
-        AppEventsLogger.activateApp(getActivity());
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity()).addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions).addOnConnectionFailedListener(this).build();
         instaObj = new InstagramApp(getActivity(), SocialNetworkHandler.getInstance().CLIENT_ID,
@@ -101,31 +99,65 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
                 parent.removeView(rootView);
             }
         }
+        fbState = (TextView) rootView.findViewById(R.id.fbState);
+        gState = (TextView)rootView.findViewById(R.id.gState);
+        gImage = (ImageView)rootView.findViewById(R.id.g_Src);
+        fbImage = (ImageView) rootView.findViewById(R.id.fbSrc);
+        vkState = (TextView) rootView.findViewById(R.id.vkState);
+        vkImage = (ImageView) rootView.findViewById(R.id.vkSrc);
+        okState = (TextView) rootView.findViewById(R.id.okState);
+        okImage = (ImageView) rootView.findViewById(R.id.okImage);
+        instaImage = (ImageView) rootView.findViewById(R.id.instaImage);
+        instaState = (TextView) rootView.findViewById(R.id.instaState);
         if(purpose != PersonDataFragment.Purpose.MY_PROFILE){
             LinearLayout verifyPhotoContainer = (LinearLayout) rootView.findViewById(R.id.verifyPhotoContainer);
             verifyPhotoContainer.removeAllViews();
             TextView fbState = (TextView) rootView.findViewById(R.id.fbState);
-            fbState.setText("127 друзей");
             TextView vkState = (TextView) rootView.findViewById(R.id.vkState);
-            vkState.setText("54 друга");
             TextView instaState = (TextView) rootView.findViewById(R.id.instaState);
-            instaState.setText("250 подписчиков");
+
+            if (personObject.getFbId().equals("")){
+                fbState.setText(R.string.dont_confirm);
+                fbImage.setImageResource(R.drawable.fb_off);
+            } else {
+                fbState.setText(R.string.confirm);
+                fbImage.setImageResource(R.drawable.fb_icon);
+            }
+            if (personObject.getG_plusId().equals("")){
+                gState.setText(R.string.dont_confirm);
+                gImage.setImageResource(R.drawable.gplus_ic_off);
+            } else {
+                fbState.setText(R.string.confirm);
+                gImage.setImageResource(R.drawable.gplus_ic);
+            }
+
+            if (personObject.getInstaId().equals("")){
+                instaState.setText(R.string.dont_confirm);
+                instaImage.setImageResource(R.drawable.ic_verification_instagram_disabled);
+            } else {
+                instaState.setText(R.string.confirm);
+                instaImage.setImageResource(R.drawable.add_insta);
+            }
+            if (personObject.getVkId().equals("")){
+                vkState.setText(R.string.dont_confirm);
+                vkImage.setImageResource(R.drawable.vk_off);
+            } else {
+                vkState.setText(R.string.confirm);
+                vkImage.setImageResource(R.drawable.vk_icon);
+            }
+            if (personObject.getOdnoklasnikiId().equals("")){
+                okState.setText(R.string.dont_confirm);
+                okImage.setImageResource(R.drawable.ok_off);
+            } else {
+                okState.setText(R.string.confirm);
+                okImage.setImageResource(R.drawable.ok_logo);
+            }
         } else {
             LinearLayout fbButton = (LinearLayout) rootView.findViewById(R.id.verifyFBContainer);
             LinearLayout vkButton = (LinearLayout) rootView.findViewById(R.id.verifyVKContainer);
             LinearLayout okButton = (LinearLayout) rootView.findViewById(R.id.verifyOkContainer);
             LinearLayout instaButton = (LinearLayout) rootView.findViewById(R.id.verifyInstaContainer);
             LinearLayout gButton = (LinearLayout)rootView.findViewById(R.id.verifyGContainer);
-            fbState = (TextView) rootView.findViewById(R.id.fbState);
-            gState = (TextView)rootView.findViewById(R.id.gState);
-            gImage = (ImageView)rootView.findViewById(R.id.g_Src);
-            fbImage = (ImageView) rootView.findViewById(R.id.fbSrc);
-            vkState = (TextView) rootView.findViewById(R.id.vkState);
-            vkImage = (ImageView) rootView.findViewById(R.id.vkSrc);
-            okState = (TextView) rootView.findViewById(R.id.okState);
-            okImage = (ImageView) rootView.findViewById(R.id.okImage);
-            instaImage = (ImageView) rootView.findViewById(R.id.instaImage);
-            instaState = (TextView) rootView.findViewById(R.id.instaState);
             final Odnoklassniki odnoklassniki = Odnoklassniki.createInstance(getActivity(),
                     SocialNetworkHandler.getInstance().APPLICATION_OK_ID, SocialNetworkHandler.getInstance().PUBLICK_APPLICATION_OK_KEY);
             odnoklassniki.checkValidTokens(new OkListener()
@@ -134,6 +166,7 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
                 public void onSuccess(JSONObject json)
                 {
                     okImage.setImageResource(R.drawable.ok_logo);
+                    okState.setText("(привязать)");
                 }
 
                 @Override
@@ -294,12 +327,30 @@ public class VerificationFragment extends Fragment implements GoogleApiClient.On
                 socialProfile.setFirstName(acct.getGivenName());
                 if(acct.getPhotoUrl() == null){
                     socialProfile.setImage(Utils.getBitmapFromResource(getActivity(), R.drawable.no_photo));
-                    DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+
+                    DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS, new DBHandler.ResultListener()
+                    {
+                        @Override
+                        public void onFinish(Object object)
+                        {
+
+
+                        }
+                    });
 
                 } else{
                     new PictureLoader(acct.getPhotoUrl().toString(), picture -> {
                         socialProfile.setImage(picture);
-                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS);
+
+                        DBHandler.getInstance().saveSocialProfile(socialProfile, Fields.SOCIAL_NETWORKS.GOOGLE_PLUS, new DBHandler.ResultListener()
+                        {
+                            @Override
+                            public void onFinish(Object object)
+                            {
+
+                            }
+                        });
+
                     });
                 }
               //  SocialNetworkHandler.getInstance().getImageG_plus(acct.getId());

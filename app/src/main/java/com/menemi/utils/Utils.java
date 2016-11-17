@@ -3,6 +3,7 @@ package com.menemi.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -62,6 +63,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by irondev on 14.06.16.
@@ -317,6 +320,39 @@ public class Utils {
 
         return ni != null && ni.isConnected();
     }
+    public static boolean isInForeground(Context ctx){
+        ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
+// The first in the list of RunningTasks is always the foreground task.
+        ActivityManager.RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
+
+        String foregroundTaskPackageName = foregroundTaskInfo.topActivity.getPackageName();
+        Log.d("foreground", foregroundTaskPackageName);
+        Log.d("app", ctx.getPackageName());
+       return ctx.getPackageName().equals(foregroundTaskPackageName);
+
+    }
+public static String socialFieldConverter(Fields.SOCIAL_NETWORKS socialNetworks){
+    String result = "";
+    switch (socialNetworks){
+        case FACEBOOK:
+            result = Fields.FACEBOOK_ACCOUNT;
+            break;
+        case VKONTAKTE:
+            result = Fields.VKONTAKTE_ACCOUNT;
+            break;
+        case INSTAGRAM:
+            result = Fields.INSTAGRAM_ACCOUNT;
+            break;
+        case ODNOKLASNIKI:
+            result = Fields.ODNOCLASSNIKI_ACCOUNT;
+            break;
+        case GOOGLE_PLUS:
+            result = Fields.Gplus_ACCOUNT;
+            break;
+    }
+
+    return result;
+}
 
     public static Bitmap megaBlur(Context ctx, Bitmap image) {
         if (ctx == null) {
@@ -702,4 +738,5 @@ public class Utils {
         return df2.format(distance);
 
     }
+
 }

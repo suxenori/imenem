@@ -12,7 +12,8 @@ public class PostField {
     String data;
 
     public PostField(String field, String data) {
-        this.Id = DBHandler.getInstance().getMyProfile().getPersonId();
+
+        this.Id = DBHandler.getInstance().getUserId();
         this.field = field;
         this.data = data;
     }

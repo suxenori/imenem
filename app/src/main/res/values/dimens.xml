@@ -36,6 +36,7 @@
     <dimen name="icon_start_margin">@dimen/_25sdp</dimen>
     <dimen name="avatar_owner_width_height">@dimen/_65sdp</dimen>
     <dimen name="balance_width_height">@dimen/_30sdp</dimen>
+    <dimen name="news_width_height">@dimen/_25sdp</dimen>
     <dimen name="avatar_owner_margin_top">@dimen/_75sdp</dimen>
     <dimen name="header_height">@dimen/_200sdp</dimen>
     <dimen name="owner_name_margin_top">@dimen/_160sdp</dimen>
