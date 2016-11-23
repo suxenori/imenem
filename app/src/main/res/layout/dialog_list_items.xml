@@ -2,22 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/margined"
-    android:layout_marginTop="@dimen/_5sdp">
+
+   >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_5sdp"
+
+        style="@style/dialog_margined">
     <RelativeLayout
-        style="@style/dialogs_list_photo_size"
+        android:layout_marginTop="@dimen/_10sdp"
+        style="@style/settings_body_part"
    >
 
         <!-- android:src="@drawable/test_circle_photo" -->
     <ImageView
-        style="@style/dialogs_list_photo_size"
+        style="@style/settings_body_part"
         android:scaleType="centerCrop"
         android:id="@+id/photo"
         />
         <ImageView
         android:id="@+id/isOnlineIndicator"
-        android:layout_width="@dimen/_15sdp"
-        android:layout_height="@dimen/_15sdp"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -106,9 +114,10 @@
                     android:paddingEnd="@dimen/_5sdp"
                     android:paddingRight="@dimen/_5sdp"
                     android:maxLines="1"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/actionbar_text"/>
             </RelativeLayout>
     </LinearLayout>
         <ImageView style="@style/divider" />
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

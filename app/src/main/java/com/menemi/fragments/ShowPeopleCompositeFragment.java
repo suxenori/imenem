@@ -96,7 +96,6 @@ public class ShowPeopleCompositeFragment extends Fragment {
 
     private void configureToolbar(Purpose purpose) {
         Toolbar toolbar = PersonPage.getToolbar();
-
         LinearLayout toolbarContainer = (LinearLayout) toolbar.findViewById(R.id.toolbarContainer);
         toolbarContainer.removeAllViews();
 
@@ -131,8 +130,6 @@ public class ShowPeopleCompositeFragment extends Fragment {
                         title.setText(R.string.favorites);
                     } else if (purpose == Purpose.LIKES) {
                         title.setText(R.string.liked_you);
-                    } else if (purpose == Purpose.NEWS){
-                        title.setText(getString(R.string.news_feed));
                     }
 
                 }

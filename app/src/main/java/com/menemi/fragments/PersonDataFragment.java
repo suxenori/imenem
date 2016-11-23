@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +24,9 @@ import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.PersonObject;
 import com.menemi.utils.Utils;
 
+import xyz.hanks.library.SmallBang;
+import xyz.hanks.library.SmallBangListener;
+
 /**
  * Created by irondev on 23.06.16.
  */
@@ -33,6 +35,7 @@ public class PersonDataFragment extends Fragment {
     private static final String TAG = "scroll_tag";
     private PersonObject personObject = null;
     private PersonObject personPrevious = null;
+    private static PersonObject personNext = null;
     private Purpose purpose = Purpose.LIKE;
 
     public void setPersonPrevious(PersonObject personPrevious) {
@@ -54,7 +57,7 @@ public class PersonDataFragment extends Fragment {
         if(purpose == PersonDataFragment.Purpose.PROFILE && personObject.getPersonId() == DBHandler.getInstance().getUserId()){
           purpose = PersonDataFragment.Purpose.MY_PROFILE;
         }
-
+Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
         DBHandler.getInstance().isRESTAvailable(object -> {
                     if ((boolean) object == true) {
 
@@ -113,12 +116,15 @@ public class PersonDataFragment extends Fragment {
 
         @Override
         public void onPrepare(final PersonObject preparedObject) {
+            Log.e("TIMING", "prepare " + (System.currentTimeMillis()%100_000));
             personObject = preparedObject;
+
             try {
                 if (getActivity() == null || getFragmentManager() == null || personObject == null) {
                     return;
                 }
                 personObject.prepaparePictureUrls(() -> {
+                    Log.e("TIMING", "preparePictures " + (System.currentTimeMillis()%100_000));
 
                     if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
                         return;
@@ -126,9 +132,7 @@ public class PersonDataFragment extends Fragment {
                         TextView locationText = (TextView) rootView.findViewById(R.id.locationText);
                     locationText.setText(personObject.getPersonCurrLocation());
                     if (purpose == Purpose.MY_PROFILE) {
-                        Button addAvatarButton = (Button) rootView.findViewById(R.id.addAvatarButton);
-                        addAvatarButton.setBackgroundResource(R.drawable.add_avatar);
-                        addAvatarButton.setOnClickListener(new AddAvatarClickListener());
+
                     } else {
 
                             String units;
@@ -255,6 +259,7 @@ public class PersonDataFragment extends Fragment {
             PersonDataFragment personDataFragment = new PersonDataFragment();
             personDataFragment.setPurpose(Purpose.LIKE);
             personDataFragment.setPersonPrevious(personObject);
+
             ft.replace(R.id.content, personDataFragment);
             ft.commitAllowingStateLoss();
         }
@@ -269,28 +274,59 @@ public class PersonDataFragment extends Fragment {
         this.purpose = purpose;
     }
 
-
+boolean isFirst = false;
     private void generateNextRandomPerson(final OnPersonPrepared onPersonPrepared) {
+        if(personNext != null){
+            personObject = personNext;
+            onPersonPrepared.onPrepare(personObject);
+            personNext = null;
+        }
+if(personObject == null){
 
-        DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
-            @Override
-            public void onFinish(Object object) {
-                final PersonObject randomPerson = (PersonObject) object;
-                if (randomPerson == null) {
-                    onPersonPrepared.onPrepare(null);
-                    return;
-                }
-                DBHandler.getInstance().getOtherProfile(randomPerson.getPersonId(), new DBHandler.ResultListener() {
-                    @Override
-                    public void onFinish(Object object) {
-                        onPersonPrepared.onPrepare((PersonObject) object);
-                        // Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
-                    }
-                });
-
-
+    DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
+        @Override
+        public void onFinish(Object object) {
+            final PersonObject randomPerson = (PersonObject) object;
+            if (randomPerson == null) {
+                onPersonPrepared.onPrepare(null);
+                return;
             }
-        });
+            DBHandler.getInstance().getOtherProfile(randomPerson.getPersonId(), new DBHandler.ResultListener() {
+                @Override
+                public void onFinish(Object object) {
+                    personObject = (PersonObject) object;
+                    onPersonPrepared.onPrepare(personObject);
+                    // Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
+                }
+            });
+
+
+        }
+    });
+
+}
+        if(personNext == null) {
+            DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
+                @Override
+                public void onFinish(Object object) {
+                    final PersonObject randomPerson = (PersonObject) object;
+                    if (randomPerson == null) {
+                        personNext = null;
+                        return;
+                    }
+                    DBHandler.getInstance().getOtherProfile(randomPerson.getPersonId(), new DBHandler.ResultListener() {
+                        @Override
+                        public void onFinish(Object object) {
+                            personNext = (PersonObject) object;
+                            // Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
+                        }
+                    });
+
+
+                }
+            });
+
+}
     }
 
     public enum Purpose {
@@ -311,39 +347,51 @@ public class PersonDataFragment extends Fragment {
         public void onClick(View v) {
 
             final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
-            likeButton.setImageResource(R.drawable.like_presed);
-            boolean isLiked;
-            if (personObject.getLikeStatus() == PersonObject.LikeStatus.none || personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
-                isLiked = true;
-            } else {
-                isLiked = false;
-            }
-            if (personObject.getLikeStatus() == PersonObject.LikeStatus.none) {
-                personObject.setLikeStatus(PersonObject.LikeStatus.like_him);
-            } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.like_him) {
-                personObject.setLikeStatus(PersonObject.LikeStatus.none);
-            } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
-                personObject.setLikeStatus(PersonObject.LikeStatus.mutual_like);
-                configureLikePicture(likeButton);
-                MutualLikeFragment mutualLikeFragment = new MutualLikeFragment();
-                mutualLikeFragment.setLikedPerson(personObject);
-                mutualLikeFragment.setOnCancel(()->{if (purpose == Purpose.LIKE) {getNextPerson();}});
-                getFragmentManager().beginTransaction().replace(R.id.content, mutualLikeFragment).addToBackStack(null).commitAllowingStateLoss();
-
-                DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, (Object object)-> {});
-                return;
-            } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
-                personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
-            }
-            configureLikePicture(likeButton);
-            DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, new DBHandler.ResultListener() {
+            SmallBang smallBang =SmallBang.attach2Window(getActivity());
+            smallBang.bang(likeButton,new SmallBangListener() {
                 @Override
-                public void onFinish(Object object) {
-                    if (purpose == Purpose.LIKE) {
-                        getNextPerson();
+                public void onAnimationStart() {
+
+                }
+
+                @Override
+                public void onAnimationEnd() {
+                    likeButton.setImageResource(R.drawable.like_presed);
+                    boolean isLiked;
+                    if (personObject.getLikeStatus() == PersonObject.LikeStatus.none || personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
+                        isLiked = true;
+                    } else {
+                        isLiked = false;
                     }
+                    if (personObject.getLikeStatus() == PersonObject.LikeStatus.none) {
+                        personObject.setLikeStatus(PersonObject.LikeStatus.like_him);
+                    } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.like_him) {
+                        personObject.setLikeStatus(PersonObject.LikeStatus.none);
+                    } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.liked_me) {
+                        personObject.setLikeStatus(PersonObject.LikeStatus.mutual_like);
+                        configureLikePicture(likeButton);
+                        MutualLikeFragment mutualLikeFragment = new MutualLikeFragment();
+                        mutualLikeFragment.setLikedPerson(personObject);
+                        mutualLikeFragment.setOnCancel(()->{if (purpose == Purpose.LIKE) {getNextPerson();}});
+                        getFragmentManager().beginTransaction().replace(R.id.content, mutualLikeFragment).addToBackStack(null).commitAllowingStateLoss();
+
+                        DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, (Object object)-> {});
+                        return;
+                    } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
+                        personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
+                    }
+                    configureLikePicture(likeButton);
+                    DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, new DBHandler.ResultListener() {
+                        @Override
+                        public void onFinish(Object object) {
+                            if (purpose == Purpose.LIKE) {
+                                getNextPerson();
+                            }
+                        }
+                    });
                 }
             });
+
         }
     }
 
@@ -407,7 +455,6 @@ public class PersonDataFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            if (personObject.canChat()) {
                 final DialogInfo dialogInfo = new DialogInfo();
                 dialogInfo.setProfileId(contactObject.getPersonId());
                 dialogInfo.setContactName(contactObject.getPersonName());
@@ -424,9 +471,6 @@ public class PersonDataFragment extends Fragment {
                         fragmentTransaction.commitAllowingStateLoss();
                     }
                 });
-            } else {
-
-            }
 
 
         }
@@ -441,20 +485,5 @@ public class PersonDataFragment extends Fragment {
         BUTTON_DISLIKE
     }
 
-    private class AddAvatarClickListener implements View.OnClickListener {
 
-        @Override
-        public void onClick(View v) {
-
-            if (getActivity() == null || getFragmentManager() == null) {
-                return;
-            }
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            PublicPhotoListFragment publicPhotoListFragment = new PublicPhotoListFragment();
-            publicPhotoListFragment.setPurpose(PublicPhotoListFragment.Purpose.CHOOSE_AVATAR);
-            ft.addToBackStack(null);
-            ft.replace(R.id.content, publicPhotoListFragment);
-            ft.commitAllowingStateLoss();
-        }
-    }
 }

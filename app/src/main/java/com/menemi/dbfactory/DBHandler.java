@@ -31,6 +31,7 @@ import com.menemi.personobject.PersonFavorite;
 import com.menemi.personobject.PersonObject;
 import com.menemi.personobject.PhotoSetting;
 import com.menemi.personobject.PhotoTemplate;
+import com.menemi.social_network.SocialNetworkHandler;
 import com.menemi.social_network.SocialProfile;
 import com.menemi.utils.Utils;
 
@@ -87,10 +88,10 @@ public class DBHandler {
 
 
     public PersonObject getMyProfile() {
-        if(myProfile != null){
-        return myProfile;
+        if (myProfile != null) {
+            return myProfile;
         } else {
-           return myProfile = dbSQLite.getProfile(dbSQLite.getUserId());
+            return myProfile = dbSQLite.getProfile(dbSQLite.getUserId());
         }
     }
 
@@ -138,14 +139,14 @@ public class DBHandler {
     }
 
     /**
-     *
      * @param offset
      * @param resultListener ArrayList<NewsInfo> news = (ArrayList<NewsInfo>)object;
      */
 
-    public void getNews(int count, int offset, ResultListener resultListener){
-    dbRest.getNews(getUserId(), count, offset, resultListener);
+    public void getNews(int count, int offset, ResultListener resultListener) {
+        dbRest.getNews(getUserId(), count, offset, resultListener);
     }
+
     public DialogSendMessage sendTextMessage(int dialogId, int profileID, String messageBody) {
         DialogSendMessage dialogMessage = new DialogSendMessage(dialogId, profileID, messageBody);
         stream.sendMessage(dialogMessage);
@@ -217,10 +218,10 @@ public class DBHandler {
                 auth(personObject, resultListener);
             });
 
-            }  else {
-                auth(personObject,resultListener);
+        } else {
+            auth(personObject, resultListener);
 
-            }
+        }
     }
 
     private void auth(PersonObject personObject, ResultListener resultListener) {
@@ -269,19 +270,20 @@ public class DBHandler {
             }
         });
     }
+
     private void configureProfile(Object object, ResultListener resultListener) {
 
 
-                if (object != null) {
+        if (object != null) {
 
-                    myProfile = (PersonObject) object;
-                    dbSQLite.setPersonalInfo(myProfile);
-                    dbSQLite.saveLastId(myProfile.getPersonId());
-                    DBHandler.getInstance().
-                            downloadFilterSettings(myProfile.getPersonId(), obj -> myProfile.setFilterObject((FilterObject) obj));
-                    prepareSettingsForProfile();
-                }
-                resultListener.onFinish(object);
+            myProfile = (PersonObject) object;
+            dbSQLite.setPersonalInfo(myProfile);
+            dbSQLite.saveLastId(myProfile.getPersonId());
+            DBHandler.getInstance().
+                    downloadFilterSettings(myProfile.getPersonId(), obj -> myProfile.setFilterObject((FilterObject) obj));
+            prepareSettingsForProfile();
+        }
+        resultListener.onFinish(object);
 
     }
 
@@ -387,6 +389,7 @@ public class DBHandler {
         });
 
     }
+
     public void setName(String name, ResultListener resultListener) {
         isRESTAvailable(new ResultListener() {
             @Override
@@ -409,13 +412,14 @@ public class DBHandler {
         });
 
     }
+
     public void setInterest(Interests interest, ResultListener resultListener) {
         isRESTAvailable(new ResultListener() {
             @Override
             public void onFinish(Object object) {
                 if ((boolean) object) {
                     dbRest.setInterest(interest, (isSucceed) -> {
-                        if(object.equals("{\"result\":\"success\"}")) {
+                        if (object.equals("{\"result\":\"success\"}")) {
 
                             resultListener.onFinish(true);
 
@@ -596,8 +600,8 @@ public class DBHandler {
     }
 
     public NotificationSettings getNotifications() {
-        if(notificationSettings == null){
-            return  notificationSettings = dbSQLite.getNotifications(getUserId());
+        if (notificationSettings == null) {
+            return notificationSettings = dbSQLite.getNotifications(getUserId());
         }
         return notificationSettings;
     }
@@ -728,6 +732,7 @@ public class DBHandler {
 
 
     }
+
     /**
      * @param personId       id of picture owner
      * @param resultListener will return Bitmap photo = (Bitmap)object;
@@ -748,8 +753,7 @@ public class DBHandler {
                         }
                     });
 
-                }
-                else {
+                } else {
                     resultListener.onFinish(null);
                 }
             }
@@ -757,6 +761,7 @@ public class DBHandler {
 
 
     }
+
     /**
      * @param id
      * @param isThumbnail
@@ -797,7 +802,7 @@ public class DBHandler {
         restSubscribers = new LinkedList<>();
         myProfile = null;
         wasAvailableLastTime = false;
-
+        SocialNetworkHandler.getInstance().logOut();
         stream.disconnect();
         stream = null;
         instance = new DBHandler();
@@ -831,7 +836,7 @@ public class DBHandler {
 
     public void sendFirebaseTokentToServer() {
         String firebaseToken = dbSQLite.getFireBaseToken();
-        if(firebaseToken.equals("")){
+        if (firebaseToken.equals("")) {
             firebaseToken = FirebaseInstanceId.getInstance().getToken();
             setFireBaseToken(firebaseToken);
         }
@@ -867,7 +872,7 @@ public class DBHandler {
     }
 
     public Configurations getConfigurations() {
-        if(configurations == null){
+        if (configurations == null) {
             return configurations = dbSQLite.getConfigurations(getUserId());
         }
         return configurations;
@@ -888,6 +893,7 @@ public class DBHandler {
             dbSQLite.setNotifications(id, notificationSettings);
         });
     }
+
     public void prepareConfigurations(ResultListener resultListener) {
         dbRest.getConfigurations(getUserId(), new ResultListener() {
             @Override
@@ -903,11 +909,12 @@ public class DBHandler {
         });
 
     }
+
     public void setConfigurations(final Configurations newConfigurations, ResultListener resultListener) {
         dbRest.setConfigurations(newConfigurations, new ResultListener() {
             @Override
             public void onFinish(Object object) {
-                if(object.equals("{\"result\":\"success\"}")) {
+                if (object.equals("{\"result\":\"success\"}")) {
                     DBHandler.this.configurations = newConfigurations;
                     dbSQLite.setConfigurations(newConfigurations);
                     resultListener.onFinish(true);
@@ -974,6 +981,7 @@ public class DBHandler {
 
 
     }
+
     public void registerFacebook(final SocialProfile socialProfile, final ResultListener resultListener) {
 
         isRESTAvailable(new ResultListener() {
@@ -1068,7 +1076,7 @@ public class DBHandler {
         dbSQLite.saveLastId(userID);
     }
 
-    public void saveSocialProfile(SocialProfile profile, Fields.SOCIAL_NETWORKS socialNetwork, ResultListener resultListener){
+    public void saveSocialProfile(SocialProfile profile, Fields.SOCIAL_NETWORKS socialNetwork, ResultListener resultListener) {
 
         isRESTAvailable(new ResultListener() {
             @Override
@@ -1091,8 +1099,8 @@ public class DBHandler {
         });
     }
 
-    public SocialProfile getSocialProfile(Fields.SOCIAL_NETWORKS socialNetwork){
-        return  dbSQLite.getSocialProfile(socialNetwork);
+    public SocialProfile getSocialProfile(Fields.SOCIAL_NETWORKS socialNetwork) {
+        return dbSQLite.getSocialProfile(socialNetwork);
     }
 
     public int loadLastId() {
@@ -1176,13 +1184,13 @@ public class DBHandler {
         dbRest.setNotifications(getUserId(), fieldName, values, new ResultListener() {
             @Override
             public void onFinish(Object object) {
-if(!object.equals("{ \"result\" : \"failed\" }")){
-    dbSQLite.setNotifications(getUserId(), notificationSettings);
-    resultListener.onFinish(true);
-} else {
-    resultListener.onFinish(false);
-}
-}
+                if (!object.equals("{ \"result\" : \"failed\" }")) {
+                    dbSQLite.setNotifications(getUserId(), notificationSettings);
+                    resultListener.onFinish(true);
+                } else {
+                    resultListener.onFinish(false);
+                }
+            }
 
         });
 
@@ -1284,12 +1292,12 @@ if(!object.equals("{ \"result\" : \"failed\" }")){
     }
 
     public Bitmap getGiftById(int id) {
-        if(gifts != null){
-        for (int i = 0; i < gifts.size(); i++) {
-            if (gifts.get(i).getGiftId() == id) {
-                return gifts.get(i).getImage();
+        if (gifts != null) {
+            for (int i = 0; i < gifts.size(); i++) {
+                if (gifts.get(i).getGiftId() == id) {
+                    return gifts.get(i).getImage();
+                }
             }
-        }
         }
         return null;
     }
@@ -1371,9 +1379,11 @@ if(!object.equals("{ \"result\" : \"failed\" }")){
     public interface ResultListener extends DBRest.OnDataRecieveListener {
 
     }
+
     public interface ProgressListener extends DBRest.UploadProgressListener {
 
     }
+
     static class ContextNotSetException extends Exception {
         @Override
         public String getMessage() {

@@ -33,6 +33,9 @@ import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.animation.AnimationSet;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.TranslateAnimation;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.menemi.R;
@@ -409,7 +412,7 @@ public static String socialFieldConverter(Fields.SOCIAL_NETWORKS socialNetworks)
 
 
     public static Bitmap overlay(Bitmap top, Bitmap bottom) {
-        if (top.getWidth() == 0 || top.getHeight() == 0) {
+        if ( top == null || bottom == null || top.getWidth() == 0 || top.getHeight() == 0) {
             return top;
         }
         int border = 5;
@@ -736,7 +739,22 @@ public static String socialFieldConverter(Fields.SOCIAL_NETWORKS socialNetworks)
     public static String prepareShortUnts(double distance) {
         DecimalFormat df2 = new DecimalFormat("#.#");
         return df2.format(distance);
+    }
 
+    public static AnimationSet animationSet (){
+        AnimationSet as = new AnimationSet(true);
+        as.setFillEnabled(true);
+        as.setInterpolator(new BounceInterpolator());
+
+        TranslateAnimation ta = new TranslateAnimation(-300, 0, 0, 0);
+        ta.setDuration(1000);
+        as.addAnimation(ta);
+
+        TranslateAnimation ta2 = new TranslateAnimation(0, 0, 0, 0);
+        ta2.setDuration(1000);
+        ta2.setStartOffset(1000); // allowing 2000 milliseconds for ta to finish
+        as.addAnimation(ta2);
+        return as;
     }
 
 }

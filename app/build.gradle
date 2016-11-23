@@ -8,8 +8,8 @@ android {
         applicationId "com.menemi"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 12
-        versionName "0.5.681"
+        versionCode 15
+        versionName "0.5.684"
         multiDexEnabled true
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
@@ -94,6 +94,8 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v13:1.6.1@aar'
     compile 'com.paypal.sdk:paypal-android-sdk:2.14.6'
+    compile 'hanks.xyz:smallbang-library:0.1.2'
+    compile 'com.livetyping:cannyviewanimator:0.8'
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -36,6 +36,7 @@ public class SearchResultDialog extends DialogFragment
         View rootView = inflater.inflate(R.layout.search_result_dialog, container, false);
         final LinearLayout interestsContainer = (LinearLayout) rootView.findViewById(R.id.interestsContainer);
         if (interestsArray != null){
+            listSliding.clear();
             for (int i = 0; i < interestsArray.size(); i++)
             {
                 listSliding.add(new ItemSlideMenu((DBHandler.getInstance()
@@ -43,6 +44,7 @@ public class SearchResultDialog extends DialogFragment
                         .getInterestsGroupArray().get(interestsArray.get(i).getGroupId() - 1).getNameGroup())));
             }
         } else {
+            listSliding.clear();
             listSliding.add(new ItemSlideMenu(BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(),
                     R.drawable.add_int),interestsFromTextField,getString(R.string.new_interest)));
         }
@@ -61,6 +63,9 @@ public class SearchResultDialog extends DialogFragment
 
     public void setInterestsArray(ArrayList<Interests> interestsArray)
     {
+        if (!this.interestsArray.isEmpty()){
+            this.interestsArray.clear();
+        }
         this.interestsArray = interestsArray;
     }
 
@@ -133,7 +138,7 @@ public class SearchResultDialog extends DialogFragment
                         @Override
                         public void onFinish(Object object)
                         {
-                            Toast.makeText(getActivity(),"Кастомный интерес отправлен на модерацию",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"Кастомный интерес отправлен на модерацию",Toast.LENGTH_SHORT).show();
                             dismiss();
                         }
                     });

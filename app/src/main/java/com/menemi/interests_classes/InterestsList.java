@@ -70,7 +70,9 @@ public class InterestsList extends Fragment
                             Log.d("result_fom_tf", searchField.getText().toString());
 
                             DBHandler.getInstance().findInterests(URLEncoder.encode(searchField.getText().toString()), DBHandler.getInstance().getUserId(), object -> {
-                                ArrayList<Interests> interestsArray = (ArrayList) object;
+                                ArrayList<Interests> interestsArray = new ArrayList<>();
+                                interestsArray.clear();
+                                interestsArray = (ArrayList<Interests>) object;
                                 if (interestsArray.size() != 0){
                                     resultDialog.setInterestsArray(interestsArray);
                                     resultDialog.show(getFragmentManager(),"f");

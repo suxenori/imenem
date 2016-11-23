@@ -33,9 +33,12 @@ public class PhotoFragment extends Fragment implements View.OnTouchListener {
     public static final String TAG_ID = "idToShow";
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
     private int pageNumber = -1;
+    private boolean isMyProfile = false;
     ArrayList<PhotoSetting> urlsArray = new ArrayList<>();
 
-
+    public void setMyProfile(boolean myProfile) {
+        isMyProfile = myProfile;
+    }
 
     View rootView = null;
     boolean isFullScreen = false;
@@ -127,6 +130,7 @@ public class PhotoFragment extends Fragment implements View.OnTouchListener {
                                                            Intent pictureSlideActivity = new Intent(getActivity(), PictureSlideActivity.class);
                                                           // pictureSlideActivity.putExtra("personId", personId);
                                                            pictureSlideActivity.putExtra("page", pageNumber);
+                                                           pictureSlideActivity.putExtra("MY_profile", isMyProfile);////////////////////////////////////////////////////////////////////////
                                                            PictureSlideActivity.setPhotosUrls(urlsArray);
                                                            startActivity(pictureSlideActivity);
                                                        } else {

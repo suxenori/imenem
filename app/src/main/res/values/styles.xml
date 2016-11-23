@@ -215,6 +215,13 @@
         <item name="android:src">@drawable/border</item>
     </style>
 
+    <style name="news_divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/profile_elements_divider_height</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/border</item>
+    </style>
+
     <style name="settings_divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/profile_elements_divider_height</item>
@@ -413,11 +420,16 @@
         <item name="android:layout_marginStart">@dimen/_18sdp</item>
     </style>
 
-    <style name="menuRightMargin">
+    <style name="newsLeftMargin">
+        <item name="android:layout_marginLeft">@dimen/_20sdp</item>
+        <item name="android:layout_marginStart">@dimen/_20sdp</item>
+    </style>
+
+    <style name="newsRightMargin">
         <item name="android:layout_marginLeft">@dimen/_10sdp</item>
         <item name="android:layout_marginStart">@dimen/_10sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
-        <item name="android:layout_marginRight">@dimen/_10sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_1sdp</item>
+        <item name="android:layout_marginRight">@dimen/_1sdp</item>
     </style>
     <style name="mutual_photo">
 

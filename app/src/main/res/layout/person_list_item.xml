@@ -3,26 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/_95sdp"
     android:layout_height="@dimen/_130sdp"
-    android:id="@+id/topContainer"
-    >
-    <ImageView
+    android:id="@+id/topContainer">
+   <!-- <ImageView
         android:layout_width="@dimen/_95sdp"
         android:layout_height="@dimen/_10sdp"
         android:src="@drawable/shadow_png"
         android:layout_marginTop="@dimen/_120sdp"
         android:scaleType="fitXY"
-        />
+        />-->
     <RelativeLayout
         android:layout_width="@dimen/_95sdp"
-        android:layout_height="@dimen/_125sdp"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingLeft="@dimen/_5sdp"
-        android:paddingEnd="@dimen/_5sdp"
-        android:paddingRight="@dimen/_5sdp"
-        android:paddingTop="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_5sdp"
-        android:background="@drawable/test_backgr"
-        >
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bord"
+        android:paddingBottom="@dimen/_4sdp"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingRight="@dimen/_3sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="1dp"
+        android:layout_marginStart="1dp">
 
     <RelativeLayout
         android:layout_width="@dimen/_85sdp"
@@ -39,7 +42,6 @@
             android:layout_width="@dimen/_85sdp"
             android:layout_height="@dimen/_83sdp"
             android:layout_alignParentTop="true"
-
             android:id="@+id/like" />
     </RelativeLayout>
     <LinearLayout
@@ -47,6 +49,7 @@
         android:layout_width="@dimen/_85sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_below="@+id/photoContainer"
+        android:background="@color/pale_white"
         android:paddingStart="@dimen/_5sdp"
         android:paddingLeft="@dimen/_5sdp"
         android:paddingTop="@dimen/_5sdp"

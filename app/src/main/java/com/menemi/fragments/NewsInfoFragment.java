@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class NewsInfoFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.news_row, container, false);
+            rootView = inflater.inflate(R.layout.news_rows_item, container, false);
         } else {
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
@@ -70,8 +71,7 @@ public class NewsInfoFragment extends Fragment{
         } else if (newsInfo.getType() == NewsInfo.NEWS_TYPE.FAVORITE){
             newsImage.setBackgroundResource(R.drawable.fav_icon);
         }
-        newsOwnerName.setText(newsInfo.getName());
-        newsNameType.setText(newsInfo.getAction());
+        newsOwnerName.setText(Html.fromHtml("<font color = \"#f29c23\">" +  newsInfo.getName() + "</font>" + " " + "<font color = \"#000000\">" + newsInfo.getAction() + "</font>"));
         date.setText(newsInfo.getDate().toString());
 
     }

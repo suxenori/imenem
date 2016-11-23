@@ -83,7 +83,6 @@ if(!setLoginPhoneOrEmail.getText().toString().equals("")) {
                     });
 
             startActivity(personPage);
-
             finish();
         } else {
             setLoginPhoneOrEmail.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red_underline), PorterDuff.Mode.SRC_ATOP);

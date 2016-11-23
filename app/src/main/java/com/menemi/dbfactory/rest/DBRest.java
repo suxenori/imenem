@@ -50,97 +50,70 @@ public class DBRest {
     }*/
 public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecieveListener onDataRecieveListener )
 {
-    new Sender(Sender.RestCommands.SET_PERSON_APPEARANCE, apperance, new Sender.OnUploadListener()
-    {
-        @Override
-        public void onUploadFinish(String s)
+    new Sender(Sender.RestCommands.SET_PERSON_APPEARANCE, apperance, s -> {
+        Log.v("DBRest", "on upload finish listener");
+        if (s.equals("{\"result\":\"success\"}"))
         {
-            Log.v("DBRest", "on upload finish listener");
-            if (s.equals("{\"result\":\"success\"}"))
-            {
-                onDataRecieveListener.onFinish(true);
-            } else
-            {
-                onDataRecieveListener.onFinish(false);
-            }
+            onDataRecieveListener.onFinish(true);
+        } else
+        {
+            onDataRecieveListener.onFinish(false);
         }
     }).execute();
 }
 
     public void authorise(PersonObject personObject, final OnDataRecieveListener onDataRecieveListener) {
 
-        new Sender(Sender.RestCommands.AUTHORISE, personObject, new Sender.OnUploadListener() {
-            @Override
-            public void onUploadFinish(String s) {
-                Log.v("DBRest", "on upload finish listener");
-                Loader.parcing(Loader.RestCommands.GET_MY_PROFILE, s, onDataRecieveListener);
-            }
+        new Sender(Sender.RestCommands.AUTHORISE, personObject, s -> {
+            Log.v("DBRest", "on upload finish listener");
+            Loader.parcing(Loader.RestCommands.GET_MY_PROFILE, s, onDataRecieveListener);
         }).execute();
     }
     public void setField(String field, String data, final OnDataRecieveListener onDataRecieveListener) {
 
-        new Sender(Sender.RestCommands.SET_FIELD, new PostField(field,data), new Sender.OnUploadListener() {
-            @Override
-            public void onUploadFinish(String s) {
-                Log.v("DBRest", "on upload finish listener");
-                if(s.equals("{\"result\":\"success\"}")) {
-                    onDataRecieveListener.onFinish(true);
-                } else {
-                    onDataRecieveListener.onFinish(false);
-                }
+        new Sender(Sender.RestCommands.SET_FIELD, new PostField(field,data), s -> {
+            Log.v("DBRest", "on upload finish listener");
+            if(s.equals("{\"result\":\"success\"}")) {
+                onDataRecieveListener.onFinish(true);
+            } else {
+                onDataRecieveListener.onFinish(false);
             }
         }).execute();
     }
     public void setLanguages(LanguagesSet languages, final OnDataRecieveListener onDataRecieveListener) {
 
-        new Sender(Sender.RestCommands.SET_LANGUAGES, languages, new Sender.OnUploadListener() {
-            @Override
-            public void onUploadFinish(String s) {
-                Log.v("DBRest", "on upload finish listener");
-                if(s.equals("{\"result\":\"success\"}")) {
-                    onDataRecieveListener.onFinish(true);
-                } else {
-                    onDataRecieveListener.onFinish(false);
-                }
+        new Sender(Sender.RestCommands.SET_LANGUAGES, languages, s -> {
+            Log.v("DBRest", "on upload finish listener");
+            if(s.equals("{\"result\":\"success\"}")) {
+                onDataRecieveListener.onFinish(true);
+            } else {
+                onDataRecieveListener.onFinish(false);
             }
         }).execute();
     }
     public void addCredits(String token, int amount, final OnDataRecieveListener onDataRecieveListener) {
 
-        new Sender(Sender.RestCommands.ADD_CREDITS, new CreditsInfo(token,amount), new Sender.OnUploadListener() {
-            @Override
-            public void onUploadFinish(String s) {
-                Log.v("DBRest", "on upload finish listener");
-                if(s.equals("{\"result\":\"success\"}")) {
-                    onDataRecieveListener.onFinish(true);
-                } else {
-                    onDataRecieveListener.onFinish(false);
-                }
+        new Sender(Sender.RestCommands.ADD_CREDITS, new CreditsInfo(token,amount), s -> {
+            Log.v("DBRest", "on upload finish listener");
+            if(s.equals("{\"result\":\"success\"}")) {
+                onDataRecieveListener.onFinish(true);
+            } else {
+                onDataRecieveListener.onFinish(false);
             }
         }).execute();
     }
     public void addPhoto(PhotoSetting photoSetting, UploadProgressListener progressListener, final OnDataRecieveListener onDataRecieveListener){
-        new Sender(Sender.RestCommands.ADD_PHOTO,photoSetting, new Sender.OnUploadListener()
-        {
-            @Override
-            public void onUploadFinish(String s)
-            {
-                if(s.equals("{\"result\":\"success\"}")){
-                    onDataRecieveListener.onFinish(true);
-                } else{onDataRecieveListener.onFinish(false);}
-            }
+        new Sender(Sender.RestCommands.ADD_PHOTO,photoSetting, s -> {
+            if(s.equals("{\"result\":\"success\"}")){
+                onDataRecieveListener.onFinish(true);
+            } else{onDataRecieveListener.onFinish(false);}
         }).setUploadProgressListener(progressListener).execute();
     }
     public void setInfo(PersonObject personObject, final OnDataRecieveListener onDataRecieveListener){
-        new Sender(Sender.RestCommands.SET_INFO, personObject, new Sender.OnUploadListener()
-        {
-            @Override
-            public void onUploadFinish(String s)
-            {
-                if(s.equals("{\"result\":\"success\"}")){
-                    onDataRecieveListener.onFinish(true);
-                } else{onDataRecieveListener.onFinish(false);}
-            }
+        new Sender(Sender.RestCommands.SET_INFO, personObject, s -> {
+            if(s.equals("{\"result\":\"success\"}")){
+                onDataRecieveListener.onFinish(true);
+            } else{onDataRecieveListener.onFinish(false);}
         }).execute();
 
     }
@@ -287,22 +260,14 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
         new Loader(Loader.RestCommands.GET_CONFIGURATION_SETTINGS, id, onDataRecieveListener).execute();
     }
     public void setConfigurations(Configurations configurations, final OnDataRecieveListener onDataRecieveListener) {
-        new Sender(Sender.RestCommands.SET_CONFIGURATIONS, configurations, new Sender.OnUploadListener() {
-            @Override
-            public void onUploadFinish(String s) {
-               onDataRecieveListener.onFinish(s);
-            }
-        }).execute();
+        new Sender(Sender.RestCommands.SET_CONFIGURATIONS, configurations, s -> onDataRecieveListener.onFinish(s)).execute();
     }
     public void setInterest(Interests interests, final OnDataRecieveListener onDataRecieveListener) {
-        new Sender(Sender.RestCommands.CREATE_INTEREST, interests, new Sender.OnUploadListener() {
-            @Override
-            public void onUploadFinish(String s) {
+        new Sender(Sender.RestCommands.CREATE_INTEREST, interests, s -> {
 
-                onDataRecieveListener.onFinish(s);
-                Loader.parcing(Loader.RestCommands.GET_CONFIGURATION_SETTINGS, s, onDataRecieveListener);
-               onDataRecieveListener.onFinish(s);
-            }
+            onDataRecieveListener.onFinish(s);
+            Loader.parcing(Loader.RestCommands.GET_CONFIGURATION_SETTINGS, s, onDataRecieveListener);
+           onDataRecieveListener.onFinish(s);
         }).execute();
     }
 
@@ -311,21 +276,13 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
         new Loader(Loader.RestCommands.GET_PAY_PLANS, id, onDataRecieveListener).execute();
     }*/
     public void register(PersonObject personObject, final OnDataRecieveListener onDataRecieveListener) {
-        new Sender(Sender.RestCommands.REGISTER, personObject, new Sender.OnUploadListener() {
-            @Override
-            public void onUploadFinish(String s) {
-                Log.v("DBRest", "on upload finish listener");
-                Loader.parcing(Loader.RestCommands.GET_MY_PROFILE, s, onDataRecieveListener);
-            }
+        new Sender(Sender.RestCommands.REGISTER, personObject, s -> {
+            Log.v("DBRest", "on upload finish listener");
+            Loader.parcing(Loader.RestCommands.GET_MY_PROFILE, s, onDataRecieveListener);
         }).execute();
     }
     public void registerFacebook(SocialProfile socialProfile, final OnDataRecieveListener onDataRecieveListener) {
-        new Sender(Sender.RestCommands.REGISTER_FACEBOOK, socialProfile, new Sender.OnUploadListener() {
-            @Override
-            public void onUploadFinish(String s) {
-                Loader.parcing(Loader.RestCommands.GET_MY_PROFILE, s, onDataRecieveListener);
-            }
-        }).execute();
+        new Sender(Sender.RestCommands.REGISTER_FACEBOOK, socialProfile, s -> Loader.parcing(Loader.RestCommands.GET_MY_PROFILE, s, onDataRecieveListener)).execute();
     }
 
     public void getPayPlans(int id, OnDataRecieveListener onDataRecieveListener) {

@@ -669,5 +669,8 @@
     <string name="sending_gift">Подарок отправляется</string>
     <string name="fb_fail">Facebook недоступен</string>
     <string name="add_interests">Добавить интерес</string>
+    <string name="addAvatar">Установить аватар</string>
+    <string name="delete_photo">Удалить фото</string>
+    <string name="add_photo">Добавить фото</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

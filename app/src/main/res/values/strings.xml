@@ -677,5 +677,9 @@
     <string name="choice_payment_system">Choose payment system</string>
     <string name="sending_gift">Sending gift</string>
     <string name="fb_fail">Facebook is not available</string>
+    <string name="addAvatar">Choose avatar</string>
+    <string name="delete_photo">Delete photo</string>
+    <string name="add_photo">Add photo</string>
+
 
 </resources>

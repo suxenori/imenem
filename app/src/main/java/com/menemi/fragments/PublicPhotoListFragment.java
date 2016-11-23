@@ -131,7 +131,9 @@ configure();
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().popBackStack();
+                if(getFragmentManager() != null) {
+                    getFragmentManager().popBackStack();
+                }
             }
         });
 

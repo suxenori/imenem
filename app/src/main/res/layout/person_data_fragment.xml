@@ -80,11 +80,10 @@
             <ImageView
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_alignBottom="@+id/fragment1"
-                android:layout_alignRight="@+id/fragment1"
-                android:layout_alignEnd="@+id/fragment1"
+                android:layout_marginTop="@dimen/_257sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_24sdp"
-                style="@style/filter_right_margin"
                 android:id="@+id/buttonShowPreviousUser"
 
                 />

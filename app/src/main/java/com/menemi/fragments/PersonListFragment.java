@@ -66,24 +66,24 @@ public class PersonListFragment extends Fragment {
         LinearLayout rows = (LinearLayout) rootView.findViewById(R.id.rows);
         rows.removeAllViews();
         if (purpose == ShowPeopleCompositeFragment.Purpose.VISITORS) {
-            title = getString(R.string.visitors);
+
             showVisitors();
         }
         if (purpose == ShowPeopleCompositeFragment.Purpose.LIKES) {
-            title = getString(R.string.liked_you);
+
             showLikes();
         }
         if (purpose == ShowPeopleCompositeFragment.Purpose.MUTUAL_LIKES) {
-            title = getString(R.string.mutual_likes);
+
             showMutualLikes();
         }
         if (purpose == ShowPeopleCompositeFragment.Purpose.NEAR) {
-            title = getString(R.string.people_nearby);
+
 
             showPeopleNear();
         }
         if (purpose == ShowPeopleCompositeFragment.Purpose.FAVORITES) {
-            title = getString(R.string.favorites);
+
             showFavorites();
         }
 
@@ -99,6 +99,7 @@ public class PersonListFragment extends Fragment {
                 Log.d("PersonListFragment", "favorites " + personObjects);
                 Log.i("PersonListFragment", personObjects.size() + " ");
                 prepare();
+                title = getString(R.string.favorites);
             }
         });
     }
@@ -110,6 +111,7 @@ public class PersonListFragment extends Fragment {
                 personObjects = (ArrayList<PersonObject>) object;
                 Log.d("PersonListFragment", "mutual " + personObjects);
                 prepare();
+                title = getString(R.string.mutual_likes);
             }
         });
     }
@@ -121,6 +123,7 @@ public class PersonListFragment extends Fragment {
                 personObjects = (ArrayList<PersonObject>) object;
                 Log.d("PersonListFragment", "likes " + personObjects);
                 prepare();
+                title = getString(R.string.liked_you);
             }
         });
     }
@@ -138,7 +141,7 @@ public class PersonListFragment extends Fragment {
                     public void onFinish(Object object) {
                         personObjects = (ArrayList<PersonObject>) object;
                         prepare();
-
+                        title = getString(R.string.people_nearby);
                     }
                 });
             }
@@ -235,11 +238,14 @@ public class PersonListFragment extends Fragment {
     private void prepareViews(boolean isLastRow, int start, View v) {
         if (personObjects.size() > start && personObjects.get(start) != null) {
             LinearLayout layout = (LinearLayout) v.findViewById(R.id.personItem0);
+
             layout.addView(createPicture(inflater, personObjects.get(start), false));
+            layout.setAnimation(Utils.animationSet());
         }
         if (personObjects.size() > start + 1 && personObjects.get(start + 1) != null) {
             LinearLayout layout = (LinearLayout) v.findViewById(R.id.personItem1);
             layout.addView(createPicture(inflater, personObjects.get(start + 1), false));
+            layout.setAnimation(Utils.animationSet());
         }
 
 
@@ -247,8 +253,10 @@ public class PersonListFragment extends Fragment {
             LinearLayout layout = (LinearLayout) v.findViewById(R.id.personItem2);
             if (start + 2 == personObjects.size() - 1) {
                 layout.addView(createPicture(inflater, personObjects.get(start + 2), false));
+                layout.setAnimation(Utils.animationSet());
             } else {
                 layout.addView(createPicture(inflater, personObjects.get(start + 2), isLastRow));
+                layout.setAnimation(Utils.animationSet());
             }
         }
     }
@@ -311,7 +319,7 @@ public class PersonListFragment extends Fragment {
             public void onFinish(Object object) {
                 personObjects = (ArrayList<PersonObject>) object;
                 prepare();
-
+                title = getString(R.string.visitors);
             }
         });
 

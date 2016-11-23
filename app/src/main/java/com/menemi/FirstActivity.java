@@ -23,6 +23,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.menemi.customviews.OneButtonDialog;
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.personobject.Interests;
 import com.menemi.personobject.PersonObject;
 import com.menemi.social_network.SocialNetworkHandler;
 import com.menemi.social_network.SocialProfile;
@@ -31,6 +32,7 @@ import com.vk.sdk.VKSdk;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -90,6 +92,21 @@ public class FirstActivity extends Activity
                                     String gender = object.getString("gender");
                                     String id = object.getString("id");
                                     DBHandler.getInstance().registerFacebook(new SocialProfile(id,name,gender), object1 -> {
+                                        DBHandler.getInstance().getInterestProfile(DBHandler.getInstance().getUserId(),
+                                                DBHandler.getInstance().getUserId(), object12 -> {
+                                                    ArrayList<Interests> profileInterests;
+                                                    profileInterests = (ArrayList<Interests>) object12;
+                                                    DBHandler.getInstance().setProfileInterests(profileInterests);
+                                                });
+
+                                        DBHandler.getInstance().getInterestsGroup(DBHandler.getInstance().getUserId(), object41 -> {
+                                            ArrayList groups = (ArrayList) object41;
+                                            DBHandler.getInstance().setInterestsGroupArray(groups);
+                                        });
+                                       /* DBHandler.getInstance().getInterestProfile(DBHandler.getInstance().getUserId(), DBHandler.getInstance().getUserId(), object -> {
+                                            ArrayList<Interests> personInterestsArray;
+                                            personInterestsArray = (ArrayList<Interests>) object;
+                                            DBHandler.getInstance().setProfileInterests(personInterestsArray);*/
                                         Log.d("","");
                                         SocialNetworkHandler.getInstance().getProfileAlbumId(getApplicationContext(),AccessToken.getCurrentAccessToken());
                                         finish();

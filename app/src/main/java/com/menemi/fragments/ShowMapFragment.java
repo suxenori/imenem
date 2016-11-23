@@ -74,20 +74,10 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
 
 
     int photosLoaded = 0;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
-            rootView = inflater.inflate(R.layout.base_map_fragment, container, false);
-        } else {
-            ViewGroup parent = (ViewGroup) rootView.getParent();
-            if (parent != null) {
-                parent.removeView(rootView);
-            }
-        }
 
-        MapsInitializer.initialize(getActivity()); /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-       // initMapKostyl();
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         createMapView();
         if (isOwnPosition) {
             configureToolbar();
@@ -103,24 +93,24 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
                         public void onFinish(final Object ALPO) {
                             final ArrayList<PersonObject> people = (ArrayList<PersonObject>) ALPO;
                             DBHandler.getInstance().getMultiplePeoplePictures(Utils.PICTURE_QUALITY_THUMBNAIL, Utils.extractIds((ArrayList<PersonObject>) ALPO),(Object HMIB) ->{
-                                    HashMap<Integer, String> bitmaps = (HashMap<Integer, String>) HMIB;
+                                HashMap<Integer, String> bitmaps = (HashMap<Integer, String>) HMIB;
 
 
-                                    for (int i = 0; i < people.size(); i++) {
-                                        int finalI = i;
-                                        new PictureLoader(bitmaps.get(people.get(i).getPersonId()), (Bitmap icon) ->{
-                                           if (icon == null) {
-                                               icon = Utils.getBitmapFromResource(getActivity(), R.drawable.empty_photo);
-                                           }
-                                           markers.add(new PersonMarker(icon, people.get(finalI)));
-                                            photosLoaded++;
-                                           if(photosLoaded == people.size()-1){
-                                               configure(googleMap);
-                                           }
-                                       });
-                                        //Bitmap icon = bitmaps.get(people.get(i).getPersonId());
+                                for (int i = 0; i < people.size(); i++) {
+                                    int finalI = i;
+                                    new PictureLoader(bitmaps.get(people.get(i).getPersonId()), (Bitmap icon) ->{
+                                        if (icon == null) {
+                                            icon = Utils.getBitmapFromResource(getActivity(), R.drawable.empty_photo);
+                                        }
+                                        markers.add(new PersonMarker(icon, people.get(finalI)));
+                                        photosLoaded++;
+                                        if(photosLoaded == people.size()-1){
+                                            configure(googleMap);
+                                        }
+                                    });
+                                    //Bitmap icon = bitmaps.get(people.get(i).getPersonId());
 
-                                    }
+                                }
 
 
                             });
@@ -138,6 +128,23 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
             });
 
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.base_map_fragment, container, false);
+        } else {
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            if (parent != null) {
+                parent.removeView(rootView);
+            }
+        }
+
+        MapsInitializer.initialize(getActivity()); /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       // initMapKostyl();
+
         return rootView;
     }
 
@@ -479,12 +486,16 @@ Bitmap icon;
             if(getActivity()==null) {
             return this.markerOptions;
             }
+            if(personObject == null){
+                return null;
+            }
             Bitmap avatar = Utils.getCroppedBitmap(icon);
 
             Bitmap background = Utils.getBitmapFromResource(getActivity().getApplicationContext(), R.drawable.test_circle_shadow);
 
             Bitmap fullPicture = Utils.overlay(avatar, background);
             BitmapDescriptor descriptor = BitmapDescriptorFactory.fromBitmap(fullPicture);
+
             this.markerOptions = new MarkerOptions()
                     .position(new LatLng(personObject.getPositionLatitude(), personObject.getPositionLongitude()))
                     .title(personObject.getPersonName())

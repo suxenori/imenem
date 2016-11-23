@@ -26,23 +26,29 @@
                  android:layout_marginStart="@dimen/_15sdp"
                  android:textSize="@dimen/_14sdp"/>
          <LinearLayout
-             android:layout_width="wrap_content"
+             android:layout_width="match_parent"
              android:layout_height="wrap_content"
+             style="@style/dialog_margined"
              android:layout_alignParentTop="true"
              android:id="@+id/container1"
              android:orientation="horizontal"
              android:layout_marginTop="@dimen/_35sdp"
+             android:weightSum="3"
              android:layout_centerHorizontal="true">
          <LinearLayout
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:layout_gravity="start|left"
+             android:gravity="left|start"
              android:orientation="vertical"
              android:id="@+id/container">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="left|start">
             <ImageButton
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
@@ -71,7 +77,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_20sdp">
             <ImageButton
                 android:layout_width="@dimen/_35sdp"
@@ -103,12 +108,15 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:orientation="vertical"
-                 android:layout_marginLeft="@dimen/_50sdp">
+                 android:layout_weight="1"
+                android:gravity="center"
+                 >
                  <LinearLayout
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
+
                      android:orientation="vertical"
-                     android:layout_gravity="center">
+                     >
                      <ImageButton
                          android:layout_width="@dimen/_35sdp"
                          android:layout_height="@dimen/_35sdp"
@@ -164,12 +172,14 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:orientation="vertical"
-                 android:layout_marginLeft="@dimen/_50sdp">
+                 android:layout_gravity="end|right"
+                 android:gravity="end|right"
+                 android:layout_weight="1">
                  <LinearLayout
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:orientation="vertical"
-                     android:layout_gravity="center">
+                     >
                      <ImageButton
                          android:layout_width="@dimen/_35sdp"
                          android:layout_height="@dimen/_35sdp"
@@ -196,8 +206,7 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:orientation="vertical"
-                     android:layout_marginTop="@dimen/_20sdp"
-                     android:layout_gravity="center">
+                     android:layout_marginTop="@dimen/_20sdp">
                      <ImageButton
                          android:layout_width="@dimen/_35sdp"
                          android:layout_height="@dimen/_35sdp"
@@ -239,6 +248,7 @@
          android:layout_marginBottom="@dimen/_10sdp"
          android:layout_marginTop="@dimen/_15sdp"
          android:clickable="true">
+
          <TextView
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"

@@ -153,7 +153,9 @@ public class PhotoSettingsFragment extends Fragment {
                             progress.setProgress(progressPercentage);
                             return false;
                         }else {
-                                    Toaster.toast(getString(R.string.canceled));
+                            if(isAdded()) {
+                                Toaster.toast(getString(R.string.canceled));
+                            }
                             return true;
                         }
 
@@ -162,13 +164,15 @@ public class PhotoSettingsFragment extends Fragment {
                     @Override
                     public void onFinish(Object object) {
                         progress.dismiss();
-                        final FragmentManager fm = getFragmentManager();
-                        onChangeListener.onChangesMade(photoSetting);
-                        if( fm != null && !fieldActivityIsDestroying) {
+                        if((boolean) object) {
+                            final FragmentManager fm = getFragmentManager();
+                            onChangeListener.onChangesMade(photoSetting);
+                            if (fm != null && !fieldActivityIsDestroying) {
 
-                                    fm.popBackStack();
-                        } else {
-                            popedFromStack = true;
+                                fm.popBackStack();
+                            } else {
+                                popedFromStack = true;
+                            }
                         }
                     }
                 });

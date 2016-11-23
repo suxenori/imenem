@@ -686,8 +686,6 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
     }
     static class OnFilterClickListener implements View.OnClickListener {
 
-
-
         FilterFragment fragment;
         private static PersonObject owner;
         FragmentManager fm;

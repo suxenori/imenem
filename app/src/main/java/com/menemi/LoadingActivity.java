@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 
-import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.menemi.dbfactory.DBHandler;
@@ -21,7 +20,6 @@ import com.menemi.personobject.Interests;
 import com.menemi.social_network.SocialNetworkHandler;
 import com.menemi.social_network.instagram.InstagramApp;
 import com.menemi.utils.Utils;
-import com.vk.sdk.VKSdk;
 import com.vk.sdk.util.VKUtil;
 
 import org.json.JSONObject;
@@ -110,15 +108,6 @@ public class LoadingActivity extends AppCompatActivity {
                 DBHandler.getInstance().setInterestsGroupArray(groups);
             });
             if (SocialNetworkHandler.getInstance().isAuthFb()) {
-                SocialNetworkHandler.getInstance().getProfileAlbumId(getApplicationContext(),AccessToken.getCurrentAccessToken());
-            }
-
-            if (VKSdk.isLoggedIn()) {
-                SocialNetworkHandler.getInstance().getUserPhotoFromVk(String.valueOf(0), String.valueOf(200));
-            }
-            if (instaObj.isLogged()) {
-                SocialNetworkHandler.getInstance().getPhotoUrlInsta().clear();
-                instaObj.getPhoto();
             }
             odnoklassniki.checkValidTokens(new OkListener() {
                 @Override

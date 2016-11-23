@@ -84,14 +84,10 @@ public class SocialNetworkHandler extends AppCompatActivity
     private ArrayList<String> photoUrlG_plus = new ArrayList<>();
     private GoogleApiClient g_Client;
     private SocialProfile gSocialProfile;
-   // private String url = "https://picasaweb.google.com/data/feed/api/user/103986297589201622409/albumid/6337941618769622081?alt=json&start-index=1&max-results=1000";
     private String getImageUrlG_plus;
-
     public GoogleApiClient getG_Client()
     {
         return g_Client;
-
-
     }
 
     public void setG_Client(GoogleApiClient client)
@@ -437,8 +433,7 @@ public class SocialNetworkHandler extends AppCompatActivity
 
     public void getProfileAlbumId(final Context context, AccessToken accessToken)
     {
-        final GraphRequest request = GraphRequest.newMeRequest(
-                accessToken,
+        final GraphRequest request = GraphRequest.newMeRequest(accessToken,
                 (object, response) -> {
                     JSONObject jsonObject;
                     try

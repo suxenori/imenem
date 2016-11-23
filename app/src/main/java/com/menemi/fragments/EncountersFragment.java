@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.menemi.PersonPage;
 import com.menemi.PhotoSwipeFragment;
 import com.menemi.R;
+import com.menemi.dbfactory.DBHandler;
 import com.menemi.personobject.PersonObject;
 
 
@@ -48,6 +49,7 @@ public class EncountersFragment extends Fragment
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             PhotoSwipeFragment photoSwipeFragment = new PhotoSwipeFragment();
             photoSwipeFragment.setUrlsArray(person.getPictureUrlsPublic());
+            photoSwipeFragment.setMyProfile(person.getPersonId() == DBHandler.getInstance().getUserId());
             photoSwipeFragment.setFullScreen(false);
             photoSwipeFragment.setPageNumber(0);
             fragmentTransaction.replace(R.id.personPhotoImageView, photoSwipeFragment);

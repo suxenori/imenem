@@ -162,7 +162,7 @@ DBHandler.getInstance().getPhotoUrls(personObject.getPersonId(), Utils.PICTURE_Q
 });
 
 
-
+        Log.e("TIMING", "Photo list " + (System.currentTimeMillis()%100_000));
         return rootView;
 
     }

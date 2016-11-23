@@ -28,8 +28,14 @@ public class PhotoSwipeFragment extends Fragment {
     private int pageNumber = 0;
     private View rootView = null;
     private boolean isFullScreen = false;
-    private ArrayList<PhotoSetting> urlsArray = new ArrayList<>();
+    private boolean isMyProfile = false;
 
+    public void setMyProfile(boolean myProfile) {
+        isMyProfile = myProfile;
+    }
+
+    private ArrayList<PhotoSetting> urlsArray = new ArrayList<>();
+    HackyViewPager pager;
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
     }
@@ -50,7 +56,9 @@ public class PhotoSwipeFragment extends Fragment {
 
 
 
-
+    public PhotoSetting getCurrentItem(){
+        return urlsArray.get(pager.getCurrentItem());
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,11 +73,13 @@ public class PhotoSwipeFragment extends Fragment {
         }
         Log.d("urlsCount", "" + urlsArray.size());
         //preparing Swiping sreens
-        HackyViewPager pager = (HackyViewPager) rootView.findViewById(com.menemi.R.id.pager);
-        //adapter wwhich will manage our swaping
-        pager.setAdapter(new MyFragmentPagerAdapter(getActivity().getFragmentManager()));
-        pager.setCurrentItem(pageNumber);
+        if(pager == null) {
+            pager = (HackyViewPager) rootView.findViewById(com.menemi.R.id.pager);
 
+            //adapter wwhich will manage our swaping
+            pager.setAdapter(new MyFragmentPagerAdapter(getActivity().getFragmentManager()));
+            pager.setCurrentItem(pageNumber);
+        }
         return rootView;
 
     }
@@ -90,6 +100,7 @@ public class PhotoSwipeFragment extends Fragment {
             PhotoFragment photoFragment = new PhotoFragment();
             photoFragment.setUrlsArray(urlsArray);
             photoFragment.setPageNumber(position);
+            photoFragment.setMyProfile(isMyProfile);
             photoFragment.setFullScreen(isFullScreen);
             return photoFragment;
         }

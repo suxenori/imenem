@@ -6,14 +6,14 @@
         android:color="@color/actionbar_text" >
     </solid>
     <padding
-        android:left="5dp"
-        android:top="5dp"
-        android:right="5dp"
-        android:bottom="5dp"    >
+        android:left="1dp"
+        android:top="1dp"
+        android:right="1dp"
+        android:bottom="1dp"    >
     </padding>
 
     <corners
-        android:radius="43dp"   >
+        android:radius="@dimen/_5sdp"   >
     </corners>
 
 </shape>
