@@ -662,7 +662,7 @@
     <string name="bind_soc_failed">Не удалось привязать социальную сеть...</string>
     <string name="mutual_text">Вы и %1$s понравились друг другу</string>
     <string name="send_message">Написать сообщение</string>
-    <string name="continue_playing">Продлжить игру</string>
+    <string name="continue_playing">Продолжить игру</string>
     <string name="dont_confirm">(не подтвержден)</string>
     <string name="confirm">(подтвержден)</string>
     <string name="choice_payment_system">Выберите платежную систему</string>
@@ -672,5 +672,17 @@
     <string name="addAvatar">Установить аватар</string>
     <string name="delete_photo">Удалить фото</string>
     <string name="add_photo">Добавить фото</string>
+
+    <string-array name="error_messages">
+        <item name="no_favorites">Вы не добавили никого в избранные</item>
+        <item name="no_visitors">К сожалению у вас пока нет посетителей профиля</item>
+        <item name="no_interests">К сожалению в данной категории больше нет интересов</item>
+        <item name="no_messages">К сожалению у вас пока нет сообщений</item>
+        <item name="no_likes">К сожалению у вас пока нет симпатий</item>
+        <item name="no_nearby">К сожалению рядом с вами нет пользователей Менеми</item>
+        <item name="no_news">К сожалению у вас пока нет новостей</item>
+</string-array>
+
+
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

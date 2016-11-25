@@ -12,7 +12,9 @@ import android.util.Log;
 
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.menemi.customviews.OCDialog;
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.dbfactory.Fields;
 import com.menemi.dbfactory.MyFirebaseInstanceIDService;
 import com.menemi.dbfactory.MyFirebaseMessagingService;
 import com.menemi.dbfactory.rest.PictureLoader;
@@ -44,6 +46,7 @@ public class LoadingActivity extends AppCompatActivity {
             sendBroadcast(getIntent());
             finish();
         }
+
     }
 
     @Override

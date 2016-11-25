@@ -33,6 +33,7 @@ import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AnimationSet;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -76,6 +77,7 @@ public class Utils {
     public static final String PICTURE_QUALITY_THUMBNAIL = "thumb";
     public static final String PICTURE_QUALITY_MEDIUM = "medium";
     public static final String PICTURE_QUALITY_LARGE = "large";
+    public static ArrayList<View> viewArrayList =  new ArrayList<View>();
 
     public enum UNITS {METRIC, IMPERIAL}
 
@@ -433,8 +435,12 @@ public static String socialFieldConverter(Fields.SOCIAL_NETWORKS socialNetworks)
     }
 
     public static Bitmap getBitmapFromResource(Context ctx, int recourceId) {
-        return BitmapFactory.decodeResource(ctx.getResources(),
-                recourceId);
+        if(ctx != null) {
+            return BitmapFactory.decodeResource(ctx.getResources(),
+                    recourceId);
+        } else {
+            return null;
+        }
     }
 
     public static Drawable getDrawableRes(Context ctx, int resource) {
@@ -756,5 +762,7 @@ public static String socialFieldConverter(Fields.SOCIAL_NETWORKS socialNetworks)
         as.addAnimation(ta2);
         return as;
     }
+
+
 
 }

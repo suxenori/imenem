@@ -62,7 +62,7 @@ public class PersonObject implements Serializable {
     private boolean isOnline = false;
     transient private ArrayList<PersonFavorite> favorites = new ArrayList<>();
     transient private FilterObject filterObject = new FilterObject();
-
+    private boolean picturesLoaded = false;
     private int searchAgeMax;
     private ArrayList<PhotoSetting> pictureUrlsPrivate = new ArrayList<>();
     private ArrayList<PhotoSetting> pictureUrlsPublic = new ArrayList<>();
@@ -401,10 +401,16 @@ public class PersonObject implements Serializable {
             this.pictureUrlsPublic = (ArrayList<PhotoSetting>) obj;
             DBHandler.getInstance().getPhotoUrls(personId, Utils.PICTURE_QUALITY_THUMBNAIL, true, (Object object) -> {
                 this.pictureUrlsPrivate = (ArrayList<PhotoSetting>) object;
+                picturesLoaded = true;
                 callback.run();
+
             });
         });
 
+    }
+
+    public boolean isPicturesLoaded() {
+        return picturesLoaded;
     }
 
     public double getDistance() {

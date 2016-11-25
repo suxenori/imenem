@@ -42,7 +42,9 @@ class DBSQLite {
 
         String data = cursor.getString(cursor.getColumnIndex(field));
 
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         return data;
     }
 
@@ -55,7 +57,9 @@ class DBSQLite {
 
         int data = cursor.getInt(cursor.getColumnIndex(field));
 
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         return data;
     }
 
@@ -65,7 +69,9 @@ class DBSQLite {
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt(0) == 0);
         }
-        cur.close();
+        if (cur != null) {
+            cur.close();
+        }
 
         return empty;
     }
@@ -111,7 +117,9 @@ class DBSQLite {
             personObject.setPersonRelationship(cursor.getString(cursor.getColumnIndex(Fields.RELATIONSHIP)));
 
             // return contact
-
+            if (cursor != null) {
+                cursor.close();
+            }
             return personObject;
         }
 
@@ -133,6 +141,9 @@ class DBSQLite {
                 cursor.moveToNext();
             }
 
+        }
+        if (cursor != null) {
+            cursor.close();
         }
         return gifts;
 
@@ -159,7 +170,9 @@ class DBSQLite {
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
             }
-
+            if (cursor != null) {
+                cursor.close();
+            }
         }
 
     }
@@ -187,6 +200,9 @@ class DBSQLite {
             } else {
                 sqliteDB.insert(TABLE_LANGUAGES, null, values);
             }
+            if (cursor != null) {
+                cursor.close();
+            }
         }
 
     }
@@ -206,15 +222,20 @@ class DBSQLite {
             }
 
         }
+        if (cursor != null) {
+            cursor.close();
+        }
         return languages;
 
     }
+
     public void deleteLanguages() {
 
-            sqliteDB.delete(TABLE_LANGUAGES, null, null);
+        sqliteDB.delete(TABLE_LANGUAGES, null, null);
 
 
     }
+
     public void saveFilter(FilterObject filterObject) {
         ContentValues values = new ContentValues();
         values.put(Fields.SEARCH_AGE_MIN, filterObject.getMinAge());
@@ -232,7 +253,9 @@ class DBSQLite {
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_GIFTS_BASE, null, values);
             }
-
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -246,6 +269,9 @@ class DBSQLite {
             filterObject.setiAmHereTo(cursor.getInt(cursor.getColumnIndex(Fields.HERE_TO)));
             filterObject.setIsOnline(cursor.getInt(cursor.getColumnIndex(Fields.STATUS)));
             filterObject.setiWantValue(cursor.getInt(cursor.getColumnIndex(Fields.INTEREST_GENDER)));
+        }
+        if (cursor != null) {
+            cursor.close();
         }
         return filterObject;
     }
@@ -264,6 +290,9 @@ class DBSQLite {
                 cursor.moveToNext();
             }
 
+        }
+        if (cursor != null) {
+            cursor.close();
         }
         return templates;
 
@@ -292,18 +321,24 @@ class DBSQLite {
             }
 
         }
+        if (cursor != null) {
+            cursor.close();
+        }
         return photoSettings;
 
     }
 
     public Bitmap getBitmap(String url) {
-if(url == null){
-    return null;
-}
+        if (url == null) {
+            return null;
+        }
 
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_PHOTOS, new String[]{Fields.PHOTO}, Fields.URLS + "=?", new String[]{url}, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             return Utils.getBitmapFromStringBase64(cursor.getString(cursor.getColumnIndex(Fields.PHOTO)));
+        }
+        if (cursor != null) {
+            cursor.close();
         }
         return null;
     }
@@ -334,6 +369,9 @@ if(url == null){
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_AVATARS, null, values);
             }
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -358,6 +396,9 @@ if(url == null){
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_SOCIAL, null, values);
             }
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -366,7 +407,7 @@ if(url == null){
         SocialProfile profile = null;
 
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_SOCIAL, null, Fields.SOCIAL_NETWORK + "=?", new String[]{socialNetwork.name()}, null, null, null);
-        if (cursor != null &&  cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             profile = new SocialProfile();
             profile.setFirstName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_FIRST_NAME)));
             profile.setMiddleName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_MIDDLE_NAME)));
@@ -388,6 +429,9 @@ if(url == null){
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_AVATARS, new String[]{Fields.URLS}, Fields.ID + "=?", new String[]{"" + userID}, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             return cursor.getString(cursor.getColumnIndex(Fields.URLS));
+        }
+        if (cursor != null) {
+            cursor.close();
         }
         return null;
     }
@@ -421,6 +465,9 @@ if(url == null){
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_PHOTOS, null, values);
             }
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 
@@ -443,7 +490,9 @@ if(url == null){
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_TEMPLATES_BASE, null, values);
             }
-
+            if (cursor != null) {
+                cursor.close();
+            }
         }
 
 
@@ -465,7 +514,6 @@ if(url == null){
         values.put(Fields.OTHER, notifications.getOther());
 
 
-
         if (isFirstTime(SQLiteEngine.TABLE_NOTIFICATIONS)) {
             sqliteDB.insert(SQLiteEngine.TABLE_NOTIFICATIONS, null, values);
         } else {
@@ -477,16 +525,19 @@ if(url == null){
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_NOTIFICATIONS, null, values);
             }
-
+            if (cursor != null) {
+                cursor.close();
+            }
         }
 
     }
+
     public NotificationSettings getNotifications(int userId) {
 
         NotificationSettings notificationSettings = null;
 
-        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_CONFIGURATIONS, null, Fields.ID + "=?", new String[]{""+userId}, null, null, null);
-        if (cursor != null &&  cursor.moveToFirst()) {
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_CONFIGURATIONS, null, Fields.ID + "=?", new String[]{"" + userId}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
             notificationSettings = new NotificationSettings(userId, userId);
 
             notificationSettings.setMessages(cursor.getString(cursor.getColumnIndex(Fields.MESSAGES)));
@@ -499,9 +550,13 @@ if(url == null){
             notificationSettings.setOther(cursor.getString(cursor.getColumnIndex(Fields.OTHER)));
 
         }
+        if (cursor != null) {
+            cursor.close();
+        }
         return notificationSettings;
 
     }
+
     public void setConfigurations(Configurations configuration) {
 
 
@@ -534,16 +589,19 @@ if(url == null){
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_CONFIGURATIONS, null, values);
             }
-
+            if (cursor != null) {
+                cursor.close();
+            }
         }
 
     }
+
     public Configurations getConfigurations(int userId) {
 
         Configurations configurations = null;
 
-        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_CONFIGURATIONS, null, Fields.ID + "=?", new String[]{""+userId}, null, null, null);
-        if (cursor != null &&  cursor.moveToFirst()) {
+        Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_CONFIGURATIONS, null, Fields.ID + "=?", new String[]{"" + userId}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
             configurations = new Configurations();
             configurations.setId(cursor.getInt(cursor.getColumnIndex(Fields.ID)));
             configurations.setProfileId(cursor.getInt(cursor.getColumnIndex(Fields.PROFILE_ID_2)));
@@ -563,9 +621,13 @@ if(url == null){
             configurations.setHideProfileAsDeleted(Utils.intToBool(cursor.getInt(cursor.getColumnIndex(Fields.HIDE_PROFILE_AS_DELETED))));
 
         }
+        if (cursor != null) {
+            cursor.close();
+        }
         return configurations;
 
     }
+
     public ArrayList<DialogInfo> getDialogs() {
 
         Cursor cursor = sqliteDB.query(SQLiteEngine.TABLE_DIALOGS, null, null, null, null, null, null);
@@ -586,6 +648,9 @@ if(url == null){
                 cursor.moveToNext();
             }
 
+        }
+        if (cursor != null) {
+            cursor.close();
         }
         return dialogs;
 
@@ -612,7 +677,11 @@ if(url == null){
             } else {
                 sqliteDB.insert(SQLiteEngine.TABLE_DIALOGS, null, values);
             }
+            if (cursor != null) {
+                cursor.close();
+            }
         }
+
     }
 
 
@@ -638,6 +707,9 @@ if(url == null){
         profile.setMiddleName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_MIDDLE_NAME)));
         profile.setLastName(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_LAST_NAME)));
         profile.setImage(Utils.stringToBitmap(cursor.getString(cursor.getColumnIndex(Fields.SOCIAL_PROFILE_IMAGE))));
+        if (cursor != null) {
+            cursor.close();
+        }
         return profile;
     }
 
@@ -667,7 +739,9 @@ if(url == null){
 
         int data = cursor.getInt(cursor.getColumnIndex(Fields.ID));
 
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         return data;
     }
 
@@ -707,18 +781,28 @@ if(url == null){
 
     private boolean isFirstTime(String table) {
 
-            Cursor cursor = sqliteDB.query(table, null,
+        Cursor cursor = sqliteDB.query(table, null,
                 null, null, null, null, null);
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                cursor.moveToFirst();
 
-            if (cursor.getInt(0) == 0) {
-                cursor.close();
-                return true;
-            } else {                            // Review this code
-                cursor.close();
-                return false;
+                if (cursor.getInt(0) == 0) {
+                    cursor.close();
+                    return true;
+                } else {                            // Review this code
+                    cursor.close();
+                    return false;
+                }
+
             }
+            if (cursor != null) {
+                cursor.close();
+            }
+        } finally {
+            // this gets called even if there is an exception somewhere above
+            if (cursor != null)
+                cursor.close();
         }
         return true;
     }

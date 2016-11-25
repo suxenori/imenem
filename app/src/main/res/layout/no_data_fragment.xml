@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:gravity="center_horizontal"
+            android:id="@+id/iconcontainer">
+
+
+        <ImageView
+
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/add_gift"
+            android:id="@+id/icon"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:gravity="center_horizontal"
+            android:id="@+id/messagecontainer">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_50sdp"
+            android:layout_marginStart="@dimen/_50sdp"
+            android:layout_marginRight="@dimen/_50sdp"
+            android:layout_marginEnd="@dimen/_50sdp"
+            android:textColor="@color/text_main"
+            android:gravity="center"
+            android:id="@+id/message"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center_horizontal"
+            android:id="@+id/backButtoncontainer"
+            >
+        <Button
+            android:id="@+id/backButton"
+            style="@style/SignInUpButton"
+            android:text="@string/back"
+            />
+        </LinearLayout>
+
+
+
+</LinearLayout>
+</LinearLayout>

@@ -178,7 +178,7 @@ public static boolean isActivityOn = false;
         return header;
     }
 
-    public static View.OnClickListener getFilterButtonListener(FragmentManager fragmentManager, FilterFragment.FilterType filterType ) {
+    public static View.OnClickListener getFilterButtonListener(FragmentManager fragmentManager, FilterFragment.FilterType filterType) {
         return new OnFilterClickListener(fragmentManager, filterType);
     }
 
@@ -455,9 +455,18 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
     }
 
 
-    int lastPos = -1;
+    ArrayList<Integer> lastPos = new ArrayList<>();
+    private int getLastPos(){
+        return lastPos.get(lastPos.size()-1);
+    }
+    private int popLastPos(){
+        return lastPos.remove(lastPos.size()-1);
+    }
+    private void setLastPos(int pos){
+        lastPos.add(pos);
+    }
     private void replaceFragment(int pos) {
-        lastPos = pos;
+        setLastPos(pos);
         if(pos == ENCOUNTERS){
             PersonDataFragment personDataFragment = new PersonDataFragment();
             personDataFragment.setPurpose(PersonDataFragment.Purpose.LIKE);
@@ -471,6 +480,7 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
             DialogsList dialogsList = new DialogsList();
             openFragment(dialogsList);
         } else if( pos == FAVORITES){
+
             ShowPeopleCompositeFragment showPeopleCompositeFragment = new ShowPeopleCompositeFragment();
             showPeopleCompositeFragment.setPurpose(ShowPeopleCompositeFragment.Purpose.FAVORITES);
             openFragment(showPeopleCompositeFragment);
@@ -479,6 +489,7 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
             ShowPeopleCompositeFragment showPeopleCompositeFragment = new ShowPeopleCompositeFragment();
             showPeopleCompositeFragment.setPurpose(ShowPeopleCompositeFragment.Purpose.VISITORS);
             openFragment(showPeopleCompositeFragment);
+
         } else if (pos == NEWS){
             NewsListFragment newsListFragment = new NewsListFragment();
             openFragment(newsListFragment);
@@ -494,16 +505,14 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
         } else if( pos == SETTINGS) {
             Intent settingsActivity = new Intent(this, SettingsActivity.class);
             startActivity(settingsActivity);
-        } else if(pos == MY_PROFILE){
 
+        } else if(pos == MY_PROFILE){
             PersonDataFragment personDataFragment1 = new PersonDataFragment();
             personDataFragment1.setPurpose(PersonDataFragment.Purpose.MY_PROFILE);
             personDataFragment1.setPersonObject(DBHandler.getInstance().getMyProfile());
             openFragment(personDataFragment1);
 
         }
-        OnFilterClickListener.hideFilter();
-
     }
 
     private class ItemSlideMenu implements View.OnClickListener{
@@ -620,7 +629,7 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
             String picturePath = cursor.getString(columnIndex);
             bitmap = BitmapFactory.decodeFile(picturePath);
             Log.d("Bitmap from SD", "method is called");
-            lastPos = -100;
+            setLastPos(-100);
             cursor.close();
             PhotoSettingsFragment photoSettingsFragment = new PhotoSettingsFragment();
             photoSettingsFragment.setPhotoSetting(new PhotoSetting(bitmap));
@@ -643,7 +652,7 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
 
             PhotoSettingsFragment photoSettingsFragment = new PhotoSettingsFragment();
             photoSettingsFragment.setPhotoSetting(new PhotoSetting(bitmap));
-            lastPos = -100;
+            setLastPos(-100);
             openFragment(photoSettingsFragment);
             finishProgressDialog();
             Log.d("onActivityResult", "camera" + data);
@@ -684,6 +693,9 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
             drawerLayout.openDrawer(listViewSliding);
         }
     }
+
+
+
     static class OnFilterClickListener implements View.OnClickListener {
 
         FilterFragment fragment;
@@ -704,11 +716,7 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
             Log.v("onClick", "FILTER");
 
         }
-        public static void hideFilter(){
-            if ( isFilterVisible) {
 
-            }
-        }
         @Override
         public void onClick(View view) {
 
@@ -716,7 +724,9 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
             Log.v("onClick", "onClick");
             if ( isFilterVisible) {
                 isFilterVisible = false;
-                fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
+                //fragment.blurBackground(false);
+
+                fm.beginTransaction().setCustomAnimations(R.anim.enter_from_left_fragment,R.anim.out_from_right_fragment).remove(fragment).commitAllowingStateLoss();
 
             } else {
                 DBHandler.getInstance().isRESTAvailable(new DBHandler.ResultListener() {
@@ -727,12 +737,10 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
                             fragment = new FilterFragment();
                             fragment.setPersonObject(owner);
                             fragment.setFilterType(filterType);
-                            FragmentTransaction transaction = fm.beginTransaction();
-                            transaction.replace(com.menemi.R.id.messageFragmentPlaceHolder, fragment);
-                            transaction.addToBackStack(null);
+                            fragment.setCanOpen(true);
+                            FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.enter_from_left_fragment,R.anim.out_from_right_fragment).addToBackStack(null)
+                                    .replace(com.menemi.R.id.messageFragmentPlaceHolder, fragment);
                             transaction.commitAllowingStateLoss();
-                        } else{
-
                         }
                     }
                 });
@@ -769,7 +777,7 @@ class OnVipClickListener implements View.OnClickListener{
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(lastPos == MY_PROFILE){
+        if(getLastPos() == MY_PROFILE){
 
             DBHandler.getInstance().authorise(DBHandler.getInstance().getMyProfile(), (object) ->{
                 replaceFragment(MY_PROFILE);

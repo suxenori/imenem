@@ -20,8 +20,7 @@
     <ImageView
         style="@style/settings_body_part"
         android:scaleType="centerCrop"
-        android:id="@+id/photo"
-        />
+        android:id="@+id/photo"/>
         <ImageView
         android:id="@+id/isOnlineIndicator"
         android:layout_width="@dimen/_10sdp"

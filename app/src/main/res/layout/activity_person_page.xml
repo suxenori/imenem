@@ -1,71 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/drawer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:background="@color/no_color"
-                android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/toolbar_with_checkBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-<LinearLayout
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:id="@+id/toolbarContainer">
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/no_color">
+
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar_with_checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
             <LinearLayout
+                android:id="@+id/toolbarContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/centerContainer">
-                <ImageView
-                    android:id="@+id/logo"
-                    android:layout_height="@dimen/logo_height"
-                    android:layout_width="@dimen/logo_width"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/logo_in"
-                    />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/centerContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/logo"
+                        android:layout_width="@dimen/logo_width"
+                        android:layout_height="@dimen/logo_height"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/logo_in" />
+                </LinearLayout>
             </LinearLayout>
-</LinearLayout>
-
-
 
 
         </android.support.v7.widget.Toolbar>
 
 
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar_with_checkBox" />
 
-            <RelativeLayout
-                android:id="@+id/content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/toolbar_with_checkBox"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_600sdp"
-                android:layout_below="@+id/toolbar_with_checkBox"
-                android:id="@+id/messageFragmentPlaceHolder"
-                android:background="@color/no_color"
-                android:orientation="horizontal"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_shadow_size"
-                android:id="@+id/toolbar_bottom"
-                android:background="@drawable/shadow"
-                android:layout_below="@+id/toolbar_with_checkBox">
-            </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/messageFragmentPlaceHolder"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_600sdp"
+            android:layout_below="@+id/toolbar_with_checkBox"
+            android:background="@color/no_color"
+            android:orientation="horizontal" />
 
+        <RelativeLayout
+            android:id="@+id/toolbar_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_shadow_size"
+            android:layout_below="@+id/toolbar_with_checkBox"
+            android:background="@drawable/shadow"></RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fullScreenContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 
@@ -73,22 +76,22 @@
         android:id="@+id/sliding_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/actionbar_text"
         android:layout_gravity="start|left"
+        android:background="@color/actionbar_text"
 
 
-       >
+        >
+
         <LinearLayout
+            android:id="@+id/sliding_menu_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/sliding_menu_container">
+            android:orientation="vertical">
 
 
         </LinearLayout>
 
 
-
-
     </ScrollView>
+
 </android.support.v4.widget.DrawerLayout>

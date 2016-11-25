@@ -2,6 +2,7 @@ package com.menemi.fragments;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
@@ -47,6 +48,7 @@ public class NewsInfoFragment extends Fragment{
         }
 
         avatar = (ImageView)rootView.findViewById(R.id.circleAvatar);
+       // avatar.setAnimation(Utils.animationImageView());
         photoNews = (ImageView)rootView.findViewById(R.id.image);
         newsImage = (LinearLayout)rootView.findViewById(R.id.newsImageType);
         newsOwnerName = (TextView)rootView.findViewById(R.id.newsOwnerName);
@@ -59,8 +61,15 @@ public class NewsInfoFragment extends Fragment{
 
     public void handleNews(NewsInfo newsInfo){
 
-         DBHandler.getInstance().getAvatar(newsInfo.getId(), object -> avatar.setImageBitmap(Utils.getCroppedBitmap((Bitmap) object)));
-
+        DBHandler.getInstance().getAvatar(newsInfo.getId(), object -> {
+            if (object != null){
+                avatar.setImageBitmap(Utils.getCroppedBitmap((Bitmap) object));
+            } else {
+                Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.empty_photo);
+                avatar.setImageBitmap(Utils.getCroppedBitmap(icon));
+            }
+        });
         if (newsInfo.getType() == NewsInfo.NEWS_TYPE.PHOTO){
             new PictureLoader(newsInfo.getImageNewsUrl(), picture -> photoNews.setImageBitmap(picture));
             newsImage.setBackgroundResource(R.drawable.photo_add_1);
@@ -73,7 +82,6 @@ public class NewsInfoFragment extends Fragment{
         }
         newsOwnerName.setText(Html.fromHtml("<font color = \"#f29c23\">" +  newsInfo.getName() + "</font>" + " " + "<font color = \"#000000\">" + newsInfo.getAction() + "</font>"));
         date.setText(newsInfo.getDate().toString());
-
     }
 
 

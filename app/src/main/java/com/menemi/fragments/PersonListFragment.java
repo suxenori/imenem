@@ -40,7 +40,12 @@ public class PersonListFragment extends Fragment {
     private LayoutInflater inflater;
     ArrayList<PersonObject> personObjects;
     private String title = "";
-
+public PersonListFragment(){
+    likesLoaded = false;
+    mutLikesLoaded = false;
+    likesEmpty = false;
+    mutLikesEmpty = false;
+}
     public void setPurpose(ShowPeopleCompositeFragment.Purpose purpose) {
         this.purpose = purpose;
     }
@@ -87,8 +92,7 @@ public class PersonListFragment extends Fragment {
             showFavorites();
         }
 
-        TextView blockTitle = (TextView) rootView.findViewById(R.id.blockTitle);
-        blockTitle.setText(title);
+
     }
 
     private void showFavorites() {
@@ -98,20 +102,39 @@ public class PersonListFragment extends Fragment {
                 personObjects = (ArrayList<PersonObject>) object;
                 Log.d("PersonListFragment", "favorites " + personObjects);
                 Log.i("PersonListFragment", personObjects.size() + " ");
-                prepare();
+
+
                 title = getString(R.string.favorites);
+                if (personObjects == null || personObjects.size() == 0) {
+                    getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.FAVORITE)).commitAllowingStateLoss();
+                    PersonPage.finishProgressDialog();
+                } else {
+                    prepare();
+                }
             }
         });
     }
 
+    private static boolean likesLoaded = false;
+    private static boolean mutLikesLoaded = false;
+    private static boolean likesEmpty = false;
+    private static boolean mutLikesEmpty = false;
     private void showMutualLikes() {
         DBHandler.getInstance().getMutualLikes(new DBHandler.ResultListener() {
             @Override
             public void onFinish(Object object) {
                 personObjects = (ArrayList<PersonObject>) object;
                 Log.d("PersonListFragment", "mutual " + personObjects);
-                prepare();
+
                 title = getString(R.string.mutual_likes);
+
+                mutLikesEmpty = (personObjects == null || personObjects.size() == 0);
+                mutLikesLoaded = true;
+                if(likesLoaded && likesEmpty && mutLikesEmpty) {
+                    getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.LIKES)).commitAllowingStateLoss();
+                } else if(!mutLikesEmpty){
+                    prepare();
+                }
             }
         });
     }
@@ -122,8 +145,16 @@ public class PersonListFragment extends Fragment {
             public void onFinish(Object object) {
                 personObjects = (ArrayList<PersonObject>) object;
                 Log.d("PersonListFragment", "likes " + personObjects);
-                prepare();
-                title = getString(R.string.liked_you);
+
+                title = getString(R.string.your_likes);
+                likesEmpty = (personObjects == null || personObjects.size() == 0);
+                likesLoaded = true;
+                if(mutLikesLoaded && mutLikesEmpty && likesEmpty) {
+                    likesLoaded = true;
+                    getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.LIKES)).commitAllowingStateLoss();
+                } else if(!likesEmpty){
+                    prepare();
+                }
             }
         });
     }
@@ -136,12 +167,17 @@ public class PersonListFragment extends Fragment {
             @Override
             public void onFinish(Object object) {
                 LatLng position = (LatLng) object;
-                DBHandler.getInstance().getVisitors(new DBHandler.ResultListener() {
+                DBHandler.getInstance().getUsersAround(5, new DBHandler.ResultListener() {
                     @Override
                     public void onFinish(Object object) {
                         personObjects = (ArrayList<PersonObject>) object;
-                        prepare();
                         title = getString(R.string.people_nearby);
+                        if (personObjects == null || personObjects.size() == 0) {
+                            getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.NEARBY)).commitAllowingStateLoss();
+                            PersonPage.finishProgressDialog();
+                        } else {
+                            prepare();
+                        }
                     }
                 });
             }
@@ -187,15 +223,16 @@ public class PersonListFragment extends Fragment {
 
     }
 
-   /* private void prepare() {
-        PeopleRowFragment row = new PeopleRowFragment();
-        row.setLastRow(true);
-        row.setPersonObjects(personObjects);
-        row.setRowsShown(0);
-        getFragmentManager().beginTransaction().add(R.id.rows, row).commitAllowingStateLoss();
-    }*/
+    /* private void prepare() {
+         PeopleRowFragment row = new PeopleRowFragment();
+         row.setLastRow(true);
+         row.setPersonObjects(personObjects);
+         row.setRowsShown(0);
+         getFragmentManager().beginTransaction().add(R.id.rows, row).commitAllowingStateLoss();
+     }*/
     private void prepare() {
-
+        TextView blockTitle = (TextView) rootView.findViewById(R.id.blockTitle);
+        blockTitle.setText(title);
 
         alignArray(personObjects);
         for (int j = 0; j <= rowsShown; j++) {
@@ -260,8 +297,6 @@ public class PersonListFragment extends Fragment {
             }
         }
     }
-
-
     private void addRow(int j, final boolean isLastRow) {
         final int start = j * 3;
         ArrayList<Integer> ids = new ArrayList<>();
@@ -318,8 +353,13 @@ public class PersonListFragment extends Fragment {
             @Override
             public void onFinish(Object object) {
                 personObjects = (ArrayList<PersonObject>) object;
-                prepare();
                 title = getString(R.string.visitors);
+                if (personObjects == null || personObjects.size() == 0) {
+                    getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.VISITORS)).commitAllowingStateLoss();
+                    PersonPage.finishProgressDialog();
+                } else {
+                    prepare();
+                }
             }
         });
 
@@ -444,6 +484,7 @@ public class PersonListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
+            PersonPage.startProgressDialog(getActivity());
             DBHandler.getInstance().getOtherProfile(personObject.getPersonId(), new DBHandler.ResultListener() {
                 @Override
                 public void onFinish(Object object) {

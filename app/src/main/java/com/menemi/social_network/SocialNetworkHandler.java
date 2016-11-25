@@ -321,7 +321,7 @@ public class SocialNetworkHandler extends AppCompatActivity
     public void inviteFriendsFromFb(Activity activity){
         String appLinkUrl, previewImageUrl;
 
-        appLinkUrl = "https://play.google.com/store/apps/details?id=com.menemi&ah=e9iTB5Cs8QqZagOTEhu1iquIlQM";
+        appLinkUrl = "https://fb.me/1254366597952818";
         //previewImageUrl = "https://www.mydomain.com/my_invite_image.jpg";
 
         if (AppInviteDialog.canShow()) {

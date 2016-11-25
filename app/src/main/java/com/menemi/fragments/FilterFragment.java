@@ -2,6 +2,8 @@ package com.menemi.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -41,7 +43,12 @@ public class FilterFragment extends Fragment {
     private TextView choisedPlaceTextView;
     private boolean isDraggedRangeBar = false;
     private FilterType filterType;
+    private boolean isCanOpen;
 
+    public void setCanOpen(boolean canOpen)
+    {
+        isCanOpen = canOpen;
+    }
 
     public void setPersonObject(PersonObject personObject) {
         this.personObject = personObject;
@@ -64,6 +71,7 @@ public class FilterFragment extends Fragment {
         }
 
         Log.d("FilterFragment", "FilterFragment");
+       // blurBackground(isCanOpen);
         Button submitButton = (Button) rootView.findViewById(R.id.submitButton);
         Button cancelButton = (Button) rootView.findViewById(R.id.cancelButtonFilter);
 
@@ -206,46 +214,6 @@ public class FilterFragment extends Fragment {
 
         return rootView;
     }
-
-  /*  private void setCheckedGender(PersonObject.InterestGender pos) {
-        ImageView manRadioButton = (ImageView) rootView.findViewById(R.id.maleRadioButton);
-        ImageView womanRadioButton = (ImageView) rootView.findViewById(R.id.femaleRadioButton);
-        ImageView anyGenderRadioButton = (ImageView) rootView.findViewById(R.id.anyGenderRadioButton);
-        genderSelected = pos;
-        if (pos == PersonObject.InterestGender.MAN) {
-            manRadioButton.setImageResource(R.drawable.all_on);
-            womanRadioButton.setImageResource(R.drawable.all_of);
-            anyGenderRadioButton.setImageResource(R.drawable.all_of);
-        } else if (pos == PersonObject.InterestGender.WOMAN) {
-            manRadioButton.setImageResource(R.drawable.all_of);
-            womanRadioButton.setImageResource(R.drawable.all_on);
-            anyGenderRadioButton.setImageResource(R.drawable.all_of);
-        } else {
-            manRadioButton.setImageResource(R.drawable.all_of);
-            womanRadioButton.setImageResource(R.drawable.all_of);
-            anyGenderRadioButton.setImageResource(R.drawable.all_on);
-        }
-    }*/
-
-  /*  private void setUserStatus(PersonObject.UserStatus pos) {
-
-        statusSelected = pos;
-        if (pos == PersonObject.UserStatus.ONLINE) {
-            onlineRadioButton.setImageResource(R.drawable.all_on);
-            offlineRadioButton.setImageResource(R.drawable.all_of);
-            anyNetworkStatusRadioButton.setImageResource(R.drawable.all_of);
-        } else if (pos == PersonObject.UserStatus.OFFLINE) {
-            onlineRadioButton.setImageResource(R.drawable.all_of);
-            offlineRadioButton.setImageResource(R.drawable.all_on);
-            anyNetworkStatusRadioButton.setImageResource(R.drawable.all_of);
-        } else {
-            onlineRadioButton.setImageResource(R.drawable.all_of);
-            offlineRadioButton.setImageResource(R.drawable.all_of);
-            anyNetworkStatusRadioButton.setImageResource(R.drawable.all_on);
-        }
-    }*/
-
-
     private PersonObject.IamHereTo getIAmHereTo() {
         if (findFriendsCB.isChecked()) {
             return PersonObject.IamHereTo.MAKE_NEW_FRIEND;
@@ -286,9 +254,24 @@ public class FilterFragment extends Fragment {
         return ((int) maxValue);
     }
 
-    public static enum FilterType{
+    public enum FilterType{
         FILTER_FROM_ENCOUNTERS,
         FILTER_FROM_NEAR
     }
+    public void blurBackground(boolean isCanOpen){
+        RelativeLayout relativeLayout = (RelativeLayout)rootView.findViewById(R.id.layoutShadow);
+        if (isCanOpen){
+            ColorDrawable[] color = {new ColorDrawable(R.color.no_color), new ColorDrawable(R.color.filterShadow_pressed)};
+            TransitionDrawable trans = new TransitionDrawable(color);
+            relativeLayout.setBackground(trans);
+            trans.startTransition(300);
+        } else {
+            ColorDrawable[] color = {new ColorDrawable(R.color.filterShadow_pressed), new ColorDrawable(R.color.no_color)};
+            TransitionDrawable trans = new TransitionDrawable(color);
+            relativeLayout.setBackground(trans);
+            trans.reverseTransition(10);
+        }
+    }
+
 
 }

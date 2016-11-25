@@ -42,6 +42,8 @@ public class PersonDataFragment extends Fragment {
         this.personPrevious = personPrevious;
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,14 +56,20 @@ public class PersonDataFragment extends Fragment {
                 parent.removeAllViews();
             }
         }
+     if((purpose == Purpose.PROFILE || purpose == Purpose.MY_PROFILE) && personObject == null){
+         PersonPage.showNoInternetMessage(getFragmentManager());
+         return rootView;
+     }
         if(purpose == PersonDataFragment.Purpose.PROFILE && personObject.getPersonId() == DBHandler.getInstance().getUserId()){
           purpose = PersonDataFragment.Purpose.MY_PROFILE;
         }
 Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
         DBHandler.getInstance().isRESTAvailable(object -> {
-                    if ((boolean) object == true) {
+            Log.e("TIMING", "rest test " + (System.currentTimeMillis()%100_000));
+                    if ((boolean) object != true) {
 
                         if (purpose == Purpose.LIKE) {
+
                             if(personPrevious != null){
                                 ImageView buttonShowPreviousUser = (ImageView ) rootView.findViewById(R.id.buttonShowPreviousUser);
                                 buttonShowPreviousUser.setImageResource(R.drawable.profile_back);
@@ -78,6 +86,7 @@ Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
                         }
                     } else {
                         if (purpose == Purpose.LIKE) {
+
                             LostInternetFragment lostInternetFragment = new LostInternetFragment();
                             lostInternetFragment.setOnRetryListener(() -> {
 
@@ -107,7 +116,25 @@ Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
                     }
                 }
         );
+        Log.e("TIMING", "start2 " + (System.currentTimeMillis()%100_000));
+        if (purpose == Purpose.LIKE) {
+            if(personPrevious != null){
+                ImageView buttonShowPreviousUser = (ImageView ) rootView.findViewById(R.id.buttonShowPreviousUser);
+                buttonShowPreviousUser.setImageResource(R.drawable.profile_back);
+                buttonShowPreviousUser.setOnClickListener(new OpenPreviousPerson(personPrevious));
 
+            }
+            if(personObject != null){
+                listener.onPrepare(personObject);
+            } else {
+                generateNextRandomPerson(listener);
+            }
+        } else {
+            listener.onPrepare(personObject);
+        }
+
+
+        Utils.viewArrayList.add(rootView);
 
         return rootView;
     }
@@ -116,80 +143,24 @@ Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
 
         @Override
         public void onPrepare(final PersonObject preparedObject) {
-            Log.e("TIMING", "prepare " + (System.currentTimeMillis()%100_000));
+
             personObject = preparedObject;
 
             try {
                 if (getActivity() == null || getFragmentManager() == null || personObject == null) {
                     return;
                 }
-                personObject.prepaparePictureUrls(() -> {
-                    Log.e("TIMING", "preparePictures " + (System.currentTimeMillis()%100_000));
+                Log.e("TIMING", "prepare " + (System.currentTimeMillis()%100_000));
+                if(!personObject.isPicturesLoaded()) {
+                    personObject.prepaparePictureUrls(() -> {
+                        Log.e("TIMING", "preparePictures " + (System.currentTimeMillis() % 100_000));
 
-                    if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
-                        return;
-                    }
-                        TextView locationText = (TextView) rootView.findViewById(R.id.locationText);
-                    locationText.setText(personObject.getPersonCurrLocation());
-                    if (purpose == Purpose.MY_PROFILE) {
-
-                    } else {
-
-                            String units;
-                            double distance;
-                            if(Utils.getUnits() == Utils.UNITS.IMPERIAL){
-                                distance = personObject.getDistance();
-                                units = getString(R.string.units_miles);
-                            } else {
-                                units = getString(R.string.units_killometers);
-                                distance = personObject.getDistance() * 1.60934d;
-                            }
-                        ImageView mapPlacIcon = (ImageView) rootView.findViewById(R.id.mapPlacIcon);
-                        mapPlacIcon.setImageResource(R.drawable.map_place);
-                        TextView range = (TextView) rootView.findViewById(R.id.range);
-                            range.setText(Utils.prepareShortUnts(distance) + " " + units);
-
-                    }
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                    final EncountersFragment encountersFragment = new EncountersFragment();
-                    encountersFragment.setPurpose(purpose);
-                    encountersFragment.setPerson(preparedObject);
-                    fragmentTransaction.replace(R.id.fragment1, encountersFragment);
-                    Log.v("onClick", "FILTER");
-                    configureToolbar();
-                    if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
-                        return;
-                    }
-
-                    final FragmentWithInfoAboutPerson fragmentWithInfoAboutPerson = new FragmentWithInfoAboutPerson();
-                    fragmentWithInfoAboutPerson.setPuropose(purpose);
-                    fragmentTransaction.replace(R.id.fragment2, fragmentWithInfoAboutPerson);
-                    fragmentWithInfoAboutPerson.setPersonObject(preparedObject);
-                    fragmentTransaction.commitAllowingStateLoss();
-
-                    LinearLayout disLikeContainer = (LinearLayout) rootView.findViewById(R.id.disLikeContainer);
-                    final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
-                    final ImageButton dislikeButton = (ImageButton) rootView.findViewById(R.id.buttonDisLike);
-                    if (purpose == Purpose.MY_PROFILE) {
-                        disLikeContainer.removeView(likeButton);
-                        disLikeContainer.removeView(dislikeButton);
-                    } else if (purpose == Purpose.PROFILE) {
-
-                        configureLikePicture(likeButton);
-                        likeButton.setOnClickListener(new LikeClickListener(preparedObject));
-                        dislikeButton.setImageResource(R.drawable.message);
-                        dislikeButton.setOnClickListener(new OpenDialogListener(preparedObject));
-
-
-                    } else {
-                        configureLikePicture(likeButton);
-                        dislikeButton.setImageResource(R.drawable.button_dislike);
-                        likeButton.setOnClickListener(new LikeClickListener(preparedObject));
-                        dislikeButton.setOnClickListener(new DislikeClickListener(preparedObject));
-                    }
-                });
+                        prepareViews(preparedObject);
+                    });
+                } else {
+                    Log.e("TIMING", "preparePictures " + (System.currentTimeMillis() % 100_000));
+                    prepareViews(preparedObject);
+                }
             } catch (IllegalArgumentException e) {
                 Log.e("Fragment error", "activity is already closed");
             }
@@ -201,6 +172,73 @@ Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
 
         }
     };
+
+    private void prepareViews(PersonObject preparedObject) {
+
+        if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
+            return;
+        }
+        TextView locationText = (TextView) rootView.findViewById(R.id.locationText);
+        locationText.setText(personObject.getPersonCurrLocation());
+        if (purpose == Purpose.MY_PROFILE) {
+
+        } else {
+
+            String units;
+            double distance;
+            if (Utils.getUnits() == Utils.UNITS.IMPERIAL) {
+                distance = personObject.getDistance();
+                units = getString(R.string.units_miles);
+            } else {
+                units = getString(R.string.units_killometers);
+                distance = personObject.getDistance() * 1.60934d;
+            }
+            ImageView mapPlacIcon = (ImageView) rootView.findViewById(R.id.mapPlacIcon);
+            mapPlacIcon.setImageResource(R.drawable.map_place);
+            TextView range = (TextView) rootView.findViewById(R.id.range);
+            range.setText(Utils.prepareShortUnts(distance) + " " + units);
+
+        }
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        final EncountersFragment encountersFragment = new EncountersFragment();
+        encountersFragment.setPurpose(purpose);
+        encountersFragment.setPerson(preparedObject);
+        fragmentTransaction.replace(R.id.fragment1, encountersFragment);
+        Log.v("onClick", "FILTER");
+        configureToolbar();
+        if (getActivity() == null || getFragmentManager() == null || !isVisible()) {
+            return;
+        }
+
+        final FragmentWithInfoAboutPerson fragmentWithInfoAboutPerson = new FragmentWithInfoAboutPerson();
+        fragmentWithInfoAboutPerson.setPuropose(purpose);
+        fragmentTransaction.replace(R.id.fragment2, fragmentWithInfoAboutPerson);
+        fragmentWithInfoAboutPerson.setPersonObject(preparedObject);
+        fragmentTransaction.commitAllowingStateLoss();
+
+        LinearLayout disLikeContainer = (LinearLayout) rootView.findViewById(R.id.disLikeContainer);
+        final ImageButton likeButton = (ImageButton) rootView.findViewById(R.id.buttonLike);
+        final ImageButton dislikeButton = (ImageButton) rootView.findViewById(R.id.buttonDisLike);
+        if (purpose == Purpose.MY_PROFILE) {
+            disLikeContainer.removeView(likeButton);
+            disLikeContainer.removeView(dislikeButton);
+        } else if (purpose == Purpose.PROFILE) {
+
+            configureLikePicture(likeButton);
+            likeButton.setOnClickListener(new LikeClickListener(preparedObject));
+            dislikeButton.setImageResource(R.drawable.message);
+            dislikeButton.setOnClickListener(new OpenDialogListener(preparedObject));
+
+
+        } else {
+            configureLikePicture(likeButton);
+            dislikeButton.setImageResource(R.drawable.button_dislike);
+            likeButton.setOnClickListener(new LikeClickListener(preparedObject));
+            dislikeButton.setOnClickListener(new DislikeClickListener(preparedObject));
+        }
+    }
 
     private void configureLikePicture(ImageButton likeButton) {
         if (personObject.getLikeStatus() == PersonObject.LikeStatus.none) {
@@ -278,50 +316,46 @@ boolean isFirst = false;
     private void generateNextRandomPerson(final OnPersonPrepared onPersonPrepared) {
         if(personNext != null){
             personObject = personNext;
-            onPersonPrepared.onPrepare(personObject);
             personNext = null;
+            onPersonPrepared.onPrepare(personObject);
+
+        } else {
+            Log.e("TIMING", "startRandom0 " + (System.currentTimeMillis()%100_000));
+            DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
+                @Override
+                public void onFinish(Object object) {
+                    final PersonObject randomPerson = (PersonObject) object;
+                    personObject = randomPerson;
+                    Log.e("TIMING", "endRandom0 " + (System.currentTimeMillis()%100_000));
+                    onPersonPrepared.onPrepare(randomPerson);
+                }
+            });
         }
 if(personObject == null){
-
+    Log.e("TIMING", "startRandom " + (System.currentTimeMillis()%100_000));
     DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
         @Override
         public void onFinish(Object object) {
             final PersonObject randomPerson = (PersonObject) object;
-            if (randomPerson == null) {
-                onPersonPrepared.onPrepare(null);
-                return;
-            }
-            DBHandler.getInstance().getOtherProfile(randomPerson.getPersonId(), new DBHandler.ResultListener() {
-                @Override
-                public void onFinish(Object object) {
-                    personObject = (PersonObject) object;
-                    onPersonPrepared.onPrepare(personObject);
-                    // Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
-                }
-            });
-
-
+            Log.e("TIMING", "endRandom " + (System.currentTimeMillis()%100_000));
+            personObject = randomPerson;
+            onPersonPrepared.onPrepare(randomPerson);
         }
     });
 
 }
         if(personNext == null) {
+            Log.e("TIMING", "startRandom2 " + (System.currentTimeMillis()%100_000));
             DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
                 @Override
                 public void onFinish(Object object) {
                     final PersonObject randomPerson = (PersonObject) object;
-                    if (randomPerson == null) {
-                        personNext = null;
-                        return;
+                    personNext =randomPerson;
+                    if(randomPerson != null) {
+                        randomPerson.prepaparePictureUrls(() -> {
+                            Log.e("TIMING", "endRandom2 " + (System.currentTimeMillis()%100_000));
+                        });
                     }
-                    DBHandler.getInstance().getOtherProfile(randomPerson.getPersonId(), new DBHandler.ResultListener() {
-                        @Override
-                        public void onFinish(Object object) {
-                            personNext = (PersonObject) object;
-                            // Log.d("LOG SYKA", "blya " + ((PersonObject) object).getPhotoCount());
-                        }
-                    });
-
 
                 }
             });
@@ -373,7 +407,7 @@ if(personObject == null){
                         MutualLikeFragment mutualLikeFragment = new MutualLikeFragment();
                         mutualLikeFragment.setLikedPerson(personObject);
                         mutualLikeFragment.setOnCancel(()->{if (purpose == Purpose.LIKE) {getNextPerson();}});
-                        getFragmentManager().beginTransaction().replace(R.id.content, mutualLikeFragment).addToBackStack(null).commitAllowingStateLoss();
+                        getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, mutualLikeFragment).addToBackStack(null).commitAllowingStateLoss();
 
                         DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, (Object object)-> {});
                         return;
@@ -381,6 +415,7 @@ if(personObject == null){
                         personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
                     }
                     configureLikePicture(likeButton);
+                    PersonPage.startProgressDialog(getActivity());
                     DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, new DBHandler.ResultListener() {
                         @Override
                         public void onFinish(Object object) {
@@ -411,6 +446,7 @@ if(personObject == null){
                 personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
             }
             configureLikePicture(likeButton);
+            PersonPage.startProgressDialog(getActivity());
             DBHandler.getInstance().disLike(personObject.getPersonId(), false, new DBHandler.ResultListener() {
                 @Override
                 public void onFinish(Object object) {

@@ -49,9 +49,12 @@ public class DialogsList extends Fragment {
       DBHandler.getInstance().getDialogsList(new DBHandler.ResultListener() {
             @Override
             public void onFinish(Object object) {
+                if(getFragmentManager() == null){
+                    return;
+                }
                 ArrayList<DialogInfo> dialogsList = (ArrayList<DialogInfo>) object;
                 Log.d("DialogsList", "dialogsList." + dialogsList.size());
-                if (dialogsList != null && dialogsList.size() > 0 && getFragmentManager() != null) {
+                if (dialogsList != null && dialogsList.size() > 0 ) {
 
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
@@ -62,6 +65,9 @@ public class DialogsList extends Fragment {
                         fragmentTransaction.add(R.id.fragment1, dialogListItem);
                     }
                     fragmentTransaction.commitAllowingStateLoss();
+                    PersonPage.finishProgressDialog();
+                } else {
+                   getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.MESSAGES)).commitAllowingStateLoss();
                     PersonPage.finishProgressDialog();
                 }
 

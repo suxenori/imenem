@@ -107,6 +107,16 @@
         <item>@string/fluent</item>
         <item>@string/native_s</item>
     </string-array>
+    <string-array name="error_messages">
+        <item name="no_favorites">You have no favorites yet</item>
+        <item name="no_visitors">Sorry, you don\'t have visitors yet</item>
+        <item name="no_interests">Sorry, there is no more interests in this category</item>
+        <item name="no_messages">Sorry, you don\'t have messages yet</item>
+        <item name="no_likes">Sorry, you don\'t have likes yet</item>
+        <item name="no_nearby">Sorry, there in no Menemi users near</item>
+        <item name="no_news">Sorry, there is no news yet</item>
+    </string-array>
+
 
     <string name="low">Low</string>
     <string name="awerage">Awerage</string>
@@ -680,6 +690,7 @@
     <string name="addAvatar">Choose avatar</string>
     <string name="delete_photo">Delete photo</string>
     <string name="add_photo">Add photo</string>
+
 
 
 </resources>

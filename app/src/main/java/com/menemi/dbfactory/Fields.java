@@ -10,8 +10,10 @@ public  class Fields {
     public static String URL_FOR_MESSAGING;
     static{
         if (BuildConfig.DEBUG) {
-            URL_FOR_SERVER = "http://menemidev.ironexus.com";
-            URL_FOR_MESSAGING = "menemidev.ironexus.com";
+            //URL_FOR_SERVER = "http://menemidev.ironexus.com";
+            //URL_FOR_MESSAGING = "menemidev.ironexus.com";
+            URL_FOR_SERVER = "http://minemi.ironexus.com";
+            URL_FOR_MESSAGING = "minemi.ironexus.com";
         } else {
             URL_FOR_SERVER = "http://minemi.ironexus.com";
             URL_FOR_MESSAGING = "minemi.ironexus.com";

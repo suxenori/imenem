@@ -19,13 +19,7 @@ import com.menemi.personobject.NewsInfo;
 
 import java.util.ArrayList;
 
-/**
- * Created by Ui-Developer on 16.11.2016.
- */
 
-/**
- * Created by Ui-Developer on 28.07.2016.
- */
 public class NewsListFragment extends Fragment {
     private View rootView = null;
     private  ArrayList<NewsInfo> news = new  ArrayList<>();
@@ -82,9 +76,14 @@ public class NewsListFragment extends Fragment {
         //(int personId, int requestedId, int photoNumber, int count, String quality,
 
         DBHandler.getInstance().getNews(count, start,(object)->{
-
-            if( object != null) {
-                news.addAll((ArrayList<NewsInfo>) object);
+            ArrayList<NewsInfo> newsFromServer = (ArrayList<NewsInfo>) object;
+            if(start == 0 && (newsFromServer == null || newsFromServer.size() == 0))
+            {
+                getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.NEWS)).commitAllowingStateLoss();
+                PersonPage.finishProgressDialog();
+                fragment1.removeView(progressBar);
+            } else if( object != null) {
+                news.addAll(newsFromServer);
                 newsOffset = news.size();
                 fragment1.removeView(progressBar);
                 isLoading = false;
@@ -96,6 +95,7 @@ public class NewsListFragment extends Fragment {
                     if (i <= news.size() - 1 ){
                         NewsInfoFragment newsInfoFragment = new NewsInfoFragment();
                         newsInfoFragment.setNewsInfo(news.get(i));
+
                         fragmentTransaction.add(R.id.fragment1, newsInfoFragment);
                     }
                 }

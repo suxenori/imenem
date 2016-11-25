@@ -85,6 +85,9 @@ public class InterestsFragment extends Fragment {
     }
 
     private void prepareOwnInterests(LayoutInflater inflater, LinearLayout interestsLayout) {
+        if(interests == null){
+            return;
+        }
         items = new View[interests.size()];
 
         for (int i = 0; i < interests.size(); i++) {
