@@ -24,6 +24,8 @@ import com.menemi.personobject.DialogInfo;
 import com.menemi.personobject.PersonObject;
 import com.menemi.utils.Utils;
 
+import java.util.ArrayList;
+
 import xyz.hanks.library.SmallBang;
 import xyz.hanks.library.SmallBangListener;
 
@@ -35,8 +37,9 @@ public class PersonDataFragment extends Fragment {
     private static final String TAG = "scroll_tag";
     private PersonObject personObject = null;
     private PersonObject personPrevious = null;
-    private static PersonObject personNext = null;
+    private static ArrayList<PersonObject> personNext =  new ArrayList<>();
     private Purpose purpose = Purpose.LIKE;
+    ArrayList<PersonObject> oldPersons = new ArrayList<>();
 
     public void setPersonPrevious(PersonObject personPrevious) {
         this.personPrevious = personPrevious;
@@ -66,7 +69,7 @@ public class PersonDataFragment extends Fragment {
 Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
         DBHandler.getInstance().isRESTAvailable(object -> {
             Log.e("TIMING", "rest test " + (System.currentTimeMillis()%100_000));
-                    if ((boolean) object != true) {
+                    if ((boolean) object == true) {
 
                         if (purpose == Purpose.LIKE) {
 
@@ -265,11 +268,9 @@ Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
 
         ImageView filterButton = (ImageView) toolbarContainer.findViewById(R.id.filterButton);
         FilterFragment.FilterType filterType;
-        if(purpose == Purpose.LIKE){
-            filterType = FilterFragment.FilterType.FILTER_FROM_ENCOUNTERS;
-        } else
-        {
-            filterType = FilterFragment.FilterType.FILTER_FROM_NEAR;
+        filterType = FilterFragment.FilterType.FILTER_FROM_ENCOUNTERS;
+        if(purpose != Purpose.LIKE){
+            filterButton.setVisibility(View.GONE);
         }
 
         filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager(), filterType));
@@ -314,53 +315,19 @@ Log.e("TIMING", "start " + (System.currentTimeMillis()%100_000));
 
 boolean isFirst = false;
     private void generateNextRandomPerson(final OnPersonPrepared onPersonPrepared) {
-        if(personNext != null){
-            personObject = personNext;
-            personNext = null;
-            onPersonPrepared.onPrepare(personObject);
 
-        } else {
-            Log.e("TIMING", "startRandom0 " + (System.currentTimeMillis()%100_000));
-            DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
-                @Override
-                public void onFinish(Object object) {
-                    final PersonObject randomPerson = (PersonObject) object;
-                    personObject = randomPerson;
-                    Log.e("TIMING", "endRandom0 " + (System.currentTimeMillis()%100_000));
-                    onPersonPrepared.onPrepare(randomPerson);
-                }
-            });
-        }
-if(personObject == null){
     Log.e("TIMING", "startRandom " + (System.currentTimeMillis()%100_000));
     DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
         @Override
         public void onFinish(Object object) {
             final PersonObject randomPerson = (PersonObject) object;
+            oldPersons.add(randomPerson);
             Log.e("TIMING", "endRandom " + (System.currentTimeMillis()%100_000));
             personObject = randomPerson;
             onPersonPrepared.onPrepare(randomPerson);
         }
     });
 
-}
-        if(personNext == null) {
-            Log.e("TIMING", "startRandom2 " + (System.currentTimeMillis()%100_000));
-            DBHandler.getInstance().getNextRandomProfile(new DBHandler.ResultListener() {
-                @Override
-                public void onFinish(Object object) {
-                    final PersonObject randomPerson = (PersonObject) object;
-                    personNext =randomPerson;
-                    if(randomPerson != null) {
-                        randomPerson.prepaparePictureUrls(() -> {
-                            Log.e("TIMING", "endRandom2 " + (System.currentTimeMillis()%100_000));
-                        });
-                    }
-
-                }
-            });
-
-}
     }
 
     public enum Purpose {
@@ -409,16 +376,18 @@ if(personObject == null){
                         mutualLikeFragment.setOnCancel(()->{if (purpose == Purpose.LIKE) {getNextPerson();}});
                         getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, mutualLikeFragment).addToBackStack(null).commitAllowingStateLoss();
 
-                        DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, (Object object)-> {});
+                        DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, oldPersons,(Object object)-> {});
                         return;
                     } else if (personObject.getLikeStatus() == PersonObject.LikeStatus.mutual_like) {
                         personObject.setLikeStatus(PersonObject.LikeStatus.liked_me);
                     }
                     configureLikePicture(likeButton);
                     PersonPage.startProgressDialog(getActivity());
-                    DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, new DBHandler.ResultListener() {
+
+                    DBHandler.getInstance().disLike(personObject.getPersonId(), isLiked, oldPersons, new DBHandler.ResultListener() {
                         @Override
                         public void onFinish(Object object) {
+
                             if (purpose == Purpose.LIKE) {
                                 getNextPerson();
                             }
@@ -429,6 +398,7 @@ if(personObject == null){
 
         }
     }
+
 
     class DislikeClickListener implements View.OnClickListener {
         private PersonObject personObject = null;
@@ -447,7 +417,7 @@ if(personObject == null){
             }
             configureLikePicture(likeButton);
             PersonPage.startProgressDialog(getActivity());
-            DBHandler.getInstance().disLike(personObject.getPersonId(), false, new DBHandler.ResultListener() {
+            DBHandler.getInstance().disLike(personObject.getPersonId(), false, oldPersons, new DBHandler.ResultListener() {
                 @Override
                 public void onFinish(Object object) {
                     if (purpose == Purpose.LIKE)

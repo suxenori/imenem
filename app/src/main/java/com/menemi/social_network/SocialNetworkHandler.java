@@ -322,11 +322,11 @@ public class SocialNetworkHandler extends AppCompatActivity
         String appLinkUrl, previewImageUrl;
 
         appLinkUrl = "https://fb.me/1254366597952818";
-        //previewImageUrl = "https://www.mydomain.com/my_invite_image.jpg";
+        previewImageUrl = "http://menemi.com/menemi_banner.jpg";
 
         if (AppInviteDialog.canShow()) {
             AppInviteContent content = new AppInviteContent.Builder()
-                    .setApplinkUrl(appLinkUrl)
+                    .setApplinkUrl(appLinkUrl).setPreviewImageUrl(previewImageUrl)
                     .build();
             AppInviteDialog.show(activity, content);
         }

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -70,8 +71,6 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
         });
 
     }
-
-
 
     int photosLoaded = 0;
 
@@ -129,7 +128,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
 
         }
     }
-
+    MapView mMapView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -142,8 +141,23 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
             }
         }
 
-        MapsInitializer.initialize(getActivity()); /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-       // initMapKostyl();
+        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+            }
+        });
 
         return rootView;
     }
@@ -155,7 +169,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
         if(isOwnPosition) {
             Utils.buildLocationSettingsRequest(getActivity());
         }
-        }
+    }
 
     /**
      * Initialises the mapview
@@ -183,7 +197,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback, Loc
             Log.e("mapApp", exception.toString());
         }
     }
-private void initMapKostyl(){
+    private void initMapKostyl(){
 
         getFragmentManager().beginTransaction().replace(R.id.mapView, new com.google.android.gms.maps.MapFragment()).commitAllowingStateLoss();
 
@@ -274,10 +288,10 @@ private void initMapKostyl(){
     public void configure(GoogleMap googleMap) {
 
         Log.v("ShowMapFragment", "markers size = " + markers.size());
-if(googleMap == null){
-    Log.d("ShowMapFragment", "map is not init");
-    return;
-}
+        if(googleMap == null){
+            Log.d("ShowMapFragment", "map is not init");
+            return;
+        }
         for (int i = 0; i < markers.size(); i++) {
             Log.d("ShowMapFragment", "i = " + i + " marker = " + markers.get(i).getMarkerOptions());
             if (markers.get(i).getMarkerOptions() != null) {
@@ -317,7 +331,6 @@ if(googleMap == null){
 
         } else {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));//2 - 22
-
         }
 
         googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
@@ -375,7 +388,7 @@ if(googleMap == null){
         PersonObject personObject = null;
         MarkerOptions markerOptions = null;
         POSITION animationPosition;
-Bitmap icon;
+        Bitmap icon;
         public void animate() {
             if (animationPosition == POSITION.END) {
                 endAnimation();
@@ -439,14 +452,14 @@ Bitmap icon;
 
         private void show() {
             if(getActivity()!=null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (preparedMarker != null) {
-                        preparedMarker.setVisible(true);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (preparedMarker != null) {
+                            preparedMarker.setVisible(true);
+                        }
                     }
-                }
-            });
+                });
             }
         }
 
@@ -468,14 +481,11 @@ Bitmap icon;
         }
 
         public PersonMarker(Bitmap icon, PersonObject personObject) {
-        if(icon == null){
-            icon = Utils.getBitmapFromResource(getActivity(), R.drawable.empty_photo);
-        }
+            if(icon == null){
+                icon = Utils.getBitmapFromResource(getActivity(), R.drawable.empty_photo);
+            }
             this.icon = icon;
             this.personObject = personObject;
-
-
-
         }
 
         public PersonObject getPersonObject() {
@@ -484,7 +494,7 @@ Bitmap icon;
 
         public MarkerOptions getMarkerOptions() {
             if(getActivity()==null) {
-            return this.markerOptions;
+                return this.markerOptions;
             }
             if(personObject == null){
                 return null;
@@ -505,10 +515,8 @@ Bitmap icon;
             return markerOptions;
         }
     }
-
     private void configureToolbar() {
         Toolbar toolbar = PersonPage.getToolbar();
-
         LinearLayout toolbarContainer = (LinearLayout) toolbar.findViewById(R.id.toolbarContainer);
         toolbarContainer.removeAllViews();
         TextView title = (TextView) toolbarContainer.findViewById(R.id.screenTitle);
@@ -517,16 +525,13 @@ Bitmap icon;
 
         ImageView showMap = (ImageView) toolbarContainer.findViewById(R.id.nearButton);
         showMap.setImageResource(R.drawable.show_grid);
-        showMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                ShowPeopleCompositeFragment showPeopleCompositeFragment = new ShowPeopleCompositeFragment();
-                showPeopleCompositeFragment.setPurpose(ShowPeopleCompositeFragment.Purpose.NEAR);
-                fragmentTransaction.replace(R.id.content, showPeopleCompositeFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commitAllowingStateLoss();
-            }
+        showMap.setOnClickListener(view -> {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            ShowPeopleCompositeFragment showPeopleCompositeFragment = new ShowPeopleCompositeFragment();
+            showPeopleCompositeFragment.setPurpose(ShowPeopleCompositeFragment.Purpose.NEAR);
+            fragmentTransaction.replace(R.id.content, showPeopleCompositeFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commitAllowingStateLoss();
         });
 
         ImageView menuButton = (ImageView) toolbarContainer.findViewById(R.id.menuButton);

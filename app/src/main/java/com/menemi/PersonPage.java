@@ -1,5 +1,6 @@
 package com.menemi;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -13,7 +14,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -99,7 +103,7 @@ public class PersonPage extends AppCompatActivity {
     private static final int SETTINGS = 8;
     public static boolean isFilterVisible = false;
     private CallbackManager authCallbackManager;
-
+    private static LinearLayout loading_indicator;
     private ArrayList<ItemSlideMenu> listSliding = new ArrayList<>();
 
     private static ScrollView listViewSliding;
@@ -117,7 +121,11 @@ public class PersonPage extends AppCompatActivity {
     private static TextView balanceValue = null;
     private static ProgressBar ratingBar;
 
-public static boolean isActivityOn = false;
+    public static LinearLayout getLoadingIndicator() {
+        return loading_indicator;
+    }
+
+    public static boolean isActivityOn = false;
     @Override
     protected void onStart() {
         super.onStart();
@@ -157,15 +165,22 @@ public static boolean isActivityOn = false;
     };
     private static ProgressDialog progressDialog;
     public static void finishProgressDialog(){
-        if(progressDialog != null){
-            progressDialog.dismiss();
-        }
+        //if(progressDialog != null){
+        //    progressDialog.dismiss();
+        //}
+        loading_indicator.removeAllViews();
+        loading_indicator.setBackgroundResource(R.color.no_color);
     }
-    public static void startProgressDialog(Context ctx){
-        if(progressDialog != null){
-            progressDialog.dismiss();
-        }
-        progressDialog = Utils.startLodingProgress(ctx, null, null);
+
+    public static void startProgressDialog(Activity ctx){
+        //if(progressDialog != null){
+          //  progressDialog.dismiss();
+        //}
+        //progressDialog = Utils.startLodingProgress(ctx, null, null);
+        loading_indicator.removeAllViews();
+        loading_indicator.setBackgroundResource(R.color.progress_background);
+     loading_indicator.addView(ctx.getLayoutInflater().inflate(R.layout.progress_bar, null));
+
     }
     public static Toolbar getToolbar() {
         return toolbar;
@@ -230,7 +245,7 @@ public static boolean isActivityOn = false;
 
         // Log and toast
         registerReceiver(myReceiver, new IntentFilter(MyFirebaseMessagingService.INTENT_FILTER));
-
+        loading_indicator = (LinearLayout ) findViewById(R.id.loading_indicator);
 
         DBHandler.getInstance().lunchStreams();
         header = getLayoutInflater().inflate(com.menemi.R.layout.navigation_header_layout, listViewSliding, false);
@@ -698,7 +713,7 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
 
     static class OnFilterClickListener implements View.OnClickListener {
 
-        FilterFragment fragment;
+        private FilterFragment fragment = new FilterFragment();
         private static PersonObject owner;
         FragmentManager fm;
         private FilterFragment.FilterType filterType;
@@ -727,19 +742,31 @@ BalanceUpdateMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_B
                 //fragment.blurBackground(false);
 
                 fm.beginTransaction().setCustomAnimations(R.anim.enter_from_left_fragment,R.anim.out_from_right_fragment).remove(fragment).commitAllowingStateLoss();
+                fm.popBackStack();
+                loading_indicator.setBackgroundResource(R.color.no_color);
+                //ColorDrawable[] color = { new ColorDrawable(0xb3000000),new ColorDrawable(0x00000000)};
+                //TransitionDrawable trans = new TransitionDrawable(color);
+                //loading_indicator.setBackgroundDrawable(trans);
+                //trans.startTransition(5000);
 
             } else {
                 DBHandler.getInstance().isRESTAvailable(new DBHandler.ResultListener() {
                     @Override
                     public void onFinish(Object object) {
                         if((boolean)object){
+
+                            ColorDrawable[] color = {new ColorDrawable(0x00000000), new ColorDrawable(0xb3000000)};
+                            TransitionDrawable trans = new TransitionDrawable(color);
+                            loading_indicator.setBackgroundDrawable(trans);
+                            trans.startTransition(300);
+
                             isFilterVisible = true;
-                            fragment = new FilterFragment();
                             fragment.setPersonObject(owner);
                             fragment.setFilterType(filterType);
                             fragment.setCanOpen(true);
                             FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(R.anim.enter_from_left_fragment,R.anim.out_from_right_fragment).addToBackStack(null)
                                     .replace(com.menemi.R.id.messageFragmentPlaceHolder, fragment);
+                            transaction.addToBackStack("filter");
                             transaction.commitAllowingStateLoss();
                         }
                     }

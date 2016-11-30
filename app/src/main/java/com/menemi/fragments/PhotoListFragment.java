@@ -84,7 +84,9 @@ public class PhotoListFragment extends Fragment implements View.OnClickListener 
 
             }
         } else {
-            photoCount.setText("" + personObject.getPhotoCountPrivate());
+            if(personObject!= null) {
+                photoCount.setText("" + personObject.getPhotoCountPrivate());
+            }
         }
         Log.d("TESTBLEAT", "Adding fragment 0 ");
         //(int personId, int requestedId, int photoNumber, int count, String quality,

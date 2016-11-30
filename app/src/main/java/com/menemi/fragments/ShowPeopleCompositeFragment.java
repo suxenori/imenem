@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.menemi.PersonPage;
 import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
+import com.menemi.personobject.PersonObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by tester03 on 21.06.2016.
@@ -23,9 +26,14 @@ import com.menemi.dbfactory.DBHandler;
 public class ShowPeopleCompositeFragment extends Fragment {
     private static View rootView = null;
     private Purpose purpose = Purpose.NEAR;
+    private ArrayList<PersonObject> personObjects;
 
     public void setPurpose(Purpose purpose) {
         this.purpose = purpose;
+    }
+
+    public void setPersonObjects(ArrayList<PersonObject> personObjects) {
+        this.personObjects = personObjects;
     }
 
     @Nullable
@@ -73,7 +81,9 @@ public class ShowPeopleCompositeFragment extends Fragment {
         PersonListFragment personListFragment = new PersonListFragment();
         fragmentTransaction.replace(R.id.fragment1, personListFragment);
         personListFragment.setPurpose(purpose);
-
+        if (purpose == Purpose.NEAR_FROM_FILTER) {
+            personListFragment.setPersonObjects(personObjects);
+        }
         if (purpose == Purpose.LIKES || purpose == Purpose.MUTUAL_LIKES) {
             personListFragment.setPurpose(Purpose.LIKES);
             PersonListFragment personListFragment2 = new PersonListFragment();
@@ -91,7 +101,7 @@ public class ShowPeopleCompositeFragment extends Fragment {
         FRIENDS,
         FAVORITES,
         NEAR,
-        NEWS
+        NEAR_FROM_FILTER
     }
 
     private void configureToolbar(Purpose purpose) {
@@ -99,7 +109,7 @@ public class ShowPeopleCompositeFragment extends Fragment {
         LinearLayout toolbarContainer = (LinearLayout) toolbar.findViewById(R.id.toolbarContainer);
         toolbarContainer.removeAllViews();
 
-        if (purpose == Purpose.NEAR) {
+        if (purpose == Purpose.NEAR || purpose == Purpose.NEAR_FROM_FILTER) {
             toolbarContainer.addView(View.inflate(getActivity(), R.layout.ab_people_near, null));
             ImageView showMap = (ImageView) toolbarContainer.findViewById(R.id.nearButton);
             showMap.setOnClickListener(new View.OnClickListener() {
@@ -117,28 +127,34 @@ public class ShowPeopleCompositeFragment extends Fragment {
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commitAllowingStateLoss();
                             }
-                        }});
-                        }});
+                        }
+                    });
+                }
+            });
         } else
 
-                {
-                    toolbarContainer.addView(View.inflate(getActivity(), R.layout.ab_people_list, null)); // TODO insertt enother
-                    TextView title = (TextView) toolbarContainer.findViewById(R.id.screenTitle);
-                    if (purpose == Purpose.VISITORS) {
-                        title.setText(R.string.visitors);
-                    } else if (purpose == Purpose.FAVORITES) {
-                        title.setText(R.string.favorites);
-                    } else if (purpose == Purpose.LIKES) {
-                        title.setText(R.string.liked_you);
-                    }
-
-                }
-
-
-                ImageView menuButton = (ImageView) toolbarContainer.findViewById(R.id.menuButton);
-                menuButton.setOnClickListener(PersonPage.getMenuListener());
-
-                ImageView filterButton = (ImageView) toolbarContainer.findViewById(R.id.filterButton);
-                filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager(), FilterFragment.FilterType.FILTER_FROM_NEAR));
+        {
+            toolbarContainer.addView(View.inflate(getActivity(), R.layout.ab_people_list, null)); // TODO insertt enother
+            TextView title = (TextView) toolbarContainer.findViewById(R.id.screenTitle);
+            if (purpose == Purpose.VISITORS) {
+                title.setText(R.string.visitors);
+            } else if (purpose == Purpose.FAVORITES) {
+                title.setText(R.string.favorites);
+            } else if (purpose == Purpose.LIKES) {
+                title.setText(R.string.liked_you);
             }
+
         }
+
+
+        ImageView menuButton = (ImageView) toolbarContainer.findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(PersonPage.getMenuListener());
+        ImageView filterButton = (ImageView) toolbarContainer.findViewById(R.id.filterButton);
+if(purpose == Purpose.NEAR || purpose == Purpose.NEAR_FROM_FILTER) {
+
+    filterButton.setOnClickListener(PersonPage.getFilterButtonListener(getFragmentManager(), FilterFragment.FilterType.FILTER_FROM_NEAR));
+} else {
+    filterButton.setVisibility(View.GONE);
+}
+    }
+}

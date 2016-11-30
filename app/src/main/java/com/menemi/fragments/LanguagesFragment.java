@@ -43,7 +43,23 @@ public class LanguagesFragment extends Fragment{
             }
         }
         ArrayList<Language> languages = personObject.getPersonLanguages();
+        TextView changeButton = (TextView)rootView.findViewById(R.id.changeButton);
+        changeButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent openChangeInfo = new Intent(getActivity(), EditPersonalInfo.class);
+                openChangeInfo.putExtra(EditPersonalInfo.SCROLL_DOWN_TAG, true);
+                startActivity(openChangeInfo);
+            }
+        });
+        if (languages == null){
+            return rootView;
+        }
+
         String languageString = "";
+
         for (int i = 0; i < languages.size(); i++) {
             languageString += languages.get(i).getLanguageName();
             languageString += " (";
@@ -59,20 +75,9 @@ public class LanguagesFragment extends Fragment{
         languageList.setText(languageString);
         if(purpose != PersonDataFragment.Purpose.MY_PROFILE){
 
-            TextView changeButton = (TextView)rootView.findViewById(R.id.changeButton);
             changeButton.setText("");
         }
-        TextView changeButton = (TextView)rootView.findViewById(R.id.changeButton);
-        changeButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent openChangeInfo = new Intent(getActivity(), EditPersonalInfo.class);
-                openChangeInfo.putExtra(EditPersonalInfo.SCROLL_DOWN_TAG, true);
-                startActivity(openChangeInfo);
-            }
-        });
+
         return rootView;
     }
 

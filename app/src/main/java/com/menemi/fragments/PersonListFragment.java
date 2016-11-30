@@ -38,14 +38,20 @@ public class PersonListFragment extends Fragment {
     private int rowsShown = 1;
     private ShowPeopleCompositeFragment.Purpose purpose = null;
     private LayoutInflater inflater;
-    ArrayList<PersonObject> personObjects;
+    private ArrayList<PersonObject> personObjects;
     private String title = "";
-public PersonListFragment(){
-    likesLoaded = false;
-    mutLikesLoaded = false;
-    likesEmpty = false;
-    mutLikesEmpty = false;
-}
+
+    public PersonListFragment() {
+        likesLoaded = false;
+        mutLikesLoaded = false;
+        likesEmpty = false;
+        mutLikesEmpty = false;
+    }
+
+    public void setPersonObjects(ArrayList<PersonObject> personObjects) {
+        this.personObjects = personObjects;
+    }
+
     public void setPurpose(ShowPeopleCompositeFragment.Purpose purpose) {
         this.purpose = purpose;
     }
@@ -91,7 +97,10 @@ public PersonListFragment(){
 
             showFavorites();
         }
+        if (purpose == ShowPeopleCompositeFragment.Purpose.NEAR_FROM_FILTER) {
 
+            showNearFromFilter();
+        }
 
     }
 
@@ -119,20 +128,23 @@ public PersonListFragment(){
     private static boolean mutLikesLoaded = false;
     private static boolean likesEmpty = false;
     private static boolean mutLikesEmpty = false;
+
     private void showMutualLikes() {
         DBHandler.getInstance().getMutualLikes(new DBHandler.ResultListener() {
             @Override
             public void onFinish(Object object) {
                 personObjects = (ArrayList<PersonObject>) object;
                 Log.d("PersonListFragment", "mutual " + personObjects);
-
+                if(getActivity()==null){
+                    return;
+                }
                 title = getString(R.string.mutual_likes);
 
                 mutLikesEmpty = (personObjects == null || personObjects.size() == 0);
                 mutLikesLoaded = true;
-                if(likesLoaded && likesEmpty && mutLikesEmpty) {
+                if (likesLoaded && likesEmpty && mutLikesEmpty) {
                     getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.LIKES)).commitAllowingStateLoss();
-                } else if(!mutLikesEmpty){
+                } else if (!mutLikesEmpty) {
                     prepare();
                 }
             }
@@ -145,14 +157,16 @@ public PersonListFragment(){
             public void onFinish(Object object) {
                 personObjects = (ArrayList<PersonObject>) object;
                 Log.d("PersonListFragment", "likes " + personObjects);
-
+                if(getActivity()==null){
+                    return;
+                }
                 title = getString(R.string.your_likes);
                 likesEmpty = (personObjects == null || personObjects.size() == 0);
                 likesLoaded = true;
-                if(mutLikesLoaded && mutLikesEmpty && likesEmpty) {
+                if (mutLikesLoaded && mutLikesEmpty && likesEmpty) {
                     likesLoaded = true;
                     getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.LIKES)).commitAllowingStateLoss();
-                } else if(!likesEmpty){
+                } else if (!likesEmpty) {
                     prepare();
                 }
             }
@@ -171,13 +185,18 @@ public PersonListFragment(){
                     @Override
                     public void onFinish(Object object) {
                         personObjects = (ArrayList<PersonObject>) object;
+                        if(getActivity()==null){
+                            return;
+                        }
                         title = getString(R.string.people_nearby);
                         if (personObjects == null || personObjects.size() == 0) {
                             getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.NEARBY)).commitAllowingStateLoss();
                             PersonPage.finishProgressDialog();
                         } else {
                             prepare();
+
                         }
+
                     }
                 });
             }
@@ -222,7 +241,18 @@ public PersonListFragment(){
 
 
     }
-
+    private void showNearFromFilter() {
+        title = getString(R.string.people_nearby);
+        if(getActivity()==null){
+            return;
+        }
+        if (personObjects == null || personObjects.size() == 0) {
+            getFragmentManager().beginTransaction().replace(R.id.fullScreenContent, new NoDataFragment().setPurpose(NoDataFragment.PURPOSE.NEARBY)).commitAllowingStateLoss();
+            PersonPage.finishProgressDialog();
+        } else {
+            prepare();
+        }
+    }
     /* private void prepare() {
          PeopleRowFragment row = new PeopleRowFragment();
          row.setLastRow(true);
@@ -297,6 +327,7 @@ public PersonListFragment(){
             }
         }
     }
+
     private void addRow(int j, final boolean isLastRow) {
         final int start = j * 3;
         ArrayList<Integer> ids = new ArrayList<>();

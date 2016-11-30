@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.menemi.customviews.HackyViewPager;
 import com.menemi.fragments.PhotoFragment;
@@ -73,12 +74,17 @@ public class PhotoSwipeFragment extends Fragment {
         }
         Log.d("urlsCount", "" + urlsArray.size());
         //preparing Swiping sreens
-        if(pager == null) {
-            pager = (HackyViewPager) rootView.findViewById(com.menemi.R.id.pager);
 
+        if(pager == null) {
+            //hack around to escape from fucking illigal state excemption
+            RelativeLayout pagerHolder = (RelativeLayout) rootView.findViewById(R.id.pagerHolder);
+            pager = (HackyViewPager) View.inflate(getActivity(), R.layout.hacky_view_pager, null);
+
+            pagerHolder.addView(pager);
             //adapter wwhich will manage our swaping
             pager.setAdapter(new MyFragmentPagerAdapter(getActivity().getFragmentManager()));
             pager.setCurrentItem(pageNumber);
+
         }
         return rootView;
 

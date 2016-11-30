@@ -2,8 +2,6 @@ package com.menemi.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,6 +23,8 @@ import com.menemi.filter.FilterObject;
 import com.menemi.models.PlaceModel;
 import com.menemi.personobject.PersonObject;
 import com.menemi.utils.RangeSeekBar;
+
+import java.util.ArrayList;
 
 /**
  * Created by tester03 on 04.07.2016.
@@ -54,7 +54,7 @@ public class FilterFragment extends Fragment {
         this.personObject = personObject;
     }
 
-    View rootView = null;
+    private  View rootView = null;
 
     @Nullable
     @Override
@@ -180,6 +180,7 @@ public class FilterFragment extends Fragment {
             ViewGroup parent = (ViewGroup) rootView.getParent();
             parent.removeView(rootView);
             parent.removeAllViews();
+            PersonPage.getLoadingIndicator().setBackgroundResource(R.color.no_color);
         });
         seekBar.setRangeValues(0, 100);
 
@@ -195,20 +196,31 @@ public class FilterFragment extends Fragment {
             personObject.setFilterObject(filterObject);
 
             DBHandler.getInstance().uploadFilterSettings(filterObject, object -> {
-
+                if(getActivity() == null || getFragmentManager() == null){
+                    return;
+                }
+                ShowPeopleCompositeFragment showPeopleCompositeFragment = new ShowPeopleCompositeFragment();
+                showPeopleCompositeFragment.setPurpose(ShowPeopleCompositeFragment.Purpose.NEAR_FROM_FILTER);
+                showPeopleCompositeFragment.setPersonObjects((ArrayList<PersonObject>)object);
+                PersonPage.getLoadingIndicator().setBackgroundResource(R.color.no_color);
+                getFragmentManager().beginTransaction().replace(R.id.content, showPeopleCompositeFragment).addToBackStack(null).commitAllowingStateLoss();
             });
 
-            ViewGroup parent = (ViewGroup) rootView.getParent();
+           /* ViewGroup parent = (ViewGroup) rootView.getParent();
             parent.removeView(rootView);
-            parent.removeAllViews();
+            parent.removeAllViews();*/
+
+            getFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left_fragment, R.anim.out_from_right_fragment).remove(this).commit();
 
         });
 
         cancelButton.setOnClickListener(view -> {
             PersonPage.isFilterVisible = false;
-            ViewGroup parent = (ViewGroup) rootView.getParent();
-            parent.removeView(rootView);
-            parent.removeAllViews();
+            PersonPage.getLoadingIndicator().setBackgroundResource(R.color.no_color);
+            /*ViewGroup parent = (ViewGroup) rootView.getParent();
+            parent.removeView(rootView);*/
+            getFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left_fragment, R.anim.out_from_right_fragment).remove(this).commit();
+            //parent.removeAllViews();
         });
 
 
@@ -258,20 +270,8 @@ public class FilterFragment extends Fragment {
         FILTER_FROM_ENCOUNTERS,
         FILTER_FROM_NEAR
     }
-    public void blurBackground(boolean isCanOpen){
-        RelativeLayout relativeLayout = (RelativeLayout)rootView.findViewById(R.id.layoutShadow);
-        if (isCanOpen){
-            ColorDrawable[] color = {new ColorDrawable(R.color.no_color), new ColorDrawable(R.color.filterShadow_pressed)};
-            TransitionDrawable trans = new TransitionDrawable(color);
-            relativeLayout.setBackground(trans);
-            trans.startTransition(300);
-        } else {
-            ColorDrawable[] color = {new ColorDrawable(R.color.filterShadow_pressed), new ColorDrawable(R.color.no_color)};
-            TransitionDrawable trans = new TransitionDrawable(color);
-            relativeLayout.setBackground(trans);
-            trans.reverseTransition(10);
-        }
-    }
+
+
 
 
 }

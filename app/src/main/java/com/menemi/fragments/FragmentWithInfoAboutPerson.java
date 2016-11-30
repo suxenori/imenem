@@ -39,7 +39,6 @@ public class FragmentWithInfoAboutPerson extends Fragment {
             }
         }
 
-
         if (personObject != null) {
 
 

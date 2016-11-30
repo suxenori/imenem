@@ -22,6 +22,7 @@ import com.menemi.filter.FilterObject;
 import com.menemi.interests_classes.InterestsGroup;
 import com.menemi.personobject.Configurations;
 import com.menemi.personobject.DialogInfo;
+import com.menemi.personobject.DialogMessage;
 import com.menemi.personobject.Gift;
 import com.menemi.personobject.Interests;
 import com.menemi.personobject.Language;
@@ -154,7 +155,7 @@ public class DBHandler {
 
     }
 
-    public void sendReadMessage(int dialogId, ArrayList<Integer> msgIds) {
+    public void sendReadMessage(int dialogId, ArrayList<DialogMessage> msgIds) {
 
         ReadMessage readMessage = new ReadMessage(getUserId(), dialogId, msgIds);
         stream.sendMessage(readMessage);
@@ -1108,8 +1109,12 @@ public class DBHandler {
     }
 
 
-    public void disLike(int likedId, boolean isLiked, ResultListener resultListener) {
-        dbRest.disLike(getUserId(), likedId, isLiked, resultListener);
+    public void disLike(int likedId, boolean isLiked, ArrayList<PersonObject> oldProfiles,ResultListener resultListener) {
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (int i = 0; i < oldProfiles.size(); i++) {
+            ids.add(oldProfiles.get(i).getPersonId());
+        }
+        dbRest.disLike(getUserId(), likedId, isLiked, ids,resultListener);
     }
 
     /**

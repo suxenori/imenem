@@ -23,7 +23,7 @@
     <color name="red">#dc4e41</color>
     <color name="red_underline">#f44336</color>
     <color name="blue">#27aae1</color>
-    <color name="test_co">#88888888</color>
+    <color name="test_co">#888888</color>
 
     <color name="toolbar">#ffffff</color>
     <color name="activity_back">#FAFAFA</color>
@@ -40,5 +40,5 @@
     <color name="menu_item">#ECEDEE</color>
     <color name="filter_item">#f2f2f2</color>
     <color name="avatarFilter">#939393</color>
-
+    <color name="progress_background">#b3000000</color>
 </resources>

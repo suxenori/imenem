@@ -2,6 +2,7 @@ package com.menemi.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,9 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -52,7 +56,7 @@ public class ChatFragment extends Fragment {
     private DialogInfo dialogInfo = null;
     int messagesShown = 10;
     int lastSenderID = -100;
-    private  LinkedList<MessageFragment> messageFragments = new LinkedList<>();
+    private LinkedList<MessageFragment> messageFragments = new LinkedList<>();
 
     public void setDialogInfo(DialogInfo dialogInfo) {
         this.dialogInfo = dialogInfo;
@@ -72,7 +76,7 @@ public class ChatFragment extends Fragment {
 
         }
         configureToolbar(dialogInfo);
-        prepareMessages(dialogInfo, 1, 10, true);
+        prepareMessages(dialogInfo, 0, 10, true);
 
 
         TypingMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_NOTYFICATION_TYPING, new OnContactTypingListener());
@@ -83,7 +87,7 @@ public class ChatFragment extends Fragment {
                 View view = scrollView.getChildAt(0);
                 if (view.getTop() == y) {
                     Log.d("Scroll", "top reached");
-                    prepareMessages(dialogInfo, messagesShown+1, 5, false);
+                    prepareMessages(dialogInfo, messagesShown + 1, 5, false);
                     messagesShown += 5;
 
                 }
@@ -105,7 +109,8 @@ public class ChatFragment extends Fragment {
         ResponceReadMessage.addOnRecieveListener(StreamMessage.ConnectorCommands.ZCMD_READ_MESSAGE_RESPONSE, new OnSendedMessageReadedListener());
         return rootView;
     }
-    class OnMessageResponceListener implements StreamMessage.OnRecieveListener{
+
+    class OnMessageResponceListener implements StreamMessage.OnRecieveListener {
 
         @Override
         public void onRecieve(final StreamMessage message) {
@@ -126,8 +131,10 @@ public class ChatFragment extends Fragment {
             });
         }
     }
+
     ArrayList<DialogMessage> dialogMessages = new ArrayList<>();
     boolean hasMoreMessages = true;
+
     private void prepareMessages(DialogInfo dialogInfo, int offset, final int count, final boolean toEnd) {
 
         if (hasMoreMessages) {
@@ -135,6 +142,10 @@ public class ChatFragment extends Fragment {
                 @Override
                 public void onFinish(Object object) {
                     ArrayList<DialogMessage> loadedDialogMessages = (ArrayList<DialogMessage>) object;
+
+                    if (getActivity() == null) {
+                        return;
+                    }
                     if (loadedDialogMessages.size() < count) {
                         hasMoreMessages = false;
                     }
@@ -146,6 +157,9 @@ public class ChatFragment extends Fragment {
                     for (int i = dialogMessages.size() - 1; i >= 0; i--) {
                         addMessage(dialogMessages.get(i), toEnd);
                     }
+                    prepareScrollable();
+                    //loadedDialogMessages
+                    DBHandler.getInstance().sendReadMessage(dialogInfo.getDialogID(),loadedDialogMessages);
                 }
             });
         }
@@ -156,7 +170,9 @@ public class ChatFragment extends Fragment {
         boolean isFirst = lastSenderID != message.getProfileId();
         Log.d("FIRST", "lastSenderID " + lastSenderID + " message.getProfileId() " + message.getProfileId() + " lastSenderID != message.getProfileId() " + (lastSenderID != message.getProfileId()));
         lastSenderID = message.getProfileId();
-
+        if (getActivity() == null || getFragmentManager() == null) {
+            return;
+        }
         MessageFragment messageFragment = new MessageFragment();
         messageFragment.setFirst(isFirst);
         messageFragment.setMessage(message);
@@ -165,16 +181,54 @@ public class ChatFragment extends Fragment {
         }
 
 
-            messageFragments.add(messageFragment);
+        messageFragments.add(messageFragment);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.add(R.id.fragment1, messageFragment);
+        fragmentTransaction.commitAllowingStateLoss();
+//        fm.executePendingTransactions();
 
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.fragment1, messageFragment);
-            fragmentTransaction.commitAllowingStateLoss();
-        if(toEnd) {
+
+        if (toEnd) {
             scrollDown();
         }
 
 
+    }
+
+    private void prepareScrollable() {
+
+
+
+        ObservableScrollView scrollView = (ObservableScrollView) rootView.findViewById(R.id.content);
+        ViewTreeObserver observer = scrollView.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int viewHeight = scrollView.getMeasuredHeight();
+                int contentHeight = scrollView.getChildAt(0).getHeight();
+                LinearLayout fragment1 = (LinearLayout) rootView.findViewById(R.id.fragment1);
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                if(viewHeight - contentHeight < 0) {
+                    params.gravity = Gravity.NO_GRAVITY;
+                } else {
+                    params.gravity = Gravity.BOTTOM;
+                }
+                fragment1.setLayoutParams(params);
+            }
+        });
+
+    }
+
+    private int countVisible(ViewGroup myLayout) {
+        int count = 0;
+        if (myLayout == null) return count;
+
+        for (int i = 0; i < myLayout.getChildCount(); i++) {
+            if (myLayout.getChildAt(i).isShown())
+                count++;
+        }
+        return count;
     }
 
     public void scrollDown() {
@@ -205,7 +259,7 @@ public class ChatFragment extends Fragment {
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getFragmentManager()!=null) {
+                if (getFragmentManager() != null) {
                     getFragmentManager().popBackStack();
                 }
             }
@@ -274,13 +328,14 @@ public class ChatFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-                send();
+            send();
 
 
         }
-        private void send(){
+
+        private void send() {
             EmojiconEditText messageText = (EmojiconEditText) rootView.findViewById(R.id.messageText);
-            if(messageText.getText().toString().equals("")){
+            if (messageText.getText().toString().equals("")) {
                 return;
             }
 
@@ -318,7 +373,7 @@ public class ChatFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable editable) {
             Log.d("Typing", "stop");
-            if(timer!=null) {
+            if (timer != null) {
                 timer.interrupt();
             }
             timer = new Thread(new Runnable() {
@@ -349,10 +404,10 @@ public class ChatFragment extends Fragment {
                 public void run() {
 
                     RecievedMessage recievedMessage = (RecievedMessage) message;
-                    if(recievedMessage.getDialogID() == dialogInfo.getDialogID()) {
+                    if (recievedMessage.getDialogID() == dialogInfo.getDialogID()) {
                         Log.d("ZCMD_RECEIVED_MESSAGE", "" + recievedMessage.getMessageBody());
-                        ArrayList<Integer> msgIds = new ArrayList<Integer>();
-                        msgIds.add(recievedMessage.getMessageId());
+                        ArrayList<DialogMessage> msgIds = new ArrayList<DialogMessage>();
+                        msgIds.add(new DialogMessage(recievedMessage.getMessageId()));
                         addMessage(new DialogMessage(recievedMessage), true);
                         DBHandler.getInstance().sendReadMessage(dialogInfo.getDialogID(), msgIds);
                     }
@@ -365,7 +420,7 @@ public class ChatFragment extends Fragment {
 
         @Override
         public void onRecieve(final StreamMessage message) {
-            if(getActivity() == null){
+            if (getActivity() == null) {
                 return;
             }
             getActivity().runOnUiThread(new Runnable() {
@@ -392,7 +447,7 @@ public class ChatFragment extends Fragment {
     private class OnSendedMessageReadedListener implements StreamMessage.OnRecieveListener {
         @Override
         public void onRecieve(StreamMessage message) {
-            if(getActivity() == null){
+            if (getActivity() == null) {
                 return;
             }
             getActivity().runOnUiThread(new Runnable() {

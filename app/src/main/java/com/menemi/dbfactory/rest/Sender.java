@@ -36,7 +36,7 @@ public class Sender extends JSONSender {
     private static final String urlForAPIAddCredits = "/profile/credits_added";
     private static final String urlFBRegister = "/profile/registerfb";
     private static final String urlCreateInterest = "/settings/createinterest/";
-
+    private static final String urlLike = "/profile/like/";
 
 
     private static final String USER_ID = "requesting_profile_id";
@@ -318,8 +318,6 @@ public class Sender extends JSONSender {
                 dataJSON.put(Fields.NAME,profile.getFullName());
                 dataJSON.put(Fields.IS_MALE, Utils.getFacebookGender(profile.getGender()));
 
-
-
                 Log.d("object", dataJSON.toString());
 
                 return dataJSON.toString().replace("\"[", "[").replace("]\"", "]");
@@ -343,6 +341,30 @@ public class Sender extends JSONSender {
                 return dataJSON.toString();
             }
         });
+        messageTypesParcer.put(RestCommands.MAKE_LIKE, new JSONParcer() {
+            @Override
+            public String parce(Object object) throws JSONException {
+                ArrayList<Integer> ids = ( ArrayList<Integer>)object;
+
+                JSONObject dataJSON = new JSONObject();
+                JSONArray array = new JSONArray();
+
+
+                //requesting_profile_id, name, gender (в виде 1 или 0), и birth в формате "%Y-%m-%d"
+                //dataJSON.put(USER_ID, DBHandler.getInstance().getUserId());
+                for (int i = 0; i < ids.size(); i++) {
+                    array.put(ids.get(i));
+                }
+
+
+                dataJSON.put("existing_ids", (Object)array);
+                dataJSON.put("count", 10);
+                Log.d("object", dataJSON.toString());
+
+                return dataJSON.toString().replace("\"[", "[").replace("]\"", "]");
+
+            }
+        });
 
         //TODO: add actions for all other types
     }
@@ -362,6 +384,12 @@ public class Sender extends JSONSender {
     {
         super(getURL(command),onUploadListener);
         this.command = command;
+
+    }
+    public Sender(RestCommands command, int personId, int likedId, boolean isLike,Object obj,OnUploadListener onUploadListener) {
+        super(getURL(command) + personId + "/" + likedId + "/" + Utils.boolToInt(isLike), onUploadListener);
+        this.command = command;
+        this.object = obj;
 
     }
 
@@ -399,6 +427,9 @@ public class Sender extends JSONSender {
             case CREATE_INTEREST:
                 url = Fields.URL_FOR_SERVER + "/"+ Fields.PREFIX + urlCreateInterest;
                 break;
+            case MAKE_LIKE:
+                url = Fields.URL_FOR_SERVER + "/"+ Fields.PREFIX + urlLike;
+                break;
 
         }
         return url;
@@ -421,7 +452,8 @@ public class Sender extends JSONSender {
         SET_FIELD,
         ADD_CREDITS,
         REGISTER_FACEBOOK,
-        CREATE_INTEREST
+        CREATE_INTEREST,
+        MAKE_LIKE
 
     }
 

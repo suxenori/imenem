@@ -6,8 +6,9 @@
     android:layout_marginTop="@dimen/profile_data_top_margin"
     >
     <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:layout_width="match_parent"
+    android:layout_height="match_parent"
+        android:id="@+id/parentScrollView">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -17,6 +17,7 @@ import com.menemi.R;
 import com.menemi.dbfactory.DBHandler;
 import com.menemi.dbfactory.rest.PictureLoader;
 import com.menemi.personobject.NewsInfo;
+import com.menemi.personobject.PersonObject;
 import com.menemi.utils.Utils;
 
 /**
@@ -32,6 +33,7 @@ public class NewsInfoFragment extends Fragment{
     private TextView newsOwnerName;
     private TextView newsNameType;
     private TextView date;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,16 +48,9 @@ public class NewsInfoFragment extends Fragment{
 
             }
         }
-
-        avatar = (ImageView)rootView.findViewById(R.id.circleAvatar);
-       // avatar.setAnimation(Utils.animationImageView());
-        photoNews = (ImageView)rootView.findViewById(R.id.image);
-        newsImage = (LinearLayout)rootView.findViewById(R.id.newsImageType);
-        newsOwnerName = (TextView)rootView.findViewById(R.id.newsOwnerName);
-        newsNameType = (TextView)rootView.findViewById(R.id.newsTypeName);
-        date = (TextView)rootView.findViewById(R.id.date);
+        initView();
         handleNews(newsInfo);
-
+        rootView.setOnClickListener(new PictureClickListener(newsInfo.getId()));
         return rootView;
     }
 
@@ -83,10 +78,49 @@ public class NewsInfoFragment extends Fragment{
         newsOwnerName.setText(Html.fromHtml("<font color = \"#f29c23\">" +  newsInfo.getName() + "</font>" + " " + "<font color = \"#000000\">" + newsInfo.getAction() + "</font>"));
         date.setText(newsInfo.getDate().toString());
     }
-
-
-
     public void setNewsInfo(NewsInfo newsInfo) {
-        this.newsInfo = newsInfo;
+
+       this.newsInfo = newsInfo;
+    }
+    public void initView(){
+        avatar = (ImageView)rootView.findViewById(R.id.circleAvatar);
+        photoNews = (ImageView)rootView.findViewById(R.id.image);
+        newsImage = (LinearLayout)rootView.findViewById(R.id.newsImageType);
+        newsOwnerName = (TextView)rootView.findViewById(R.id.newsOwnerName);
+        newsNameType = (TextView)rootView.findViewById(R.id.newsTypeName);
+        date = (TextView)rootView.findViewById(R.id.date);
+
+    }
+
+    class PictureClickListener implements View.OnClickListener{
+        private int personId;
+
+        public PictureClickListener(int personId) {
+            this.personId = personId;
+        }
+
+        @Override
+        public void onClick(View view) {
+            DBHandler.getInstance().getOtherProfile(personId, new DBHandler.ResultListener() {
+                @Override
+                public void onFinish(Object object) {
+
+                    if (getActivity() == null || getFragmentManager() == null) {
+                        return;
+                    } else {
+                        android.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        PersonDataFragment personDataFragment = new PersonDataFragment();
+                        personDataFragment.setPurpose(PersonDataFragment.Purpose.PROFILE);
+                        personDataFragment.setPersonObject((PersonObject) object);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.replace(getActivity().findViewById(R.id.content).getId(), personDataFragment);
+                        fragmentTransaction.commitAllowingStateLoss();
+                    }
+
+                }
+            });
+
+        }
+
     }
 }

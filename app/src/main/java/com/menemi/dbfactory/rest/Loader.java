@@ -196,11 +196,10 @@ public class Loader extends JSONLoader {
 
                 Log.v("loader", requestNumber + jsonString);
                 JSONObject mainObject = new JSONObject(jsonString);
+
                 if (mainObject.getString(RESULT).equals(SUCCESS)) {
-
-
-                    JSONObject profileObject = mainObject.getJSONObject(Fields.PROFILE);
-                    return profileParce(profileObject);
+                    JSONObject profileObject = mainObject.getJSONArray("profile_infos").getJSONObject(0);
+                    return profileParceFull(profileObject);
                 } else return null;
 
 
@@ -505,6 +504,15 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
                 return mainObject.getString("result").equals("success");
 
         });
+        messageTypesParcer.put(RestCommands.GET_MULTIPLE_PROFILES, (String jsonString) -> {
+            Log.v("loader", requestNumber + jsonString);
+            JSONObject mainObject = new JSONObject(jsonString);
+            if(mainObject.getString("result").equals("success")){
+
+            }
+            return mainObject.getString("result").equals("success");
+
+        });
 
 
         messageTypesParcer.put(RestCommands.DELETE_PHOTO, (String jsonString) -> {
@@ -522,7 +530,14 @@ ArrayList<Language> allLanguages = new ArrayList<Language>();
         messageTypesParcer.put(RestCommands.UPLOAD_FILTER_SETTINGS,(String jsonString) -> {
                 Log.v("loader", requestNumber + jsonString);
                 JSONObject mainObject = new JSONObject(jsonString);
-                return mainObject.getString("result").equals("success");
+                JSONArray profiles = mainObject.getJSONArray(PROFILES);
+            ArrayList<PersonObject> persons = new ArrayList<>();
+            for (int i = 0; i < profiles.length(); i++) {
+                persons.add(profileParce(profiles.getJSONObject(i)));
+
+            }
+
+                return persons;
 
         });
 
@@ -1442,6 +1457,9 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
             case GET_NEWS:
                 url = constructStartURL() + G_GET_NEWS;
                 break;
+            case GET_MULTIPLE_PROFILES:
+                url = constructStartURL() + G_GET_NEWS;
+                break;
         }
         return url;
     }
@@ -1526,7 +1544,8 @@ private static ArrayList<PersonalGift> parceGifts(JSONObject mainObject)throws J
         BUY_GIFT,
         SET_AVATAR,
         SET_NOTIFICATION_TOKEN,
-        GET_NEWS
+        GET_NEWS,
+        GET_MULTIPLE_PROFILES
     }
 
     interface JSONParcer {

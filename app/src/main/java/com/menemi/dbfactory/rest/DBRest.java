@@ -196,8 +196,10 @@ public void setAppearance(PersonalAppearanceSettingsModel apperance, OnDataRecie
         new Loader(Loader.RestCommands.GET_MUTUAL_LIKES, id, onDataRecieveListener).execute();
     }
 
-    public void disLike(int id, int likedId, boolean isLiked, OnDataRecieveListener onDataRecieveListener) {
-        new Loader(Loader.RestCommands.DIS_LIKE, id, likedId, isLiked, onDataRecieveListener).execute();
+    public void disLike(int id, int likedId, boolean isLiked, ArrayList<Integer> ids, OnDataRecieveListener onDataRecieveListener) {
+        new Sender(Sender.RestCommands.MAKE_LIKE, id, likedId, isLiked, ids, (s)->{
+            Loader.parcing(Loader.RestCommands.GET_MULTIPLE_PROFILES, s, onDataRecieveListener);
+        }).execute();
     }
 
     public void addFavorites(int id, int likedId, boolean isAdded, OnDataRecieveListener onDataRecieveListener) {
