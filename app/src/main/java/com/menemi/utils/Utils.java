@@ -372,7 +372,7 @@ public static String socialFieldConverter(Fields.SOCIAL_NETWORKS socialNetworks)
     @Contract("null, _ -> null")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static Bitmap blur(Context ctx, Bitmap image, float blurRadius) {
-        if (image == null) {
+        if (image == null || ctx == null) {
             return null;
         }
         Bitmap outputBitmap = null;
@@ -713,7 +713,11 @@ public static String socialFieldConverter(Fields.SOCIAL_NETWORKS socialNetworks)
         String[] arr = str.split(strSeparator);
         int[] result = new int[arr.length];
         for (int i = 0; i < arr.length; i++) {
-            result[i] = Integer.parseInt(arr[i]);
+            if(arr[i] != "") {
+                result[i] = Integer.parseInt(arr[i]);
+            } else {
+                result[i] = 0;
+            }
         }
         return result;
     }
